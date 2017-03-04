@@ -78,30 +78,5 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             return httpStartStreamingReply.ToString();
         }
-
-        public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold)
-        {
-            if (reduceLagThreshold < 1000)
-            {
-                reduceLagCounter++;
-                if (reduceLagCounter > reduceLagThreshold)
-                {
-                    reduceLagCounter = 0;
-                    return;
-                }
-            }
-
-            if (device.IsPlaying())
-            {
-                if (!IsMaxWavSizeReached(dataToSend.Length))
-                {
-                    SendData(dataToSend, format);
-                }
-                else
-                {
-                    device.DeviceCommunication.LoadMedia();
-                }
-            }
-        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
-using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
 
 namespace ChromeCast.Desktop.AudioStreamer
