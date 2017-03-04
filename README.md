@@ -11,17 +11,15 @@ It's inspired by this tool: https://github.com/acidhax/chromecast-audio-stream, 
 
 # Dependencies
 
-|-------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| Really Simple Service Discovery Protocol        | https://github.com/Yortw/RSSDP                                                                                         |
-| NAudio                                          | https://github.com/naudio/NAudio                                                                                       |
-| Protocol Buffers                                | https://github.com/google/protobuf                                                                                     |
-| protobuf-csharp-port                            | https://github.com/jskeet/protobuf-csharp-port                                                                         |
-| Microsoft Visual Studio 2015 Installer Projects | https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2015InstallerProjects |
+- Really Simple Service Discovery Protocol - https://github.com/Yortw/RSSDP
+- NAudio - https://github.com/naudio/NAudio
+- Protocol Buffers - https://github.com/google/protobuf
+- protobuf-csharp-port - https://github.com/jskeet/protobuf-csharp-port
+- Microsoft Visual Studio 2015 Installer Projects - https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2015InstallerProjects
 
 
 # Learned from
 
-|-------------------------|----------------------------------------------------|
-| node-castv2             | https://github.com/thibauts/node-castv2            |
-| node-castv2-client      | https://github.com/thibauts/node-castv2-client     |
-| chromecast-audio-stream | https://github.com/acidhax/chromecast-audio-stream |
+- node-castv2 - https://github.com/thibauts/node-castv2
+- node-castv2-client - https://github.com/thibauts/node-castv2-client
+- chromecast-audio-stream - https://github.com/acidhax/chromecast-audio-stream
