@@ -2,25 +2,31 @@
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IMainForm
     {
-        private ApplicationLogic application;
+        private IApplicationLogic applicationLogic;
+        private IDevices devices;
+        private ILogger logger;
 
-        public MainForm()
+        public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILogger loggerIn)
         {
             InitializeComponent();
+
+            applicationLogic = applicationLogicIn;
+            devices = devicesIn;
+            logger = loggerIn;
+            logger.SetCallback(Log);
+            applicationLogic.SetDependencies(this);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            application = new ApplicationLogic(this);
-            application.Start();
-
             Update();
-            ReadConfiguration();
+            applicationLogic.Start();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -29,12 +35,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             e.Cancel = true;
         }
 
-        public void DisposeForm()
-        {
-            Dispose();
-        }
-
-        public void AddDevice(Device device)
+        public void AddDevice(IDevice device)
         {
             if (InvokeRequired)
             {
@@ -43,69 +44,79 @@ namespace ChromeCast.Desktop.AudioStreamer
             }
             if (IsDisposed) return;
 
-            var button = new DeviceControl(device);
-            button.SetDeviceName(device.SsdpDevice.FriendlyName);
-            button.SetClickCallBack(device.OnClickDeviceButton);
-            pnlDevices.Controls.Add(button);
-            device.DeviceControl = button;
+            var deviceControl = new DeviceControl(device);
+            deviceControl.SetDeviceName(device.GetFriendlyName());
+            deviceControl.SetClickCallBack(device.OnClickDeviceButton);
+            pnlDevices.Controls.Add(deviceControl);
+            device.SetDeviceControl(deviceControl);
         }
 
-        private void ReadConfiguration()
+        public void ShowLagControl(bool showLag)
         {
-            try
+            if (InvokeRequired)
             {
-                string useKeyboardShortCuts = System.Configuration.ConfigurationManager.AppSettings["UseKeyboardShortCuts"];
-                string showLog = System.Configuration.ConfigurationManager.AppSettings["ShowLog"];
-                string showLagControl = System.Configuration.ConfigurationManager.AppSettings["ShowLagControl"];
-                string lagControlValue = System.Configuration.ConfigurationManager.AppSettings["LagControlValue"];
-                string autoStartDevices = System.Configuration.ConfigurationManager.AppSettings["AutoStartDevices"];
-                string ipAddressesDevices = System.Configuration.ConfigurationManager.AppSettings["IpAddressesDevices"];
-
-                bool useShortCuts;
-                if (bool.TryParse(useKeyboardShortCuts, out useShortCuts))
-                    chkHook.Checked = useShortCuts;
-
-                bool boolShowLog;
-                if (bool.TryParse(showLog, out boolShowLog))
-                    if (!boolShowLog)
-                        tabControl.TabPages.RemoveAt(1);
-
-                bool showLag;
-                if (bool.TryParse(showLagControl, out showLag))
-                {
-                    if (!showLag)
-                    {
-                        grpDevices.Height += grpLag.Height;
-                        pnlDevices.Height += grpLag.Height;
-                    }
-                    grpLag.Visible = showLag;
-                }
-
-                int lagValue;
-                if (int.TryParse(lagControlValue, out lagValue))
-                    trbLag.Value = lagValue;
-
-                bool autoStart;
-                if (bool.TryParse(autoStartDevices, out autoStart))
-                    application.AutoStart = autoStart;
-
-                if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
-                {
-                    var ipDevices = ipAddressesDevices.Split(';');
-                    foreach (var ipDevice in ipDevices)
-                    {
-                        var arrDevice = ipDevice.Split(',');
-                        application.OnDeviceAvailable(
-                                new Rssdp.DiscoveredSsdpDevice { DescriptionLocation = new Uri(string.Format("http://{0}", arrDevice[0])) },
-                                new Rssdp.SsdpRootDevice { FriendlyName = arrDevice[1] }
-                            );
-                    }
-                }
+                Invoke(new Action<bool>(ShowLagControl), new object[] { showLag });
+                return;
             }
-            catch (Exception)
+            if (IsDisposed) return;
+
+            if (!showLag)
             {
+                grpDevices.Height += grpLag.Height;
+                pnlDevices.Height += grpLag.Height;
             }
+            grpLag.Visible = showLag;
+        }
 
+        public void ShowLog(bool boolShowLog)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<bool>(ShowLog), new object[] { boolShowLog });
+                return;
+            }
+            if (IsDisposed) return;
+
+            if (!boolShowLog)
+                tabControl.TabPages.RemoveAt(1);
+        }
+
+        public void SetLagValue(int lagValue)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<int>(SetLagValue), new object[] { lagValue });
+                return;
+            }
+            if (IsDisposed) return;
+
+            trbLag.Value = lagValue;
+        }
+
+        public void SetKeyboardHooks(bool useShortCuts)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<bool>(SetKeyboardHooks), new object[] { useShortCuts });
+                return;
+            }
+            if (IsDisposed) return;
+
+            chkHook.Checked = useShortCuts;
+        }
+
+        public void ToggleVisibility()
+        {
+            if (Visible)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+                Activate();
+                WindowState = FormWindowState.Normal;
+            }
         }
 
         public void Log(string message)
@@ -136,28 +147,28 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void trbLag_Scroll(object sender, EventArgs e)
         {
-            application.SetLagThreshold(trbLag.Value);
+            applicationLogic.SetLagThreshold(trbLag.Value);
         }
 
         private void chkHook_CheckedChanged(object sender, EventArgs e)
         {
-            application.OnSetHooks(chkHook.Checked);
+            applicationLogic.OnSetHooks(chkHook.Checked);
 
         }
 
         private void btnVolumeUp_Click(object sender, EventArgs e)
         {
-            application.VolumeUp();
+            devices.VolumeUp();
         }
 
         private void btnVolumeDown_Click(object sender, EventArgs e)
         {
-            application.VolumeDown();
+            devices.VolumeDown();
         }
 
         private void btnVolumeMute_Click(object sender, EventArgs e)
         {
-            application.VolumeMute();
+            devices.VolumeMute();
         }
     }
 }

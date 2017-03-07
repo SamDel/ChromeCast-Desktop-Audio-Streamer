@@ -5,96 +5,69 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Rssdp;
 using NAudio.Wave;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
 using ChromeCast.Desktop.AudioStreamer.Classes;
-using ChromeCast.Desktop.AudioStreamer.Discover;
-using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
-    public class ApplicationLogic
+    public class ApplicationLogic : IApplicationLogic
     {
-        public bool AutoStart = false;
-        private LoopbackRecorder loopbackRecorder;
-        private DiscoverServiceSSDP discover;
-        private Devices devices;
-        private Timer getStatusTimer;
-        private Timer discoverTillFoundTimer;
-        private int discoverTillFoundTimerCounter = 0;
-        private MainForm mainForm;
+        private IDevices devices;
+        private IMainForm mainForm;
+        private IConfiguration configuration;
+        private ILoopbackRecorder loopbackRecorder;
+        private IStreamingRequestsListener streamingRequestListener;
+        private IDiscoverDevices discoverDevices;
+        private IDeviceStatusTimer deviceStatusTimer;
         private NotifyIcon notifyIcon;
-        private AsynchronousSocketListener socketListener;
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
         private string streamingUrl = string.Empty;
 
-        public ApplicationLogic(MainForm mainFormIn)
+        public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
+            , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
+            , IStreamingRequestsListener streamingRequestListenerIn, IDeviceStatusTimer deviceStatusTimerIn)
         {
-            loopbackRecorder = new LoopbackRecorder(this);
-            devices = new Devices(this);
-            getStatusTimer = new Timer();
-            discoverTillFoundTimer = new Timer();
-            mainForm = mainFormIn;
+            devices = devicesIn;
+            devices.SetCallback(OnAddDevice);
+            discoverDevices = discoverDevicesIn;
+            loopbackRecorder = loopbackRecorderIn;
+            configuration = configurationIn;
+            streamingRequestListener = streamingRequestListenerIn;
+            deviceStatusTimer = deviceStatusTimerIn;
         }
 
-        private void CloseApplication(object sender, EventArgs e)
+        public void Start()
         {
-            SetWindowsHook.Stop();
-            loopbackRecorder.StopRecording();
-            devices.Dispose();
-            socketListener.StopListening();
-            mainForm.DisposeForm();
-            notifyIcon.Visible = false;
+            Task.Run(() => { streamingRequestListener.StartListening(OnStreamingRequestsListen, OnStreamingRequestConnect); });
+            AddNotifyIcon();
+            configuration.Load(SetConfiguration);
+            discoverDevices.Discover(devices.OnDeviceAvailable);
+            deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
         }
 
-        private void ShowApplication(object sender, EventArgs e)
+        private void ToggleFormVisibility(object sender, EventArgs e)
         {
             if (e.GetType().Equals(typeof(MouseEventArgs)))
             {
                 if (((MouseEventArgs)e).Button != MouseButtons.Left) return;
             }
 
-            if (mainForm.Visible)
-            {
-                mainForm.Hide();
-            }
-            else
-            {
-                mainForm.Show();
-                mainForm.Activate();
-                mainForm.WindowState = FormWindowState.Normal;
-            }
+            mainForm.ToggleVisibility();
         }
 
-        public void Start()
-        {
-            AddNotifyIcon();
-            socketListener = new AsynchronousSocketListener(this);
-            Task.Run(() => { socketListener.StartListening(); });
-
-            discover = new DiscoverServiceSSDP(this);
-            discover.Discover();
-
-            discoverTillFoundTimer.Interval = 5000;
-            discoverTillFoundTimer.Tick += new EventHandler(OnDiscoverTillFoundTimer);
-            discoverTillFoundTimer.Start();
-
-            getStatusTimer.Interval = 10000;
-            getStatusTimer.Tick += new EventHandler(OnGetStatus);
-            getStatusTimer.Start();
-        }
-
-        public void OnListen(string host, int port)
+        public void OnStreamingRequestsListen(string host, int port)
         {
             Console.WriteLine(string.Format("Streaming from {0}:{1}", host, port));
             streamingUrl = string.Format("http://{0}:{1}/", host, port);
         }
 
-        public void OnStreamRequestConnect(Socket socket, string httpRequest)
+        public void OnStreamingRequestConnect(Socket socket, string httpRequest)
         {
             Console.WriteLine(string.Format("Connection added from {0}", socket.RemoteEndPoint));
 
-            loopbackRecorder.StartRecording();
+            loopbackRecorder.StartRecording(OnRecordingDataAvailable);
             devices.AddStreamingConnection(socket, httpRequest);
         }
 
@@ -103,63 +76,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             devices.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold);
         }
 
-        private void OnGetStatus(object sender, EventArgs e)
-        {
-            devices.OnGetStatus();
-        }
-
-        private void OnDiscoverTillFoundTimer(object sender, EventArgs e)
-        {
-            if (devices.CountDiscovered() == 0 && discoverTillFoundTimerCounter <= 5)
-                discover.Discover();
-            else
-                discoverTillFoundTimer.Stop();
-
-            discoverTillFoundTimerCounter++;
-        }
-
         public void OnSetHooks(bool setHooks)
         {
             if (setHooks)
-                SetWindowsHook.Start(this);
+                SetWindowsHook.Start(devices);
             else
                 SetWindowsHook.Stop();
         }
 
-        public void OnDeviceAvailable(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
-        {
-            devices.AddDevice(device, fullDevice);
-        }
-
-        public void OnAddDevice(Device device)
+        public void OnAddDevice(IDevice device)
         {
             var menuItem = new MenuItem();
-            menuItem.Text = device.SsdpDevice.FriendlyName;
+            menuItem.Text = device.GetFriendlyName();
             menuItem.Click += device.OnClickDeviceButton;
             notifyIcon.ContextMenu.MenuItems.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
-            device.MenuItem = menuItem;
+            device.SetMenuItem(menuItem);
 
             mainForm.AddDevice(device);
-        }
-
-        public void VolumeUp()
-        {
-            devices.VolumeUp();
-        }
-
-        public void VolumeDown()
-        {
-            devices.VolumeDown();
-        }
-
-        public void VolumeMute()
-        {
-            devices.VolumeMute();
-        }
-
-        public void VolumeSet(float level)
-        {
-            devices.VolumeSet(level);
         }
 
         private void AddNotifyIcon()
@@ -182,7 +115,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             notifyIcon.Visible = true;
             notifyIcon.Text = "ChromeCast Desktop Streamer";
             notifyIcon.ContextMenu = contextMenu;
-            notifyIcon.Click += ShowApplication;
+            notifyIcon.Click += ToggleFormVisibility;
         }
 
         public string GetStreamingUrl()
@@ -195,9 +128,40 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             reduceLagThreshold = lagThreshold;
         }
 
-        public void Log(string message)
+        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices)
         {
-            mainForm.Log(message);
+            mainForm.SetKeyboardHooks(useShortCuts);
+            mainForm.ShowLog(showLog);
+            mainForm.ShowLagControl(showLagControl);
+            mainForm.SetLagValue(lagValue);
+            devices.SetAutoStart(autoStart);
+
+            if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
+            {
+                var ipDevices = ipAddressesDevices.Split(';');
+                foreach (var ipDevice in ipDevices)
+                {
+                    var arrDevice = ipDevice.Split(',');
+                    devices.OnDeviceAvailable(
+                            new DiscoveredSsdpDevice { DescriptionLocation = new Uri(string.Format("http://{0}", arrDevice[0])) },
+                            new SsdpRootDevice { FriendlyName = arrDevice[1] }
+                        );
+                }
+            }
+        }
+
+        private void CloseApplication(object sender, EventArgs e)
+        {
+            SetWindowsHook.Stop();
+            loopbackRecorder.StopRecording();
+            devices.Dispose();
+            streamingRequestListener.StopListening();
+            notifyIcon.Visible = false;
+        }
+
+        public void SetDependencies(MainForm mainFormIn)
+        {
+            mainForm = mainFormIn;
         }
     }
 }

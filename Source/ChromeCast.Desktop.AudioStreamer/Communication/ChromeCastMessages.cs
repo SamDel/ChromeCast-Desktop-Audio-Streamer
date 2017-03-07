@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
+using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
-    public class ChromeCastMessages
+    public class ChromeCastMessages : IChromeCastMessages
     {
         private const string namespaceConnect = "urn:x-cast:com.google.cast.tp.connection";
         private const string namespaceHeartbeat = "urn:x-cast:com.google.cast.tp.heartbeat";

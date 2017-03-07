@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using System.Text;
 using NAudio.Wave;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
-    public class Riff
+    public class Riff : IRiff
     {
         public byte[] GetRiffHeader(WaveFormat format)
         {

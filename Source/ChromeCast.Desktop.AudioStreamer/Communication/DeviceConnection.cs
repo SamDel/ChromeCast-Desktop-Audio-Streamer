@@ -4,34 +4,37 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
-    public class DeviceConnection
+    public class DeviceConnection : IDeviceConnection
     {
+        private Func<string> getHost;
+        private Action<DeviceState, string> setDeviceState;
+        private Action<CastMessage> onReceiveMessage;
+        private ILogger logger;
+        private IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
         private TcpClient tcpClient;
         private SslStream sslStream;
         private byte[] receiveBuffer;
-        private DeviceReceiveBuffer deviceReceiveBuffer;
-        private ApplicationLogic application;
         private DeviceConnectionState state;
-        private Device device;
-        private string host;
 
-        public DeviceConnection(Device deviceIn, ApplicationLogic app)
+        public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
-            application = app;
-            device = deviceIn;
-            host = device.DiscoveredSsdpDevice.DescriptionLocation.Host;
-            deviceReceiveBuffer = new DeviceReceiveBuffer(device);
+            logger = loggerIn;
+            deviceReceiveBuffer = deviceReceiveBufferIn;
+            deviceReceiveBuffer.SetCallback(OnReceiveMessage);
         }
 
         private void Connect()
         {
             if (tcpClient == null || !tcpClient.Connected)
             {
+                var host = getHost?.Invoke();
                 try
                 {
                     state = DeviceConnectionState.Connecting;
@@ -49,8 +52,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 catch (Exception ex)
                 {
                     state = DeviceConnectionState.Error;
-                    device.SetDeviceState(DeviceState.ConnectError);
-                    application.Log(string.Format("ex [{0}]: {1}", host, ex.Message));
+                    setDeviceState?.Invoke(DeviceState.ConnectError, null);
+                    logger.Log(string.Format("ex [{0}]: {1}", host, ex.Message));
                 }
             }
         }
@@ -111,16 +114,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             StartReceive();
         }
 
+        private void OnReceiveMessage(CastMessage castMessage)
+        {
+            onReceiveMessage?.Invoke(castMessage);
+        }
 
         public void Dispose()
         {
-            if (tcpClient != null) tcpClient.Close();
-            if (sslStream != null) sslStream.Close();
+            tcpClient?.Close();
+            sslStream?.Close();
         }
 
         public bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
+        }
+
+        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        {
+            getHost = getHostIn;
+            setDeviceState = setDeviceStateIn;
+            onReceiveMessage = onReceiveMessageIn;
         }
     }
 }

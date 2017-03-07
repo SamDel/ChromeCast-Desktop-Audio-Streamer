@@ -9,9 +9,9 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 {
     public partial class DeviceControl : UserControl
     {
-        private Device device;
+        private IDevice device;
 
-        public DeviceControl(Device deviceIn)
+        public DeviceControl(IDevice deviceIn)
         {
             InitializeComponent();
             device = deviceIn;
@@ -51,16 +51,19 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.Closed:
                 case DeviceState.Paused:
                     SetBackColor(Color.LightGray);
-                    device.MenuItem.Checked = false;
+                    device.GetMenuItem().Checked = false;
                     break;
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
                     SetBackColor(Color.PaleGreen);
-                    device.MenuItem.Checked = true;
+                    device.GetMenuItem().Checked = true;
                     break;
                 case DeviceState.ConnectError:
+                case DeviceState.LoadCancelled:
+                case DeviceState.LoadFailed:
+                case DeviceState.InvalidRequest:
                     SetBackColor(Color.PeachPuff);
-                    device.MenuItem.Checked = false;
+                    device.GetMenuItem().Checked = false;
                     break;
                 default:
                     break;

@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Linq;
-using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
-    public class DeviceReceiveBuffer
+    public class DeviceReceiveBuffer : IDeviceReceiveBuffer
     {
-        private Device device;
-
-        public DeviceReceiveBuffer(Device deviceIn)
-        {
-            device = deviceIn;
-        }
+        private Action<CastMessage> onReceiveMessage;
 
         public void OnReceive(byte[] data)
         {
             ParseMessages(data);
         }
+
         private void ParseMessages(byte[] serverMessage)
         {
             int offset = 0;
@@ -41,14 +37,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private void ProcessMessage(byte[] message)
         {
             var castMessage = CastMessage.ParseFrom(message);
-            device.DeviceCommunication.OnReceiveMessage(castMessage);
+            onReceiveMessage?.Invoke(castMessage);
         }
 
-        public T[] SubArray<T>(T[] data, int index, int length)
+        private T[] SubArray<T>(T[] data, int index, int length)
         {
             T[] result = new T[length];
             Array.Copy(data, index, result, 0, length);
             return result;
+        }
+
+        public void SetCallback(Action<CastMessage> onReceiveMessageIn)
+        {
+            onReceiveMessage = onReceiveMessageIn;
         }
     }
 }
