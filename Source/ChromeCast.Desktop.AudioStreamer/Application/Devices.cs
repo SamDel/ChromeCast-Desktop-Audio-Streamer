@@ -22,7 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             AddDevice(discoveredSsdpDevice, ssdpDevice);
         }
 
-        public void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
+        private void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
         {
             if (!deviceList.Any(d => d.GetUsn().Equals(device.Usn)))
             {
@@ -30,7 +30,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 newDevice.SetDiscoveredDevices(device, fullDevice);
                 deviceList.Add(newDevice);
                 onAddDeviceCallback?.Invoke(newDevice);
-                newDevice.SetDeviceState(newDevice.GetDeviceState());
 
                 if (AutoStart)
                     newDevice.OnClickDeviceButton(null, null);

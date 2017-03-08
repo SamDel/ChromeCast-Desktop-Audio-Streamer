@@ -11,5 +11,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         void ShowLagControl(bool showLag);
         void SetLagValue(int lagValue);
         void AddDevice(IDevice device);
+        void Dispose();
     }
 }

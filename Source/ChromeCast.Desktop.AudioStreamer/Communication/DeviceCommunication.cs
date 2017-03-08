@@ -98,7 +98,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return ++requestId;
         }
 
-        public void SendMessage(CastMessage.Builder castMessage)
+        public void SendMessage(CastMessage castMessage)
         {
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             sendMessage?.Invoke(byteMessage);

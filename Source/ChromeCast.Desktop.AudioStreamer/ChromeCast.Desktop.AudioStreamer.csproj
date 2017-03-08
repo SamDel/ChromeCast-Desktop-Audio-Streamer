@@ -84,13 +84,13 @@
     <Compile Include="Application\Configuration.cs" />
     <Compile Include="Application\Device.cs" />
     <Compile Include="Application\Devices.cs" />
-    <Compile Include="Application\DiscoverDevices.cs" />
+    <Compile Include="Discover\DiscoverDevices.cs" />
     <Compile Include="Application\DeviceStatusTimer.cs" />
     <Compile Include="Application\Interfaces\IConfiguration.cs" />
     <Compile Include="Application\Interfaces\IApplicationLogic.cs" />
     <Compile Include="Application\Interfaces\IDevice.cs" />
     <Compile Include="Application\Interfaces\IDevices.cs" />
-    <Compile Include="Application\Interfaces\IDiscoverDevices.cs" />
+    <Compile Include="Discover\Interfaces\IDiscoverDevices.cs" />
     <Compile Include="Application\Interfaces\IDeviceStatusTimer.cs" />
     <Compile Include="Classes\CastDeviceCapabilities.cs" />
     <Compile Include="Classes\DependencyFactory.cs" />

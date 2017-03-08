@@ -1,7 +1,7 @@
 ﻿using System;
 using Rssdp;
 
-namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
+namespace ChromeCast.Desktop.AudioStreamer.Discover.Interfaces
 {
     public interface IDiscoverDevices
     {

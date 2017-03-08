@@ -8,6 +8,7 @@ using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -157,6 +158,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             devices.Dispose();
             streamingRequestListener.StopListening();
             notifyIcon.Visible = false;
+            mainForm.Dispose();
         }
 
         public void SetDependencies(MainForm mainFormIn)

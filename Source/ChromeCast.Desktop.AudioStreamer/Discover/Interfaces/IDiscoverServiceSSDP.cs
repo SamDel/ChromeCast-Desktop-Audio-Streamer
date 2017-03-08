@@ -1,5 +1,5 @@
-﻿using Rssdp;
-using System;
+﻿using System;
+using Rssdp;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover.Interfaces
 {

@@ -87,7 +87,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDeviceState(DeviceState state, string text = null)
         {
             deviceState = state;
-            deviceControl.SetStatus(state, text);
+            deviceControl?.SetStatus(state, text);
         }
 
         public bool IsConnected()
@@ -100,7 +100,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void OnVolumeUpdate(Volume volume)
         {
             volumeSetting = volume;
-            deviceControl.OnVolumeUpdate(volume);
+            deviceControl?.OnVolumeUpdate(volume);
         }
 
         public void VolumeSet(float level)
@@ -203,6 +203,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public MenuItem GetMenuItem()
         {
             return menuItem;
+        }
+
+        public IDeviceConnection GetDeviceConnection()
+        {
+            return deviceConnection;
         }
 
         public void OnReceiveMessage(CastMessage castMessage)
