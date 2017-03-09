@@ -7,23 +7,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
     public class Riff : IRiff
     {
+        /// <summary>
+        /// Generate a header for a maximum length WAV stream.
+        /// </summary>
         public byte[] GetRiffHeader(WaveFormat format)
-        {
-            var riffHeaderStream = new MemoryStream();
-
-            GetWaveFileHeader(riffHeaderStream, format);
-
-            return riffHeaderStream.ToArray();
-        }
-
-        private void GetWaveFileHeader(Stream outStream, WaveFormat format)
         {
             var dataSize = uint.MaxValue - 50;
             uint chunkSize = dataSize;
             uint factChunkSize = 4;
             uint numberOfSamples = (uint)((dataSize * 8) / format.BitsPerSample / format.Channels);
 
-            var writer = new BinaryWriter(outStream, Encoding.UTF8);
+            var riffHeaderStream = new MemoryStream();
+            var writer = new BinaryWriter(riffHeaderStream, Encoding.UTF8);
+
             writer.Write(Encoding.UTF8.GetBytes("RIFF"));
             writer.Write(chunkSize);
             writer.Write(Encoding.UTF8.GetBytes("WAVE"));
@@ -34,6 +30,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             writer.Write(numberOfSamples);
             writer.Write(Encoding.UTF8.GetBytes("data"));
             writer.Write(dataSize);
+
+            return riffHeaderStream.ToArray();
         }
     }
 }
