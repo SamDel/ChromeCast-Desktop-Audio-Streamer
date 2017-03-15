@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -15,19 +15,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         public StringBuilder receiveBuffer = new StringBuilder();
     }
 
-    public class AsynchronousSocketListener
+    public class StreamingRequestsListener : IStreamingRequestsListener
     {
         public ManualResetEvent allDone = new ManualResetEvent(false);
-        private ApplicationLogic application;
+        private Action<string, int> onListenCallback;
+        private Action<Socket, string> onConnectCallback;
         private Socket listener;
 
-        public AsynchronousSocketListener(ApplicationLogic app)
+        public void StartListening(Action<string, int> onListenCallbackIn, Action<Socket, string> onConnectCallbackIn)
         {
-            application = app;
-        }
-
-        public void StartListening()
-        {
+            onListenCallback = onListenCallbackIn;
+            onConnectCallback = onConnectCallbackIn;
             var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             var ipAddress = GetIp4Address(ipHostInfo);
             var localEndPoint = new IPEndPoint(ipAddress, 0);
@@ -37,7 +35,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
-                application.OnListen(((IPEndPoint)listener.LocalEndPoint).Address.ToString(), ((IPEndPoint)listener.LocalEndPoint).Port);
+                onListenCallback?.Invoke(((IPEndPoint)listener.LocalEndPoint).Address.ToString(), ((IPEndPoint)listener.LocalEndPoint).Port);
 
                 while (true)
                 {
@@ -92,7 +90,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 state.receiveBuffer.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
                 if (state.receiveBuffer.ToString().IndexOf("\r\n\r\n") >= 0)
                 {
-                    application.OnStreamRequestConnect(handlerSocket, state.receiveBuffer.ToString());
+                    onConnectCallback?.Invoke(handlerSocket, state.receiveBuffer.ToString());
                 }
                 else
                 {

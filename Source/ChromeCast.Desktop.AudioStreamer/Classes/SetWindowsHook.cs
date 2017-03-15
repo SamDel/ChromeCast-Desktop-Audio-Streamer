@@ -11,18 +11,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
+        private static IDevices devices;
         private static LowLevelKeyboardProc callbackProcedure = HookCallback;
         private static IntPtr hookId = IntPtr.Zero;
-        private static ApplicationLogic application; 
         private static bool isPressedInCtrl = false;
         private static bool isPressedInAlt = false;
         private static bool isPressedInU = false;
         private static bool isPressedInD = false;
         private static bool isPressedInM = false;
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        public static void Start(ApplicationLogic app)
+        public static void Start(IDevices devicesIn)
         {
-            application = app;
+            devices = devicesIn;
 
             try
             {
@@ -52,8 +53,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 return SetWindowsHookEx(WH_KEYBOARD_LL, proc, GetModuleHandle(currentModule.ModuleName), 0);
             }
         }
-
-        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
@@ -89,9 +88,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 }
                 if (isPressedInCtrl && isPressedInAlt)
                 {
-                    if (isPressedInU) application.VolumeUp();
-                    if (isPressedInD) application.VolumeDown();
-                    if (isPressedInM) application.VolumeMute();
+                    if (isPressedInU) devices.VolumeUp();
+                    if (isPressedInD) devices.VolumeDown();
+                    if (isPressedInM) devices.VolumeMute();
                 }
             }
             return CallNextHookEx(hookId, nCode, wParam, lParam);

@@ -98,7 +98,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     }
 
     /// <summary>
-    /// You get this message after LOAD, Volume change, Mute etc. It contains an update of the device status.
+    /// You get this message after LOAD, Volume change, Mute etc., and when you request the status.
     /// type = 'MEDIA_STATUS'
     /// </summary>
     public class MessageMediaStatus : PayloadMessageBase
@@ -129,7 +129,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     }
 
     /// <summary>
-    /// After a 'LAUNCH' you get this message from the device
+    /// After a 'LAUNCH' you get this message from the device, or when you request the device for it.
     /// type = 'RECEIVER_STATUS'
     /// </summary>
     public class MessageReceiverStatus : PayloadMessageBase

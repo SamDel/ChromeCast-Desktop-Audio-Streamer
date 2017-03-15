@@ -10,6 +10,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         public bool hi_res_audio_supported;
     }
 
+    /// <summary>
+    /// When connecting to a stream the device adds a http header with his capabilities.
+    /// </summary>
     public static class CastDeviceCapabilitiesHelper
     {
         public static CastDeviceCapabilities GetCastDeviceCapabilities(string content)

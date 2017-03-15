@@ -12,6 +12,9 @@
         Playing,
         Paused,
         ConnectError,
+        LoadFailed,
+        LoadCancelled,
+        InvalidRequest,
         Closed
     };
 }

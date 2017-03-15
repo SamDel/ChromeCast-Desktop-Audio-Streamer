@@ -1,38 +1,40 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Windows.Forms;
 using Rssdp;
 using NAudio.Wave;
+using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Classes;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
+using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
-    public class Device
+    public class Device : IDevice
     {
-        public DiscoveredSsdpDevice DiscoveredSsdpDevice;
-        public SsdpDevice SsdpDevice;
-        public DeviceConnection DeviceConnection;
-        public DeviceCommunication DeviceCommunication;
-        public StreamingConnection StreamingConnection;
-        public DeviceControl DeviceControl;
-        public MenuItem MenuItem;
-        public DeviceState DeviceState;
-        private ApplicationLogic application;
+        private IDeviceCommunication deviceCommunication;
+        private IStreamingConnection streamingConnection;
+        private IDeviceConnection deviceConnection;
+        private DiscoveredSsdpDevice discoveredSsdpDevice;
+        private SsdpDevice ssdpDevice;
+        private DeviceState deviceState;
+        private DeviceControl deviceControl;
+        private MenuItem menuItem;
         private Volume volumeSetting;
         private DateTime lastVolumeChange;
-        private int reduceLagCounter = 0;
 
-        public Device(ApplicationLogic app, DiscoveredSsdpDevice discoveredSsdpDevice, SsdpDevice ssdpDevice)
+        public Device(IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
         {
-            application = app;
-            DiscoveredSsdpDevice = discoveredSsdpDevice;
-            SsdpDevice = ssdpDevice;
-            DeviceConnection = new DeviceConnection(this, application);
-            DeviceCommunication = new DeviceCommunication(this, application);
-            DeviceState = DeviceState.NotConnected;
-
+            deviceConnection = deviceConnectionIn;
+            deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
+            deviceCommunication = deviceCommunicationIn;
+            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost);
+            deviceState = DeviceState.NotConnected;
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -42,95 +44,63 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
         }
 
+        public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn)
+        {
+            discoveredSsdpDevice = discoveredSsdpDeviceIn;
+            ssdpDevice = ssdpDeviceIn;
+        }
+
         public void OnClickDeviceButton(object sender, EventArgs e)
         {
-            switch (DeviceState)
-            {
-                case DeviceState.Buffering:
-                case DeviceState.Playing:
-                    DeviceCommunication.PauseMedia();
-                    break;
-                case DeviceState.LaunchingApplication:
-                case DeviceState.LaunchedApplication:
-                case DeviceState.LoadingMedia:
-                case DeviceState.Idle:
-                case DeviceState.Paused:
-                    DeviceCommunication.LoadMedia();
-                    break;
-                case DeviceState.NotConnected:
-                case DeviceState.ConnectError:
-                case DeviceState.Closed:
-                    DeviceCommunication.LaunchAndLoadMedia();
-                    break;
-                case DeviceState.Disposed:
-                    break;
-                default:
-                    break;
-            }
+            deviceCommunication.OnClickDeviceButton(deviceState);
         }
 
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold)
         {
-            if (StreamingConnection != null)
+            if (streamingConnection != null)
             {
-                if (StreamingConnection.Socket.Connected)
+                if (streamingConnection.IsConnected())
                 {
-                    if (reduceLagThreshold < 1000)
-                    {
-                        reduceLagCounter++;
-                        if (reduceLagCounter > reduceLagThreshold)
-                        {
-                            reduceLagCounter = 0;
-                            return;
-                        }
-                    }
 
-                    if (!StreamingConnection.IsMaxWavSizeReached(dataToSend.Length))
+                    if (!streamingConnection.IsMaxWavSizeReached(dataToSend.Length))
                     {
-                        StreamingConnection.SendData(dataToSend, format);
+                        streamingConnection.SendData(dataToSend, format, reduceLagThreshold);
                     }
                     else
                     {
-                        DeviceCommunication.LoadMedia();
+                        deviceCommunication.LoadMedia();
                     }
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("Connection closed from {0}", StreamingConnection.Socket.RemoteEndPoint));
-                    StreamingConnection = null;
+                    Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
+                    streamingConnection = null;
                 }
             }
         }
 
         public void OnGetStatus()
         {
-            DeviceCommunication.GetMediaStatus();
+            deviceCommunication.GetMediaStatus();
         }
 
         public void SetDeviceState(DeviceState state, string text = null)
         {
-            DeviceState = state;
-            DeviceControl.SetStatus(state, text);
+            deviceState = state;
+            deviceControl?.SetStatus(state, text);
         }
 
         public bool IsConnected()
         {
-            return !(DeviceState.Equals(DeviceState.NotConnected) ||
-                DeviceState.Equals(DeviceState.ConnectError) ||
-                DeviceState.Equals(DeviceState.Closed));
-        }
-
-        public bool IsPlaying()
-        {
-            return DeviceState == DeviceState.LoadingMedia ||
-                    DeviceState == DeviceState.Buffering ||
-                    DeviceState == DeviceState.Playing;
+            return !(deviceState.Equals(DeviceState.NotConnected) ||
+                deviceState.Equals(DeviceState.ConnectError) ||
+                deviceState.Equals(DeviceState.Closed));
         }
 
         public void OnVolumeUpdate(Volume volume)
         {
             volumeSetting = volume;
-            DeviceControl.OnVolumeUpdate(volume);
+            deviceControl?.OnVolumeUpdate(volume);
         }
 
         public void VolumeSet(float level)
@@ -151,7 +121,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (level < 0) level = 0;
 
             volumeSetting.level = level;
-            DeviceCommunication.VolumeSet(volumeSetting);
+            deviceCommunication.VolumeSet(volumeSetting);
         }
 
         public void VolumeUp()
@@ -175,7 +145,74 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsConnected())
                 return;
 
-            DeviceCommunication.VolumeMute(!volumeSetting.muted);
+            deviceCommunication.VolumeMute(!volumeSetting.muted);
+        }
+
+        public bool AddStreamingConnection(string remoteAddress, Socket socket)
+        {
+            if (discoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
+            {
+                streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
+                streamingConnection.SetSocket(socket);
+                streamingConnection.SendStartStreamingResponse();
+                return true;
+            }
+
+            return false;
+        }
+
+        public string GetUsn()
+        {
+            if (discoveredSsdpDevice != null)
+                return discoveredSsdpDevice.Usn;
+
+            return string.Empty;
+        }
+
+        public string GetHost()
+        {
+            if (discoveredSsdpDevice != null)
+                return discoveredSsdpDevice.DescriptionLocation.Host;
+
+            return string.Empty;
+        }
+
+        public string GetFriendlyName()
+        {
+            if (ssdpDevice != null)
+                return ssdpDevice.FriendlyName;
+
+            return string.Empty;
+        }
+
+        public DeviceState GetDeviceState()
+        {
+            return deviceState;
+        }
+
+        public void SetDeviceControl(DeviceControl deviceControlIn)
+        {
+            deviceControl = deviceControlIn;
+        }
+
+        public void SetMenuItem(MenuItem menuItemIn)
+        {
+            menuItem = menuItemIn;
+        }
+
+        public MenuItem GetMenuItem()
+        {
+            return menuItem;
+        }
+
+        public IDeviceConnection GetDeviceConnection()
+        {
+            return deviceConnection;
+        }
+
+        public void OnReceiveMessage(CastMessage castMessage)
+        {
+            deviceCommunication?.OnReceiveMessage(castMessage);
         }
     }
 }

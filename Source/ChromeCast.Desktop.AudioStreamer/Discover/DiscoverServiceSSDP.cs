@@ -1,20 +1,20 @@
-﻿using Rssdp;
-using ChromeCast.Desktop.AudioStreamer.Application;
+﻿using System;
+using Rssdp;
+using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
-    public class DiscoverServiceSSDP
+    public class DiscoverServiceSSDP : IDiscoverServiceSSDP
     {
         private const string ChromeCastUpnpDeviceType = "urn:dial-multiscreen-org:device:dial:1";
-        private ApplicationLogic application;
+        private Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered;
+        private Action updateCounter;
 
-        public DiscoverServiceSSDP(ApplicationLogic app)
+        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn, Action updateCounterIn)
         {
-            application = app;
-        }
+            onDiscovered = onDiscoveredIn;
+            updateCounter = updateCounterIn;
 
-        public void Discover()
-        {
             using (var deviceLocator = new SsdpDeviceLocator())
             {
                 deviceLocator.NotificationFilter = ChromeCastUpnpDeviceType;
@@ -26,7 +26,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         private async void OnDeviceAvailable(object sender, DeviceAvailableEventArgs e)
         {
             var fullDevice = await e.DiscoveredDevice.GetDeviceInfo();
-            application.OnDeviceAvailable(e.DiscoveredDevice, fullDevice);
+            onDiscovered?.Invoke(e.DiscoveredDevice, fullDevice);
+            updateCounter?.Invoke();
         }
     }
 }

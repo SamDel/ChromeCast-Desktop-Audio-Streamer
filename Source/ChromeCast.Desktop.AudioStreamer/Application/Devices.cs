@@ -1,40 +1,37 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using Rssdp;
 using NAudio.Wave;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
-using ChromeCast.Desktop.AudioStreamer.Classes;
+using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
-    public class Devices
+    public class Devices : IDevices
     {
-        private List<Device> deviceList = new List<Device>();
-        private ApplicationLogic application;
+        private List<IDevice> deviceList = new List<IDevice>();
+        private Action<Device> onAddDeviceCallback;
+        private bool AutoStart;
 
-        public Devices(ApplicationLogic app)
+        public void OnDeviceAvailable(DiscoveredSsdpDevice discoveredSsdpDevice, SsdpDevice ssdpDevice)
         {
-            application = app;
+            AddDevice(discoveredSsdpDevice, ssdpDevice);
         }
 
-        public int CountDiscovered()
+        private void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
         {
-            return deviceList.Where(d => d.SsdpDevice.Uuid != null).ToList().Count;
-        }
-
-        public void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
-        {
-            if (!deviceList.Any(d => d.DiscoveredSsdpDevice.Usn != null && d.DiscoveredSsdpDevice.Usn.Equals(device.Usn)))
+            if (!deviceList.Any(d => d.GetUsn().Equals(device.Usn)))
             {
-                var newDevice = new Device(application, device, fullDevice);
+                var newDevice = DependencyFactory.Container.Resolve<Device>();
+                newDevice.SetDiscoveredDevices(device, fullDevice);
                 deviceList.Add(newDevice);
-                application.OnAddDevice(newDevice);
-                newDevice.SetDeviceState(newDevice.DeviceState);
+                onAddDeviceCallback?.Invoke(newDevice);
 
-                if (application.AutoStart)
+                if (AutoStart)
                     newDevice.OnClickDeviceButton(null, null);
             }
         }
@@ -63,27 +60,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
-        public void VolumeSet(float level)
-        {
-            foreach (var device in deviceList)
-            {
-                device.VolumeSet(level);
-            }
-        }
-
         public void AddStreamingConnection(Socket socket, string httpRequest)
         {
             var remoteAddress = ((IPEndPoint)socket.RemoteEndPoint).Address.ToString();
             foreach (var device in deviceList)
             {
-                if (device.DiscoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
-                {
-                    var streamingConnection = new StreamingConnection(device, socket, 
-                        CastDeviceCapabilitiesHelper.GetCastDeviceCapabilities(httpRequest));
-                    device.StreamingConnection = streamingConnection;
-                    streamingConnection.SendStartStreamingResponse();
+                if (device.AddStreamingConnection(remoteAddress, socket))
                     break;
-                }
             }
         }
 
@@ -104,16 +87,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        public void SetAutoStart(bool autoStartIn)
+        {
+            AutoStart = autoStartIn;
+        }
+
         public void Dispose()
         {
             foreach (var device in deviceList)
             {
                 device.SetDeviceState(DeviceState.Disposed);
-                if (device.StreamingConnection != null && device.StreamingConnection.Socket != null)
-                {
-                    device.StreamingConnection.Socket.Disconnect(false);
-                }
             }
+        }
+
+        public void SetCallback(Action<Device> onAddDeviceCallbackIn)
+        {
+            onAddDeviceCallback = onAddDeviceCallbackIn;
         }
     }
 }
