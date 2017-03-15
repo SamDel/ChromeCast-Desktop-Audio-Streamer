@@ -61,8 +61,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public bool IsMaxWavSizeReached(int length)
         {
-            if (bytesSendAfterHeader + length > uint.MaxValue)
+            if (bytesSendAfterHeader + length > uint.MaxValue && isRiffHeaderSent)
+            {
+                isRiffHeaderSent = false;
                 return true;
+            }
 
             return false;
         }

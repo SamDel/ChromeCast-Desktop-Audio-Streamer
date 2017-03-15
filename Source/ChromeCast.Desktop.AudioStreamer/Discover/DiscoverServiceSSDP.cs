@@ -8,10 +8,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
     {
         private const string ChromeCastUpnpDeviceType = "urn:dial-multiscreen-org:device:dial:1";
         private Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered;
+        private Action updateCounter;
 
-        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn)
+        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn, Action updateCounterIn)
         {
             onDiscovered = onDiscoveredIn;
+            updateCounter = updateCounterIn;
 
             using (var deviceLocator = new SsdpDeviceLocator())
             {
@@ -25,6 +27,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         {
             var fullDevice = await e.DiscoveredDevice.GetDeviceInfo();
             onDiscovered?.Invoke(e.DiscoveredDevice, fullDevice);
+            updateCounter?.Invoke();
         }
     }
 }

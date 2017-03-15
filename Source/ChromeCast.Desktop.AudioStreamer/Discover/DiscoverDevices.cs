@@ -23,7 +23,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn)
         {
             onDiscovered = onDiscoveredIn;
-            discoverServiceSSDP.Discover(onDiscovered);
+            discoverServiceSSDP.Discover(onDiscovered, UpdateCounter);
 
             timer = new Timer();
             timer.Interval = Interval;
@@ -38,12 +38,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         private void OnDiscoverDevices(object sender, ElapsedEventArgs e)
         {
             if (numberDiscovered == 0 && numberOfTries <= MaxNumberOfTries)
-                discoverServiceSSDP.Discover(onDiscovered);
+                discoverServiceSSDP.Discover(onDiscovered, UpdateCounter);
             else
                 timer.Stop();
 
-            numberDiscovered++;
             numberOfTries++;
+        }
+
+        public void UpdateCounter()
+        {
+            numberDiscovered++;
         }
     }
 }
