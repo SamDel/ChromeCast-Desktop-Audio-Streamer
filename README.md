@@ -6,7 +6,15 @@ You can download an installer from the 'Releases' folder.
 
 After install there are some options you can set in the config file in the install folder. Also when your device is not automatically discovered you can add it there.
 
-It's inspired by this tool: https://github.com/acidhax/chromecast-audio-stream, and has basically the same functionality.
+
+# Wishlist
+
+- Support multiple stream formats (for bandwidth reasons). Now it's only possible to change the stream format/quality by changing the settings of your sound device.
+
+
+# Known issues
+
+- Streaming to the device is in WAV format. A WAV file has a maximum length of 4Gb. After 4Gb has been sent to the device the stream has to be reloaded, otherwise the device stops playing. This causes a gap of a couple of seconds every couple of hours. E.g. when streaming in 48k this is every 3 hours and 6 minutes.
 
 
 # Dependencies
@@ -23,3 +31,5 @@ It's inspired by this tool: https://github.com/acidhax/chromecast-audio-stream, 
 - node-castv2 - https://github.com/thibauts/node-castv2
 - node-castv2-client - https://github.com/thibauts/node-castv2-client
 - chromecast-audio-stream - https://github.com/acidhax/chromecast-audio-stream
+
+It's inspired by this tool: https://github.com/acidhax/chromecast-audio-stream, and has basically the same functionality.
