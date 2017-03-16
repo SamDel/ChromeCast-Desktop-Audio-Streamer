@@ -106,13 +106,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
 
             notifyIcon = new NotifyIcon();
-            try
-            {
-                notifyIcon.Icon = new Icon(@"ChromeCast.ico");
-            }
-            catch (Exception)
-            {
-            }
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            notifyIcon.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             notifyIcon.Visible = true;
             notifyIcon.Text = "ChromeCast Desktop Streamer";
             notifyIcon.ContextMenu = contextMenu;
