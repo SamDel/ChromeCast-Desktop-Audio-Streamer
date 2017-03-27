@@ -182,6 +182,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return deviceState;
         }
 
+        public DeviceControl GetDeviceControl()
+        {
+            return deviceControl;
+        }
+
         public void SetDeviceControl(DeviceControl deviceControlIn)
         {
             deviceControl = deviceControlIn;
