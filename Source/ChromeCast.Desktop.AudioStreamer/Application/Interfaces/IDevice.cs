@@ -32,5 +32,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeMute();
         void VolumeSet(float level);
         void OnReceiveMessage(CastMessage castMessage);
+        DeviceControl GetDeviceControl();
     }
 }
