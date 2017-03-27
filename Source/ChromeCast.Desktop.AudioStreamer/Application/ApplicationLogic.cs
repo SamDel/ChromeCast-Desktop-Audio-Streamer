@@ -43,7 +43,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             Task.Run(() => { streamingRequestListener.StartListening(OnStreamingRequestsListen, OnStreamingRequestConnect); });
             AddNotifyIcon();
-            configuration.Load(SetConfiguration);
             discoverDevices.Discover(devices.OnDeviceAvailable);
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
         }
@@ -122,6 +121,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetLagThreshold(int lagThreshold)
         {
             reduceLagThreshold = lagThreshold;
+        }
+
+        public void LoadConfiguration()
+        {
+            configuration.Load(SetConfiguration);
         }
 
         public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices)
