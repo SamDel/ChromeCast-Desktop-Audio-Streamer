@@ -43,6 +43,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 existingDevice.SetDiscoveredDevices(device, fullDevice);
                 existingDevice.GetDeviceControl()?.SetDeviceName(existingDevice.GetFriendlyName());
+                existingDevice.GetMenuItem().Text = existingDevice.GetFriendlyName();
             }
         }
 
