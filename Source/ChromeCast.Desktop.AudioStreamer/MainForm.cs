@@ -27,6 +27,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             Update();
             applicationLogic.Start();
+            applicationLogic.LoadConfiguration();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
