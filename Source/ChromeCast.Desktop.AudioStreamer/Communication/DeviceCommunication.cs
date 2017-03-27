@@ -159,22 +159,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         setDeviceState(DeviceState.Idle, null);
                         break;
                     case "BUFFERING":
-                        setDeviceState(DeviceState.Buffering, null);
+                        setDeviceState(DeviceState.Buffering, GetPlayingTime(mediaStatusMessage));
                         break;
                     case "PAUSED":
                         setDeviceState(DeviceState.Paused, null);
                         break;
                     case "PLAYING":
-                        setDeviceState(DeviceState.Playing, null);
-                        var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
-                        var minutes = ((int)(mediaStatusMessage.status.First().currentTime) % 3600) / 60;
-                        var hours = ((int)mediaStatusMessage.status.First().currentTime) / 3600;
-                        setDeviceState(DeviceState.Playing, string.Format("{0}:{1}:{2}", hours, minutes.ToString("D2"), seconds.ToString("D2")));
+                        setDeviceState(DeviceState.Playing, GetPlayingTime(mediaStatusMessage));
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        private string GetPlayingTime(MessageMediaStatus mediaStatusMessage)
+        {
+            if (mediaStatusMessage.status != null && mediaStatusMessage.status.First() != null)
+            {
+                var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
+                var minutes = ((int)(mediaStatusMessage.status.First().currentTime) % 3600) / 60;
+                var hours = ((int)mediaStatusMessage.status.First().currentTime) / 3600;
+                return string.Format("{0}:{1}:{2}", hours, minutes.ToString("D2"), seconds.ToString("D2"));
+            }
+
+            return null;
         }
 
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)

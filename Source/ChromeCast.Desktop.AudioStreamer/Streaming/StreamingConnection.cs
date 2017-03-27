@@ -11,7 +11,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private Socket Socket;
         private IRiff riff;
         private bool isRiffHeaderSent;
-        private long bytesSendAfterHeader;
         private int reduceLagCounter = 0;
 
         public StreamingConnection(IRiff riffIn)
@@ -36,13 +35,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 isRiffHeaderSent = true;
                 Send(riff.GetRiffHeader(format));
-
-                if (bytesSendAfterHeader > uint.MaxValue)
-                    bytesSendAfterHeader = bytesSendAfterHeader - uint.MaxValue;
             }
 
             Send(dataToSend);
-            bytesSendAfterHeader += dataToSend.Length;
         }
 
         public void Send(byte[] data)
@@ -57,17 +52,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 {
                 }
             }
-        }
-
-        public bool IsMaxWavSizeReached(int length)
-        {
-            if (bytesSendAfterHeader + length > uint.MaxValue && isRiffHeaderSent)
-            {
-                isRiffHeaderSent = false;
-                return true;
-            }
-
-            return false;
         }
 
         public void SendStartStreamingResponse()

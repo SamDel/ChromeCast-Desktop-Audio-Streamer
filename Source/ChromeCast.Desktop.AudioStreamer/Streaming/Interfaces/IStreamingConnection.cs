@@ -7,7 +7,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces
     {
         void SendData(byte[] dataToSend, WaveFormat format, int reduceLagThreshold);
         void SendStartStreamingResponse();
-        bool IsMaxWavSizeReached(int length);
         bool IsConnected();
         void SetSocket(Socket socket);
         string GetRemoteEndPoint();

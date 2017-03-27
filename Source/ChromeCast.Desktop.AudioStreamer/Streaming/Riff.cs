@@ -12,7 +12,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         public byte[] GetRiffHeader(WaveFormat format)
         {
-            var dataSize = uint.MaxValue - 50;
+            var dataSize = (uint)0;
             uint chunkSize = dataSize;
             uint factChunkSize = 4;
             uint numberOfSamples = (uint)((dataSize * 8) / format.BitsPerSample / format.Channels);
