@@ -61,15 +61,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 if (streamingConnection.IsConnected())
                 {
-
-                    if (!streamingConnection.IsMaxWavSizeReached(dataToSend.Length))
-                    {
-                        streamingConnection.SendData(dataToSend, format, reduceLagThreshold);
-                    }
-                    else
-                    {
-                        deviceCommunication.LoadMedia();
-                    }
+                    streamingConnection.SendData(dataToSend, format, reduceLagThreshold);
                 }
                 else
                 {
