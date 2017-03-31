@@ -5,7 +5,6 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
-using System.Collections.Generic;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
