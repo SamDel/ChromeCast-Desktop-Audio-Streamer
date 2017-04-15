@@ -25,6 +25,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private string chromeCastApplicationSessionNr;
         private int chromeCastMediaSessionId;
         private int requestId;
+        private VolumeSetItem lastVolumeSetItem;
+        private VolumeSetItem nextVolumeSetItem;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -69,7 +71,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void VolumeSet(Volume volumeSetting)
         {
             if (isConnected())
-                SendMessage(chromeCastMessages.GetVolumeSetMessage(volumeSetting, GetNextRequestId()));
+            {
+                nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
+                SendVolumeSet();
+            }
+        }
+
+        private void SendVolumeSet()
+        {
+            if ((nextVolumeSetItem != null && lastVolumeSetItem == null)
+                || (lastVolumeSetItem != null && DateTime.Now.Subtract(lastVolumeSetItem.SendAt) > new TimeSpan(0, 0, 1)))
+            {
+                lastVolumeSetItem = nextVolumeSetItem;
+                lastVolumeSetItem.RequestId = GetNextRequestId();
+                lastVolumeSetItem.SendAt = DateTime.Now;
+                SendMessage(chromeCastMessages.GetVolumeSetMessage(lastVolumeSetItem.Setting, lastVolumeSetItem.RequestId));
+                nextVolumeSetItem = null;
+            }
         }
 
         public void VolumeMute(bool muted)
@@ -206,6 +224,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     }
                 }
             }
+
+            if (lastVolumeSetItem != null && lastVolumeSetItem.RequestId == receiverStatusMessage.requestId)
+            {
+                lastVolumeSetItem = null;
+                SendVolumeSet();
+            }
         }
 
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn, Action<byte[]> sendMessageIn, 
@@ -249,5 +273,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     break;
             }
         }
+    }
+
+    public class VolumeSetItem
+    {
+        public Volume Setting { get; set; }
+        public int RequestId { get; set; }
+        public DateTime SendAt { get; set; }
     }
 }
