@@ -96,9 +96,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
         private void TestMessages(Devices devices)
         {
             var testDeviceConnection = (TestDeviceConnection)device.GetDeviceConnection();
+            asyncEvent = new AutoResetEvent(false);
 
             testDeviceConnection.messagesSend.Clear();
             devices.VolumeUp();
+            asyncEvent.WaitOne(1000);
             devices.VolumeDown();
             devices.VolumeMute();
             devices.OnGetStatus();
