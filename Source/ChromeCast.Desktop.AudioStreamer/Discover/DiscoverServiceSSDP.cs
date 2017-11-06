@@ -18,17 +18,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             updateCounter = updateCounterIn;
 
             var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddress = GetIp4Address(ipHostInfo);
-            using (var deviceLocator =
-                new SsdpDeviceLocator(
-                    communicationsServer: new Rssdp.Infrastructure.SsdpCommunicationsServer(
-                        new SocketFactory(ipAddress: ipAddress.ToString())
-                    )
-                ))
+            var ipAddresses = GetIpAddresses(ipHostInfo);
+            foreach (var ipAddress in ipAddresses)
             {
-                deviceLocator.NotificationFilter = ChromeCastUpnpDeviceType;
-                deviceLocator.DeviceAvailable += OnDeviceAvailable;
-                deviceLocator.SearchAsync();
+                using (var deviceLocator =
+                    new SsdpDeviceLocator(
+                        communicationsServer: new Rssdp.Infrastructure.SsdpCommunicationsServer(
+                            new SocketFactory(ipAddress: ipAddress.ToString())
+                        )
+                    ))
+                {
+                    deviceLocator.NotificationFilter = ChromeCastUpnpDeviceType;
+                    deviceLocator.DeviceAvailable += OnDeviceAvailable;
+                    deviceLocator.SearchAsync();
+                }
             }
         }
 
@@ -39,18 +42,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             updateCounter?.Invoke();
         }
 
-        private IPAddress GetIp4Address(IPHostEntry ipHostInfo)
+        private IPAddress[] GetIpAddresses(IPHostEntry ipHostInfo)
         {
-            var ipAddress = ipHostInfo.AddressList[0];
-            foreach (var address in ipHostInfo.AddressList)
-            {
-                if (address.AddressFamily.Equals(AddressFamily.InterNetwork))
-                {
-                    ipAddress = address;
-                }
-            }
-
-            return ipAddress;
+            return ipHostInfo.AddressList;
         }
     }
 }
