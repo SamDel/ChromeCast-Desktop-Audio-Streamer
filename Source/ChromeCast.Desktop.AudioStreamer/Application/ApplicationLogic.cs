@@ -139,7 +139,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     var arrDevice = ipDevice.Split(',');
                     devices.OnDeviceAvailable(
-                            new DiscoveredSsdpDevice { DescriptionLocation = new Uri(string.Format("http://{0}", arrDevice[0])) },
+                            new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{arrDevice[0]}") },
                             new SsdpRootDevice { FriendlyName = arrDevice[1] }
                         );
                 }

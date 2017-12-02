@@ -2,6 +2,8 @@
 using System.Timers;
 using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
+using System.Linq;
+using Zeroconf;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
@@ -23,31 +25,35 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn)
         {
             onDiscovered = onDiscoveredIn;
+
+            // SSDP search
             discoverServiceSSDP.Discover(onDiscovered, UpdateCounter);
 
-            timer = new Timer();
-            timer.Interval = Interval;
-            timer.Enabled = true;
-            timer.Elapsed += new ElapsedEventHandler(OnDiscoverDevices);
-            timer.Start();
+            // MDNS search
+            MdnsSearch();
 
-            numberOfTries = 0;
             numberDiscovered = 0;
-        }
-
-        private void OnDiscoverDevices(object sender, ElapsedEventArgs e)
-        {
-            if (numberDiscovered == 0 && numberOfTries <= MaxNumberOfTries)
-                discoverServiceSSDP.Discover(onDiscovered, UpdateCounter);
-            else
-                timer.Stop();
-
-            numberOfTries++;
         }
 
         public void UpdateCounter()
         {
             numberDiscovered++;
+        }
+
+        public async void MdnsSearch()
+        {
+            ILookup<string, string> domains = await ZeroconfResolver.BrowseDomainsAsync(scanTime: new TimeSpan(1000000000), retries: 5, callback: mdnsCallback);
+        }
+
+        private void mdnsCallback(string protocol, string ipAddress)
+        {
+            if (protocol.StartsWith("_googlecast"))
+            {
+                onDiscovered(
+                    new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{ipAddress}") },
+                    new SsdpRootDevice { FriendlyName = ipAddress }
+                );
+            }
         }
     }
 }
