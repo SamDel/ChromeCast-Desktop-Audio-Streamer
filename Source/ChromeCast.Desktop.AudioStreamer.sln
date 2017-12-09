@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeCast.Desktop.AudioStreamer", "ChromeCast.Desktop.AudioStreamer.csproj", "{4133DCC6-8CBF-4E67-B798-2EE414A5726C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeCast.Desktop.AudioStreamer", ".\ChromeCast.Desktop.AudioStreamer\ChromeCast.Desktop.AudioStreamer.csproj", "{4133DCC6-8CBF-4E67-B798-2EE414A5726C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeCast.Desktop.AudioStreamer.Test", "..\ChromeCast.Desktop.AudioStreamer.Test\ChromeCast.Desktop.AudioStreamer.Test.csproj", "{C54E3941-F6BE-4FC5-9994-CBA18155CA28}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeCast.Desktop.AudioStreamer.Test", ".\ChromeCast.Desktop.AudioStreamer.Test\ChromeCast.Desktop.AudioStreamer.Test.csproj", "{C54E3941-F6BE-4FC5-9994-CBA18155CA28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
