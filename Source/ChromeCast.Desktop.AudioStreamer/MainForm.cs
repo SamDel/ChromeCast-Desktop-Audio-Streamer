@@ -31,8 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Hide();
-            e.Cancel = true;
+            applicationLogic.CloseApplication();
         }
 
         public void AddDevice(IDevice device)

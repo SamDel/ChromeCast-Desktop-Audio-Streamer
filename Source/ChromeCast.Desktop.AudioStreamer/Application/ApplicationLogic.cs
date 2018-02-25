@@ -146,7 +146,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
-        private void CloseApplication(object sender, EventArgs e)
+        public void CloseApplication()
         {
             SetWindowsHook.Stop();
             loopbackRecorder.StopRecording();
@@ -154,6 +154,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             streamingRequestListener.StopListening();
             notifyIcon.Visible = false;
             mainForm.Dispose();
+        }
+
+        private void CloseApplication(object sender, EventArgs e)
+        {
+            CloseApplication();
         }
 
         public void SetDependencies(MainForm mainFormIn)
