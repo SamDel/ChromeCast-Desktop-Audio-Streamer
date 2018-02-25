@@ -32,7 +32,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 var dataToSend = new List<byte>();
                 dataToSend.AddRange(eventArgs.Buffer.Take(eventArgs.BytesRecorded).ToArray());
-                dataAvailableCallback(dataToSend.ToArray(), waveIn.WaveFormat);
+                dataAvailableCallback(dataToSend.ToArray(), waveIn?.WaveFormat);
             }
         }
 
