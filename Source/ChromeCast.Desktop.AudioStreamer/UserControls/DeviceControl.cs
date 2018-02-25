@@ -52,11 +52,13 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.Paused:
                     SetBackColor(Color.LightGray);
                     device.GetMenuItem().Checked = false;
+                    picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
                     SetBackColor(Color.PaleGreen);
                     device.GetMenuItem().Checked = true;
+                    picturePlayPause.Image = Properties.Resources.Pause;
                     break;
                 case DeviceState.ConnectError:
                 case DeviceState.LoadCancelled:
@@ -64,6 +66,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.InvalidRequest:
                     SetBackColor(Color.PeachPuff);
                     device.GetMenuItem().Checked = false;
+                    picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 default:
                     break;
@@ -88,6 +91,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
         {
             btnDevice.Click += handler;
             lblStatus.Click += handler;
+            picturePlayPause.Click += handler;
         }
 
         public void OnVolumeUpdate(Volume volume)

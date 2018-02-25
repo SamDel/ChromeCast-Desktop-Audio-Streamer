@@ -32,7 +32,9 @@
             this.btnDevice = new System.Windows.Forms.Button();
             this.trbVolume = new System.Windows.Forms.TrackBar();
             this.btnVolumeMute = new System.Windows.Forms.Button();
+            this.picturePlayPause = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -87,12 +89,25 @@
             this.btnVolumeMute.UseVisualStyleBackColor = true;
             this.btnVolumeMute.Click += new System.EventHandler(this.btnVolumeMute_Click);
             // 
+            // picturePlayPause
+            // 
+            this.picturePlayPause.BackColor = System.Drawing.Color.White;
+            this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
+            this.picturePlayPause.Location = new System.Drawing.Point(42, 8);
+            this.picturePlayPause.Name = "picturePlayPause";
+            this.picturePlayPause.Padding = new System.Windows.Forms.Padding(1);
+            this.picturePlayPause.Size = new System.Drawing.Size(35, 35);
+            this.picturePlayPause.TabIndex = 7;
+            this.picturePlayPause.TabStop = false;
+            // 
             // DeviceControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.picturePlayPause);
             this.Controls.Add(this.btnVolumeMute);
             this.Controls.Add(this.trbVolume);
             this.Controls.Add(this.lblStatus);
@@ -100,6 +115,7 @@
             this.Name = "DeviceControl";
             this.Size = new System.Drawing.Size(288, 137);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,5 +127,6 @@
         private System.Windows.Forms.Button btnDevice;
         private System.Windows.Forms.TrackBar trbVolume;
         private System.Windows.Forms.Button btnVolumeMute;
+        private System.Windows.Forms.PictureBox picturePlayPause;
     }
 }
