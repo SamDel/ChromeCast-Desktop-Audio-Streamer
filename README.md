@@ -16,6 +16,7 @@ After install there are some options you can set in the config file in the insta
 
 - Really Simple Service Discovery Protocol - https://github.com/Yortw/RSSDP
 - NAudio - https://github.com/naudio/NAudio
+- CSCore - https://github.com/filoe/cscore
 - Protocol Buffers - https://github.com/google/protobuf
 - protobuf-csharp-port - https://github.com/jskeet/protobuf-csharp-port
 - Microsoft Visual Studio 2015 Installer Projects - https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2015InstallerProjects
