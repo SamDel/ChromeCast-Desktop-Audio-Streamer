@@ -1,56 +1,86 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using NAudio.Wave;
+using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
+using CSCore.Streams;
+using CSCore;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
     public class LoopbackRecorder : ILoopbackRecorder
     {
-        private IWaveIn waveIn;
-        private Action<byte[], WaveFormat> dataAvailableCallback;
+        WasapiCapture soundIn;
+        private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
         private bool isRecording = false;
+        IWaveSource convertedSource;
+        SoundInSource soundInSource;
+        NAudio.Wave.WaveFormat waveFormat;
 
-        public void StartRecording(Action<byte[], WaveFormat> dataAvailableCallbackIn)
+        public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
             if (isRecording)
                 return;
 
             dataAvailableCallback = dataAvailableCallbackIn;
-            waveIn = new WasapiLoopbackCapture();
-            waveIn.DataAvailable += OnDataAvailable;
-            waveIn.RecordingStopped += OnRecordingStopped;
-            waveIn.StartRecording();
 
+            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
+            if (!devices.Any())
+            {
+                Console.WriteLine("No devices found.");
+                return;
+            }
+
+            soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+            {
+                Device = devices.First()
+            };
+
+            soundIn.Initialize();
+            soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
+            convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+            convertedSource = convertedSource.ToStereo();
+            soundInSource.DataAvailable += OnDataAvailable;
+            soundIn.Start();
+
+            var format = convertedSource.WaveFormat;
+            waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
             isRecording = true;
         }
 
-        private void OnDataAvailable(object sender, WaveInEventArgs eventArgs)
+        private void OnDataAvailable(object sender, DataAvailableEventArgs e)
         {
             if (dataAvailableCallback != null)
             {
-                var dataToSend = new List<byte>();
-                dataToSend.AddRange(eventArgs.Buffer.Take(eventArgs.BytesRecorded).ToArray());
-                dataAvailableCallback(dataToSend.ToArray(), waveIn?.WaveFormat);
+                byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
+                int read;
+
+                while ((read = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    var dataToSend = new List<byte>();
+                    dataToSend.AddRange(buffer.Take(read).ToArray());
+                    dataAvailableCallback(dataToSend.ToArray(), waveFormat);
+                }
             }
         }
 
         public void StopRecording()
         {
             isRecording = false;
-            if (waveIn != null)
+            if (soundIn != null)
             {
-                waveIn.StopRecording();
+                soundIn.Stop();
             }
         }
 
-        private void OnRecordingStopped(object sender, StoppedEventArgs eventArgs)
+        private void OnRecordingStopped(object sender, CSCore.StoppedEventArgs eventArgs)
         {
-            if (waveIn != null)
+            if (soundIn != null)
             {
-                waveIn.Dispose();
-                waveIn = null;
+                soundIn.Dispose();
+                soundIn = null;
             }
             isRecording = false;
 
