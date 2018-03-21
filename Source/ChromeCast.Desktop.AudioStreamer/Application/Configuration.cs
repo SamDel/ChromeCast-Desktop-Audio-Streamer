@@ -6,7 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class Configuration : IConfiguration
     {
-        public void Load(Action<bool, bool, bool, int, bool, string> configurationCallback)
+        public void Load(Action<bool, bool, bool, int, bool, string, bool> configurationCallback)
         {
             try
             {
@@ -16,19 +16,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 string lagControlValue = ConfigurationManager.AppSettings["LagControlValue"];
                 string autoStartDevices = ConfigurationManager.AppSettings["AutoStartDevices"];
                 string ipAddressesDevices = ConfigurationManager.AppSettings["IpAddressesDevices"];
+                string showWindowOnStart = ConfigurationManager.AppSettings["ShowWindowOnStart"];
 
-                bool useShortCuts = false;
-                bool boolShowLog = false;
-                bool showLag = false;
-                int lagValue = 1000;
-                bool autoStart = false;
-                bool.TryParse(useKeyboardShortCuts, out useShortCuts);
-                bool.TryParse(showLog, out boolShowLog);
-                bool.TryParse(showLagControl, out showLag);
-                int.TryParse(lagControlValue, out lagValue);
-                bool.TryParse(autoStartDevices, out autoStart);
+                bool.TryParse(useKeyboardShortCuts, out bool useShortCuts);
+                bool.TryParse(showLog, out bool boolShowLog);
+                bool.TryParse(showLagControl, out bool showLag);
+                int.TryParse(lagControlValue, out int lagValue);
+                bool.TryParse(autoStartDevices, out bool autoStart);
+                bool.TryParse(showWindowOnStart, out bool showWindow);
 
-                configurationCallback(useShortCuts, boolShowLog, showLag, lagValue, autoStart, ipAddressesDevices);
+                configurationCallback(useShortCuts, boolShowLog, showLag, lagValue, autoStart, ipAddressesDevices, showWindow);
             }
             catch (Exception)
             {

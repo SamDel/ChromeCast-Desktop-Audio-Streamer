@@ -4,6 +4,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
 {
     public interface IConfiguration
     {
-        void Load(Action<bool, bool, bool, int, bool, string> configurationCallback);
+        void Load(Action<bool, bool, bool, int, bool, string, bool> configurationCallback);
     }
 }

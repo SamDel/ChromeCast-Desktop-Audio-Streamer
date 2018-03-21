@@ -124,13 +124,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             reduceLagThreshold = lagThreshold;
         }
 
-        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices)
+        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices, bool showWindow)
         {
             mainForm.SetKeyboardHooks(useShortCuts);
             mainForm.ShowLog(showLog);
             mainForm.ShowLagControl(showLagControl);
             mainForm.SetLagValue(lagValue);
             devices.SetAutoStart(autoStart);
+            mainForm.SetWindowVisibility(showWindow);
 
             if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
             {

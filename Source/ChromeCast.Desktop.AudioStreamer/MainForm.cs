@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -169,6 +170,22 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void btnVolumeMute_Click(object sender, EventArgs e)
         {
             devices.VolumeMute();
+        }
+
+        public async void SetWindowVisibility(bool visible)
+        {
+            if (visible)
+                Show();
+            else
+            {
+                await HideWindow();
+            }
+        }
+
+        private async Task HideWindow()
+        {
+            await Task.Delay(1000);
+            Hide();
         }
     }
 }
