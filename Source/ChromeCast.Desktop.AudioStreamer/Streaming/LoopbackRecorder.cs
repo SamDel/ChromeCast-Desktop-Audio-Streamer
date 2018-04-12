@@ -18,6 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         IWaveSource convertedSource;
         SoundInSource soundInSource;
         NAudio.Wave.WaveFormat waveFormat;
+        IMainForm mainForm;
 
         public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
@@ -26,8 +27,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             dataAvailableCallback = dataAvailableCallbackIn;
 
-            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
-            if (!devices.Any())
+            StartRecordingDevice();
+            isRecording = true;
+        }
+
+        public void StartRecordingDevice()
+        {
+            MMDevice recordingDevice = mainForm.GetRecordingDevice();
+            if (recordingDevice == null)
             {
                 Console.WriteLine("No devices found.");
                 return;
@@ -35,7 +42,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
             {
-                Device = devices.First()
+                Device = recordingDevice
             };
 
             soundIn.Initialize();
@@ -47,7 +54,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             var format = convertedSource.WaveFormat;
             waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
-            isRecording = true;
         }
 
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
@@ -88,6 +94,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 throw eventArgs.Exception;
             }
+        }
+
+        public void GetDevices(IMainForm mainFormIn)
+        {
+            mainForm = mainFormIn;
+            var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
+            mainForm.AddRecordingDevices(devices, defaultDevice);
         }
     }
 }

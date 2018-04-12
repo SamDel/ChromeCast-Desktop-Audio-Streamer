@@ -16,8 +16,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public const int MaxNumberOfTries = 15;
         private IDiscoverServiceSSDP discoverServiceSSDP;
         private Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered;
-        private Timer timer;
-        private int numberOfTries;
         private int numberDiscovered;
 
         public DiscoverDevices(IDiscoverServiceSSDP discoverServiceSSDPIn)

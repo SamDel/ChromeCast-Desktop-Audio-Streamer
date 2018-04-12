@@ -46,6 +46,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             configuration.Load(SetConfiguration);
             discoverDevices.Discover(devices.OnDeviceAvailable);
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
+            loopbackRecorder.GetDevices(mainForm);
         }
 
         private void ToggleFormVisibility(object sender, EventArgs e)
@@ -165,6 +166,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDependencies(MainForm mainFormIn)
         {
             mainForm = mainFormIn;
+        }
+
+        public void RecordingDeviceChanged()
+        {
+            loopbackRecorder.StartRecordingDevice();
         }
     }
 }

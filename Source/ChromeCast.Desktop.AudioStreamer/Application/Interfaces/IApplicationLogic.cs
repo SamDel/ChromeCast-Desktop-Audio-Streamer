@@ -15,5 +15,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void OnStreamingRequestConnect(Socket handlerSocket, string httpRequest);
         void SetDependencies(MainForm mainForm);
         void CloseApplication();
+        void RecordingDeviceChanged();
     }
 }

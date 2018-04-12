@@ -8,6 +8,8 @@ using NAudio.Wave;
 using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Classes;
+using System.Timers;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -16,6 +18,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private List<IDevice> deviceList = new List<IDevice>();
         private Action<Device> onAddDeviceCallback;
         private bool AutoStart;
+        private IMainForm mainForm;
+        private IApplicationLogic applicationLogic;
 
         public void OnDeviceAvailable(DiscoveredSsdpDevice discoveredSsdpDevice, SsdpDevice ssdpDevice)
         {
@@ -114,6 +118,37 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetCallback(Action<Device> onAddDeviceCallbackIn)
         {
             onAddDeviceCallback = onAddDeviceCallbackIn;
+        }
+
+        public int Count()
+        {
+            return deviceList.Count();
+        }
+
+        public void Sync()
+        {
+            if (mainForm.DoSyncDevices())
+            {
+                mainForm.SetLagValue(2);
+                applicationLogic.SetLagThreshold(2);
+
+                var timerReset = new Timer { Interval = 3000, Enabled = true };
+                timerReset.Elapsed += new ElapsedEventHandler(ResetLagThreshold);
+                timerReset.Start();
+            }
+        }
+
+        private void ResetLagThreshold(object sender, ElapsedEventArgs e)
+        {
+            mainForm.SetLagValue(1000);
+            applicationLogic.SetLagThreshold(1000);
+            ((Timer)sender).Stop();
+        }
+
+        public void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn)
+        {
+            mainForm = mainFormIn;
+            applicationLogic = applicationLogicIn;
         }
     }
 }

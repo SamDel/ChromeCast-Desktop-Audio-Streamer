@@ -39,13 +39,16 @@
             this.grpDevices = new System.Windows.Forms.GroupBox();
             this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.grpVolume = new System.Windows.Forms.GroupBox();
+            this.btnSyncDevices = new System.Windows.Forms.Button();
+            this.btnVolumeUp = new System.Windows.Forms.Button();
+            this.btnVolumeDown = new System.Windows.Forms.Button();
             this.chkHook = new System.Windows.Forms.CheckBox();
             this.btnVolumeMute = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
-            this.btnVolumeDown = new System.Windows.Forms.Button();
-            this.btnVolumeUp = new System.Windows.Forms.Button();
+            this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
+            this.lblDevice = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -152,6 +155,7 @@
             // 
             // grpVolume
             // 
+            this.grpVolume.Controls.Add(this.btnSyncDevices);
             this.grpVolume.Controls.Add(this.btnVolumeUp);
             this.grpVolume.Controls.Add(this.btnVolumeDown);
             this.grpVolume.Controls.Add(this.chkHook);
@@ -163,10 +167,41 @@
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
             // 
+            // btnSyncDevices
+            // 
+            this.btnSyncDevices.Location = new System.Drawing.Point(361, 36);
+            this.btnSyncDevices.Name = "btnSyncDevices";
+            this.btnSyncDevices.Size = new System.Drawing.Size(131, 33);
+            this.btnSyncDevices.TabIndex = 16;
+            this.btnSyncDevices.Text = "Sync Devices";
+            this.btnSyncDevices.UseVisualStyleBackColor = true;
+            this.btnSyncDevices.Visible = false;
+            this.btnSyncDevices.Click += new System.EventHandler(this.btnSyncDevices_Click);
+            // 
+            // btnVolumeUp
+            // 
+            this.btnVolumeUp.Location = new System.Drawing.Point(49, 36);
+            this.btnVolumeUp.Name = "btnVolumeUp";
+            this.btnVolumeUp.Size = new System.Drawing.Size(98, 33);
+            this.btnVolumeUp.TabIndex = 15;
+            this.btnVolumeUp.Text = "Up";
+            this.btnVolumeUp.UseVisualStyleBackColor = true;
+            this.btnVolumeUp.Click += new System.EventHandler(this.btnVolumeUp_Click);
+            // 
+            // btnVolumeDown
+            // 
+            this.btnVolumeDown.Location = new System.Drawing.Point(153, 36);
+            this.btnVolumeDown.Name = "btnVolumeDown";
+            this.btnVolumeDown.Size = new System.Drawing.Size(98, 33);
+            this.btnVolumeDown.TabIndex = 14;
+            this.btnVolumeDown.Text = "Down";
+            this.btnVolumeDown.UseVisualStyleBackColor = true;
+            this.btnVolumeDown.Click += new System.EventHandler(this.btnVolumeDown_Click);
+            // 
             // chkHook
             // 
             this.chkHook.AutoSize = true;
-            this.chkHook.Location = new System.Drawing.Point(435, 36);
+            this.chkHook.Location = new System.Drawing.Point(447, 12);
             this.chkHook.Name = "chkHook";
             this.chkHook.Size = new System.Drawing.Size(556, 21);
             this.chkHook.TabIndex = 13;
@@ -177,7 +212,7 @@
             // 
             // btnVolumeMute
             // 
-            this.btnVolumeMute.Location = new System.Drawing.Point(286, 36);
+            this.btnVolumeMute.Location = new System.Drawing.Point(257, 36);
             this.btnVolumeMute.Name = "btnVolumeMute";
             this.btnVolumeMute.Size = new System.Drawing.Size(98, 33);
             this.btnVolumeMute.TabIndex = 11;
@@ -217,31 +252,31 @@
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
             // 
-            // btnVolumeDown
+            // cmbRecordingDevice
             // 
-            this.btnVolumeDown.Location = new System.Drawing.Point(182, 36);
-            this.btnVolumeDown.Name = "btnVolumeDown";
-            this.btnVolumeDown.Size = new System.Drawing.Size(98, 33);
-            this.btnVolumeDown.TabIndex = 14;
-            this.btnVolumeDown.Text = "Down";
-            this.btnVolumeDown.UseVisualStyleBackColor = true;
-            this.btnVolumeDown.Click += new System.EventHandler(this.btnVolumeDown_Click);
+            this.cmbRecordingDevice.FormattingEnabled = true;
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(723, 13);
+            this.cmbRecordingDevice.Name = "cmbRecordingDevice";
+            this.cmbRecordingDevice.Size = new System.Drawing.Size(360, 24);
+            this.cmbRecordingDevice.TabIndex = 17;
+            this.cmbRecordingDevice.SelectedIndexChanged += new System.EventHandler(this.cmbRecordingDevice_SelectedIndexChanged);
             // 
-            // btnVolumeUp
+            // lblDevice
             // 
-            this.btnVolumeUp.Location = new System.Drawing.Point(78, 36);
-            this.btnVolumeUp.Name = "btnVolumeUp";
-            this.btnVolumeUp.Size = new System.Drawing.Size(98, 33);
-            this.btnVolumeUp.TabIndex = 15;
-            this.btnVolumeUp.Text = "Up";
-            this.btnVolumeUp.UseVisualStyleBackColor = true;
-            this.btnVolumeUp.Click += new System.EventHandler(this.btnVolumeUp_Click);
+            this.lblDevice.AutoSize = true;
+            this.lblDevice.Location = new System.Drawing.Point(595, 17);
+            this.lblDevice.Name = "lblDevice";
+            this.lblDevice.Size = new System.Drawing.Size(122, 17);
+            this.lblDevice.TabIndex = 18;
+            this.lblDevice.Text = "Recording device:";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1151, 657);
+            this.Controls.Add(this.cmbRecordingDevice);
+            this.Controls.Add(this.lblDevice);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -261,6 +296,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -283,6 +319,9 @@
         private System.Windows.Forms.Label lblLag;
         private System.Windows.Forms.Button btnVolumeUp;
         private System.Windows.Forms.Button btnVolumeDown;
+        private System.Windows.Forms.Button btnSyncDevices;
+        private System.Windows.Forms.Label lblDevice;
+        private System.Windows.Forms.ComboBox cmbRecordingDevice;
     }
 }
 

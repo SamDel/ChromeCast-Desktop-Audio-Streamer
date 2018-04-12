@@ -4,6 +4,7 @@ using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Threading.Tasks;
+using CSCore.CoreAudioAPI;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -21,7 +22,12 @@ namespace ChromeCast.Desktop.AudioStreamer
             devices = devicesIn;
             logger = loggerIn;
             logger.SetCallback(Log);
+            devices.SetDependencies(this, applicationLogic);
             applicationLogic.SetDependencies(this);
+        }
+
+        public MainForm()
+        {
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -186,6 +192,56 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             await Task.Delay(1000);
             Hide();
+        }
+
+        public bool DoSyncDevices()
+        {
+            return devices.Count() > 1;
+        }
+
+        private void btnSyncDevices_Click(object sender, EventArgs e)
+        {
+            devices.Sync();
+        }
+
+        public void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<MMDeviceCollection, MMDevice>(AddRecordingDevices), new object[] { devices, defaultdevice });
+                return;
+            }
+            if (IsDisposed) return;
+
+            foreach (var device in devices)
+            {
+                if (!cmbRecordingDevice.Items.Contains(device))
+                {
+                    var index = cmbRecordingDevice.Items.Add(device);
+                    if (device.DeviceID == defaultdevice.DeviceID)
+                        cmbRecordingDevice.SelectedIndex = index;
+                }
+            }
+        }
+
+        public MMDevice GetRecordingDevice()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Func<MMDevice>(GetRecordingDevice));
+                return null;
+            }
+            if (IsDisposed) return null;
+
+            if (cmbRecordingDevice.Items.Count > 0)
+                return (MMDevice)cmbRecordingDevice.SelectedItem;
+
+            return null;
+        }
+
+        private void cmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            applicationLogic.RecordingDeviceChanged();
         }
     }
 }

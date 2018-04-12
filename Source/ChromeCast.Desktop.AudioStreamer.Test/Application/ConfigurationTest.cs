@@ -32,7 +32,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             Assert.AreEqual(string.Empty, ipAddressesDevices);
         }
 
-        private void ConfigurationCallback(bool useShortCutsIn, bool boolShowLogIn, bool showLagIn, int lagValueIn, bool autoStartIn, string ipAddressesDevicesIn)
+        private void ConfigurationCallback(bool useShortCutsIn, bool boolShowLogIn, bool showLagIn, int lagValueIn, bool autoStartIn, string ipAddressesDevicesIn, bool showWindow)
         {
             useShortCuts = useShortCutsIn;
             boolShowLog = boolShowLogIn;
