@@ -18,12 +18,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 string ipAddressesDevices = ConfigurationManager.AppSettings["IpAddressesDevices"];
                 string showWindowOnStart = ConfigurationManager.AppSettings["ShowWindowOnStart"];
 
-                bool.TryParse(useKeyboardShortCuts, out bool useShortCuts);
-                bool.TryParse(showLog, out bool boolShowLog);
-                bool.TryParse(showLagControl, out bool showLag);
-                int.TryParse(lagControlValue, out int lagValue);
-                bool.TryParse(autoStartDevices, out bool autoStart);
-                bool.TryParse(showWindowOnStart, out bool showWindow);
+                bool useShortCuts;
+                bool boolShowLog;
+                bool showLag;
+                int lagValue;
+                bool autoStart;
+                bool showWindow;
+                bool.TryParse(useKeyboardShortCuts, out useShortCuts);
+                bool.TryParse(showLog, out boolShowLog);
+                bool.TryParse(showLagControl, out showLag);
+                int.TryParse(lagControlValue, out lagValue);
+                bool.TryParse(autoStartDevices, out autoStart);
+                bool.TryParse(showWindowOnStart, out showWindow);
 
                 configurationCallback(useShortCuts, boolShowLog, showLag, lagValue, autoStart, ipAddressesDevices, showWindow);
             }
