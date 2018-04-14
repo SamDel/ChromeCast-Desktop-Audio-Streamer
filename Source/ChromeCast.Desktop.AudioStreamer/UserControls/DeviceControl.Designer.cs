@@ -53,12 +53,12 @@
             this.btnDevice.AutoSize = true;
             this.btnDevice.FlatAppearance.BorderSize = 0;
             this.btnDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDevice.Location = new System.Drawing.Point(0, 0);
+            this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDevice.Location = new System.Drawing.Point(54, 0);
             this.btnDevice.Margin = new System.Windows.Forms.Padding(0);
             this.btnDevice.Name = "btnDevice";
             this.btnDevice.Padding = new System.Windows.Forms.Padding(16, 8, 16, 8);
-            this.btnDevice.Size = new System.Drawing.Size(284, 51);
+            this.btnDevice.Size = new System.Drawing.Size(230, 51);
             this.btnDevice.TabIndex = 3;
             this.btnDevice.Text = "name";
             this.btnDevice.UseVisualStyleBackColor = true;
@@ -94,7 +94,7 @@
             this.picturePlayPause.BackColor = System.Drawing.Color.White;
             this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
-            this.picturePlayPause.Location = new System.Drawing.Point(42, 8);
+            this.picturePlayPause.Location = new System.Drawing.Point(10, 9);
             this.picturePlayPause.Name = "picturePlayPause";
             this.picturePlayPause.Padding = new System.Windows.Forms.Padding(1);
             this.picturePlayPause.Size = new System.Drawing.Size(35, 35);
