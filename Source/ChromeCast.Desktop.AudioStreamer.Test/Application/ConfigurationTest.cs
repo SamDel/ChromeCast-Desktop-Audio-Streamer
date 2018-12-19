@@ -14,6 +14,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
         int lagValue;
         bool autoStart;
         string ipAddressesDevices;
+        bool autoRestart;
 
         [TestMethod]
         public void TestMethod1()
@@ -30,9 +31,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             Assert.IsFalse(showLag);
             Assert.AreEqual(1000, lagValue);
             Assert.AreEqual(string.Empty, ipAddressesDevices);
+            Assert.AreEqual(false, autoRestart);
         }
 
-        private void ConfigurationCallback(bool useShortCutsIn, bool boolShowLogIn, bool showLagIn, int lagValueIn, bool autoStartIn, string ipAddressesDevicesIn, bool showWindow)
+        private void ConfigurationCallback(bool useShortCutsIn, bool boolShowLogIn, bool showLagIn, int lagValueIn, bool autoStartIn, string ipAddressesDevicesIn, bool showWindow, bool autoRestartIn)
         {
             useShortCuts = useShortCutsIn;
             boolShowLog = boolShowLogIn;
@@ -40,6 +42,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             lagValue = lagValueIn;
             autoStart = autoStartIn;
             ipAddressesDevices = ipAddressesDevicesIn;
+            autoRestart = autoRestartIn;
 
             asyncEvent.Set();
         }
