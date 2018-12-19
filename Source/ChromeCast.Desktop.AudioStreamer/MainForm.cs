@@ -243,5 +243,15 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             applicationLogic.RecordingDeviceChanged();
         }
+
+        private void chkAutoRestart_CheckedChanged(object sender, EventArgs e)
+        {
+            applicationLogic.OnSetAutoRestart(chkAutoRestart.Checked);
+        }
+
+        public void SetAutoRestart(bool autoRestart)
+        {
+            chkAutoRestart.Checked = autoRestart;
+        }
     }
 }

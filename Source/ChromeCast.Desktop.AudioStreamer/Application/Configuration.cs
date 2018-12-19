@@ -6,7 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class Configuration : IConfiguration
     {
-        public void Load(Action<bool, bool, bool, int, bool, string, bool> configurationCallback)
+        public void Load(Action<bool, bool, bool, int, bool, string, bool, bool> configurationCallback)
         {
             try
             {
@@ -17,6 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 string autoStartDevices = ConfigurationManager.AppSettings["AutoStartDevices"];
                 string ipAddressesDevices = ConfigurationManager.AppSettings["IpAddressesDevices"];
                 string showWindowOnStart = ConfigurationManager.AppSettings["ShowWindowOnStart"];
+                string autoRestartDevices = ConfigurationManager.AppSettings["AutoRestart"];
 
                 bool useShortCuts;
                 bool boolShowLog;
@@ -24,14 +25,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 int lagValue;
                 bool autoStart;
                 bool showWindow;
+                bool autoRestart;
                 bool.TryParse(useKeyboardShortCuts, out useShortCuts);
                 bool.TryParse(showLog, out boolShowLog);
                 bool.TryParse(showLagControl, out showLag);
                 int.TryParse(lagControlValue, out lagValue);
                 bool.TryParse(autoStartDevices, out autoStart);
                 bool.TryParse(showWindowOnStart, out showWindow);
+                bool.TryParse(autoRestartDevices, out autoRestart);
 
-                configurationCallback(useShortCuts, boolShowLog, showLag, lagValue, autoStart, ipAddressesDevices, showWindow);
+                configurationCallback(useShortCuts, boolShowLog, showLag, lagValue, autoStart, ipAddressesDevices, showWindow, autoRestart);
             }
             catch (Exception)
             {

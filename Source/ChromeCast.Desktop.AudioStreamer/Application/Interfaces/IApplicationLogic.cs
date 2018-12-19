@@ -16,5 +16,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void SetDependencies(MainForm mainForm);
         void CloseApplication();
         void RecordingDeviceChanged();
+        void OnSetAutoRestart(bool autoRestart);
+        bool GetAutoRestart();
     }
 }

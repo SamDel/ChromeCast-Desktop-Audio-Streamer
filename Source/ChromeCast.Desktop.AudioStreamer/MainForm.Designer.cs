@@ -49,6 +49,7 @@
             this.textLog = new System.Windows.Forms.TextBox();
             this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
             this.lblDevice = new System.Windows.Forms.Label();
+            this.chkAutoRestart = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -155,6 +156,7 @@
             // 
             // grpVolume
             // 
+            this.grpVolume.Controls.Add(this.chkAutoRestart);
             this.grpVolume.Controls.Add(this.btnSyncDevices);
             this.grpVolume.Controls.Add(this.btnVolumeUp);
             this.grpVolume.Controls.Add(this.btnVolumeDown);
@@ -270,6 +272,17 @@
             this.lblDevice.TabIndex = 18;
             this.lblDevice.Text = "Recording device:";
             // 
+            // chkAutoRestart
+            // 
+            this.chkAutoRestart.AutoSize = true;
+            this.chkAutoRestart.Location = new System.Drawing.Point(732, 43);
+            this.chkAutoRestart.Name = "chkAutoRestart";
+            this.chkAutoRestart.Size = new System.Drawing.Size(271, 21);
+            this.chkAutoRestart.TabIndex = 17;
+            this.chkAutoRestart.Text = "Auto restart when the stream is closed";
+            this.chkAutoRestart.UseVisualStyleBackColor = true;
+            this.chkAutoRestart.CheckedChanged += new System.EventHandler(this.chkAutoRestart_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -322,6 +335,7 @@
         private System.Windows.Forms.Button btnSyncDevices;
         private System.Windows.Forms.Label lblDevice;
         private System.Windows.Forms.ComboBox cmbRecordingDevice;
+        private System.Windows.Forms.CheckBox chkAutoRestart;
     }
 }
 

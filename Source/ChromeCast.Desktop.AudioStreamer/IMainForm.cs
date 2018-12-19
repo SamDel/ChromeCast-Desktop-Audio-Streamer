@@ -17,5 +17,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         void Dispose();
         void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
         MMDevice GetRecordingDevice();
+        void SetAutoRestart(bool autoRestart);
     }
 }

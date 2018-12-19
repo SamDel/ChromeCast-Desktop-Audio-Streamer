@@ -6,6 +6,7 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Application;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
@@ -126,7 +127,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             logger.Log(string.Format("out [{2}][{0}]: {1}", getHost?.Invoke(), castMessage.PayloadUtf8, DateTime.Now.ToLongTimeString()));
         }
 
-        public void OnReceiveMessage(CastMessage castMessage)
+        public async void OnReceiveMessage(CastMessage castMessage)
         {
             logger.Log(string.Format("in [{2}] [{0}]: {1}", getHost?.Invoke(), castMessage.PayloadUtf8, DateTime.Now.ToLongTimeString()));
             var js = new JavaScriptSerializer();
@@ -149,6 +150,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case "CLOSE":
                     var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     setDeviceState(DeviceState.Closed, null);
+                    if (applicationLogic.GetAutoRestart())
+                    {
+                        await Task.Delay(5000);
+                        OnClickDeviceButton(DeviceState.Closed);
+                    }
                     break;
                 case "LOAD_FAILED":
                     var loadFailedMessage = js.Deserialize<MessageLoadFailed>(castMessage.PayloadUtf8);

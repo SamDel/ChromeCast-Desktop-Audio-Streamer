@@ -26,6 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
         private Dictionary<string, int> listenAdresses = new Dictionary<string, int>();
+        private bool AutoRestart { get; set; } = false;
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
             , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
@@ -142,7 +143,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             reduceLagThreshold = lagThreshold;
         }
 
-        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices, bool showWindow)
+        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices, bool showWindow, bool autoRestart)
         {
             mainForm.SetKeyboardHooks(useShortCuts);
             mainForm.ShowLog(showLog);
@@ -150,6 +151,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLagValue(lagValue);
             devices.SetAutoStart(autoStart);
             mainForm.SetWindowVisibility(showWindow);
+            mainForm.SetAutoRestart(autoRestart);
 
             if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
             {
@@ -188,6 +190,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void RecordingDeviceChanged()
         {
             loopbackRecorder.StartRecordingDevice();
+        }
+
+        public void OnSetAutoRestart(bool autoRestart)
+        {
+            AutoRestart = autoRestart;
+        }
+
+        public bool GetAutoRestart()
+        {
+            return AutoRestart;
         }
     }
 }
