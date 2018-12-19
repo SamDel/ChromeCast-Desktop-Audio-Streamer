@@ -9,6 +9,7 @@ using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
+using System.Collections.Generic;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -24,7 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private NotifyIcon notifyIcon;
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
-        private string streamingUrl = string.Empty;
+        private Dictionary<string, int> listenAdresses = new Dictionary<string, int>();
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
             , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
@@ -62,7 +63,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void OnStreamingRequestsListen(string host, int port)
         {
             Console.WriteLine(string.Format("Streaming from {0}:{1}", host, port));
-            streamingUrl = string.Format("http://{0}:{1}/", host, port);
+            listenAdresses.Add(host, port);
         }
 
         public void OnStreamingRequestConnect(Socket socket, string httpRequest)
@@ -115,9 +116,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             notifyIcon.Click += ToggleFormVisibility;
         }
 
-        public string GetStreamingUrl()
+        public string GetStreamingUrl(IDevice device)
         {
-            return streamingUrl;
+            if (listenAdresses != null)
+            {
+                var deviceIpAddress = device.GetHost();
+                for (int i = deviceIpAddress.Length; i > 0; i--)
+                {
+                    foreach (var address in listenAdresses)
+                    {
+                        if (address.Key.StartsWith(deviceIpAddress.Substring(0, i)))
+                        {
+                            Console.WriteLine($"GetStreamingUrl => http://{address.Key}:{address.Value}/");
+                            return $"http://{address.Key}:{address.Value}/";
+                        }
+                    }
+                }
+            }
+
+            return "";
         }
 
         public void SetLagThreshold(int lagThreshold)

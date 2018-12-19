@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using Microsoft.Win32;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -26,9 +30,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         {
             onListenCallback = onListenCallbackIn;
             onConnectCallback = onConnectCallbackIn;
-            var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddress = GetIp4Address(ipHostInfo);
-            var localEndPoint = new IPEndPoint(ipAddress, 0);
+            var ipAddresses = GetIp4ddresses();
+            foreach (var ipAddress in ipAddresses)
+            {
+                Task.Run(() => { Listen(ipAddress); });
+            }
+        }
+
+        private void Listen(IPAddress iPAddress)
+        {
+            var localEndPoint = new IPEndPoint(iPAddress, 0);
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
@@ -100,16 +111,47 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
-        private IPAddress GetIp4Address(IPHostEntry ipHostInfo)
+        private List<IPAddress> GetIp4ddresses()
         {
-            var ipAddress = ipHostInfo.AddressList[0];
-            foreach (var address in ipHostInfo.AddressList)
+            var ipAddresses = new List<IPAddress>();
+
+            NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var networkInterface in networkInterfaces)
             {
-                if (address.AddressFamily.Equals(AddressFamily.InterNetwork))
-                    ipAddress = address;
+                if (IsNetworkCard(networkInterface) && networkInterface.OperationalStatus == OperationalStatus.Up)
+                {
+                    foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
+                    {
+                        var address = ip.Address;
+                        if (address.AddressFamily == AddressFamily.InterNetwork
+                            && (address.ToString().StartsWith("192.168.") 
+                                || address.ToString().StartsWith("10.")
+                                || address.ToString().StartsWith("172.")))
+                        {
+                            ipAddresses.Add(address);
+                        }
+                    }
+                }
             }
 
-            return ipAddress;
+            return ipAddresses;
+        }
+
+        private static bool IsNetworkCard(NetworkInterface adapter)
+        {
+            var fRegistryKey = "SYSTEM\\CurrentControlSet\\Control\\Network\\{4D36E972-E325-11CE-BFC1-08002BE10318}\\" + adapter.Id + "\\Connection";
+            var key = Registry.LocalMachine.OpenSubKey(fRegistryKey, false);
+            if (key != null)
+            {
+                var fPnpInstanceID = key.GetValue("PnpInstanceID", "").ToString();
+                var fMediaSubType = Convert.ToInt32(key.GetValue("MediaSubType", 0));
+                if (fPnpInstanceID?.Length > 3 && fPnpInstanceID?.Substring(0, 3) == "PCI")
+                    return true;
+                else if (fMediaSubType == 2)
+                    return true;
+            }
+
+            return false;
         }
     }
 }
