@@ -6,7 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
     public interface IApplicationLogic
     {
         void Start();
-        string GetStreamingUrl(IDevice device);
+        string GetStreamingUrl();
         void SetLagThreshold(int lagThreshold);
         void OnAddDevice(IDevice device);
         void OnSetHooks(bool @checked);

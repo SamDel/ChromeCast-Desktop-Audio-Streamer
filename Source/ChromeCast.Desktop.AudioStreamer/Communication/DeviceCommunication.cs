@@ -5,7 +5,6 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Application;
 using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
@@ -18,7 +17,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<bool> isConnected;
         private Func<bool> isDeviceConnected;
         private Func<string> getHost;
-        public IDevice Device { get; private set; }
         private Func<DeviceState> getDeviceState;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
@@ -62,7 +60,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void LoadMedia()
         {
             setDeviceState?.Invoke(DeviceState.LoadingMedia, null);
-            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(Device), chromeCastSource, chromeCastDestination));
+            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
 
         public void PauseMedia()
@@ -241,7 +239,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         }
 
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn, Action<byte[]> sendMessageIn, 
-            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn, IDevice deviceIn)
+            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn)
         {
             setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
@@ -250,7 +248,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             isConnected = isConnectedIn;
             isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
-            Device = deviceIn;
         }
 
         public void OnClickDeviceButton(DeviceState deviceState)

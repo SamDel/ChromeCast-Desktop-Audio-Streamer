@@ -5,7 +5,6 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using Microsoft.Win32;
 
@@ -30,16 +29,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         {
             onListenCallback = onListenCallbackIn;
             onConnectCallback = onConnectCallbackIn;
-            var ipAddresses = GetIp4ddresses();
-            foreach (var ipAddress in ipAddresses)
-            {
-                Task.Run(() => { Listen(ipAddress); });
-            }
-        }
-
-        private void Listen(IPAddress iPAddress)
-        {
-            var localEndPoint = new IPEndPoint(iPAddress, 0);
+            var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            var ipAddress = GetIp4Address(ipHostInfo);
+            var localEndPoint = new IPEndPoint(ipAddress, 0);
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
@@ -111,6 +103,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        private IPAddress GetIp4Address(IPHostEntry ipHostInfo)
+        {
+            var addressesWireless = GetIp4ddresses();
+            var ipAddress = ipHostInfo.AddressList[0];
+            foreach (var address in ipHostInfo.AddressList)
+            {
+                if (address.AddressFamily.Equals(AddressFamily.InterNetwork) && addressesWireless.Contains(address))
+                    ipAddress = address;
+            }
+
+            return ipAddress;
+        }
+
         private List<IPAddress> GetIp4ddresses()
         {
             var ipAddresses = new List<IPAddress>();
@@ -118,18 +123,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var networkInterface in networkInterfaces)
             {
-                if (IsNetworkCard(networkInterface) && networkInterface.OperationalStatus == OperationalStatus.Up)
+                foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
                 {
-                    foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
+                    var address = ip.Address;
+                    if (address.AddressFamily == AddressFamily.InterNetwork
+                        && networkInterface.NetworkInterfaceType.Equals(NetworkInterfaceType.Wireless80211)
+                        && (address.ToString().StartsWith("192.168.")
+                            || address.ToString().StartsWith("10.")
+                            || address.ToString().StartsWith("172.")))
                     {
-                        var address = ip.Address;
-                        if (address.AddressFamily == AddressFamily.InterNetwork
-                            && (address.ToString().StartsWith("192.168.") 
-                                || address.ToString().StartsWith("10.")
-                                || address.ToString().StartsWith("172.")))
-                        {
-                            ipAddresses.Add(address);
-                        }
+                        ipAddresses.Add(address);
                     }
                 }
             }
