@@ -9,6 +9,7 @@ using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
+using System.Net;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -25,6 +26,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
         private string streamingUrl = string.Empty;
+        private bool playingOnIpChange;
+
         private bool AutoRestart { get; set; } = false;
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
@@ -42,10 +45,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Start()
         {
-            Task.Run(() => { streamingRequestListener.StartListening(OnStreamingRequestsListen, OnStreamingRequestConnect); });
+            var ipAddress = Network.GetIp4Address();
+            Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
             AddNotifyIcon();
             configuration.Load(SetConfiguration);
-            discoverDevices.Discover(devices.OnDeviceAvailable);
+            ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             loopbackRecorder.GetDevices(mainForm);
         }
@@ -182,7 +186,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool GetAutoRestart()
         {
-            return AutoRestart;
+            if (playingOnIpChange)
+            {
+                playingOnIpChange = false;
+                return true;
+            }
+            else
+            {
+                return AutoRestart;
+            }
+        }
+
+        public async void ChangeIPAddressUsed(IPAddress ipAddress)
+        {
+            playingOnIpChange = devices.Stop();
+            streamingRequestListener.StopListening();
+            await Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
+            if (playingOnIpChange)
+            {
+                await Task.Delay(2500);
+                devices.Start();
+                await Task.Delay(15000);
+                playingOnIpChange = false;
+            }
+        }
+
+        public void ScanForDevices()
+        {
+            discoverDevices.Discover(devices.OnDeviceAvailable);
         }
     }
 }

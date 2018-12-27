@@ -8,6 +8,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         CastMessage GetConnectMessage(string sourceId, string destinationId);
         CastMessage GetLaunchMessage(int requestId);
         CastMessage GetLoadMessage(string streamUrl, string chromeCastSource, string chromeCastDestination);
+        CastMessage GetStopMessage(string chromeCastSessionId, int chromeCastMediaSessionId, int requestId, string chromeCastSource, string chromeCastDestination);
         CastMessage GetPauseMessage(string chromeCastSessionId, int chromeCastMediaSessionId, int requestId, string chromeCastSource, string chromeCastDestination);
         CastMessage GetVolumeSetMessage(Volume volumeSetting, int requestId, string sourceId = null, string destinationId = null);
         CastMessage GetVolumeMuteMessage(bool muted, int requestId, string sourceId = null, string destinationId = null);

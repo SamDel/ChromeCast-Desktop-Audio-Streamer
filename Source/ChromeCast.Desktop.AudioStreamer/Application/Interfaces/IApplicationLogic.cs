@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.Net;
+using System.Net.Sockets;
 using NAudio.Wave;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
@@ -18,5 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void RecordingDeviceChanged();
         void OnSetAutoRestart(bool autoRestart);
         bool GetAutoRestart();
+        void ChangeIPAddressUsed(IPAddress ipAddress);
+        void ScanForDevices();
     }
 }

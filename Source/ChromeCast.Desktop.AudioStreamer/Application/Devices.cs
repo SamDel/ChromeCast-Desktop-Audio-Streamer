@@ -29,10 +29,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
         {
             var existingDevice = deviceList.FirstOrDefault(d => d.GetHost().Equals(device.DescriptionLocation.Host));
-
             if (existingDevice == null)
             {
-                if (!deviceList.Any(d => d.GetUsn().Equals(device.Usn)))
+                if (!deviceList.Any(d => d.GetUsn() != null && d.GetUsn().Equals(device.Usn)))
                 {
                     var newDevice = DependencyFactory.Container.Resolve<Device>();
                     newDevice.SetDiscoveredDevices(device, fullDevice);
@@ -72,6 +71,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             foreach (var device in deviceList)
             {
                 device.VolumeMute();
+            }
+        }
+
+        public bool Stop()
+        {
+            var playing = false;
+            foreach (var device in deviceList)
+            {
+                if (device.GetDeviceState().Equals(DeviceState.Playing))
+                {
+                    playing = true;
+                    device.Stop();
+                }
+            }
+            return playing;
+        }
+
+        public void Start()
+        {
+            foreach (var device in deviceList)
+            {
+                device.Start();
             }
         }
 

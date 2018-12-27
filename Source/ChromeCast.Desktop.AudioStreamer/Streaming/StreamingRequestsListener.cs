@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
@@ -24,12 +23,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private Action<Socket, string> onConnectCallback;
         private Socket listener;
 
-        public void StartListening(Action<string, int> onListenCallbackIn, Action<Socket, string> onConnectCallbackIn)
+        public void StartListening(IPAddress ipAddress, Action<string, int> onListenCallbackIn, Action<Socket, string> onConnectCallbackIn)
         {
             onListenCallback = onListenCallbackIn;
             onConnectCallback = onConnectCallbackIn;
-            var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddress = GetIp4Address(ipHostInfo);
             var localEndPoint = new IPEndPoint(ipAddress, 0);
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
@@ -100,46 +97,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                     handlerSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCallback), state);
                 }
             }
-        }
-
-        private IPAddress GetIp4Address(IPHostEntry ipHostInfo)
-        {
-            var addressesInUse = GetIp4ddresses();
-            var ipAddress = ipHostInfo.AddressList[0];
-            foreach (var address in ipHostInfo.AddressList)
-            {
-                if (address.AddressFamily.Equals(AddressFamily.InterNetwork) 
-                    && !address.IsIPv4MappedToIPv6 && !address.IsIPv6LinkLocal && !address.IsIPv6Multicast && !address.IsIPv6SiteLocal && !address.IsIPv6Teredo
-                    && addressesInUse.Contains(address))
-                    ipAddress = address;
-            }
-            return ipAddress;
-        }
-
-        private List<IPAddress> GetIp4ddresses()
-        {
-            var ipAddresses = new List<IPAddress>();
-
-            NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var networkInterface in networkInterfaces)
-            {
-                foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
-                {
-                    var address = ip.Address;
-                    var props = networkInterface.GetIPProperties();
-                    if (address.AddressFamily == AddressFamily.InterNetwork
-                        && networkInterface.OperationalStatus != OperationalStatus.Down
-                        && props.GatewayAddresses.Count > 0
-                        && (address.ToString().StartsWith("192.168.")
-                            || address.ToString().StartsWith("10.")
-                            || address.ToString().StartsWith("172.")))
-                    {
-                        ipAddresses.Add(address);
-                    }
-                }
-            }
-
-            return ipAddresses;
         }
     }
 }

@@ -5,6 +5,10 @@ using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Threading.Tasks;
 using CSCore.CoreAudioAPI;
+using ChromeCast.Desktop.AudioStreamer.Classes;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Linq;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -33,7 +37,14 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void MainForm_Load(object sender, EventArgs e)
         {
             Update();
+            AddIP4Addresses();
             applicationLogic.Start();
+            NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
+        }
+
+        private void AddressChangedCallback(object sender, EventArgs e)
+        {
+            AddIP4Addresses();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -71,6 +82,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 grpDevices.Height += grpLag.Height;
                 pnlDevices.Height += grpLag.Height;
+                btnScan.Top = grpDevices.Height - btnScan.Height - 10;
             }
             grpLag.Visible = showLag;
         }
@@ -252,6 +264,50 @@ namespace ChromeCast.Desktop.AudioStreamer
         public void SetAutoRestart(bool autoRestart)
         {
             chkAutoRestart.Checked = autoRestart;
+        }
+
+        public void AddIP4Addresses()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(AddIP4Addresses));
+                return;
+            }
+
+            var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
+            var ip4Adresses = Network.GetIp4ddresses();
+            foreach (var adapter in ip4Adresses)
+            {
+                if (cmbIP4AddressUsed.Items.IndexOf(adapter.IPAddress) < 0)
+                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
+            }
+            for (int i = cmbIP4AddressUsed.Items.Count - 1; i >= 0; i--)
+            {
+                if (!ip4Adresses.Any(x => x.IPAddress.ToString() == ((IPAddress)cmbIP4AddressUsed.Items[i]).ToString()))
+                    cmbIP4AddressUsed.Items.RemoveAt(i);
+            }
+
+            if (!ip4Adresses.Any(x => x.IPAddress.ToString() == oldAddressUsed?.ToString()))
+            {
+                var addressUsed = Network.GetIp4Address();
+                cmbIP4AddressUsed.SelectedItem = addressUsed;
+            }
+        }
+
+        private void cmbIP4AddressUsed_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var ipAddress = (IPAddress)cmbIP4AddressUsed.SelectedItem;
+            applicationLogic.ChangeIPAddressUsed(ipAddress);
+        }
+
+        private void btnClipboardCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textLog.Text);
+        }
+
+        private void btnScan_Click(object sender, EventArgs e)
+        {
+            applicationLogic.ScanForDevices();
         }
     }
 }

@@ -113,6 +113,8 @@
     <Compile Include="Application\Configuration.cs" />
     <Compile Include="Application\Device.cs" />
     <Compile Include="Application\Devices.cs" />
+    <Compile Include="Classes\Network.cs" />
+    <Compile Include="Classes\NetworkAdapter.cs" />
     <Compile Include="Discover\DiscoverDevices.cs" />
     <Compile Include="Application\DeviceStatusTimer.cs" />
     <Compile Include="Application\Interfaces\IConfiguration.cs" />

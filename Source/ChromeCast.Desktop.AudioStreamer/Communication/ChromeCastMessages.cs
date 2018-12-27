@@ -107,6 +107,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return GetCastMessage(new MessageStatus { type = "GET_STATUS", requestId = requestId }, namespaceMedia, sourceId, destinationId);
         }
 
+        public CastMessage GetStopMessage(string sessionId, int mediaSessionId, int requestId, string sourceId, string destinationId)
+        {
+            return GetCastMessage(new MessagePause { type = "STOP", sessionId = sessionId, mediaSessionId = mediaSessionId, requestId = requestId }, namespaceMedia, sourceId, destinationId);
+        }
+
         public CastMessage GetCastMessage(PayloadMessageBase message, string msgNamespace, string sourceId = null, string destinationId = null)
         {
             if (string.IsNullOrWhiteSpace(sourceId)) sourceId = "sender-0";

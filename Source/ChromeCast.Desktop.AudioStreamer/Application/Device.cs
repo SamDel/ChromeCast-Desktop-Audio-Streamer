@@ -55,6 +55,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.OnClickDeviceButton(deviceState);
         }
 
+        public void Start()
+        {
+            deviceCommunication.LoadMedia();
+        }
+
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold)
         {
             if (streamingConnection != null)
@@ -139,6 +144,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             deviceCommunication.VolumeMute(!volumeSetting.muted);
+        }
+
+        public void Stop()
+        {
+            deviceCommunication.Stop();
+            SetDeviceState(DeviceState.Closed);
         }
 
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
