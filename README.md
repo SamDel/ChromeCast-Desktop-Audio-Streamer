@@ -4,12 +4,8 @@ This tool captures the audio from your desktop and streams it to a ChromeCast Au
 
 You can download an installer from the 'Releases' folder.
 
-After install there are some options you can set in the config file in the install folder. Also when your device is not automatically discovered you can add it there.
-
-
-# Wishlist
-
-- Support multiple stream formats (for bandwidth reasons). Now it's only possible to change the stream format/quality by changing the settings of your sound device.
+Please read the wiki page for further information: 
+https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki
 
 
 # Dependencies
