@@ -209,7 +209,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
                 var minutes = ((int)(mediaStatusMessage.status.First().currentTime) % 3600) / 60;
                 var hours = ((int)mediaStatusMessage.status.First().currentTime) / 3600;
-                return string.Format("{0}:{1}:{2}", hours, minutes.ToString("D2"), seconds.ToString("D2"));
+                return string.Format("{0}:{1}", hours, minutes.ToString("D2"));
             }
 
             return null;
