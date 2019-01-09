@@ -37,8 +37,6 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             }
 
             lblStatus.Text = string.Format("{0} {1}", state, text);
-            btnDevice.Width = Width - 2 - btnDevice.Left;
-            trbVolume.Width = Width - trbVolume.Left - 2;
 
             switch (state)
             {

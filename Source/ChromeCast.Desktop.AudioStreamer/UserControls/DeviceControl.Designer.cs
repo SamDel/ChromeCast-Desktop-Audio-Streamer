@@ -44,7 +44,7 @@
             this.lblStatus.Location = new System.Drawing.Point(3, 116);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(275, 21);
+            this.lblStatus.Size = new System.Drawing.Size(301, 21);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "status";
             // 
@@ -56,9 +56,10 @@
             this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDevice.Location = new System.Drawing.Point(54, 0);
             this.btnDevice.Margin = new System.Windows.Forms.Padding(0);
+            this.btnDevice.MaximumSize = new System.Drawing.Size(250, 0);
             this.btnDevice.Name = "btnDevice";
             this.btnDevice.Padding = new System.Windows.Forms.Padding(16, 8, 16, 8);
-            this.btnDevice.Size = new System.Drawing.Size(230, 51);
+            this.btnDevice.Size = new System.Drawing.Size(250, 50);
             this.btnDevice.TabIndex = 3;
             this.btnDevice.Text = "name";
             this.btnDevice.UseVisualStyleBackColor = true;
@@ -70,7 +71,7 @@
             this.trbVolume.Maximum = 100;
             this.trbVolume.MinimumSize = new System.Drawing.Size(250, 0);
             this.trbVolume.Name = "trbVolume";
-            this.trbVolume.Size = new System.Drawing.Size(250, 56);
+            this.trbVolume.Size = new System.Drawing.Size(270, 56);
             this.trbVolume.SmallChange = 5;
             this.trbVolume.TabIndex = 5;
             this.trbVolume.TickFrequency = 5;
@@ -113,7 +114,7 @@
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnDevice);
             this.Name = "DeviceControl";
-            this.Size = new System.Drawing.Size(288, 137);
+            this.Size = new System.Drawing.Size(314, 137);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
             this.ResumeLayout(false);
