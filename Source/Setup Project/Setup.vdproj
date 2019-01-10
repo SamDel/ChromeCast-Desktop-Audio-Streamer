@@ -117,6 +117,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3C1B6868346DBACB3D5BA4D4BBC29A1A"
+        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3D327EC7AE5F4CAAB14F80BA19841A50"
         "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
         "MsmSig" = "8:_UNDEFINED"
@@ -148,7 +154,7 @@
         "Entry"
         {
         "MsmKey" = "8:_4A11C6167A3BB52FAA55FD9612F83FBF"
-        "OwnerKey" = "8:_827FAB1B7B53CCA4BE2A2BC7100F9A74"
+        "OwnerKey" = "8:_C8419095549A0787411C888F472CA17F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -243,12 +249,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_827FAB1B7B53CCA4BE2A2BC7100F9A74"
-        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_82AF1076068E73746CC9536315081A99"
         "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
         "MsmSig" = "8:_UNDEFINED"
@@ -262,6 +262,12 @@
         "Entry"
         {
         "MsmKey" = "8:_8811409F1576853677FF21D96FC0C41F"
+        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_88E624D3897E44C4CC00F9C4648F223F"
         "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -345,18 +351,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A496D0721E90738149B59F70F1F150FF"
-        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A58B0C60C622F6AD0097C8856C1EF0FD"
-        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A7B8E2D1605FF039AEFFA14DF1655B2A"
         "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
         "MsmSig" = "8:_UNDEFINED"
@@ -424,6 +418,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C21B083E5688F7F492777B99E6C11C9B"
+        "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C8419095549A0787411C888F472CA17F"
         "OwnerKey" = "8:_CC074EF1E29347D6A76ACDB45852159D"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -598,7 +598,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A58B0C60C622F6AD0097C8856C1EF0FD"
+        "OwnerKey" = "8:_C8419095549A0787411C888F472CA17F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3C1B6868346DBACB3D5BA4D4BBC29A1A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_88E624D3897E44C4CC00F9C4648F223F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -659,18 +671,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_54351E2BE18A477F2EFBE9494BCA17F8"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_827FAB1B7B53CCA4BE2A2BC7100F9A74"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A496D0721E90738149B59F70F1F150FF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1507,6 +1507,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3C1B6868346DBACB3D5BA4D4BBC29A1A"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3C1B6868346DBACB3D5BA4D4BBC29A1A"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Newtonsoft.Json.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3D327EC7AE5F4CAAB14F80BA19841A50"
             {
             "AssemblyRegister" = "3:1"
@@ -1910,37 +1941,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_827FAB1B7B53CCA4BE2A2BC7100F9A74"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Rssdp.Native, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_827FAB1B7B53CCA4BE2A2BC7100F9A74"
-                    {
-                    "Name" = "8:Rssdp.Native.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Rssdp.Native.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_82AF1076068E73746CC9536315081A99"
             {
             "AssemblyRegister" = "3:1"
@@ -2017,6 +2017,37 @@
                     }
                 }
             "SourcePath" = "8:System.Xml.XDocument.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_88E624D3897E44C4CC00F9C4648F223F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:NAudio, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_88E624D3897E44C4CC00F9C4648F223F"
+                    {
+                    "Name" = "8:NAudio.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:NAudio.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
@@ -2265,68 +2296,6 @@
                     }
                 }
             "SourcePath" = "8:System.Reflection.Extensions.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A496D0721E90738149B59F70F1F150FF"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:NAudio, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_A496D0721E90738149B59F70F1F150FF"
-                    {
-                    "Name" = "8:NAudio.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:NAudio.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A58B0C60C622F6AD0097C8856C1EF0FD"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_A58B0C60C622F6AD0097C8856C1EF0FD"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
@@ -2668,6 +2637,37 @@
                     }
                 }
             "SourcePath" = "8:System.Text.Encoding.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8419095549A0787411C888F472CA17F"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Rssdp, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_C8419095549A0787411C888F472CA17F"
+                    {
+                    "Name" = "8:Rssdp.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Rssdp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
@@ -3330,15 +3330,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{1773720E-BDA7-4C96-ACBA-6E4B0BD8848C}"
-        "PackageCode" = "8:{247383E5-4921-4B26-B003-6B2CEC05BE34}"
+        "ProductCode" = "8:{00B3615C-5ED1-4969-94FA-FB68C12FA408}"
+        "PackageCode" = "8:{542B14E5-AF35-486B-80E5-1FABA478CF9A}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.5"
+        "ProductVersion" = "8:1.5.5"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -3866,7 +3866,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CC074EF1E29347D6A76ACDB45852159D"
             {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Debug\\ChromeCast.Desktop.AudioStreamer.exe"
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Release\\ChromeCast.Desktop.AudioStreamer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
