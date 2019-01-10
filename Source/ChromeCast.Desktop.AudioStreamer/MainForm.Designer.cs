@@ -266,11 +266,10 @@
             // 
             this.btnSyncDevices.Location = new System.Drawing.Point(280, 36);
             this.btnSyncDevices.Name = "btnSyncDevices";
-            this.btnSyncDevices.Size = new System.Drawing.Size(104, 33);
+            this.btnSyncDevices.Size = new System.Drawing.Size(121, 33);
             this.btnSyncDevices.TabIndex = 16;
             this.btnSyncDevices.Text = "Sync Devices";
             this.btnSyncDevices.UseVisualStyleBackColor = true;
-            this.btnSyncDevices.Visible = false;
             this.btnSyncDevices.Click += new System.EventHandler(this.btnSyncDevices_Click);
             // 
             // btnVolumeUp

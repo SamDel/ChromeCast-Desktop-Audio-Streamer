@@ -115,7 +115,6 @@
             this.Controls.Add(this.btnDevice);
             this.Name = "DeviceControl";
             this.Size = new System.Drawing.Size(314, 137);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceControl_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
