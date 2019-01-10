@@ -151,9 +151,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     var pongMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     break;
                 case "CLOSE":
+                    var previousState = getDeviceState();
                     var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     setDeviceState(DeviceState.Closed, null);
-                    if (applicationLogic.GetAutoRestart())
+                    if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
                     {
                         await Task.Delay(5000);
                         OnClickDeviceButton(DeviceState.Closed);
