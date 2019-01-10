@@ -119,12 +119,6 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             device.VolumeSet(trbVolume.Value / 100f);
         }
 
-        private void DeviceControl_MouseDown(object sender, MouseEventArgs e)
-        {
-            Control c = sender as Control;
-            c.DoDragDrop(c, DragDropEffects.Move);
-        }
-
         private void pictureVolumeMute_Click(object sender, EventArgs e)
         {
             device.VolumeMute();
