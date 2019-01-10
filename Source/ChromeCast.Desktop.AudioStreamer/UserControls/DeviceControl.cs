@@ -103,15 +103,15 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
             trbVolume.Value = (int)(volume.level * 100);
             trbVolume.Enabled = true;
-            btnVolumeMute.Enabled = true;
+            pictureVolumeMute.Enabled = true;
             int change = (int)(volume.stepInterval * 100);
             trbVolume.LargeChange = change;
             trbVolume.SmallChange = change;
             trbVolume.TickFrequency = change;
             if (volume.muted)
-                btnVolumeMute.Text = "U";
+                pictureVolumeMute.Image = Properties.Resources.Unmute;
             else
-                btnVolumeMute.Text = "M";
+                pictureVolumeMute.Image = Properties.Resources.Mute;
         }
 
         private void trbVolume_Scroll(object sender, EventArgs e)
@@ -119,7 +119,13 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             device.VolumeSet(trbVolume.Value / 100f);
         }
 
-        private void btnVolumeMute_Click(object sender, EventArgs e)
+        private void DeviceControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            Control c = sender as Control;
+            c.DoDragDrop(c, DragDropEffects.Move);
+        }
+
+        private void pictureVolumeMute_Click(object sender, EventArgs e)
         {
             device.VolumeMute();
         }

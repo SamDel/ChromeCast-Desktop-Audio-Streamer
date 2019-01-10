@@ -206,6 +206,12 @@
     <EmbeddedResource Include="UserControls\Pause.png" />
     <EmbeddedResource Include="UserControls\Play.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControls\Unmute.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControls\Mute.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
