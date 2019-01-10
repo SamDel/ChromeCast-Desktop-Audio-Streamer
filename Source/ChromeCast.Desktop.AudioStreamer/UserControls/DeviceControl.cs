@@ -109,9 +109,9 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             trbVolume.SmallChange = change;
             trbVolume.TickFrequency = change;
             if (volume.muted)
-                pictureVolumeMute.Image = Properties.Resources.Unmute;
-            else
                 pictureVolumeMute.Image = Properties.Resources.Mute;
+            else
+                pictureVolumeMute.Image = Properties.Resources.Unmute;
         }
 
         private void trbVolume_Scroll(object sender, EventArgs e)
