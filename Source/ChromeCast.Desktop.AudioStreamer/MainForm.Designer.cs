@@ -44,6 +44,7 @@
             this.lblLagMax = new System.Windows.Forms.Label();
             this.trbLag = new System.Windows.Forms.TrackBar();
             this.grpDevices = new System.Windows.Forms.GroupBox();
+            this.btnScan = new System.Windows.Forms.Button();
             this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.grpVolume = new System.Windows.Forms.GroupBox();
             this.btnSyncDevices = new System.Windows.Forms.Button();
@@ -54,7 +55,7 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
-            this.btnScan = new System.Windows.Forms.Button();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -230,6 +231,16 @@
             this.grpDevices.TabStop = false;
             this.grpDevices.Text = "Devices (click name to start streaming)";
             // 
+            // btnScan
+            // 
+            this.btnScan.Location = new System.Drawing.Point(785, 288);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.Size = new System.Drawing.Size(206, 27);
+            this.btnScan.TabIndex = 11;
+            this.btnScan.Text = "Scan again for devices";
+            this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            // 
             // pnlDevices
             // 
             this.pnlDevices.AutoScroll = true;
@@ -335,21 +346,20 @@
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
             // 
-            // btnScan
+            // lblVersion
             // 
-            this.btnScan.Location = new System.Drawing.Point(785, 288);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(206, 27);
-            this.btnScan.TabIndex = 11;
-            this.btnScan.Text = "Scan again for devices";
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(982, 9);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(0, 17);
+            this.lblVersion.TabIndex = 4;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1151, 657);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -370,6 +380,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -401,6 +412,7 @@
         private System.Windows.Forms.Label lblDevice;
         private System.Windows.Forms.Button btnClipboardCopy;
         private System.Windows.Forms.Button btnScan;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 

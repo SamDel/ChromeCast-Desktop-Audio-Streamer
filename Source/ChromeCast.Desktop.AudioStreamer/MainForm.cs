@@ -9,6 +9,8 @@ using ChromeCast.Desktop.AudioStreamer.Classes;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Linq;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -40,6 +42,10 @@ namespace ChromeCast.Desktop.AudioStreamer
             AddIP4Addresses();
             applicationLogic.Start();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            lblVersion.Text = $"Version {fvi.FileVersion}";
         }
 
         private void AddressChangedCallback(object sender, EventArgs e)
