@@ -1036,10 +1036,10 @@
             "ComponentsUrl" = "8:"
                 "Items"
                 {
-                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5.2"
                     {
-                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
-                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    "Name" = "8:Microsoft .NET Framework 4.5.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5.2"
                     }
                 }
             }
@@ -3331,7 +3331,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
         "ProductCode" = "8:{1773720E-BDA7-4C96-ACBA-6E4B0BD8848C}"
-        "PackageCode" = "8:{2C5AF971-F4B3-4061-9B6B-38A0E208CA5E}"
+        "PackageCode" = "8:{247383E5-4921-4B26-B003-6B2CEC05BE34}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -3866,7 +3866,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CC074EF1E29347D6A76ACDB45852159D"
             {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Release\\ChromeCast.Desktop.AudioStreamer.exe"
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Debug\\ChromeCast.Desktop.AudioStreamer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
