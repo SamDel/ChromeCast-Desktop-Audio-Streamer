@@ -223,7 +223,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             devices.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
-            mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? false);
+            mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             if (settings.ChromecastHosts != null)
             {
