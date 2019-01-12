@@ -337,6 +337,7 @@
             this.chkHook.Text = "Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M" +
     "";
             this.chkHook.UseVisualStyleBackColor = true;
+            this.chkHook.CheckedChanged += new System.EventHandler(this.chkHook_CheckedChanged);
             // 
             // tabPage1
             // 
