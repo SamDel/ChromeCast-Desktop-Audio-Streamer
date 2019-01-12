@@ -220,6 +220,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         private async void LoadSettings()
         {
+            settings.Upgrade();
+
             devices.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
