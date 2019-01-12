@@ -213,6 +213,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public async void SetWindowVisibility(bool visible)
         {
+            chkShowWindowOnStart.Checked = visible;
             if (visible)
                 Show();
             else
@@ -266,8 +267,9 @@ namespace ChromeCast.Desktop.AudioStreamer
                     if (cmbRecordingDevice.Items.Count > 0)
                         return (MMDevice)cmbRecordingDevice.SelectedItem;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    logger.Log($"ex : {ex.Message}");
                     Invoke(new Func<MMDevice>(GetRecordingDevice));
                     return null;
                 }
