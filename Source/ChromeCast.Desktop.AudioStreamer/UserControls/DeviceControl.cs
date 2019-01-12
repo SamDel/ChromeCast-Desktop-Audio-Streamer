@@ -28,6 +28,11 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             btnDevice.Text = name;
         }
 
+        public string GetDeviceName()
+        {
+            return btnDevice.Text;
+        }
+
         public void SetStatus(DeviceState state, string text)
         {
             if (InvokeRequired)

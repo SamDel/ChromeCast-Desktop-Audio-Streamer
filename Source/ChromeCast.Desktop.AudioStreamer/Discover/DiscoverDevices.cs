@@ -63,8 +63,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             try
             {
                 var http = new HttpClient();
-                var responce = await http.GetAsync($"http://{ipAddress}:8008/setup/eureka_info?options=detail");
-                var json = await responce.Content.ReadAsStringAsync();
+                var response = await http.GetAsync($"http://{ipAddress}:8008/setup/eureka_info?options=detail");
+                var json = await response.Content.ReadAsStringAsync();
                 var info = JsonConvert.DeserializeObject<EurekaInfo>(json);
                 friendlyName = info.Name;
             }

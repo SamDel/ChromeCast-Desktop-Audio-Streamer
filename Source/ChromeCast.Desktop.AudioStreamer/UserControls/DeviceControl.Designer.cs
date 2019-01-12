@@ -68,11 +68,11 @@
             // trbVolume
             // 
             this.trbVolume.Enabled = false;
-            this.trbVolume.Location = new System.Drawing.Point(39, 59);
+            this.trbVolume.Location = new System.Drawing.Point(43, 59);
             this.trbVolume.Maximum = 100;
             this.trbVolume.MinimumSize = new System.Drawing.Size(250, 0);
             this.trbVolume.Name = "trbVolume";
-            this.trbVolume.Size = new System.Drawing.Size(265, 56);
+            this.trbVolume.Size = new System.Drawing.Size(261, 56);
             this.trbVolume.SmallChange = 5;
             this.trbVolume.TabIndex = 5;
             this.trbVolume.TickFrequency = 5;

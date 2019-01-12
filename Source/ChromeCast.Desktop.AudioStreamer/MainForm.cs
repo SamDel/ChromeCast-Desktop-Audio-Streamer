@@ -73,6 +73,21 @@ namespace ChromeCast.Desktop.AudioStreamer
             deviceControl.SetStatus(device.GetDeviceState(), null);
             pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);
+
+            // Sort alphabetically.
+            var deviceName = device.GetFriendlyName();
+            for (int i = 0; i < pnlDevices.Controls.Count - 1; i++)
+            {
+                if (pnlDevices.Controls[i] is DeviceControl)
+                {
+                    var name = ((DeviceControl)pnlDevices.Controls[i]).GetDeviceName();
+                    if (string.CompareOrdinal(deviceName, name) < 0)
+                    {
+                        pnlDevices.Controls.SetChildIndex(deviceControl, i);
+                        return;
+                    }
+                }
+            }
         }
 
         public void ShowLagControl(bool showLag)
@@ -103,7 +118,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (IsDisposed) return;
 
             if (!boolShowLog)
-                tabControl.TabPages.RemoveAt(1);
+                tabControl.TabPages.RemoveAt(2);
         }
 
         public void SetLagValue(int lagValue)
@@ -246,8 +261,16 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (InvokeRequired)
             {
-                Invoke(new Func<MMDevice>(GetRecordingDevice));
-                return null;
+                try
+                {
+                    if (cmbRecordingDevice.Items.Count > 0)
+                        return (MMDevice)cmbRecordingDevice.SelectedItem;
+                }
+                catch (Exception)
+                {
+                    Invoke(new Func<MMDevice>(GetRecordingDevice));
+                    return null;
+                }
             }
             if (IsDisposed) return null;
 
@@ -314,6 +337,31 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void btnScan_Click(object sender, EventArgs e)
         {
             applicationLogic.ScanForDevices();
+        }
+
+        public void SetAutoStart(bool autoStart)
+        {
+            chkAutoStart.Checked = autoStart;
+        }
+
+        public bool GetUseKeyboardShortCuts()
+        {
+            return chkHook.Checked;
+        }
+
+        public bool GetAutoStartDevices()
+        {
+            return chkAutoStart.Checked;
+        }
+
+        public bool GetShowWindowOnStart()
+        {
+            return chkShowWindowOnStart.Checked;
+        }
+
+        public bool GetAutoRestart()
+        {
+            return chkAutoRestart.Checked;
         }
     }
 }

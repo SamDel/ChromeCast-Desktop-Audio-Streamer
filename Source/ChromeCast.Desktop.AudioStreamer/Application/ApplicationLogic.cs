@@ -10,6 +10,9 @@ using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -27,6 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private int reduceLagThreshold = trbLagMaximumValue;
         private string streamingUrl = string.Empty;
         private bool playingOnIpChange;
+        private UserSettings settings = new UserSettings();
 
         private bool AutoRestart { get; set; } = false;
 
@@ -48,6 +52,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var ipAddress = Network.GetIp4Address();
             Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
             AddNotifyIcon();
+            LoadSettings();
             configuration.Load(SetConfiguration);
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
@@ -130,15 +135,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             reduceLagThreshold = lagThreshold;
         }
 
-        public void SetConfiguration(bool useShortCuts, bool showLog, bool showLagControl, int lagValue, bool autoStart, string ipAddressesDevices, bool showWindow, bool autoRestart)
+        public void SetConfiguration(bool showLog, bool showLagControl, int lagValue, string ipAddressesDevices)
         {
-            mainForm.SetKeyboardHooks(useShortCuts);
             mainForm.ShowLog(showLog);
             mainForm.ShowLagControl(showLagControl);
             mainForm.SetLagValue(lagValue);
-            devices.SetAutoStart(autoStart);
-            mainForm.SetWindowVisibility(showWindow);
-            mainForm.SetAutoRestart(autoRestart);
 
             if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
             {
@@ -156,6 +157,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void CloseApplication()
         {
+            SaveSettings();
             SetWindowsHook.Stop();
             loopbackRecorder.StopRecording();
             devices.Dispose();
@@ -214,6 +216,58 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void ScanForDevices()
         {
             discoverDevices.Discover(devices.OnDeviceAvailable);
+        }
+
+        private async void LoadSettings()
+        {
+            devices.SetAutoStart(settings.AutoStartDevices ?? false);
+            mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
+            mainForm.SetAutoRestart(settings.AutoRestart ?? false);
+            mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? false);
+            mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
+            if (settings.ChromecastHosts != null)
+            {
+                for (int i = 0; i < settings.ChromecastHosts.Count; i++)
+                {
+                    try
+                    {
+                        // Check if the device is on.
+                        var http = new HttpClient();
+                        var response = await http.GetAsync($"http://{settings.ChromecastHosts[i].Ip}:8008/setup/eureka_info?options=detail");
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            devices.OnDeviceAvailable(
+                                    new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{settings.ChromecastHosts[i].Ip}") },
+                                    new SsdpRootDevice { FriendlyName = settings.ChromecastHosts[i].Name }
+                                );
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            var hosts = settings.ChromecastHosts;
+            if (hosts == null)
+                hosts = new List<SettingHost>();
+            foreach (var host in devices.GetHosts())
+            {
+                if (!hosts.Any(x => x.Ip == host.Ip))
+                {
+                    hosts.Add(host);
+                }
+            }
+            settings.ChromecastHosts = hosts;
+            settings.UseKeyboardShortCuts = mainForm.GetUseKeyboardShortCuts();
+            settings.AutoStartDevices = mainForm.GetAutoStartDevices();
+            settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
+            settings.AutoRestart = mainForm.GetAutoRestart();
+
+            settings.Save();
         }
     }
 }

@@ -7,6 +7,8 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -33,9 +35,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public void StartRecordingDevice()
         {
-            MMDevice recordingDevice = mainForm.GetRecordingDevice();
+            MMDevice recordingDevice = null;
+            var attempt = 0;
+            do
+            {
+                recordingDevice = mainForm.GetRecordingDevice();
+                if (recordingDevice == null)
+                {
+                    Task.Delay(1000).Wait();
+                    attempt++;
+                }
+            } while (recordingDevice == null && attempt <= 10);
+
             if (recordingDevice == null)
             {
+                MessageBox.Show("No recording devices found.");
                 Console.WriteLine("No devices found.");
                 return;
             }

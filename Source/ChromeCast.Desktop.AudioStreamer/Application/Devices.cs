@@ -130,6 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Dispose()
         {
+            Stop();
             foreach (var device in deviceList)
             {
                 device.SetDeviceState(DeviceState.Disposed);
@@ -170,6 +171,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             mainForm = mainFormIn;
             applicationLogic = applicationLogicIn;
+        }
+
+        public List<SettingHost> GetHosts()
+        {
+            var hosts = new List<SettingHost>();
+            foreach (var device in deviceList)
+            {
+                hosts.Add(new SettingHost { Ip = device.GetHost(), Name = device.GetFriendlyName() });
+            }
+            return hosts;
         }
     }
 }
