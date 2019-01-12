@@ -6,6 +6,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
     public class UserSettings : ApplicationSettingsBase
     {
         [UserScopedSetting()]
+        public bool? Upgraded
+        {
+            get
+            {
+                return (bool?)this["Upgraded"];
+            }
+            set
+            {
+                this["Upgraded"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public bool? AutoStartDevices
         {
             get
