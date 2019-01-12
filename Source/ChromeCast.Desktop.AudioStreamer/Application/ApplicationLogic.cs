@@ -275,5 +275,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             settings.Save();
         }
+
+        public void ResetSettings()
+        {
+            settings.ChromecastHosts = new List<SettingHost>();
+            settings.UseKeyboardShortCuts = false;
+            settings.AutoStartDevices = false;
+            settings.ShowWindowOnStart = true;
+            settings.AutoRestart = false;
+            devices.SetAutoStart(settings.AutoStartDevices.Value);
+            mainForm.SetAutoStart(settings.AutoStartDevices.Value);
+            mainForm.SetAutoRestart(settings.AutoRestart.Value);
+            mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
+            mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
+            settings.Save();
+        }
     }
 }

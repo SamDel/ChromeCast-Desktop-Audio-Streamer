@@ -21,5 +21,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         bool GetAutoRestart();
         void ChangeIPAddressUsed(IPAddress ipAddress);
         void ScanForDevices();
+        void ResetSettings();
     }
 }

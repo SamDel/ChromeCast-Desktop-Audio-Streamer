@@ -46,6 +46,7 @@
             this.btnVolumeMute = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.chkShowWindowOnStart = new System.Windows.Forms.CheckBox();
             this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
@@ -58,7 +59,7 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
-            this.lblVersion = new System.Windows.Forms.Label();
+            this.btnResetSettings = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -243,6 +244,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnResetSettings);
             this.groupBox1.Controls.Add(this.lblVersion);
             this.groupBox1.Controls.Add(this.chkAutoStart);
             this.groupBox1.Controls.Add(this.chkShowWindowOnStart);
@@ -258,6 +260,14 @@
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Options";
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(12, 520);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(0, 17);
+            this.lblVersion.TabIndex = 25;
             // 
             // chkAutoStart
             // 
@@ -382,13 +392,15 @@
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
             // 
-            // lblVersion
+            // btnResetSettings
             // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(12, 520);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(0, 17);
-            this.lblVersion.TabIndex = 25;
+            this.btnResetSettings.Location = new System.Drawing.Point(869, 515);
+            this.btnResetSettings.Name = "btnResetSettings";
+            this.btnResetSettings.Size = new System.Drawing.Size(152, 27);
+            this.btnResetSettings.TabIndex = 26;
+            this.btnResetSettings.Text = "Reset Settings";
+            this.btnResetSettings.UseVisualStyleBackColor = true;
+            this.btnResetSettings.Click += new System.EventHandler(this.btnResetSettings_Click);
             // 
             // MainForm
             // 
@@ -451,6 +463,7 @@
         private System.Windows.Forms.CheckBox chkAutoRestart;
         private System.Windows.Forms.CheckBox chkHook;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Button btnResetSettings;
     }
 }
 

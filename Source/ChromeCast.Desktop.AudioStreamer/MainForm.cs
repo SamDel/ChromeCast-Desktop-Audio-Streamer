@@ -365,5 +365,10 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             return chkAutoRestart.Checked;
         }
+
+        private void btnResetSettings_Click(object sender, EventArgs e)
+        {
+            applicationLogic.ResetSettings();
+        }
     }
 }
