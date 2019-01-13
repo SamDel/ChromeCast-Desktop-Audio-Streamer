@@ -48,6 +48,8 @@
             this.lblStatus.Size = new System.Drawing.Size(301, 21);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "status";
+            this.lblStatus.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
+            this.lblStatus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceChildControl_MouseDown);
             // 
             // btnDevice
             // 
@@ -64,6 +66,8 @@
             this.btnDevice.TabIndex = 3;
             this.btnDevice.Text = "name";
             this.btnDevice.UseVisualStyleBackColor = true;
+            this.btnDevice.Click += new System.EventHandler(this.btnDevice_Click);
+            this.btnDevice.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // trbVolume
             // 
@@ -77,6 +81,7 @@
             this.trbVolume.TabIndex = 5;
             this.trbVolume.TickFrequency = 5;
             this.trbVolume.Scroll += new System.EventHandler(this.trbVolume_Scroll);
+            this.trbVolume.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // pictureVolumeMute
             // 
@@ -88,6 +93,7 @@
             this.pictureVolumeMute.TabIndex = 8;
             this.pictureVolumeMute.TabStop = false;
             this.pictureVolumeMute.Click += new System.EventHandler(this.pictureVolumeMute_Click);
+            this.pictureVolumeMute.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // picturePlayPause
             // 
@@ -100,6 +106,8 @@
             this.picturePlayPause.Size = new System.Drawing.Size(35, 35);
             this.picturePlayPause.TabIndex = 7;
             this.picturePlayPause.TabStop = false;
+            this.picturePlayPause.Click += new System.EventHandler(this.btnDevice_Click);
+            this.picturePlayPause.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // DeviceControl
             // 
@@ -115,6 +123,9 @@
             this.Controls.Add(this.btnDevice);
             this.Name = "DeviceControl";
             this.Size = new System.Drawing.Size(314, 137);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragDrop);
+            this.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceControl_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();

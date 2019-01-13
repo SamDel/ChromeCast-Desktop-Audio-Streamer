@@ -10,6 +10,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
     public partial class DeviceControl : UserControl
     {
         private IDevice device;
+        private EventHandler StartPause_Click;
 
         public DeviceControl(IDevice deviceIn)
         {
@@ -92,9 +93,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         public void SetClickCallBack(EventHandler handler)
         {
-            btnDevice.Click += handler;
-            lblStatus.Click += handler;
-            picturePlayPause.Click += handler;
+            StartPause_Click = handler;
         }
 
         public void OnVolumeUpdate(Volume volume)
@@ -127,6 +126,33 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
         private void pictureVolumeMute_Click(object sender, EventArgs e)
         {
             device.VolumeMute();
+        }
+
+        private void DeviceControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            var control = sender as Control;
+            control.DoDragDrop(control, DragDropEffects.Move);
+        }
+
+        private void DeviceChildControl_MouseDown(object sender, MouseEventArgs e)
+        {
+            var control = sender as Control;
+            control.DoDragDrop(control.Parent, DragDropEffects.Move);
+        }
+
+        private void DeviceControl_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.All;
+        }
+
+        private void DeviceControl_DragDrop(object sender, DragEventArgs e)
+        {
+            ((IMainForm)((DeviceControl)sender).ParentForm).DoDragDrop(sender, e);
+        }
+
+        private void btnDevice_Click(object sender, EventArgs e)
+        {
+            StartPause_Click(sender, e);
         }
     }
 }

@@ -370,5 +370,19 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             applicationLogic.ResetSettings();
         }
+
+        public void DoDragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetFormats().Length >= 1 &&
+                e.Data.GetData(e.Data.GetFormats()[0]) is DeviceControl &&
+                sender is DeviceControl)
+            {
+                var draggingControl = (DeviceControl)e.Data.GetData(e.Data.GetFormats()[0]);
+                var droppingOnControl = (DeviceControl)sender;
+                var indexDrop = pnlDevices.Controls.GetChildIndex(droppingOnControl);
+
+                pnlDevices.Controls.SetChildIndex(draggingControl, indexDrop);
+            }
+        }
     }
 }

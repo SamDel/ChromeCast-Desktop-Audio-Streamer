@@ -1,4 +1,5 @@
-﻿using ChromeCast.Desktop.AudioStreamer.Application;
+﻿using System.Windows.Forms;
+using ChromeCast.Desktop.AudioStreamer.Application;
 using CSCore.CoreAudioAPI;
 
 namespace ChromeCast.Desktop.AudioStreamer
@@ -23,5 +24,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool GetShowWindowOnStart();
         bool GetAutoRestart();
         void SetAutoStart(bool autoStart);
+        void DoDragDrop(object sender, DragEventArgs e);
     }
 }
