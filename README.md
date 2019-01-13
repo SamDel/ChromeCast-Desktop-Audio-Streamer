@@ -15,8 +15,7 @@ https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki
 - CSCore - https://github.com/filoe/cscore
 - Protocol Buffers - https://github.com/google/protobuf
 - protobuf-csharp-port - https://github.com/jskeet/protobuf-csharp-port
-- Microsoft Visual Studio 2015 Installer Projects - https://marketplace.visualstudio.com/items?itemName=VisualStudioProductTeam.MicrosoftVisualStudio2015InstallerProjects
-
+- Microsoft Visual Studio Installer Projects - https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects
 
 # Learned from
 
