@@ -154,16 +154,16 @@
             // 
             this.grpDevices.Controls.Add(this.btnScan);
             this.grpDevices.Controls.Add(this.pnlDevices);
-            this.grpDevices.Location = new System.Drawing.Point(44, 150);
+            this.grpDevices.Location = new System.Drawing.Point(44, 124);
             this.grpDevices.Name = "grpDevices";
-            this.grpDevices.Size = new System.Drawing.Size(1010, 321);
+            this.grpDevices.Size = new System.Drawing.Size(1010, 347);
             this.grpDevices.TabIndex = 11;
             this.grpDevices.TabStop = false;
             this.grpDevices.Text = "Devices (click name to start streaming)";
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(785, 288);
+            this.btnScan.Location = new System.Drawing.Point(781, 320);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(206, 27);
             this.btnScan.TabIndex = 11;
@@ -176,7 +176,7 @@
             this.pnlDevices.AutoScroll = true;
             this.pnlDevices.Location = new System.Drawing.Point(22, 34);
             this.pnlDevices.Name = "pnlDevices";
-            this.pnlDevices.Size = new System.Drawing.Size(969, 265);
+            this.pnlDevices.Size = new System.Drawing.Size(969, 290);
             this.pnlDevices.TabIndex = 10;
             // 
             // grpVolume
@@ -187,7 +187,7 @@
             this.grpVolume.Controls.Add(this.btnVolumeMute);
             this.grpVolume.Location = new System.Drawing.Point(44, 10);
             this.grpVolume.Name = "grpVolume";
-            this.grpVolume.Size = new System.Drawing.Size(1010, 134);
+            this.grpVolume.Size = new System.Drawing.Size(1010, 108);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
