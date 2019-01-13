@@ -71,6 +71,32 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public bool? ShowLagControl
+        {
+            get
+            {
+                return (bool?)this["ShowLagControl"];
+            }
+            set
+            {
+                this["ShowLagControl"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public int? LagControlValue
+        {
+            get
+            {
+                return (int?)this["LagControlValue"];
+            }
+            set
+            {
+                this["LagControlValue"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public List<SettingHost> ChromecastHosts
         {
             get

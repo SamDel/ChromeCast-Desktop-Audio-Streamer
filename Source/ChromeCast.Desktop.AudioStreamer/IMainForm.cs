@@ -25,5 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool GetAutoRestart();
         void SetAutoStart(bool autoStart);
         void DoDragDrop(object sender, DragEventArgs e);
+        bool? GetShowLagControl();
+        int? GetLagValue();
     }
 }

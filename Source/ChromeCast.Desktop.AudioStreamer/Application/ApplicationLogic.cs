@@ -138,8 +138,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetConfiguration(bool showLog, bool showLagControl, int lagValue, string ipAddressesDevices)
         {
             mainForm.ShowLog(showLog);
-            mainForm.ShowLagControl(showLagControl);
-            mainForm.SetLagValue(lagValue);
 
             if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
             {
@@ -231,6 +229,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
+            mainForm.ShowLagControl(settings.ShowLagControl ?? false);
+            mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             if (settings.ChromecastHosts != null)
             {
                 for (int i = 0; i < settings.ChromecastHosts.Count; i++)
@@ -272,6 +272,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.AutoRestart = mainForm.GetAutoRestart();
+            settings.ShowLagControl = mainForm.GetShowLagControl();
+            settings.LagControlValue = mainForm.GetLagValue();
 
             settings.Save();
         }
@@ -283,11 +285,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
+            settings.ShowLagControl = false;
+            settings.LagControlValue = 1000;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
+            mainForm.ShowLagControl(settings.ShowLagControl.Value);
+            mainForm.SetLagValue(settings.LagControlValue.Value);
             settings.Save();
         }
     }

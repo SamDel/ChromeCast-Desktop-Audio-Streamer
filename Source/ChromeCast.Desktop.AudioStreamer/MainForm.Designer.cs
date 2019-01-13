@@ -60,6 +60,7 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
+            this.chkShowLagControl = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -244,6 +245,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkShowLagControl);
             this.groupBox1.Controls.Add(this.btnResetSettings);
             this.groupBox1.Controls.Add(this.lblVersion);
             this.groupBox1.Controls.Add(this.chkAutoStart);
@@ -282,7 +284,7 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(15, 75);
+            this.chkAutoStart.Location = new System.Drawing.Point(15, 145);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(261, 21);
             this.chkAutoStart.TabIndex = 24;
@@ -294,7 +296,7 @@
             this.chkShowWindowOnStart.AutoSize = true;
             this.chkShowWindowOnStart.Checked = true;
             this.chkShowWindowOnStart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 49);
+            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 119);
             this.chkShowWindowOnStart.Name = "chkShowWindowOnStart";
             this.chkShowWindowOnStart.Size = new System.Drawing.Size(177, 21);
             this.chkShowWindowOnStart.TabIndex = 23;
@@ -305,7 +307,7 @@
             // 
             this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRecordingDevice.FormattingEnabled = true;
-            this.cmbRecordingDevice.Location = new System.Drawing.Point(153, 156);
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(158, 51);
             this.cmbRecordingDevice.Name = "cmbRecordingDevice";
             this.cmbRecordingDevice.Size = new System.Drawing.Size(429, 24);
             this.cmbRecordingDevice.TabIndex = 22;
@@ -313,7 +315,7 @@
             // lblDevice
             // 
             this.lblDevice.AutoSize = true;
-            this.lblDevice.Location = new System.Drawing.Point(12, 159);
+            this.lblDevice.Location = new System.Drawing.Point(12, 54);
             this.lblDevice.Name = "lblDevice";
             this.lblDevice.Size = new System.Drawing.Size(122, 17);
             this.lblDevice.TabIndex = 21;
@@ -323,7 +325,7 @@
             // 
             this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIP4AddressUsed.FormattingEnabled = true;
-            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(153, 126);
+            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(158, 21);
             this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
             this.cmbIP4AddressUsed.Size = new System.Drawing.Size(429, 24);
             this.cmbIP4AddressUsed.TabIndex = 20;
@@ -331,7 +333,7 @@
             // lblIpAddressUsed
             // 
             this.lblIpAddressUsed.AutoSize = true;
-            this.lblIpAddressUsed.Location = new System.Drawing.Point(12, 129);
+            this.lblIpAddressUsed.Location = new System.Drawing.Point(12, 24);
             this.lblIpAddressUsed.Name = "lblIpAddressUsed";
             this.lblIpAddressUsed.Size = new System.Drawing.Size(122, 17);
             this.lblIpAddressUsed.TabIndex = 19;
@@ -340,7 +342,7 @@
             // chkAutoRestart
             // 
             this.chkAutoRestart.AutoSize = true;
-            this.chkAutoRestart.Location = new System.Drawing.Point(15, 101);
+            this.chkAutoRestart.Location = new System.Drawing.Point(15, 171);
             this.chkAutoRestart.Name = "chkAutoRestart";
             this.chkAutoRestart.Size = new System.Drawing.Size(325, 21);
             this.chkAutoRestart.TabIndex = 18;
@@ -350,7 +352,7 @@
             // chkHook
             // 
             this.chkHook.AutoSize = true;
-            this.chkHook.Location = new System.Drawing.Point(15, 23);
+            this.chkHook.Location = new System.Drawing.Point(15, 93);
             this.chkHook.Name = "chkHook";
             this.chkHook.Size = new System.Drawing.Size(556, 21);
             this.chkHook.TabIndex = 14;
@@ -401,6 +403,17 @@
             this.textLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
+            // 
+            // chkShowLagControl
+            // 
+            this.chkShowLagControl.AutoSize = true;
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 197);
+            this.chkShowLagControl.Name = "chkShowLagControl";
+            this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
+            this.chkShowLagControl.TabIndex = 27;
+            this.chkShowLagControl.Text = "Show lag control (experimental)";
+            this.chkShowLagControl.UseVisualStyleBackColor = true;
+            this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.chkShowLagControl_CheckedChanged);
             // 
             // MainForm
             // 
@@ -464,6 +477,7 @@
         private System.Windows.Forms.CheckBox chkHook;
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Button btnResetSettings;
+        private System.Windows.Forms.CheckBox chkShowLagControl;
     }
 }
 

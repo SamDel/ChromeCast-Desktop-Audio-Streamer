@@ -101,11 +101,16 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             if (!showLag)
             {
-                grpDevices.Height += grpLag.Height;
-                pnlDevices.Height += grpLag.Height;
-                btnScan.Top = grpDevices.Height - btnScan.Height - 10;
+                grpDevices.Height = tabPage2.Height - grpVolume.Height - 30;
             }
+            else
+            {
+                grpDevices.Height = tabPage2.Height - grpVolume.Height - grpLag.Height - 30;
+            }
+            pnlDevices.Height = grpDevices.Height - 30;
+            btnScan.Top = grpDevices.Height - btnScan.Height - 10;
             grpLag.Visible = showLag;
+            chkShowLagControl.Checked = showLag;
         }
 
         public void ShowLog(bool boolShowLog)
@@ -383,6 +388,21 @@ namespace ChromeCast.Desktop.AudioStreamer
 
                 pnlDevices.Controls.SetChildIndex(draggingControl, indexDrop);
             }
+        }
+
+        private void chkShowLagControl_CheckedChanged(object sender, EventArgs e)
+        {
+            ShowLagControl(chkShowLagControl.Checked);
+        }
+
+        public bool? GetShowLagControl()
+        {
+            return chkShowLagControl.Checked;
+        }
+
+        public int? GetLagValue()
+        {
+            return trbLag.Value;
         }
     }
 }
