@@ -12,7 +12,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         void AddStreamingConnection(Socket socket, string httpRequest);
         void OnGetStatus();
-        void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold);
+        void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
         void OnDeviceAvailable(DiscoveredSsdpDevice discoveredSsdpDevice, SsdpDevice ssdpRootDevice);
         void VolumeUp();
         void VolumeDown();

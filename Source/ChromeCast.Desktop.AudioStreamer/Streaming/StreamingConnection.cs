@@ -3,6 +3,7 @@ using System.Text;
 using System.Net.Sockets;
 using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -19,7 +20,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             isRiffHeaderSent = false;
         }
 
-        public void SendData(byte[] dataToSend, WaveFormat format, int reduceLagThreshold)
+        public void SendData(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
             if (reduceLagThreshold < 1000)
             {
@@ -31,10 +32,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
             }
 
-            if (!isRiffHeaderSent)
+            if (streamFormat.Equals(SupportedStreamFormat.Wav))
             {
-                isRiffHeaderSent = true;
-                Send(riff.GetRiffHeader(format));
+                if (!isRiffHeaderSent)
+                {
+                    isRiffHeaderSent = true;
+                    Send(riff.GetRiffHeader(format));
+                }
             }
 
             Send(dataToSend);

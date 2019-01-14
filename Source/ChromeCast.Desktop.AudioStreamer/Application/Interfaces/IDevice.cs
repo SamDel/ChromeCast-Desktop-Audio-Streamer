@@ -7,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -17,7 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetDiscoveredDevices(DiscoveredSsdpDevice device, SsdpDevice fullDevice);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
-        void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold);
+        void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
         void OnClickDeviceButton(object sender, EventArgs e);
         string GetUsn();
         string GetHost();

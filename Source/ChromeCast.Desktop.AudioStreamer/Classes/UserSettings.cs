@@ -70,6 +70,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+
+        [UserScopedSetting()]
+        public SupportedStreamFormat? StreamFormat
+        {
+            get
+            {
+                return (SupportedStreamFormat?)this["StreamFormat"];
+            }
+            set
+            {
+                this["StreamFormat"] = value;
+            }
+        }
+
         [UserScopedSetting()]
         public bool? ShowLagControl
         {

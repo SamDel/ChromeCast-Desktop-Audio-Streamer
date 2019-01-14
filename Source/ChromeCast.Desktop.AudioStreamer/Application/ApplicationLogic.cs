@@ -29,8 +29,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
         private string streamingUrl = string.Empty;
-        private bool playingOnIpChange;
+        private bool playingOnIpOrFormatChange;
         private UserSettings settings = new UserSettings();
+        private Mp3Stream Mp3Stream = null;
+        private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Wav;
 
         private bool AutoRestart { get; set; } = false;
 
@@ -85,7 +87,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format)
         {
-            devices.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold);
+            if (!StreamFormatSelected.Equals(SupportedStreamFormat.Wav))
+            {
+                if (Mp3Stream == null)
+                {
+                    Mp3Stream = new Mp3Stream(format, StreamFormatSelected);
+                }
+                Mp3Stream.Encode(dataToSend);
+                dataToSend = Mp3Stream.Read();
+            }
+            if (dataToSend.Length > 0)
+            {
+                devices.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, StreamFormatSelected);
+            }
         }
 
         public void OnSetHooks(bool setHooks)
@@ -127,6 +141,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public string GetStreamingUrl()
         {
+            mainForm.GetStreamFormat();
             return streamingUrl;
         }
 
@@ -186,9 +201,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool GetAutoRestart()
         {
-            if (playingOnIpChange)
+            if (playingOnIpOrFormatChange)
             {
-                playingOnIpChange = false;
+                playingOnIpOrFormatChange = false;
                 return true;
             }
             else
@@ -199,15 +214,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public async void ChangeIPAddressUsed(IPAddress ipAddress)
         {
-            playingOnIpChange = devices.Stop();
+            playingOnIpOrFormatChange = devices.Stop();
             streamingRequestListener.StopListening();
             await Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
-            if (playingOnIpChange)
+            if (playingOnIpOrFormatChange)
             {
                 await Task.Delay(2500);
                 devices.Start();
                 await Task.Delay(15000);
-                playingOnIpChange = false;
+                playingOnIpOrFormatChange = false;
             }
         }
 
@@ -230,6 +245,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             OnSetHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
+            mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             if (settings.ChromecastHosts != null)
@@ -273,6 +289,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.AutoRestart = mainForm.GetAutoRestart();
+            settings.StreamFormat = StreamFormatSelected;
             settings.ShowLagControl = mainForm.GetShowLagControl();
             settings.LagControlValue = mainForm.GetLagValue();
 
@@ -286,6 +303,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
+            settings.StreamFormat = SupportedStreamFormat.Wav;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
@@ -293,9 +311,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
+            mainForm.SetStreamFormat(settings.StreamFormat.Value);
             mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
             settings.Save();
+        }
+
+        public void SetStreamFormat(SupportedStreamFormat format)
+        {
+            if (format != StreamFormatSelected)
+            {
+                StreamFormatSelected = format;
+                Mp3Stream = null;
+
+                playingOnIpOrFormatChange = devices.Stop();
+                if (playingOnIpOrFormatChange)
+                {
+                    devices.Start();
+                    playingOnIpOrFormatChange = false;
+                }
+            }
         }
     }
 }

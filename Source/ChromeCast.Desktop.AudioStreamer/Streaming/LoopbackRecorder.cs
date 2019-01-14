@@ -35,39 +35,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public void StartRecordingDevice()
         {
-            MMDevice recordingDevice = null;
-            var attempt = 0;
-            do
-            {
-                recordingDevice = mainForm.GetRecordingDevice();
-                if (recordingDevice == null)
-                {
-                    Task.Delay(1000).Wait();
-                    attempt++;
-                }
-            } while (recordingDevice == null && attempt <= 10);
+            mainForm.GetRecordingDevice(StartRecordingSetDevice);
 
-            if (recordingDevice == null)
-            {
-                MessageBox.Show("No recording devices found.");
-                Console.WriteLine("No devices found.");
-                return;
-            }
-
-            soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
-            {
-                Device = recordingDevice
-            };
-
-            soundIn.Initialize();
-            soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-            convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
-            convertedSource = convertedSource.ToStereo();
-            soundInSource.DataAvailable += OnDataAvailable;
-            soundIn.Start();
-
-            var format = convertedSource.WaveFormat;
-            waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
         }
 
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
@@ -116,6 +85,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
             mainForm.AddRecordingDevices(devices, defaultDevice);
+        }
+
+        public void StartRecordingSetDevice(MMDevice recordingDevice)
+        {
+            if (recordingDevice == null)
+            {
+                MessageBox.Show("No recording devices found.");
+                Console.WriteLine("No devices found.");
+                return;
+            }
+
+            soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+            {
+                Device = recordingDevice
+            };
+
+            soundIn.Initialize();
+            soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
+            convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+            convertedSource = convertedSource.ToStereo();
+            soundInSource.DataAvailable += OnDataAvailable;
+            soundIn.Start();
+
+            var format = convertedSource.WaveFormat;
+            waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
         }
     }
 }

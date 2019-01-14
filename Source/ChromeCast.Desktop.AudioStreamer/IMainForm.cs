@@ -1,5 +1,7 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 using CSCore.CoreAudioAPI;
 
 namespace ChromeCast.Desktop.AudioStreamer
@@ -17,7 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool DoSyncDevices();
         void Dispose();
         void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
-        MMDevice GetRecordingDevice();
+        void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice);
         void SetAutoRestart(bool autoRestart);
         bool GetUseKeyboardShortCuts();
         bool GetAutoStartDevices();
@@ -27,5 +29,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void DoDragDrop(object sender, DragEventArgs e);
         bool? GetShowLagControl();
         int? GetLagValue();
+        void SetStreamFormat(SupportedStreamFormat format);
+        void GetStreamFormat();
     }
 }

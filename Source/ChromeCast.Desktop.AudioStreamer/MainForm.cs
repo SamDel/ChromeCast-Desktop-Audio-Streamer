@@ -46,6 +46,19 @@ namespace ChromeCast.Desktop.AudioStreamer
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             lblVersion.Text = $"Version {fvi.FileVersion}";
+            FillStreamFormats();
+        }
+
+        private void FillStreamFormats()
+        {
+            if (cmbStreamFormat.Items.Count == 0)
+            {
+                cmbStreamFormat.Items.Add(SupportedStreamFormat.Wav);
+                cmbStreamFormat.Items.Add(SupportedStreamFormat.Mp3_128);
+                cmbStreamFormat.Items.Add(SupportedStreamFormat.Mp3_320);
+                cmbStreamFormat.SelectedItem = SupportedStreamFormat.Wav;
+                SetStreamFormat();
+            }
         }
 
         private void AddressChangedCallback(object sender, EventArgs e)
@@ -263,28 +276,19 @@ namespace ChromeCast.Desktop.AudioStreamer
             }
         }
 
-        public MMDevice GetRecordingDevice()
+        public void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice)
         {
             if (InvokeRequired)
             {
-                try
-                {
-                    if (cmbRecordingDevice.Items.Count > 0)
-                        return (MMDevice)cmbRecordingDevice.SelectedItem;
-                }
-                catch (Exception ex)
-                {
-                    logger.Log($"ex : {ex.Message}");
-                    Invoke(new Func<MMDevice>(GetRecordingDevice));
-                    return null;
-                }
+                Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
+                return;
             }
-            if (IsDisposed) return null;
+            if (IsDisposed) return;
 
             if (cmbRecordingDevice.Items.Count > 0)
-                return (MMDevice)cmbRecordingDevice.SelectedItem;
-
-            return null;
+                startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
+            else
+                startRecordingSetDevice(null);
         }
 
         private void cmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
@@ -403,6 +407,43 @@ namespace ChromeCast.Desktop.AudioStreamer
         public int? GetLagValue()
         {
             return trbLag.Value;
+        }
+
+        public void SetStreamFormat(SupportedStreamFormat format)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<SupportedStreamFormat>(SetStreamFormat), new object[] { format });
+                return;
+            }
+            if (IsDisposed) return;
+
+            FillStreamFormats();
+            cmbStreamFormat.SelectedItem = format;
+            SetStreamFormat();
+        }
+
+        public void GetStreamFormat()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(GetStreamFormat));
+                return;
+            }
+            if (IsDisposed) return;
+
+            SetStreamFormat();
+        }
+
+        private void cmbStreamFormat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetStreamFormat();
+        }
+
+        private void SetStreamFormat()
+        {
+            if (cmbStreamFormat.SelectedItem != null)
+                applicationLogic.SetStreamFormat((SupportedStreamFormat)cmbStreamFormat.SelectedItem);
         }
     }
 }

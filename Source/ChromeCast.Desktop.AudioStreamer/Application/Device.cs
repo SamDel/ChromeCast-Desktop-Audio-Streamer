@@ -60,15 +60,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.LoadMedia();
         }
 
-        public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold)
+        public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
             if (streamingConnection != null)
             {
                 if (streamingConnection.IsConnected())
                 {
-                    if (deviceState != DeviceState.Paused)
+                    if (deviceState != DeviceState.Paused && deviceState != DeviceState.Closed)
                     {
-                        streamingConnection.SendData(dataToSend, format, reduceLagThreshold);
+                        streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                         if (deviceState != DeviceState.Buffering && deviceState != DeviceState.Playing)
                             SetDeviceState(DeviceState.Playing, "");
                     }
