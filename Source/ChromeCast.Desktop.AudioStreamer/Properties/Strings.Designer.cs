@@ -97,6 +97,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Settings.
+        /// </summary>
+        internal static string Button_ResetSetting_Text {
+            get {
+                return ResourceManager.GetString("Button_ResetSetting_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan again for devices.
         /// </summary>
         internal static string Button_ScanAgain_Text {
@@ -435,6 +444,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Playing {
             get {
                 return ResourceManager.GetString("Playing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        internal static string Tab_Log_Text {
+            get {
+                return ResourceManager.GetString("Tab_Log_Text", resourceCulture);
             }
         }
         

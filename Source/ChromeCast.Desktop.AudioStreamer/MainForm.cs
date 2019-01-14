@@ -75,6 +75,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
             chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
+            btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
+            tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
         }
 

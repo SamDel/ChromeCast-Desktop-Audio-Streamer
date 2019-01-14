@@ -129,6 +129,9 @@
   <data name="Button_Mute_Text" xml:space="preserve">
     <value>Mute</value>
   </data>
+  <data name="Button_ResetSetting_Text" xml:space="preserve">
+    <value>Reset Settings</value>
+  </data>
   <data name="Button_ScanAgain_Text" xml:space="preserve">
     <value>Scan again for devices</value>
   </data>
@@ -242,6 +245,9 @@
   </data>
   <data name="Playing" xml:space="preserve">
     <value>Playing</value>
+  </data>
+  <data name="Tab_Log_Text" xml:space="preserve">
+    <value>Log</value>
   </data>
   <data name="Tab_Options_Text" xml:space="preserve">
     <value>Options</value>
