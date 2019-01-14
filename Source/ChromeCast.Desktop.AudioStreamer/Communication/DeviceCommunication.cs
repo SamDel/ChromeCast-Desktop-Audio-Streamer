@@ -127,12 +127,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             sendMessage?.Invoke(byteMessage);
 
-            logger.Log(string.Format("out [{2}][{0}]: {1}", getHost?.Invoke(), castMessage.PayloadUtf8, DateTime.Now.ToLongTimeString()));
+            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
         }
 
         public async void OnReceiveMessage(CastMessage castMessage)
         {
-            logger.Log(string.Format("in [{2}] [{0}]: {1}", getHost?.Invoke(), castMessage.PayloadUtf8, DateTime.Now.ToLongTimeString()));
+            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
@@ -210,7 +210,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
                 var minutes = ((int)(mediaStatusMessage.status.First().currentTime) % 3600) / 60;
                 var hours = ((int)mediaStatusMessage.status.First().currentTime) / 3600;
-                return string.Format("{0}:{1}", hours, minutes.ToString("D2"));
+                return $"{hours}:{minutes.ToString("D2")}";
             }
 
             return null;

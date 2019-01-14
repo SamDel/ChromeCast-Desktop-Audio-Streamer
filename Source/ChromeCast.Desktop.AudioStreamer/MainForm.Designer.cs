@@ -30,9 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPageMain = new System.Windows.Forms.TabPage();
             this.grpLag = new System.Windows.Forms.GroupBox();
-            this.lblLag = new System.Windows.Forms.Label();
+            this.lblLagExperimental = new System.Windows.Forms.Label();
             this.lblLagMin = new System.Windows.Forms.Label();
             this.lblLagMax = new System.Windows.Forms.Label();
             this.trbLag = new System.Windows.Forms.TrackBar();
@@ -44,8 +44,9 @@
             this.btnVolumeUp = new System.Windows.Forms.Button();
             this.btnVolumeDown = new System.Windows.Forms.Button();
             this.btnVolumeMute = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabPageOptions = new System.Windows.Forms.TabPage();
+            this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.lblStreamFormatExtra = new System.Windows.Forms.Label();
             this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
             this.lblStreamFormat = new System.Windows.Forms.Label();
             this.chkShowLagControl = new System.Windows.Forms.CheckBox();
@@ -59,48 +60,47 @@
             this.lblIpAddressUsed = new System.Windows.Forms.Label();
             this.chkAutoRestart = new System.Windows.Forms.CheckBox();
             this.chkHook = new System.Windows.Forms.CheckBox();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageLog = new System.Windows.Forms.TabPage();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).BeginInit();
             this.grpDevices.SuspendLayout();
             this.grpVolume.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPageOptions.SuspendLayout();
+            this.grpOptions.SuspendLayout();
+            this.tabPageLog.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
             // 
-            this.tabControl.Controls.Add(this.tabPage2);
-            this.tabControl.Controls.Add(this.tabPage3);
-            this.tabControl.Controls.Add(this.tabPage1);
+            this.tabControl.Controls.Add(this.tabPageMain);
+            this.tabControl.Controls.Add(this.tabPageOptions);
+            this.tabControl.Controls.Add(this.tabPageLog);
             this.tabControl.Location = new System.Drawing.Point(25, 13);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1100, 632);
             this.tabControl.TabIndex = 3;
             // 
-            // tabPage2
+            // tabPageMain
             // 
-            this.tabPage2.Controls.Add(this.grpLag);
-            this.tabPage2.Controls.Add(this.grpDevices);
-            this.tabPage2.Controls.Add(this.grpVolume);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1092, 603);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPageMain.Controls.Add(this.grpLag);
+            this.tabPageMain.Controls.Add(this.grpDevices);
+            this.tabPageMain.Controls.Add(this.grpVolume);
+            this.tabPageMain.Location = new System.Drawing.Point(4, 25);
+            this.tabPageMain.Name = "tabPageMain";
+            this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMain.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageMain.TabIndex = 1;
+            this.tabPageMain.UseVisualStyleBackColor = true;
             // 
             // grpLag
             // 
-            this.grpLag.Controls.Add(this.lblLag);
+            this.grpLag.Controls.Add(this.lblLagExperimental);
             this.grpLag.Controls.Add(this.lblLagMin);
             this.grpLag.Controls.Add(this.lblLagMax);
             this.grpLag.Controls.Add(this.trbLag);
@@ -111,14 +111,14 @@
             this.grpLag.TabStop = false;
             this.grpLag.Text = "Lag Control";
             // 
-            // lblLag
+            // lblLagExperimental
             // 
-            this.lblLag.AutoSize = true;
-            this.lblLag.Location = new System.Drawing.Point(346, 86);
-            this.lblLag.Name = "lblLag";
-            this.lblLag.Size = new System.Drawing.Size(641, 17);
-            this.lblLag.TabIndex = 3;
-            this.lblLag.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
+            this.lblLagExperimental.AutoSize = true;
+            this.lblLagExperimental.Location = new System.Drawing.Point(346, 86);
+            this.lblLagExperimental.Name = "lblLagExperimental";
+            this.lblLagExperimental.Size = new System.Drawing.Size(641, 17);
+            this.lblLagExperimental.TabIndex = 3;
+            this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
     "ithout hearing gaps.";
             // 
             // lblLagMin
@@ -235,39 +235,48 @@
             this.btnVolumeMute.UseVisualStyleBackColor = true;
             this.btnVolumeMute.Click += new System.EventHandler(this.btnVolumeMute_Click);
             // 
-            // tabPage3
+            // tabPageOptions
             // 
-            this.tabPage3.Controls.Add(this.groupBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1092, 603);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Options";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPageOptions.Controls.Add(this.grpOptions);
+            this.tabPageOptions.Location = new System.Drawing.Point(4, 25);
+            this.tabPageOptions.Name = "tabPageOptions";
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOptions.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageOptions.TabIndex = 2;
+            this.tabPageOptions.Text = "Options";
+            this.tabPageOptions.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
+            // grpOptions
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.cmbStreamFormat);
-            this.groupBox1.Controls.Add(this.lblStreamFormat);
-            this.groupBox1.Controls.Add(this.chkShowLagControl);
-            this.groupBox1.Controls.Add(this.btnResetSettings);
-            this.groupBox1.Controls.Add(this.lblVersion);
-            this.groupBox1.Controls.Add(this.chkAutoStart);
-            this.groupBox1.Controls.Add(this.chkShowWindowOnStart);
-            this.groupBox1.Controls.Add(this.cmbRecordingDevice);
-            this.groupBox1.Controls.Add(this.lblDevice);
-            this.groupBox1.Controls.Add(this.cmbIP4AddressUsed);
-            this.groupBox1.Controls.Add(this.lblIpAddressUsed);
-            this.groupBox1.Controls.Add(this.chkAutoRestart);
-            this.groupBox1.Controls.Add(this.chkHook);
-            this.groupBox1.Location = new System.Drawing.Point(27, 22);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1038, 553);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Options";
+            this.grpOptions.Controls.Add(this.lblStreamFormatExtra);
+            this.grpOptions.Controls.Add(this.cmbStreamFormat);
+            this.grpOptions.Controls.Add(this.lblStreamFormat);
+            this.grpOptions.Controls.Add(this.chkShowLagControl);
+            this.grpOptions.Controls.Add(this.btnResetSettings);
+            this.grpOptions.Controls.Add(this.lblVersion);
+            this.grpOptions.Controls.Add(this.chkAutoStart);
+            this.grpOptions.Controls.Add(this.chkShowWindowOnStart);
+            this.grpOptions.Controls.Add(this.cmbRecordingDevice);
+            this.grpOptions.Controls.Add(this.lblDevice);
+            this.grpOptions.Controls.Add(this.cmbIP4AddressUsed);
+            this.grpOptions.Controls.Add(this.lblIpAddressUsed);
+            this.grpOptions.Controls.Add(this.chkAutoRestart);
+            this.grpOptions.Controls.Add(this.chkHook);
+            this.grpOptions.Location = new System.Drawing.Point(27, 22);
+            this.grpOptions.Name = "grpOptions";
+            this.grpOptions.Size = new System.Drawing.Size(1038, 553);
+            this.grpOptions.TabIndex = 14;
+            this.grpOptions.TabStop = false;
+            this.grpOptions.Text = "Options";
+            // 
+            // lblStreamFormatExtra
+            // 
+            this.lblStreamFormatExtra.AutoSize = true;
+            this.lblStreamFormatExtra.Location = new System.Drawing.Point(262, 83);
+            this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
+            this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
+            this.lblStreamFormatExtra.TabIndex = 30;
+            this.lblStreamFormatExtra.Text = "The mp3 formats have a long lag and buffering time.";
             // 
             // cmbStreamFormat
             // 
@@ -397,18 +406,18 @@
             this.chkHook.UseVisualStyleBackColor = true;
             this.chkHook.CheckedChanged += new System.EventHandler(this.chkHook_CheckedChanged);
             // 
-            // tabPage1
+            // tabPageLog
             // 
-            this.tabPage1.Controls.Add(this.btnClipboardCopy);
-            this.tabPage1.Controls.Add(this.labelPingPong);
-            this.tabPage1.Controls.Add(this.textLog);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1092, 603);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Log";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageLog.Controls.Add(this.btnClipboardCopy);
+            this.tabPageLog.Controls.Add(this.labelPingPong);
+            this.tabPageLog.Controls.Add(this.textLog);
+            this.tabPageLog.Location = new System.Drawing.Point(4, 25);
+            this.tabPageLog.Name = "tabPageLog";
+            this.tabPageLog.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLog.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageLog.TabIndex = 0;
+            this.tabPageLog.Text = "Log";
+            this.tabPageLog.UseVisualStyleBackColor = true;
             // 
             // btnClipboardCopy
             // 
@@ -440,15 +449,6 @@
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(262, 83);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(338, 17);
-            this.label1.TabIndex = 30;
-            this.label1.Text = "The mp3 formats have a long lag and buffering time.";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -459,21 +459,21 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "ChromeCast Desktop Audio Streamer";
+            this.Text = "Chromecast Desktop Audio Streamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.tabControl.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabPageMain.ResumeLayout(false);
             this.grpLag.ResumeLayout(false);
             this.grpLag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).EndInit();
             this.grpDevices.ResumeLayout(false);
             this.grpVolume.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabPageOptions.ResumeLayout(false);
+            this.grpOptions.ResumeLayout(false);
+            this.grpOptions.PerformLayout();
+            this.tabPageLog.ResumeLayout(false);
+            this.tabPageLog.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -481,26 +481,26 @@
         #endregion
 
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageMain;
         private System.Windows.Forms.GroupBox grpLag;
         private System.Windows.Forms.TrackBar trbLag;
         private System.Windows.Forms.GroupBox grpDevices;
         private System.Windows.Forms.FlowLayoutPanel pnlDevices;
         private System.Windows.Forms.GroupBox grpVolume;
         private System.Windows.Forms.Button btnVolumeMute;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageLog;
         private System.Windows.Forms.Label labelPingPong;
         private System.Windows.Forms.TextBox textLog;
         private System.Windows.Forms.Label lblLagMin;
         private System.Windows.Forms.Label lblLagMax;
-        private System.Windows.Forms.Label lblLag;
+        private System.Windows.Forms.Label lblLagExperimental;
         private System.Windows.Forms.Button btnVolumeUp;
         private System.Windows.Forms.Button btnVolumeDown;
         private System.Windows.Forms.Button btnSyncDevices;
         private System.Windows.Forms.Button btnClipboardCopy;
         private System.Windows.Forms.Button btnScan;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TabPage tabPageOptions;
+        private System.Windows.Forms.GroupBox grpOptions;
         private System.Windows.Forms.CheckBox chkAutoStart;
         private System.Windows.Forms.CheckBox chkShowWindowOnStart;
         private System.Windows.Forms.ComboBox cmbRecordingDevice;
@@ -514,7 +514,7 @@
         private System.Windows.Forms.CheckBox chkShowLagControl;
         private System.Windows.Forms.ComboBox cmbStreamFormat;
         private System.Windows.Forms.Label lblStreamFormat;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblStreamFormatExtra;
     }
 }
 

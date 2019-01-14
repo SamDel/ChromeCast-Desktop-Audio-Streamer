@@ -126,7 +126,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var contextMenu = new ContextMenu();
             var menuItem = new MenuItem();
             menuItem.Index = 0;
-            menuItem.Text = "Close";
+            menuItem.Text = Properties.Strings.TrayIcon_Close;
             menuItem.Click += new EventHandler(CloseApplication);
             contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
 
@@ -134,7 +134,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             notifyIcon.Icon = ((Icon)(resources.GetObject("$this.Icon")));
             notifyIcon.Visible = true;
-            notifyIcon.Text = "ChromeCast Desktop Streamer";
+            notifyIcon.Text = Properties.Strings.MainForm_Text;
             notifyIcon.ContextMenu = contextMenu;
             notifyIcon.Click += ToggleFormVisibility;
         }

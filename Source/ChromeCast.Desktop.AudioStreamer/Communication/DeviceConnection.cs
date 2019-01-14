@@ -53,7 +53,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                     state = DeviceConnectionState.Error;
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
-                    logger.Log(string.Format("ex [{0}]: {1}", host, ex.Message));
+                    logger.Log($"ex [{host}]: {ex.Message}");
                 }
             }
         }

@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 
@@ -42,7 +43,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 return;
             }
 
-            lblStatus.Text = string.Format("{0} {1}", state, text);
+            lblStatus.Text = $"{Resource.Get(state.ToString())} {text}";
 
             switch (state)
             {

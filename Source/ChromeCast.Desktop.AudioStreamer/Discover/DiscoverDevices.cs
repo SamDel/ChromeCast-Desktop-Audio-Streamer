@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Timers;
 using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using System.Linq;

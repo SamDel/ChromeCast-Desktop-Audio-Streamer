@@ -73,7 +73,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     {
                         type = 0,
                         metadataType = 0,
-                        title = "Desktop Stream",
+                        title = Properties.Strings.ChromeCast_StreamTitle,
                         images = new List<Image>()
                     },
                 },

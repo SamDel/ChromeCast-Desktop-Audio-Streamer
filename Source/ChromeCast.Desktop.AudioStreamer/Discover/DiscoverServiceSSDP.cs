@@ -2,7 +2,6 @@
 using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using System.Net;
-using System.Net.Sockets;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {

@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming

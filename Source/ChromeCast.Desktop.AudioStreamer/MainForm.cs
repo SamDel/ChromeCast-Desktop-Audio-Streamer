@@ -24,6 +24,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             InitializeComponent();
 
+            ApplyLocalization();
             applicationLogic = applicationLogicIn;
             devices = devicesIn;
             logger = loggerIn;
@@ -45,8 +46,36 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            lblVersion.Text = $"Version {fvi.FileVersion}";
+            lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
             FillStreamFormats();
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = Properties.Strings.MainForm_Text;
+            grpVolume.Text = Properties.Strings.Group_VolumeAllDevices_Text;
+            btnVolumeUp.Text = Properties.Strings.Button_Up_Text;
+            btnVolumeDown.Text = Properties.Strings.Button_Down_Text;
+            btnVolumeMute.Text = Properties.Strings.Button_Mute_Text;
+            btnSyncDevices.Text = Properties.Strings.Button_SyncDevices_Text;
+            grpDevices.Text = Properties.Strings.Group_Devices_Text;
+            btnScan.Text = Properties.Strings.Button_ScanAgain_Text;
+            grpLag.Text = Properties.Strings.Group_Lag_Text;
+            lblLagMin.Text = Properties.Strings.Label_MinimumLag_Text;
+            lblLagMax.Text = Properties.Strings.Label_MaximumLag_Text;
+            lblLagExperimental.Text = Properties.Strings.Label_LagExperimental_Text;
+            tabPageOptions.Text = Properties.Strings.Tab_Options_Text;
+            grpOptions.Text = Properties.Strings.Group_Options_Text;
+            lblIpAddressUsed.Text = Properties.Strings.Label_IPAddressUsed_Text;
+            lblDevice.Text = Properties.Strings.Label_RecordingDevice_Text;
+            lblStreamFormat.Text = Properties.Strings.Label_StreamFormat_Text;
+            lblStreamFormatExtra.Text = Properties.Strings.Label_StreamFormatExtra_Text;
+            chkHook.Text = Properties.Strings.Check_KeyboardShortcuts_Text;
+            chkShowWindowOnStart.Text = Properties.Strings.Check_ShowWindowOnStart_Text;
+            chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
+            chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
+            chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
+            btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
         }
 
         private void FillStreamFormats()
@@ -114,11 +143,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             if (!showLag)
             {
-                grpDevices.Height = tabPage2.Height - grpVolume.Height - 30;
+                grpDevices.Height = tabPageMain.Height - grpVolume.Height - 30;
             }
             else
             {
-                grpDevices.Height = tabPage2.Height - grpVolume.Height - grpLag.Height - 30;
+                grpDevices.Height = tabPageMain.Height - grpVolume.Height - grpLag.Height - 30;
             }
             pnlDevices.Height = grpDevices.Height - 30;
             btnScan.Top = grpDevices.Height - btnScan.Height - 10;
@@ -190,7 +219,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
                 if (message.Contains("\"type\":\"PONG\"") || message.Contains("\"type\":\"PING\""))
                 {
-                    labelPingPong.Text = "Latest keep-alive message:" + DateTime.Now.ToLongTimeString();
+                    labelPingPong.Text = Properties.Strings.Label_KeepAlive_Text + DateTime.Now.ToLongTimeString();
                     labelPingPong.Update();
                 }
                 else
