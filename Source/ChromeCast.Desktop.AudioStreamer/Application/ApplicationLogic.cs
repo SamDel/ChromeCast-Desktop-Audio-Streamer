@@ -13,6 +13,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -33,6 +34,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private UserSettings settings = new UserSettings();
         private Mp3Stream Mp3Stream = null;
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Wav;
+        private string Culture;
 
         private bool AutoRestart { get; set; } = false;
 
@@ -246,6 +248,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             OnSetHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
+            mainForm.SetCulture(settings.Culture ?? Thread.CurrentThread.CurrentUICulture.Parent.Name);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             if (settings.ChromecastHosts != null)
@@ -290,6 +293,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.AutoRestart = mainForm.GetAutoRestart();
             settings.StreamFormat = StreamFormatSelected;
+            settings.Culture = Culture;
             settings.ShowLagControl = mainForm.GetShowLagControl();
             settings.LagControlValue = mainForm.GetLagValue();
 
@@ -304,6 +308,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
             settings.StreamFormat = SupportedStreamFormat.Wav;
+            settings.Culture = Thread.CurrentThread.CurrentUICulture.Parent.Name;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
@@ -312,6 +317,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
             mainForm.SetStreamFormat(settings.StreamFormat.Value);
+            mainForm.SetCulture(settings.Culture);
             mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
             settings.Save();
@@ -331,6 +337,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     playingOnIpOrFormatChange = false;
                 }
             }
+        }
+
+        public void SetCulture(string culture)
+        {
+            Culture = culture;
         }
     }
 }

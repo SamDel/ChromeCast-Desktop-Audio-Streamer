@@ -195,6 +195,9 @@
   <data name="Label_LagExperimental_Text" xml:space="preserve">
     <value>Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'appareil, sans temps-mort.</value>
   </data>
+  <data name="Label_Language_Text" xml:space="preserve">
+    <value>La langue</value>
+  </data>
   <data name="Label_MaximumLag_Text" xml:space="preserve">
     <value>décalage maximum / meilleure quality</value>
   </data>
@@ -209,6 +212,12 @@
   </data>
   <data name="Label_StreamFormat_Text" xml:space="preserve">
     <value>Format du flux</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="Language_French" xml:space="preserve">
+    <value>Français</value>
   </data>
   <data name="LaunchedApplication" xml:space="preserve">
     <value>Application lancée</value>

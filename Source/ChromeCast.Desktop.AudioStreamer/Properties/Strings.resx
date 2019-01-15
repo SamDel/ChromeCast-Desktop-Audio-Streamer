@@ -195,6 +195,9 @@
   <data name="Label_LagExperimental_Text" xml:space="preserve">
     <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</value>
   </data>
+  <data name="Label_Language_Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
   <data name="Label_MaximumLag_Text" xml:space="preserve">
     <value>maximum lag / best quality</value>
   </data>
@@ -209,6 +212,12 @@
   </data>
   <data name="Label_StreamFormat_Text" xml:space="preserve">
     <value>Stream format</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language_French" xml:space="preserve">
+    <value>French</value>
   </data>
   <data name="LaunchedApplication" xml:space="preserve">
     <value>Launched Application</value>

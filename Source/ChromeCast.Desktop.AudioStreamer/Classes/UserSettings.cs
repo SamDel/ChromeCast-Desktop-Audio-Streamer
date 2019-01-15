@@ -111,6 +111,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public string Culture
+        {
+            get
+            {
+                return (string)this["Culture"];
+            }
+            set
+            {
+                this["Culture"] = value;
+            }
+        }
+        [UserScopedSetting()]
         public List<SettingHost> ChromecastHosts
         {
             get

@@ -295,6 +295,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Language.
+        /// </summary>
+        internal static string Label_Language_Text {
+            get {
+                return ResourceManager.GetString("Label_Language_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maximum lag / best quality.
         /// </summary>
         internal static string Label_MaximumLag_Text {
@@ -336,6 +345,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Label_StreamFormatExtra_Text {
             get {
                 return ResourceManager.GetString("Label_StreamFormatExtra_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        internal static string Language_English {
+            get {
+                return ResourceManager.GetString("Language_English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to French.
+        /// </summary>
+        internal static string Language_French {
+            get {
+                return ResourceManager.GetString("Language_French", resourceCulture);
             }
         }
         

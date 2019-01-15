@@ -55,9 +55,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void ApplyLocalization()
         {
             // For testing languages
-            //CultureInfo ci = new CultureInfo("fr");
-            //Thread.CurrentThread.CurrentCulture = ci;
-            //Thread.CurrentThread.CurrentUICulture = ci;
+            //ChangeCulture("fr");
 
             Text = Properties.Strings.MainForm_Text;
             grpVolume.Text = Properties.Strings.Group_VolumeAllDevices_Text;
@@ -85,6 +83,11 @@ namespace ChromeCast.Desktop.AudioStreamer
             btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
+            lblLanguage.Text = Properties.Strings.Label_Language_Text;
+            cmbLanguage.Items.Clear();
+            cmbLanguage.Items.Add(string.Empty);
+            cmbLanguage.Items.Add(Properties.Strings.Language_English);
+            cmbLanguage.Items.Add(Properties.Strings.Language_French);
         }
 
         private void FillStreamFormats()
@@ -495,6 +498,23 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (cmbStreamFormat.SelectedItem != null)
                 applicationLogic.SetStreamFormat((SupportedStreamFormat)cmbStreamFormat.SelectedItem);
+        }
+
+        private void cmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_English)
+                SetCulture("en");
+            else if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_French)
+                SetCulture("fr");
+        }
+
+        public void SetCulture(string culture)
+        {
+            CultureInfo ci = new CultureInfo(culture);
+            Thread.CurrentThread.CurrentCulture = ci;
+            Thread.CurrentThread.CurrentUICulture = ci;
+            ApplyLocalization();
+            applicationLogic.SetCulture(culture);
         }
     }
 }

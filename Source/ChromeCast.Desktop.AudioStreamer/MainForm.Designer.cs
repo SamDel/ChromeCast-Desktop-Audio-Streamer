@@ -64,6 +64,8 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.labelPingPong = new System.Windows.Forms.Label();
             this.textLog = new System.Windows.Forms.TextBox();
+            this.lblLanguage = new System.Windows.Forms.Label();
+            this.cmbLanguage = new System.Windows.Forms.ComboBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -252,6 +254,8 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.cmbLanguage);
+            this.grpOptions.Controls.Add(this.lblLanguage);
             this.grpOptions.Controls.Add(this.lblStreamFormatExtra);
             this.grpOptions.Controls.Add(this.cmbStreamFormat);
             this.grpOptions.Controls.Add(this.lblStreamFormat);
@@ -304,7 +308,7 @@
             // chkShowLagControl
             // 
             this.chkShowLagControl.AutoSize = true;
-            this.chkShowLagControl.Location = new System.Drawing.Point(15, 237);
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 266);
             this.chkShowLagControl.Name = "chkShowLagControl";
             this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
             this.chkShowLagControl.TabIndex = 27;
@@ -334,7 +338,7 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(15, 185);
+            this.chkAutoStart.Location = new System.Drawing.Point(15, 214);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(261, 21);
             this.chkAutoStart.TabIndex = 24;
@@ -346,7 +350,7 @@
             this.chkShowWindowOnStart.AutoSize = true;
             this.chkShowWindowOnStart.Checked = true;
             this.chkShowWindowOnStart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 159);
+            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 188);
             this.chkShowWindowOnStart.Name = "chkShowWindowOnStart";
             this.chkShowWindowOnStart.Size = new System.Drawing.Size(177, 21);
             this.chkShowWindowOnStart.TabIndex = 23;
@@ -392,7 +396,7 @@
             // chkAutoRestart
             // 
             this.chkAutoRestart.AutoSize = true;
-            this.chkAutoRestart.Location = new System.Drawing.Point(15, 211);
+            this.chkAutoRestart.Location = new System.Drawing.Point(15, 240);
             this.chkAutoRestart.Name = "chkAutoRestart";
             this.chkAutoRestart.Size = new System.Drawing.Size(325, 21);
             this.chkAutoRestart.TabIndex = 18;
@@ -402,7 +406,7 @@
             // chkHook
             // 
             this.chkHook.AutoSize = true;
-            this.chkHook.Location = new System.Drawing.Point(15, 133);
+            this.chkHook.Location = new System.Drawing.Point(15, 162);
             this.chkHook.Name = "chkHook";
             this.chkHook.Size = new System.Drawing.Size(556, 21);
             this.chkHook.TabIndex = 14;
@@ -453,6 +457,25 @@
             this.textLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textLog.Size = new System.Drawing.Size(1063, 515);
             this.textLog.TabIndex = 1;
+            // 
+            // lblLanguage
+            // 
+            this.lblLanguage.AutoSize = true;
+            this.lblLanguage.Location = new System.Drawing.Point(12, 112);
+            this.lblLanguage.Name = "lblLanguage";
+            this.lblLanguage.Size = new System.Drawing.Size(72, 17);
+            this.lblLanguage.TabIndex = 31;
+            this.lblLanguage.Text = "Language";
+            // 
+            // cmbLanguage
+            // 
+            this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLanguage.FormattingEnabled = true;
+            this.cmbLanguage.Location = new System.Drawing.Point(260, 109);
+            this.cmbLanguage.Name = "cmbLanguage";
+            this.cmbLanguage.Size = new System.Drawing.Size(442, 24);
+            this.cmbLanguage.TabIndex = 32;
+            this.cmbLanguage.SelectedIndexChanged += new System.EventHandler(this.cmbLanguage_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -522,6 +545,8 @@
         private System.Windows.Forms.ComboBox cmbStreamFormat;
         private System.Windows.Forms.Label lblStreamFormat;
         private System.Windows.Forms.Label lblStreamFormatExtra;
+        private System.Windows.Forms.ComboBox cmbLanguage;
+        private System.Windows.Forms.Label lblLanguage;
     }
 }
 
