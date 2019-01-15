@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,133 +118,133 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Buffering" xml:space="preserve">
-    <value>Buffering</value>
+    <value>Mise en mémoire tampon</value>
   </data>
   <data name="Button_ClipboardCopy_Text" xml:space="preserve">
-    <value>Copy to clipboard</value>
+    <value>Copier dans le presse-papier</value>
   </data>
   <data name="Button_Down_Text" xml:space="preserve">
-    <value>Down</value>
+    <value>Baisser</value>
   </data>
   <data name="Button_Mute_Text" xml:space="preserve">
-    <value>Mute</value>
+    <value>Sourdine</value>
   </data>
   <data name="Button_ResetSetting_Text" xml:space="preserve">
-    <value>Reset Settings</value>
+    <value>Réinitialiser les paramètres</value>
   </data>
   <data name="Button_ScanAgain_Text" xml:space="preserve">
-    <value>Scan again for devices</value>
+    <value>Rechercher à nouveau des périphériques</value>
   </data>
   <data name="Button_SyncDevices_Text" xml:space="preserve">
-    <value>Sync Devices</value>
+    <value>Synchroniser les périphériques</value>
   </data>
   <data name="Button_Up_Text" xml:space="preserve">
-    <value>Up</value>
+    <value>Augmenter</value>
   </data>
   <data name="Check_AutomaticallyRestart_Text" xml:space="preserve">
-    <value>Automatically restart when the stream is closed</value>
+    <value>Redémarrage automatique lorsque le flux est fermé</value>
   </data>
   <data name="Check_AutomaticallyStart_Text" xml:space="preserve">
-    <value>Automatically start devices at startup</value>
+    <value>Démarrage automatique des appareils au démarrage</value>
   </data>
   <data name="Check_KeyboardShortcuts_Text" xml:space="preserve">
-    <value>Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M</value>
+    <value>Utiliser les raccourcis clavier : Augmenter = Ctrl+Alt+U; Baisser = Ctrl+Alt+D; Sourdine = Ctrl+Alt+M</value>
   </data>
   <data name="Check_ShowLagControl_Text" xml:space="preserve">
-    <value>Show lag control (experimental)</value>
+    <value>Afficher le contrôle du décalage (expérimental)</value>
   </data>
   <data name="Check_ShowWindowOnStart_Text" xml:space="preserve">
-    <value>Show window at startup</value>
+    <value>Montrer la fenêtre au démarrage</value>
   </data>
   <data name="ChromeCast_StreamTitle" xml:space="preserve">
     <value>Desktop Stream</value>
   </data>
   <data name="Closed" xml:space="preserve">
-    <value>Closed</value>
+    <value>Fermé</value>
   </data>
   <data name="ConnectError" xml:space="preserve">
-    <value>Connect Error</value>
+    <value>Erreur de connexion</value>
   </data>
   <data name="Disposed" xml:space="preserve">
-    <value>Disposed</value>
+    <value>Retiré</value>
   </data>
   <data name="Group_Devices_Text" xml:space="preserve">
-    <value>Devices (click name to start streaming)</value>
+    <value>Appareils (cliquez sur le nom pour commencer le streaming)</value>
   </data>
   <data name="Group_Lag_Text" xml:space="preserve">
-    <value>Lag Control</value>
+    <value>Contrôle du décalage</value>
   </data>
   <data name="Group_Options_Text" xml:space="preserve">
     <value>Options</value>
   </data>
   <data name="Group_VolumeAllDevices_Text" xml:space="preserve">
-    <value>Volume all devices:</value>
+    <value>Volume de tous les appareils :</value>
   </data>
   <data name="Idle" xml:space="preserve">
-    <value>Idle</value>
+    <value>Inactif</value>
   </data>
   <data name="InvalidRequest" xml:space="preserve">
-    <value>Invalid Request</value>
+    <value>Requête invalide</value>
   </data>
   <data name="Label_IPAddressUsed_Text" xml:space="preserve">
-    <value>IP4 address used:</value>
+    <value>Adresse IP4 utilisée :</value>
   </data>
   <data name="Label_KeepAlive_Text" xml:space="preserve">
-    <value>Latest keep-alive message:</value>
+    <value>Dernier message en direct :</value>
   </data>
   <data name="Label_LagExperimental_Text" xml:space="preserve">
-    <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</value>
+    <value>Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'appareil, sans temps-mort.</value>
   </data>
   <data name="Label_MaximumLag_Text" xml:space="preserve">
-    <value>maximum lag / best quality</value>
+    <value>décalage maximum / meilleure quality</value>
   </data>
   <data name="Label_MinimumLag_Text" xml:space="preserve">
-    <value>minimum lag / poor quality</value>
+    <value>décalage minimum / faible qualité</value>
   </data>
   <data name="Label_RecordingDevice_Text" xml:space="preserve">
-    <value>Recording device:</value>
+    <value>Appareil d'enregistrement :</value>
   </data>
   <data name="Label_StreamFormatExtra_Text" xml:space="preserve">
-    <value>The mp3 formats have a long lag and buffering time.</value>
+    <value>Les formats mp3 ont un décalage et un temps de mise en mémoire tampon important.</value>
   </data>
   <data name="Label_StreamFormat_Text" xml:space="preserve">
-    <value>Stream format</value>
+    <value>Format du flux</value>
   </data>
   <data name="LaunchedApplication" xml:space="preserve">
-    <value>Launched Application</value>
+    <value>Application lancée</value>
   </data>
   <data name="LaunchingApplication" xml:space="preserve">
-    <value>Launching Application</value>
+    <value>Lancement de l'application</value>
   </data>
   <data name="LoadCancelled" xml:space="preserve">
-    <value>Load Cancelled</value>
+    <value>Chargement annulé</value>
   </data>
   <data name="LoadFailed" xml:space="preserve">
-    <value>Load Failed</value>
+    <value>Échec du chargement</value>
   </data>
   <data name="LoadingMedia" xml:space="preserve">
-    <value>Loading Media</value>
+    <value>Chargement du média</value>
   </data>
   <data name="Log_In" xml:space="preserve">
-    <value>in</value>
+    <value>entrée</value>
   </data>
   <data name="Log_Out" xml:space="preserve">
-    <value>out</value>
+    <value>sortie</value>
   </data>
   <data name="MainForm_Text" xml:space="preserve">
     <value>ChromeCast Desktop Audio Streamer</value>
   </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
-    <value>No recording devices found.</value>
+    <value>Aucun appareil d'enregistrement trouvé.</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
-    <value>Not Connected</value>
+    <value>Non connecté</value>
   </data>
   <data name="Paused" xml:space="preserve">
-    <value>Paused</value>
+    <value>Suspendu</value>
   </data>
   <data name="Playing" xml:space="preserve">
-    <value>Playing</value>
+    <value>Jouer</value>
   </data>
   <data name="Tab_Log_Text" xml:space="preserve">
     <value>Log</value>
@@ -253,7 +253,7 @@
     <value>Options</value>
   </data>
   <data name="TrayIcon_Close" xml:space="preserve">
-    <value>Close</value>
+    <value>Fermer</value>
   </data>
   <data name="Version" xml:space="preserve">
     <value>Version</value>
