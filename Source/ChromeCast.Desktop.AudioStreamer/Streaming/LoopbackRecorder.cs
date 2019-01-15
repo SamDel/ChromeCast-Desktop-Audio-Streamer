@@ -35,7 +35,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         public void StartRecordingDevice()
         {
             mainForm.GetRecordingDevice(StartRecordingSetDevice);
-
         }
 
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
