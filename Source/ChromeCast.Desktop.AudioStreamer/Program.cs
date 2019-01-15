@@ -36,7 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
                 .RegisterType<IConfiguration, Configuration>()
                 .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
-                .RegisterType<IRiff, Riff>()
+                .RegisterType<IAudioHeader, AudioHeader>()
                 .RegisterType<IDevice, Device>();
 
             System.Windows.Forms.Application.EnableVisualStyles();

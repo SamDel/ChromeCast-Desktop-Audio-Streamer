@@ -162,12 +162,12 @@
     </Compile>
     <Compile Include="ProtocolBuffer\ChromeCastAudioStream.cs" />
     <Compile Include="Streaming\Interfaces\IStreamingRequestsListener.cs" />
-    <Compile Include="Streaming\Interfaces\IRiff.cs" />
+    <Compile Include="Streaming\Interfaces\IAudioHeader.cs" />
     <Compile Include="Streaming\StreamingRequestsListener.cs" />
     <Compile Include="Streaming\Interfaces\ILoopbackRecorder.cs" />
     <Compile Include="Streaming\Interfaces\IStreamingConnection.cs" />
     <Compile Include="Streaming\LoopbackRecorder.cs" />
-    <Compile Include="Streaming\Riff.cs" />
+    <Compile Include="Streaming\AudioHeader.cs" />
     <Compile Include="Streaming\StreamingConnection.cs" />
     <Compile Include="UserControls\DeviceControl.cs">
       <SubType>UserControl</SubType>

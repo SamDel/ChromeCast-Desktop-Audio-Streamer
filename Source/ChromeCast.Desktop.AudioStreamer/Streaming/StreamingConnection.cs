@@ -10,14 +10,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     public class StreamingConnection : IStreamingConnection
     {
         private Socket Socket;
-        private IRiff riff;
-        private bool isRiffHeaderSent;
+        private IAudioHeader riff;
+        private bool isAudioHeaderSent;
         private int reduceLagCounter = 0;
 
-        public StreamingConnection(IRiff riffIn)
+        public StreamingConnection(IAudioHeader riffIn)
         {
             riff = riffIn;
-            isRiffHeaderSent = false;
+            isAudioHeaderSent = false;
         }
 
         public void SendData(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
@@ -32,12 +32,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
             }
 
-            if (streamFormat.Equals(SupportedStreamFormat.Wav))
+            if (!isAudioHeaderSent)
             {
-                if (!isRiffHeaderSent)
+                isAudioHeaderSent = true;
+                if (streamFormat.Equals(SupportedStreamFormat.Wav))
                 {
-                    isRiffHeaderSent = true;
                     Send(riff.GetRiffHeader(format));
+                }
+                else
+                {
+                    Send(riff.GetMp3Header(format, streamFormat));
                 }
             }
 
