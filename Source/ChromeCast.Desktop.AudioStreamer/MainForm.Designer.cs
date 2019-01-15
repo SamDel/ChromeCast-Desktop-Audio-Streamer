@@ -113,18 +113,19 @@
             // 
             // lblLagExperimental
             // 
-            this.lblLagExperimental.AutoSize = true;
-            this.lblLagExperimental.Location = new System.Drawing.Point(346, 86);
+            this.lblLagExperimental.BackColor = System.Drawing.SystemColors.Control;
+            this.lblLagExperimental.Location = new System.Drawing.Point(22, 86);
             this.lblLagExperimental.Name = "lblLagExperimental";
-            this.lblLagExperimental.Size = new System.Drawing.Size(641, 17);
+            this.lblLagExperimental.Size = new System.Drawing.Size(965, 17);
             this.lblLagExperimental.TabIndex = 3;
             this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
     "ithout hearing gaps.";
+            this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // lblLagMin
             // 
             this.lblLagMin.AutoSize = true;
-            this.lblLagMin.Location = new System.Drawing.Point(29, 29);
+            this.lblLagMin.Location = new System.Drawing.Point(19, 27);
             this.lblLagMin.Name = "lblLagMin";
             this.lblLagMin.Size = new System.Drawing.Size(172, 17);
             this.lblLagMin.TabIndex = 2;
@@ -132,12 +133,12 @@
             // 
             // lblLagMax
             // 
-            this.lblLagMax.AutoSize = true;
-            this.lblLagMax.Location = new System.Drawing.Point(818, 29);
+            this.lblLagMax.Location = new System.Drawing.Point(487, 27);
             this.lblLagMax.Name = "lblLagMax";
-            this.lblLagMax.Size = new System.Drawing.Size(173, 17);
+            this.lblLagMax.Size = new System.Drawing.Size(500, 17);
             this.lblLagMax.TabIndex = 1;
             this.lblLagMax.Text = "maximum lag / best quality";
+            this.lblLagMax.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // trbLag
             // 
@@ -166,9 +167,10 @@
             // 
             // btnScan
             // 
-            this.btnScan.Location = new System.Drawing.Point(781, 320);
+            this.btnScan.AutoSize = true;
+            this.btnScan.Location = new System.Drawing.Point(22, 308);
             this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(206, 27);
+            this.btnScan.Size = new System.Drawing.Size(183, 33);
             this.btnScan.TabIndex = 11;
             this.btnScan.Text = "Scan again for devices";
             this.btnScan.UseVisualStyleBackColor = true;
@@ -197,9 +199,11 @@
             // 
             // btnSyncDevices
             // 
-            this.btnSyncDevices.Location = new System.Drawing.Point(280, 36);
+            this.btnSyncDevices.AutoSize = true;
+            this.btnSyncDevices.Location = new System.Drawing.Point(670, 36);
+            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(150, 0);
             this.btnSyncDevices.Name = "btnSyncDevices";
-            this.btnSyncDevices.Size = new System.Drawing.Size(121, 33);
+            this.btnSyncDevices.Size = new System.Drawing.Size(210, 33);
             this.btnSyncDevices.TabIndex = 16;
             this.btnSyncDevices.Text = "Sync Devices";
             this.btnSyncDevices.UseVisualStyleBackColor = true;
@@ -209,7 +213,7 @@
             // 
             this.btnVolumeUp.Location = new System.Drawing.Point(22, 36);
             this.btnVolumeUp.Name = "btnVolumeUp";
-            this.btnVolumeUp.Size = new System.Drawing.Size(80, 33);
+            this.btnVolumeUp.Size = new System.Drawing.Size(210, 33);
             this.btnVolumeUp.TabIndex = 15;
             this.btnVolumeUp.Text = "Up";
             this.btnVolumeUp.UseVisualStyleBackColor = true;
@@ -217,9 +221,9 @@
             // 
             // btnVolumeDown
             // 
-            this.btnVolumeDown.Location = new System.Drawing.Point(108, 36);
+            this.btnVolumeDown.Location = new System.Drawing.Point(238, 36);
             this.btnVolumeDown.Name = "btnVolumeDown";
-            this.btnVolumeDown.Size = new System.Drawing.Size(80, 33);
+            this.btnVolumeDown.Size = new System.Drawing.Size(210, 33);
             this.btnVolumeDown.TabIndex = 14;
             this.btnVolumeDown.Text = "Down";
             this.btnVolumeDown.UseVisualStyleBackColor = true;
@@ -227,9 +231,9 @@
             // 
             // btnVolumeMute
             // 
-            this.btnVolumeMute.Location = new System.Drawing.Point(194, 36);
+            this.btnVolumeMute.Location = new System.Drawing.Point(454, 36);
             this.btnVolumeMute.Name = "btnVolumeMute";
-            this.btnVolumeMute.Size = new System.Drawing.Size(80, 33);
+            this.btnVolumeMute.Size = new System.Drawing.Size(210, 33);
             this.btnVolumeMute.TabIndex = 11;
             this.btnVolumeMute.Text = "Mute";
             this.btnVolumeMute.UseVisualStyleBackColor = true;
@@ -272,7 +276,7 @@
             // lblStreamFormatExtra
             // 
             this.lblStreamFormatExtra.AutoSize = true;
-            this.lblStreamFormatExtra.Location = new System.Drawing.Point(262, 83);
+            this.lblStreamFormatExtra.Location = new System.Drawing.Point(364, 83);
             this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
             this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
             this.lblStreamFormatExtra.TabIndex = 30;
@@ -282,7 +286,7 @@
             // 
             this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStreamFormat.FormattingEnabled = true;
-            this.cmbStreamFormat.Location = new System.Drawing.Point(158, 80);
+            this.cmbStreamFormat.Location = new System.Drawing.Point(260, 80);
             this.cmbStreamFormat.Name = "cmbStreamFormat";
             this.cmbStreamFormat.Size = new System.Drawing.Size(98, 24);
             this.cmbStreamFormat.TabIndex = 29;
@@ -310,9 +314,10 @@
             // 
             // btnResetSettings
             // 
-            this.btnResetSettings.Location = new System.Drawing.Point(869, 515);
+            this.btnResetSettings.AutoSize = true;
+            this.btnResetSettings.Location = new System.Drawing.Point(15, 471);
             this.btnResetSettings.Name = "btnResetSettings";
-            this.btnResetSettings.Size = new System.Drawing.Size(152, 27);
+            this.btnResetSettings.Size = new System.Drawing.Size(149, 33);
             this.btnResetSettings.TabIndex = 26;
             this.btnResetSettings.Text = "Reset Settings";
             this.btnResetSettings.UseVisualStyleBackColor = true;
@@ -352,7 +357,7 @@
             // 
             this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRecordingDevice.FormattingEnabled = true;
-            this.cmbRecordingDevice.Location = new System.Drawing.Point(158, 51);
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(260, 51);
             this.cmbRecordingDevice.Name = "cmbRecordingDevice";
             this.cmbRecordingDevice.Size = new System.Drawing.Size(442, 24);
             this.cmbRecordingDevice.TabIndex = 22;
@@ -370,7 +375,7 @@
             // 
             this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIP4AddressUsed.FormattingEnabled = true;
-            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(158, 21);
+            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(260, 21);
             this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
             this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 24);
             this.cmbIP4AddressUsed.TabIndex = 20;
@@ -421,9 +426,9 @@
             // 
             // btnClipboardCopy
             // 
-            this.btnClipboardCopy.Location = new System.Drawing.Point(888, 548);
+            this.btnClipboardCopy.Location = new System.Drawing.Point(789, 548);
             this.btnClipboardCopy.Name = "btnClipboardCopy";
-            this.btnClipboardCopy.Size = new System.Drawing.Size(190, 33);
+            this.btnClipboardCopy.Size = new System.Drawing.Size(289, 33);
             this.btnClipboardCopy.TabIndex = 3;
             this.btnClipboardCopy.Text = "Copy to clipboard";
             this.btnClipboardCopy.UseVisualStyleBackColor = true;
@@ -468,7 +473,9 @@
             this.grpLag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).EndInit();
             this.grpDevices.ResumeLayout(false);
+            this.grpDevices.PerformLayout();
             this.grpVolume.ResumeLayout(false);
+            this.grpVolume.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
             this.grpOptions.ResumeLayout(false);
             this.grpOptions.PerformLayout();
