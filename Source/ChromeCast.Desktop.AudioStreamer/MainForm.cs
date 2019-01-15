@@ -11,6 +11,8 @@ using System.Net.NetworkInformation;
 using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
+using System.Globalization;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -52,6 +54,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void ApplyLocalization()
         {
+            // For testing languages
+            //CultureInfo ci = new CultureInfo("fr");
+            //Thread.CurrentThread.CurrentCulture = ci;
+            //Thread.CurrentThread.CurrentUICulture = ci;
+
             Text = Properties.Strings.MainForm_Text;
             grpVolume.Text = Properties.Strings.Group_VolumeAllDevices_Text;
             btnVolumeUp.Text = Properties.Strings.Button_Up_Text;
