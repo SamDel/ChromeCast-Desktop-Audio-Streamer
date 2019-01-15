@@ -13,7 +13,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Threading;
+using System.Globalization;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -248,7 +248,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             OnSetHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
-            mainForm.SetCulture(settings.Culture ?? Thread.CurrentThread.CurrentUICulture.Parent.Name);
+            mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             if (settings.ChromecastHosts != null)
@@ -308,7 +308,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
             settings.StreamFormat = SupportedStreamFormat.Wav;
-            settings.Culture = Thread.CurrentThread.CurrentUICulture.Parent.Name;
+            settings.Culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
