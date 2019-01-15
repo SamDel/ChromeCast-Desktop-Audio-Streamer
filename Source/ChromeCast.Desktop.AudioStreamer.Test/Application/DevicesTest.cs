@@ -44,7 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
                 .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
                 .RegisterType<IConfiguration, Configuration>()
                 .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
-                .RegisterType<IRiff, Riff>()
+                .RegisterType<IAudioHeader, AudioHeader>()
                 .RegisterType<IDevice, Device>();
         }
 

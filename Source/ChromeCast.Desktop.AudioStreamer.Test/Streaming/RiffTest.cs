@@ -9,7 +9,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Streaming
         [TestMethod]
         public void TestRiffHeader()
         {
-            var riffHeader = new Riff().GetRiffHeader(new NAudio.Wave.WaveFormat(48000, 2));
+            var riffHeader = new AudioHeader().GetRiffHeader(new NAudio.Wave.WaveFormat(48000, 2));
 
             Assert.AreEqual(58, riffHeader.Length);
         }
