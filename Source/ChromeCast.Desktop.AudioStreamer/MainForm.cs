@@ -311,11 +311,24 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (InvokeRequired)
             {
+                try
+                {
+                    SetDevice(startRecordingSetDevice);
+                    return;
+                }
+                catch (Exception)
+                {
+                }
                 Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
                 return;
             }
             if (IsDisposed) return;
 
+            SetDevice(startRecordingSetDevice);
+        }
+
+        private void SetDevice(Action<MMDevice> startRecordingSetDevice)
+        {
             if (cmbRecordingDevice.Items.Count > 0)
                 startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
             else
