@@ -85,6 +85,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             cmbLanguage.Items.Add(string.Empty);
             cmbLanguage.Items.Add(Properties.Strings.Language_English);
             cmbLanguage.Items.Add(Properties.Strings.Language_French);
+            btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
         }
 
         private void FillStreamFormats()

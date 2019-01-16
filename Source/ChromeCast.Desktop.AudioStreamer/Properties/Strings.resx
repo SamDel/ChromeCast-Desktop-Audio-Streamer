@@ -120,6 +120,9 @@
   <data name="Buffering" xml:space="preserve">
     <value>Buffering</value>
   </data>
+  <data name="Button_ClearLog_Text" xml:space="preserve">
+    <value>Clear Log</value>
+  </data>
   <data name="Button_ClipboardCopy_Text" xml:space="preserve">
     <value>Copy to clipboard</value>
   </data>
