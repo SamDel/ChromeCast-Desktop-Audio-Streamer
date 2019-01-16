@@ -512,5 +512,10 @@ namespace ChromeCast.Desktop.AudioStreamer
             ApplyLocalization();
             applicationLogic.SetCulture(culture);
         }
+
+        private void BtnClearLog_Click(object sender, EventArgs e)
+        {
+            txtLog.Clear();
+        }
     }
 }

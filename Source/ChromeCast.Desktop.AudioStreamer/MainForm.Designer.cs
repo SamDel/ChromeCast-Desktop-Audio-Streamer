@@ -40,53 +40,54 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.grpVolume = new System.Windows.Forms.GroupBox();
-            this.btnSyncDevices = new System.Windows.Forms.Button();
+            this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnVolumeUp = new System.Windows.Forms.Button();
             this.btnVolumeDown = new System.Windows.Forms.Button();
             this.btnVolumeMute = new System.Windows.Forms.Button();
+            this.btnSyncDevices = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
-            this.cmbLanguage = new System.Windows.Forms.ComboBox();
-            this.lblLanguage = new System.Windows.Forms.Label();
-            this.lblStreamFormatExtra = new System.Windows.Forms.Label();
-            this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
-            this.lblStreamFormat = new System.Windows.Forms.Label();
-            this.chkShowLagControl = new System.Windows.Forms.CheckBox();
+            this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResetSettings = new System.Windows.Forms.Button();
+            this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlOptionsComboBoxesLabels = new System.Windows.Forms.Panel();
+            this.lblStreamFormat = new System.Windows.Forms.Label();
+            this.lblIpAddressUsed = new System.Windows.Forms.Label();
+            this.lblLanguage = new System.Windows.Forms.Label();
+            this.lblDevice = new System.Windows.Forms.Label();
+            this.pnlOptionsComboBoxesRight = new System.Windows.Forms.Panel();
+            this.cmbLanguage = new System.Windows.Forms.ComboBox();
+            this.cmbIP4AddressUsed = new System.Windows.Forms.ComboBox();
+            this.lblStreamFormatExtra = new System.Windows.Forms.Label();
+            this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
+            this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
+            this.chkShowLagControl = new System.Windows.Forms.CheckBox();
             this.lblVersion = new System.Windows.Forms.Label();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.chkShowWindowOnStart = new System.Windows.Forms.CheckBox();
-            this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
-            this.lblDevice = new System.Windows.Forms.Label();
-            this.cmbIP4AddressUsed = new System.Windows.Forms.ComboBox();
-            this.lblIpAddressUsed = new System.Windows.Forms.Label();
             this.chkAutoRestart = new System.Windows.Forms.CheckBox();
             this.chkHook = new System.Windows.Forms.CheckBox();
             this.tabPageLog = new System.Windows.Forms.TabPage();
+            this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlOptionsComboBoxesLabels = new System.Windows.Forms.Panel();
-            this.pnlOptionsComboBoxesRight = new System.Windows.Forms.Panel();
-            this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
-            this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnClearLog = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).BeginInit();
             this.grpDevices.SuspendLayout();
             this.grpVolume.SuspendLayout();
+            this.pnlVolumeAllButtons.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
             this.grpOptions.SuspendLayout();
-            this.tabPageLog.SuspendLayout();
-            this.pnlVolumeAllButtons.SuspendLayout();
+            this.pnlOptionsResetSettings.SuspendLayout();
             this.pnlOptionsComboBoxes.SuspendLayout();
             this.pnlOptionsComboBoxesLabels.SuspendLayout();
             this.pnlOptionsComboBoxesRight.SuspendLayout();
+            this.tabPageLog.SuspendLayout();
             this.pnlLogCopyToClipboard.SuspendLayout();
-            this.pnlOptionsResetSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -209,18 +210,16 @@
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
             // 
-            // btnSyncDevices
+            // pnlVolumeAllButtons
             // 
-            this.btnSyncDevices.AutoSize = true;
-            this.btnSyncDevices.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSyncDevices.Location = new System.Drawing.Point(381, 3);
-            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(120, 0);
-            this.btnSyncDevices.Name = "btnSyncDevices";
-            this.btnSyncDevices.Size = new System.Drawing.Size(120, 27);
-            this.btnSyncDevices.TabIndex = 16;
-            this.btnSyncDevices.Text = "Sync Devices";
-            this.btnSyncDevices.UseVisualStyleBackColor = true;
-            this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeUp);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnSyncDevices);
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(25, 30);
+            this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(966, 71);
+            this.pnlVolumeAllButtons.TabIndex = 17;
             // 
             // btnVolumeUp
             // 
@@ -261,6 +260,19 @@
             this.btnVolumeMute.UseVisualStyleBackColor = true;
             this.btnVolumeMute.Click += new System.EventHandler(this.BtnVolumeMute_Click);
             // 
+            // btnSyncDevices
+            // 
+            this.btnSyncDevices.AutoSize = true;
+            this.btnSyncDevices.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSyncDevices.Location = new System.Drawing.Point(381, 3);
+            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(120, 0);
+            this.btnSyncDevices.Name = "btnSyncDevices";
+            this.btnSyncDevices.Size = new System.Drawing.Size(120, 27);
+            this.btnSyncDevices.TabIndex = 16;
+            this.btnSyncDevices.Text = "Sync Devices";
+            this.btnSyncDevices.UseVisualStyleBackColor = true;
+            this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
+            // 
             // tabPageOptions
             // 
             this.tabPageOptions.Controls.Add(this.grpOptions);
@@ -289,63 +301,14 @@
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
             // 
-            // cmbLanguage
+            // pnlOptionsResetSettings
             // 
-            this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbLanguage.FormattingEnabled = true;
-            this.cmbLanguage.Location = new System.Drawing.Point(3, 88);
-            this.cmbLanguage.Name = "cmbLanguage";
-            this.cmbLanguage.Size = new System.Drawing.Size(442, 24);
-            this.cmbLanguage.TabIndex = 32;
-            this.cmbLanguage.SelectedIndexChanged += new System.EventHandler(this.CmbLanguage_SelectedIndexChanged);
-            // 
-            // lblLanguage
-            // 
-            this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(9, 91);
-            this.lblLanguage.Name = "lblLanguage";
-            this.lblLanguage.Size = new System.Drawing.Size(72, 17);
-            this.lblLanguage.TabIndex = 31;
-            this.lblLanguage.Text = "Language";
-            // 
-            // lblStreamFormatExtra
-            // 
-            this.lblStreamFormatExtra.AutoSize = true;
-            this.lblStreamFormatExtra.Location = new System.Drawing.Point(107, 62);
-            this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
-            this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
-            this.lblStreamFormatExtra.TabIndex = 30;
-            this.lblStreamFormatExtra.Text = "The mp3 formats have a long lag and buffering time.";
-            // 
-            // cmbStreamFormat
-            // 
-            this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStreamFormat.FormattingEnabled = true;
-            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 59);
-            this.cmbStreamFormat.Name = "cmbStreamFormat";
-            this.cmbStreamFormat.Size = new System.Drawing.Size(98, 24);
-            this.cmbStreamFormat.TabIndex = 29;
-            this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.CmbStreamFormat_SelectedIndexChanged);
-            // 
-            // lblStreamFormat
-            // 
-            this.lblStreamFormat.AutoSize = true;
-            this.lblStreamFormat.Location = new System.Drawing.Point(9, 62);
-            this.lblStreamFormat.Name = "lblStreamFormat";
-            this.lblStreamFormat.Size = new System.Drawing.Size(97, 17);
-            this.lblStreamFormat.TabIndex = 28;
-            this.lblStreamFormat.Text = "Stream format";
-            // 
-            // chkShowLagControl
-            // 
-            this.chkShowLagControl.AutoSize = true;
-            this.chkShowLagControl.Location = new System.Drawing.Point(15, 266);
-            this.chkShowLagControl.Name = "chkShowLagControl";
-            this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
-            this.chkShowLagControl.TabIndex = 27;
-            this.chkShowLagControl.Text = "Show lag control (experimental)";
-            this.chkShowLagControl.UseVisualStyleBackColor = true;
-            this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.ChkShowLagControl_CheckedChanged);
+            this.pnlOptionsResetSettings.Controls.Add(this.btnResetSettings);
+            this.pnlOptionsResetSettings.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(248, 508);
+            this.pnlOptionsResetSettings.Name = "pnlOptionsResetSettings";
+            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(754, 33);
+            this.pnlOptionsResetSettings.TabIndex = 34;
             // 
             // btnResetSettings
             // 
@@ -358,6 +321,135 @@
             this.btnResetSettings.Text = "Reset Settings";
             this.btnResetSettings.UseVisualStyleBackColor = true;
             this.btnResetSettings.Click += new System.EventHandler(this.BtnResetSettings_Click);
+            // 
+            // pnlOptionsComboBoxes
+            // 
+            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesLabels);
+            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
+            this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 29);
+            this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 123);
+            this.pnlOptionsComboBoxes.TabIndex = 33;
+            // 
+            // pnlOptionsComboBoxesLabels
+            // 
+            this.pnlOptionsComboBoxesLabels.AutoSize = true;
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblStreamFormat);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblDevice);
+            this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
+            this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
+            this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 108);
+            this.pnlOptionsComboBoxesLabels.TabIndex = 0;
+            // 
+            // lblStreamFormat
+            // 
+            this.lblStreamFormat.AutoSize = true;
+            this.lblStreamFormat.Location = new System.Drawing.Point(9, 62);
+            this.lblStreamFormat.Name = "lblStreamFormat";
+            this.lblStreamFormat.Size = new System.Drawing.Size(97, 17);
+            this.lblStreamFormat.TabIndex = 28;
+            this.lblStreamFormat.Text = "Stream format";
+            // 
+            // lblIpAddressUsed
+            // 
+            this.lblIpAddressUsed.AutoSize = true;
+            this.lblIpAddressUsed.Location = new System.Drawing.Point(9, 3);
+            this.lblIpAddressUsed.Name = "lblIpAddressUsed";
+            this.lblIpAddressUsed.Size = new System.Drawing.Size(122, 17);
+            this.lblIpAddressUsed.TabIndex = 19;
+            this.lblIpAddressUsed.Text = "IP4 address used:";
+            // 
+            // lblLanguage
+            // 
+            this.lblLanguage.AutoSize = true;
+            this.lblLanguage.Location = new System.Drawing.Point(9, 91);
+            this.lblLanguage.Name = "lblLanguage";
+            this.lblLanguage.Size = new System.Drawing.Size(72, 17);
+            this.lblLanguage.TabIndex = 31;
+            this.lblLanguage.Text = "Language";
+            // 
+            // lblDevice
+            // 
+            this.lblDevice.AutoSize = true;
+            this.lblDevice.Location = new System.Drawing.Point(9, 33);
+            this.lblDevice.Name = "lblDevice";
+            this.lblDevice.Size = new System.Drawing.Size(122, 17);
+            this.lblDevice.TabIndex = 21;
+            this.lblDevice.Text = "Recording device:";
+            // 
+            // pnlOptionsComboBoxesRight
+            // 
+            this.pnlOptionsComboBoxesRight.AutoSize = true;
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.lblStreamFormatExtra);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
+            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
+            this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
+            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 115);
+            this.pnlOptionsComboBoxesRight.TabIndex = 1;
+            // 
+            // cmbLanguage
+            // 
+            this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLanguage.FormattingEnabled = true;
+            this.cmbLanguage.Location = new System.Drawing.Point(3, 88);
+            this.cmbLanguage.Name = "cmbLanguage";
+            this.cmbLanguage.Size = new System.Drawing.Size(442, 24);
+            this.cmbLanguage.TabIndex = 32;
+            this.cmbLanguage.SelectedIndexChanged += new System.EventHandler(this.CmbLanguage_SelectedIndexChanged);
+            // 
+            // cmbIP4AddressUsed
+            // 
+            this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbIP4AddressUsed.FormattingEnabled = true;
+            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(3, 0);
+            this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
+            this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 24);
+            this.cmbIP4AddressUsed.TabIndex = 20;
+            // 
+            // lblStreamFormatExtra
+            // 
+            this.lblStreamFormatExtra.AutoSize = true;
+            this.lblStreamFormatExtra.Location = new System.Drawing.Point(107, 62);
+            this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
+            this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
+            this.lblStreamFormatExtra.TabIndex = 30;
+            this.lblStreamFormatExtra.Text = "The mp3 formats have a long lag and buffering time.";
+            // 
+            // cmbRecordingDevice
+            // 
+            this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRecordingDevice.FormattingEnabled = true;
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(3, 30);
+            this.cmbRecordingDevice.Name = "cmbRecordingDevice";
+            this.cmbRecordingDevice.Size = new System.Drawing.Size(442, 24);
+            this.cmbRecordingDevice.TabIndex = 22;
+            // 
+            // cmbStreamFormat
+            // 
+            this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStreamFormat.FormattingEnabled = true;
+            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 59);
+            this.cmbStreamFormat.Name = "cmbStreamFormat";
+            this.cmbStreamFormat.Size = new System.Drawing.Size(98, 24);
+            this.cmbStreamFormat.TabIndex = 29;
+            this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.CmbStreamFormat_SelectedIndexChanged);
+            // 
+            // chkShowLagControl
+            // 
+            this.chkShowLagControl.AutoSize = true;
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 266);
+            this.chkShowLagControl.Name = "chkShowLagControl";
+            this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
+            this.chkShowLagControl.TabIndex = 27;
+            this.chkShowLagControl.Text = "Show lag control (experimental)";
+            this.chkShowLagControl.UseVisualStyleBackColor = true;
+            this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.ChkShowLagControl_CheckedChanged);
             // 
             // lblVersion
             // 
@@ -389,42 +481,6 @@
             this.chkShowWindowOnStart.TabIndex = 23;
             this.chkShowWindowOnStart.Text = "Show window at startup";
             this.chkShowWindowOnStart.UseVisualStyleBackColor = true;
-            // 
-            // cmbRecordingDevice
-            // 
-            this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbRecordingDevice.FormattingEnabled = true;
-            this.cmbRecordingDevice.Location = new System.Drawing.Point(3, 30);
-            this.cmbRecordingDevice.Name = "cmbRecordingDevice";
-            this.cmbRecordingDevice.Size = new System.Drawing.Size(442, 24);
-            this.cmbRecordingDevice.TabIndex = 22;
-            // 
-            // lblDevice
-            // 
-            this.lblDevice.AutoSize = true;
-            this.lblDevice.Location = new System.Drawing.Point(9, 33);
-            this.lblDevice.Name = "lblDevice";
-            this.lblDevice.Size = new System.Drawing.Size(122, 17);
-            this.lblDevice.TabIndex = 21;
-            this.lblDevice.Text = "Recording device:";
-            // 
-            // cmbIP4AddressUsed
-            // 
-            this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbIP4AddressUsed.FormattingEnabled = true;
-            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(3, 0);
-            this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
-            this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 24);
-            this.cmbIP4AddressUsed.TabIndex = 20;
-            // 
-            // lblIpAddressUsed
-            // 
-            this.lblIpAddressUsed.AutoSize = true;
-            this.lblIpAddressUsed.Location = new System.Drawing.Point(9, 3);
-            this.lblIpAddressUsed.Name = "lblIpAddressUsed";
-            this.lblIpAddressUsed.Size = new System.Drawing.Size(122, 17);
-            this.lblIpAddressUsed.TabIndex = 19;
-            this.lblIpAddressUsed.Text = "IP4 address used:";
             // 
             // chkAutoRestart
             // 
@@ -461,12 +517,21 @@
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
             // 
+            // pnlLogCopyToClipboard
+            // 
+            this.pnlLogCopyToClipboard.Controls.Add(this.btnClipboardCopy);
+            this.pnlLogCopyToClipboard.Controls.Add(this.btnClearLog);
+            this.pnlLogCopyToClipboard.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(300, 554);
+            this.pnlLogCopyToClipboard.Name = "pnlLogCopyToClipboard";
+            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(782, 39);
+            this.pnlLogCopyToClipboard.TabIndex = 4;
+            // 
             // btnClipboardCopy
             // 
             this.btnClipboardCopy.AutoSize = true;
             this.btnClipboardCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClipboardCopy.Location = new System.Drawing.Point(654, 0);
-            this.btnClipboardCopy.Margin = new System.Windows.Forms.Padding(0);
+            this.btnClipboardCopy.Location = new System.Drawing.Point(651, 3);
             this.btnClipboardCopy.Name = "btnClipboardCopy";
             this.btnClipboardCopy.Size = new System.Drawing.Size(128, 27);
             this.btnClipboardCopy.TabIndex = 3;
@@ -494,69 +559,17 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
-            // pnlVolumeAllButtons
+            // btnClearLog
             // 
-            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeUp);
-            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
-            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
-            this.pnlVolumeAllButtons.Controls.Add(this.btnSyncDevices);
-            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(25, 30);
-            this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(966, 71);
-            this.pnlVolumeAllButtons.TabIndex = 17;
-            // 
-            // pnlOptionsComboBoxes
-            // 
-            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesLabels);
-            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
-            this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 29);
-            this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
-            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 123);
-            this.pnlOptionsComboBoxes.TabIndex = 33;
-            // 
-            // pnlOptionsComboBoxesLabels
-            // 
-            this.pnlOptionsComboBoxesLabels.AutoSize = true;
-            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblStreamFormat);
-            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
-            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
-            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblDevice);
-            this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
-            this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
-            this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 108);
-            this.pnlOptionsComboBoxesLabels.TabIndex = 0;
-            // 
-            // pnlOptionsComboBoxesRight
-            // 
-            this.pnlOptionsComboBoxesRight.AutoSize = true;
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.lblStreamFormatExtra);
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
-            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
-            this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
-            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 115);
-            this.pnlOptionsComboBoxesRight.TabIndex = 1;
-            // 
-            // pnlLogCopyToClipboard
-            // 
-            this.pnlLogCopyToClipboard.Controls.Add(this.btnClipboardCopy);
-            this.pnlLogCopyToClipboard.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(296, 554);
-            this.pnlLogCopyToClipboard.Name = "pnlLogCopyToClipboard";
-            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(782, 39);
-            this.pnlLogCopyToClipboard.TabIndex = 4;
-            // 
-            // pnlOptionsResetSettings
-            // 
-            this.pnlOptionsResetSettings.Controls.Add(this.btnResetSettings);
-            this.pnlOptionsResetSettings.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(248, 508);
-            this.pnlOptionsResetSettings.Name = "pnlOptionsResetSettings";
-            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(754, 33);
-            this.pnlOptionsResetSettings.TabIndex = 34;
+            this.btnClearLog.AutoSize = true;
+            this.btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClearLog.Location = new System.Drawing.Point(566, 3);
+            this.btnClearLog.Name = "btnClearLog";
+            this.btnClearLog.Size = new System.Drawing.Size(79, 27);
+            this.btnClearLog.TabIndex = 4;
+            this.btnClearLog.Text = "Clear Log";
+            this.btnClearLog.UseVisualStyleBackColor = true;
+            this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
             // 
             // MainForm
             // 
@@ -579,23 +592,23 @@
             this.grpDevices.ResumeLayout(false);
             this.grpDevices.PerformLayout();
             this.grpVolume.ResumeLayout(false);
+            this.pnlVolumeAllButtons.ResumeLayout(false);
+            this.pnlVolumeAllButtons.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
             this.grpOptions.ResumeLayout(false);
             this.grpOptions.PerformLayout();
-            this.tabPageLog.ResumeLayout(false);
-            this.tabPageLog.PerformLayout();
-            this.pnlVolumeAllButtons.ResumeLayout(false);
-            this.pnlVolumeAllButtons.PerformLayout();
+            this.pnlOptionsResetSettings.ResumeLayout(false);
+            this.pnlOptionsResetSettings.PerformLayout();
             this.pnlOptionsComboBoxes.ResumeLayout(false);
             this.pnlOptionsComboBoxes.PerformLayout();
             this.pnlOptionsComboBoxesLabels.ResumeLayout(false);
             this.pnlOptionsComboBoxesLabels.PerformLayout();
             this.pnlOptionsComboBoxesRight.ResumeLayout(false);
             this.pnlOptionsComboBoxesRight.PerformLayout();
+            this.tabPageLog.ResumeLayout(false);
+            this.tabPageLog.PerformLayout();
             this.pnlLogCopyToClipboard.ResumeLayout(false);
             this.pnlLogCopyToClipboard.PerformLayout();
-            this.pnlOptionsResetSettings.ResumeLayout(false);
-            this.pnlOptionsResetSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -645,6 +658,7 @@
         private System.Windows.Forms.Panel pnlOptionsComboBoxesRight;
         private System.Windows.Forms.FlowLayoutPanel pnlLogCopyToClipboard;
         private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
+        private System.Windows.Forms.Button btnClearLog;
     }
 }
 
