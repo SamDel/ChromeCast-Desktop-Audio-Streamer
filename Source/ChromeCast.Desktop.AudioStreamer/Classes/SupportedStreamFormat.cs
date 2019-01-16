@@ -2,6 +2,8 @@
 {
     public enum SupportedStreamFormat
     {
-        Wav, Mp3_320, Mp3_128
+        Wav,
+        Mp3_320,
+        Mp3_128
     }
 }

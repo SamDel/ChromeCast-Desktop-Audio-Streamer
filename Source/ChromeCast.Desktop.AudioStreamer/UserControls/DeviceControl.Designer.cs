@@ -66,7 +66,7 @@
             this.btnDevice.TabIndex = 3;
             this.btnDevice.Text = "name";
             this.btnDevice.UseVisualStyleBackColor = true;
-            this.btnDevice.Click += new System.EventHandler(this.btnDevice_Click);
+            this.btnDevice.Click += new System.EventHandler(this.BtnDevice_Click);
             this.btnDevice.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // trbVolume
@@ -80,7 +80,7 @@
             this.trbVolume.SmallChange = 5;
             this.trbVolume.TabIndex = 5;
             this.trbVolume.TickFrequency = 5;
-            this.trbVolume.Scroll += new System.EventHandler(this.trbVolume_Scroll);
+            this.trbVolume.Scroll += new System.EventHandler(this.TrbVolume_Scroll);
             this.trbVolume.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // pictureVolumeMute
@@ -92,7 +92,7 @@
             this.pictureVolumeMute.Size = new System.Drawing.Size(30, 30);
             this.pictureVolumeMute.TabIndex = 8;
             this.pictureVolumeMute.TabStop = false;
-            this.pictureVolumeMute.Click += new System.EventHandler(this.pictureVolumeMute_Click);
+            this.pictureVolumeMute.Click += new System.EventHandler(this.PictureVolumeMute_Click);
             this.pictureVolumeMute.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // picturePlayPause
@@ -106,7 +106,7 @@
             this.picturePlayPause.Size = new System.Drawing.Size(35, 35);
             this.picturePlayPause.TabIndex = 7;
             this.picturePlayPause.TabStop = false;
-            this.picturePlayPause.Click += new System.EventHandler(this.btnDevice_Click);
+            this.picturePlayPause.Click += new System.EventHandler(this.BtnDevice_Click);
             this.picturePlayPause.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // DeviceControl

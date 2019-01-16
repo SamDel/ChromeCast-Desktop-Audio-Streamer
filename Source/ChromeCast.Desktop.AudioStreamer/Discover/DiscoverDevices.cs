@@ -1,7 +1,6 @@
 ﻿using System;
 using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
-using System.Linq;
 using Zeroconf;
 using System.Threading.Tasks;
 using System.Net.Http;
@@ -42,10 +41,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
 
         public async void MdnsSearch()
         {
-            ILookup<string, string> domains = await ZeroconfResolver.BrowseDomainsAsync(scanTime: new TimeSpan(1000000000), retries: 5, callback: mdnsCallback);
+            await ZeroconfResolver.BrowseDomainsAsync(scanTime: new TimeSpan(1000000000), retries: 5, callback: MdnsCallback);
         }
 
-        private void mdnsCallback(string protocol, string ipAddress)
+        private void MdnsCallback(string protocol, string ipAddress)
         {
             if (protocol.StartsWith("_googlecast"))
             {

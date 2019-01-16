@@ -12,7 +12,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
         private static IDevices devices;
-        private static LowLevelKeyboardProc callbackProcedure = HookCallback;
+        private static readonly LowLevelKeyboardProc callbackProcedure = HookCallback;
         private static IntPtr hookId = IntPtr.Zero;
         private static bool isPressedInCtrl = false;
         private static bool isPressedInAlt = false;

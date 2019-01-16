@@ -70,7 +70,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
-
         [UserScopedSetting()]
         public SupportedStreamFormat? StreamFormat
         {
@@ -122,23 +121,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["Culture"] = value;
             }
         }
+
         [UserScopedSetting()]
-        public List<SettingHost> ChromecastHosts
+        public List<UserSettingHost> ChromecastHosts
         {
             get
             {
-                return (List<SettingHost>)this["ChromecastHosts"];
+                return (List<UserSettingHost>)this["ChromecastHosts"];
             }
             set
             {
                 this["ChromecastHosts"] = value;
             }
         }
-    }
-
-    public class SettingHost
-    {
-        public string Ip { get; set; }
-        public string Name { get; set; }
     }
 }

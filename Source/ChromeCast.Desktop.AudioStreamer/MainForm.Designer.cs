@@ -46,6 +46,8 @@
             this.btnVolumeMute = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.cmbLanguage = new System.Windows.Forms.ComboBox();
+            this.lblLanguage = new System.Windows.Forms.Label();
             this.lblStreamFormatExtra = new System.Windows.Forms.Label();
             this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
             this.lblStreamFormat = new System.Windows.Forms.Label();
@@ -62,10 +64,14 @@
             this.chkHook = new System.Windows.Forms.CheckBox();
             this.tabPageLog = new System.Windows.Forms.TabPage();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
-            this.labelPingPong = new System.Windows.Forms.Label();
-            this.textLog = new System.Windows.Forms.TextBox();
-            this.lblLanguage = new System.Windows.Forms.Label();
-            this.cmbLanguage = new System.Windows.Forms.ComboBox();
+            this.lblPingPong = new System.Windows.Forms.Label();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlOptionsComboBoxesLabels = new System.Windows.Forms.Panel();
+            this.pnlOptionsComboBoxesRight = new System.Windows.Forms.Panel();
+            this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
+            this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -75,6 +81,12 @@
             this.tabPageOptions.SuspendLayout();
             this.grpOptions.SuspendLayout();
             this.tabPageLog.SuspendLayout();
+            this.pnlVolumeAllButtons.SuspendLayout();
+            this.pnlOptionsComboBoxes.SuspendLayout();
+            this.pnlOptionsComboBoxesLabels.SuspendLayout();
+            this.pnlOptionsComboBoxesRight.SuspendLayout();
+            this.pnlLogCopyToClipboard.SuspendLayout();
+            this.pnlOptionsResetSettings.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -154,7 +166,7 @@
             this.trbLag.TabIndex = 0;
             this.trbLag.TickFrequency = 100;
             this.trbLag.Value = 1000;
-            this.trbLag.Scroll += new System.EventHandler(this.trbLag_Scroll);
+            this.trbLag.Scroll += new System.EventHandler(this.TrbLag_Scroll);
             // 
             // grpDevices
             // 
@@ -170,13 +182,14 @@
             // btnScan
             // 
             this.btnScan.AutoSize = true;
+            this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnScan.Location = new System.Drawing.Point(22, 308);
             this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(183, 33);
+            this.btnScan.Size = new System.Drawing.Size(162, 27);
             this.btnScan.TabIndex = 11;
             this.btnScan.Text = "Scan again for devices";
             this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.btnScan_Click);
+            this.btnScan.Click += new System.EventHandler(this.BtnScan_Click);
             // 
             // pnlDevices
             // 
@@ -188,10 +201,7 @@
             // 
             // grpVolume
             // 
-            this.grpVolume.Controls.Add(this.btnSyncDevices);
-            this.grpVolume.Controls.Add(this.btnVolumeUp);
-            this.grpVolume.Controls.Add(this.btnVolumeDown);
-            this.grpVolume.Controls.Add(this.btnVolumeMute);
+            this.grpVolume.Controls.Add(this.pnlVolumeAllButtons);
             this.grpVolume.Location = new System.Drawing.Point(44, 10);
             this.grpVolume.Name = "grpVolume";
             this.grpVolume.Size = new System.Drawing.Size(1010, 108);
@@ -202,44 +212,54 @@
             // btnSyncDevices
             // 
             this.btnSyncDevices.AutoSize = true;
-            this.btnSyncDevices.Location = new System.Drawing.Point(670, 36);
-            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(150, 0);
+            this.btnSyncDevices.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnSyncDevices.Location = new System.Drawing.Point(381, 3);
+            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnSyncDevices.Name = "btnSyncDevices";
-            this.btnSyncDevices.Size = new System.Drawing.Size(210, 33);
+            this.btnSyncDevices.Size = new System.Drawing.Size(120, 27);
             this.btnSyncDevices.TabIndex = 16;
             this.btnSyncDevices.Text = "Sync Devices";
             this.btnSyncDevices.UseVisualStyleBackColor = true;
-            this.btnSyncDevices.Click += new System.EventHandler(this.btnSyncDevices_Click);
+            this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
             // 
             // btnVolumeUp
             // 
-            this.btnVolumeUp.Location = new System.Drawing.Point(22, 36);
+            this.btnVolumeUp.AutoSize = true;
+            this.btnVolumeUp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnVolumeUp.Location = new System.Drawing.Point(3, 3);
+            this.btnVolumeUp.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeUp.Name = "btnVolumeUp";
-            this.btnVolumeUp.Size = new System.Drawing.Size(210, 33);
+            this.btnVolumeUp.Size = new System.Drawing.Size(120, 27);
             this.btnVolumeUp.TabIndex = 15;
             this.btnVolumeUp.Text = "Up";
             this.btnVolumeUp.UseVisualStyleBackColor = true;
-            this.btnVolumeUp.Click += new System.EventHandler(this.btnVolumeUp_Click);
+            this.btnVolumeUp.Click += new System.EventHandler(this.BtnVolumeUp_Click);
             // 
             // btnVolumeDown
             // 
-            this.btnVolumeDown.Location = new System.Drawing.Point(238, 36);
+            this.btnVolumeDown.AutoSize = true;
+            this.btnVolumeDown.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnVolumeDown.Location = new System.Drawing.Point(129, 3);
+            this.btnVolumeDown.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeDown.Name = "btnVolumeDown";
-            this.btnVolumeDown.Size = new System.Drawing.Size(210, 33);
+            this.btnVolumeDown.Size = new System.Drawing.Size(120, 27);
             this.btnVolumeDown.TabIndex = 14;
             this.btnVolumeDown.Text = "Down";
             this.btnVolumeDown.UseVisualStyleBackColor = true;
-            this.btnVolumeDown.Click += new System.EventHandler(this.btnVolumeDown_Click);
+            this.btnVolumeDown.Click += new System.EventHandler(this.BtnVolumeDown_Click);
             // 
             // btnVolumeMute
             // 
-            this.btnVolumeMute.Location = new System.Drawing.Point(454, 36);
+            this.btnVolumeMute.AutoSize = true;
+            this.btnVolumeMute.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnVolumeMute.Location = new System.Drawing.Point(255, 3);
+            this.btnVolumeMute.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeMute.Name = "btnVolumeMute";
-            this.btnVolumeMute.Size = new System.Drawing.Size(210, 33);
+            this.btnVolumeMute.Size = new System.Drawing.Size(120, 27);
             this.btnVolumeMute.TabIndex = 11;
             this.btnVolumeMute.Text = "Mute";
             this.btnVolumeMute.UseVisualStyleBackColor = true;
-            this.btnVolumeMute.Click += new System.EventHandler(this.btnVolumeMute_Click);
+            this.btnVolumeMute.Click += new System.EventHandler(this.BtnVolumeMute_Click);
             // 
             // tabPageOptions
             // 
@@ -254,20 +274,12 @@
             // 
             // grpOptions
             // 
-            this.grpOptions.Controls.Add(this.cmbLanguage);
-            this.grpOptions.Controls.Add(this.lblLanguage);
-            this.grpOptions.Controls.Add(this.lblStreamFormatExtra);
-            this.grpOptions.Controls.Add(this.cmbStreamFormat);
-            this.grpOptions.Controls.Add(this.lblStreamFormat);
+            this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
+            this.grpOptions.Controls.Add(this.pnlOptionsComboBoxes);
             this.grpOptions.Controls.Add(this.chkShowLagControl);
-            this.grpOptions.Controls.Add(this.btnResetSettings);
             this.grpOptions.Controls.Add(this.lblVersion);
             this.grpOptions.Controls.Add(this.chkAutoStart);
             this.grpOptions.Controls.Add(this.chkShowWindowOnStart);
-            this.grpOptions.Controls.Add(this.cmbRecordingDevice);
-            this.grpOptions.Controls.Add(this.lblDevice);
-            this.grpOptions.Controls.Add(this.cmbIP4AddressUsed);
-            this.grpOptions.Controls.Add(this.lblIpAddressUsed);
             this.grpOptions.Controls.Add(this.chkAutoRestart);
             this.grpOptions.Controls.Add(this.chkHook);
             this.grpOptions.Location = new System.Drawing.Point(27, 22);
@@ -277,10 +289,29 @@
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
             // 
+            // cmbLanguage
+            // 
+            this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbLanguage.FormattingEnabled = true;
+            this.cmbLanguage.Location = new System.Drawing.Point(3, 88);
+            this.cmbLanguage.Name = "cmbLanguage";
+            this.cmbLanguage.Size = new System.Drawing.Size(442, 24);
+            this.cmbLanguage.TabIndex = 32;
+            this.cmbLanguage.SelectedIndexChanged += new System.EventHandler(this.CmbLanguage_SelectedIndexChanged);
+            // 
+            // lblLanguage
+            // 
+            this.lblLanguage.AutoSize = true;
+            this.lblLanguage.Location = new System.Drawing.Point(9, 91);
+            this.lblLanguage.Name = "lblLanguage";
+            this.lblLanguage.Size = new System.Drawing.Size(72, 17);
+            this.lblLanguage.TabIndex = 31;
+            this.lblLanguage.Text = "Language";
+            // 
             // lblStreamFormatExtra
             // 
             this.lblStreamFormatExtra.AutoSize = true;
-            this.lblStreamFormatExtra.Location = new System.Drawing.Point(364, 83);
+            this.lblStreamFormatExtra.Location = new System.Drawing.Point(107, 62);
             this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
             this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
             this.lblStreamFormatExtra.TabIndex = 30;
@@ -290,16 +321,16 @@
             // 
             this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStreamFormat.FormattingEnabled = true;
-            this.cmbStreamFormat.Location = new System.Drawing.Point(260, 80);
+            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 59);
             this.cmbStreamFormat.Name = "cmbStreamFormat";
             this.cmbStreamFormat.Size = new System.Drawing.Size(98, 24);
             this.cmbStreamFormat.TabIndex = 29;
-            this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.cmbStreamFormat_SelectedIndexChanged);
+            this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.CmbStreamFormat_SelectedIndexChanged);
             // 
             // lblStreamFormat
             // 
             this.lblStreamFormat.AutoSize = true;
-            this.lblStreamFormat.Location = new System.Drawing.Point(12, 83);
+            this.lblStreamFormat.Location = new System.Drawing.Point(9, 62);
             this.lblStreamFormat.Name = "lblStreamFormat";
             this.lblStreamFormat.Size = new System.Drawing.Size(97, 17);
             this.lblStreamFormat.TabIndex = 28;
@@ -314,26 +345,28 @@
             this.chkShowLagControl.TabIndex = 27;
             this.chkShowLagControl.Text = "Show lag control (experimental)";
             this.chkShowLagControl.UseVisualStyleBackColor = true;
-            this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.chkShowLagControl_CheckedChanged);
+            this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.ChkShowLagControl_CheckedChanged);
             // 
             // btnResetSettings
             // 
             this.btnResetSettings.AutoSize = true;
-            this.btnResetSettings.Location = new System.Drawing.Point(15, 471);
+            this.btnResetSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnResetSettings.Location = new System.Drawing.Point(641, 3);
             this.btnResetSettings.Name = "btnResetSettings";
-            this.btnResetSettings.Size = new System.Drawing.Size(149, 33);
+            this.btnResetSettings.Size = new System.Drawing.Size(110, 27);
             this.btnResetSettings.TabIndex = 26;
             this.btnResetSettings.Text = "Reset Settings";
             this.btnResetSettings.UseVisualStyleBackColor = true;
-            this.btnResetSettings.Click += new System.EventHandler(this.btnResetSettings_Click);
+            this.btnResetSettings.Click += new System.EventHandler(this.BtnResetSettings_Click);
             // 
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(12, 520);
+            this.lblVersion.Location = new System.Drawing.Point(12, 516);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(0, 17);
+            this.lblVersion.Size = new System.Drawing.Size(56, 17);
             this.lblVersion.TabIndex = 25;
+            this.lblVersion.Text = "Version";
             // 
             // chkAutoStart
             // 
@@ -361,7 +394,7 @@
             // 
             this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRecordingDevice.FormattingEnabled = true;
-            this.cmbRecordingDevice.Location = new System.Drawing.Point(260, 51);
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(3, 30);
             this.cmbRecordingDevice.Name = "cmbRecordingDevice";
             this.cmbRecordingDevice.Size = new System.Drawing.Size(442, 24);
             this.cmbRecordingDevice.TabIndex = 22;
@@ -369,7 +402,7 @@
             // lblDevice
             // 
             this.lblDevice.AutoSize = true;
-            this.lblDevice.Location = new System.Drawing.Point(12, 54);
+            this.lblDevice.Location = new System.Drawing.Point(9, 33);
             this.lblDevice.Name = "lblDevice";
             this.lblDevice.Size = new System.Drawing.Size(122, 17);
             this.lblDevice.TabIndex = 21;
@@ -379,7 +412,7 @@
             // 
             this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIP4AddressUsed.FormattingEnabled = true;
-            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(260, 21);
+            this.cmbIP4AddressUsed.Location = new System.Drawing.Point(3, 0);
             this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
             this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 24);
             this.cmbIP4AddressUsed.TabIndex = 20;
@@ -387,7 +420,7 @@
             // lblIpAddressUsed
             // 
             this.lblIpAddressUsed.AutoSize = true;
-            this.lblIpAddressUsed.Location = new System.Drawing.Point(12, 24);
+            this.lblIpAddressUsed.Location = new System.Drawing.Point(9, 3);
             this.lblIpAddressUsed.Name = "lblIpAddressUsed";
             this.lblIpAddressUsed.Size = new System.Drawing.Size(122, 17);
             this.lblIpAddressUsed.TabIndex = 19;
@@ -413,13 +446,13 @@
             this.chkHook.Text = "Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M" +
     "";
             this.chkHook.UseVisualStyleBackColor = true;
-            this.chkHook.CheckedChanged += new System.EventHandler(this.chkHook_CheckedChanged);
+            this.chkHook.CheckedChanged += new System.EventHandler(this.ChkHook_CheckedChanged);
             // 
             // tabPageLog
             // 
-            this.tabPageLog.Controls.Add(this.btnClipboardCopy);
-            this.tabPageLog.Controls.Add(this.labelPingPong);
-            this.tabPageLog.Controls.Add(this.textLog);
+            this.tabPageLog.Controls.Add(this.pnlLogCopyToClipboard);
+            this.tabPageLog.Controls.Add(this.lblPingPong);
+            this.tabPageLog.Controls.Add(this.txtLog);
             this.tabPageLog.Location = new System.Drawing.Point(4, 25);
             this.tabPageLog.Name = "tabPageLog";
             this.tabPageLog.Padding = new System.Windows.Forms.Padding(3);
@@ -430,52 +463,100 @@
             // 
             // btnClipboardCopy
             // 
-            this.btnClipboardCopy.Location = new System.Drawing.Point(789, 548);
+            this.btnClipboardCopy.AutoSize = true;
+            this.btnClipboardCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClipboardCopy.Location = new System.Drawing.Point(654, 0);
+            this.btnClipboardCopy.Margin = new System.Windows.Forms.Padding(0);
             this.btnClipboardCopy.Name = "btnClipboardCopy";
-            this.btnClipboardCopy.Size = new System.Drawing.Size(289, 33);
+            this.btnClipboardCopy.Size = new System.Drawing.Size(128, 27);
             this.btnClipboardCopy.TabIndex = 3;
             this.btnClipboardCopy.Text = "Copy to clipboard";
             this.btnClipboardCopy.UseVisualStyleBackColor = true;
-            this.btnClipboardCopy.Click += new System.EventHandler(this.btnClipboardCopy_Click);
+            this.btnClipboardCopy.Click += new System.EventHandler(this.BtnClipboardCopy_Click);
             // 
-            // labelPingPong
+            // lblPingPong
             // 
-            this.labelPingPong.AutoSize = true;
-            this.labelPingPong.Location = new System.Drawing.Point(12, 548);
-            this.labelPingPong.Name = "labelPingPong";
-            this.labelPingPong.Size = new System.Drawing.Size(148, 17);
-            this.labelPingPong.TabIndex = 2;
-            this.labelPingPong.Text = "                                   ";
+            this.lblPingPong.AutoSize = true;
+            this.lblPingPong.Location = new System.Drawing.Point(12, 559);
+            this.lblPingPong.Name = "lblPingPong";
+            this.lblPingPong.Size = new System.Drawing.Size(148, 17);
+            this.lblPingPong.TabIndex = 2;
+            this.lblPingPong.Text = "                                   ";
             // 
-            // textLog
+            // txtLog
             // 
-            this.textLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textLog.Location = new System.Drawing.Point(15, 19);
-            this.textLog.Multiline = true;
-            this.textLog.Name = "textLog";
-            this.textLog.ReadOnly = true;
-            this.textLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textLog.Size = new System.Drawing.Size(1063, 515);
-            this.textLog.TabIndex = 1;
+            this.txtLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLog.Location = new System.Drawing.Point(15, 19);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(1063, 515);
+            this.txtLog.TabIndex = 1;
             // 
-            // lblLanguage
+            // pnlVolumeAllButtons
             // 
-            this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(12, 112);
-            this.lblLanguage.Name = "lblLanguage";
-            this.lblLanguage.Size = new System.Drawing.Size(72, 17);
-            this.lblLanguage.TabIndex = 31;
-            this.lblLanguage.Text = "Language";
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeUp);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnSyncDevices);
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(25, 30);
+            this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(966, 71);
+            this.pnlVolumeAllButtons.TabIndex = 17;
             // 
-            // cmbLanguage
+            // pnlOptionsComboBoxes
             // 
-            this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbLanguage.FormattingEnabled = true;
-            this.cmbLanguage.Location = new System.Drawing.Point(260, 109);
-            this.cmbLanguage.Name = "cmbLanguage";
-            this.cmbLanguage.Size = new System.Drawing.Size(442, 24);
-            this.cmbLanguage.TabIndex = 32;
-            this.cmbLanguage.SelectedIndexChanged += new System.EventHandler(this.cmbLanguage_SelectedIndexChanged);
+            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesLabels);
+            this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
+            this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 29);
+            this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 123);
+            this.pnlOptionsComboBoxes.TabIndex = 33;
+            // 
+            // pnlOptionsComboBoxesLabels
+            // 
+            this.pnlOptionsComboBoxesLabels.AutoSize = true;
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblStreamFormat);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblDevice);
+            this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
+            this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
+            this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 108);
+            this.pnlOptionsComboBoxesLabels.TabIndex = 0;
+            // 
+            // pnlOptionsComboBoxesRight
+            // 
+            this.pnlOptionsComboBoxesRight.AutoSize = true;
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.lblStreamFormatExtra);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
+            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
+            this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
+            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 115);
+            this.pnlOptionsComboBoxesRight.TabIndex = 1;
+            // 
+            // pnlLogCopyToClipboard
+            // 
+            this.pnlLogCopyToClipboard.Controls.Add(this.btnClipboardCopy);
+            this.pnlLogCopyToClipboard.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(296, 554);
+            this.pnlLogCopyToClipboard.Name = "pnlLogCopyToClipboard";
+            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(782, 39);
+            this.pnlLogCopyToClipboard.TabIndex = 4;
+            // 
+            // pnlOptionsResetSettings
+            // 
+            this.pnlOptionsResetSettings.Controls.Add(this.btnResetSettings);
+            this.pnlOptionsResetSettings.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(248, 508);
+            this.pnlOptionsResetSettings.Name = "pnlOptionsResetSettings";
+            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(754, 33);
+            this.pnlOptionsResetSettings.TabIndex = 34;
             // 
             // MainForm
             // 
@@ -498,12 +579,23 @@
             this.grpDevices.ResumeLayout(false);
             this.grpDevices.PerformLayout();
             this.grpVolume.ResumeLayout(false);
-            this.grpVolume.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
             this.grpOptions.ResumeLayout(false);
             this.grpOptions.PerformLayout();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
+            this.pnlVolumeAllButtons.ResumeLayout(false);
+            this.pnlVolumeAllButtons.PerformLayout();
+            this.pnlOptionsComboBoxes.ResumeLayout(false);
+            this.pnlOptionsComboBoxes.PerformLayout();
+            this.pnlOptionsComboBoxesLabels.ResumeLayout(false);
+            this.pnlOptionsComboBoxesLabels.PerformLayout();
+            this.pnlOptionsComboBoxesRight.ResumeLayout(false);
+            this.pnlOptionsComboBoxesRight.PerformLayout();
+            this.pnlLogCopyToClipboard.ResumeLayout(false);
+            this.pnlLogCopyToClipboard.PerformLayout();
+            this.pnlOptionsResetSettings.ResumeLayout(false);
+            this.pnlOptionsResetSettings.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -519,8 +611,8 @@
         private System.Windows.Forms.GroupBox grpVolume;
         private System.Windows.Forms.Button btnVolumeMute;
         private System.Windows.Forms.TabPage tabPageLog;
-        private System.Windows.Forms.Label labelPingPong;
-        private System.Windows.Forms.TextBox textLog;
+        private System.Windows.Forms.Label lblPingPong;
+        private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label lblLagMin;
         private System.Windows.Forms.Label lblLagMax;
         private System.Windows.Forms.Label lblLagExperimental;
@@ -547,6 +639,12 @@
         private System.Windows.Forms.Label lblStreamFormatExtra;
         private System.Windows.Forms.ComboBox cmbLanguage;
         private System.Windows.Forms.Label lblLanguage;
+        private System.Windows.Forms.FlowLayoutPanel pnlVolumeAllButtons;
+        private System.Windows.Forms.FlowLayoutPanel pnlOptionsComboBoxes;
+        private System.Windows.Forms.Panel pnlOptionsComboBoxesLabels;
+        private System.Windows.Forms.Panel pnlOptionsComboBoxesRight;
+        private System.Windows.Forms.FlowLayoutPanel pnlLogCopyToClipboard;
+        private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
     }
 }
 

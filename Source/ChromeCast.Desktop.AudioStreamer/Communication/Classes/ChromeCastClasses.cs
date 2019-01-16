@@ -88,8 +88,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     }
 
     /// <summary>
-    /// If calling 'LOAD' a second time with the same url and the first is still 'loading' (application.statusText 
-    /// = 'Now Casting...'), you get this message from the device
+    /// If calling 'LOAD' a second time with the same url and the first is still 'loading' 
+    /// , you get this message from the device.
     /// type = 'LOAD_CANCELLED'
     /// </summary>
     public class MessageLoadCancelled : PayloadMessageBase

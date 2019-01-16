@@ -14,9 +14,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             onGetStatus = onGetStatusIn;
 
-            timer = new Timer();
-            timer.Interval = Interval;
-            timer.Enabled = true;
+            timer = new Timer
+            {
+                Interval = Interval,
+                Enabled = true
+            };
             timer.Elapsed += new ElapsedEventHandler(OnGetStatus);
             timer.Start();
         }

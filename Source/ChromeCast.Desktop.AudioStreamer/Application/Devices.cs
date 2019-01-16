@@ -182,12 +182,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             applicationLogic = applicationLogicIn;
         }
 
-        public List<SettingHost> GetHosts()
+        public List<UserSettingHost> GetHosts()
         {
-            var hosts = new List<SettingHost>();
+            var hosts = new List<UserSettingHost>();
             foreach (var device in deviceList)
             {
-                hosts.Add(new SettingHost { Ip = device.GetHost(), Name = device.GetFriendlyName() });
+                hosts.Add(new UserSettingHost { Ip = device.GetHost(), Name = device.GetFriendlyName() });
             }
             return hosts;
         }

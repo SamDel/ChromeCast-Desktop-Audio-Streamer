@@ -25,6 +25,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void Sync();
         void Dispose();
         void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn);
-        List<SettingHost> GetHosts();
+        List<UserSettingHost> GetHosts();
     }
 }

@@ -22,7 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private ILogger logger;
         private IChromeCastMessages chromeCastMessages;
         private string chromeCastDestination;
-        private string chromeCastSource;
+        private readonly string chromeCastSource;
         private string chromeCastApplicationSessionNr;
         private int chromeCastMediaSessionId;
         private int requestId;

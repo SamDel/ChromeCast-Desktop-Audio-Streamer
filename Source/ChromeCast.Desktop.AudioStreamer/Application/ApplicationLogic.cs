@@ -114,8 +114,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnAddDevice(IDevice device)
         {
-            var menuItem = new MenuItem();
-            menuItem.Text = device.GetFriendlyName();
+            var menuItem = new MenuItem
+            {
+                Text = device.GetFriendlyName()
+            };
             menuItem.Click += device.OnClickDeviceButton;
             notifyIcon.ContextMenu.MenuItems.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
             device.SetMenuItem(menuItem);
@@ -126,9 +128,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void AddNotifyIcon()
         {
             var contextMenu = new ContextMenu();
-            var menuItem = new MenuItem();
-            menuItem.Index = 0;
-            menuItem.Text = Properties.Strings.TrayIcon_Close;
+            var menuItem = new MenuItem
+            {
+                Index = 0,
+                Text = Properties.Strings.TrayIcon_Close
+            };
             menuItem.Click += new EventHandler(CloseApplication);
             contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
 
@@ -279,7 +283,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             var hosts = settings.ChromecastHosts;
             if (hosts == null)
-                hosts = new List<SettingHost>();
+                hosts = new List<UserSettingHost>();
             foreach (var host in devices.GetHosts())
             {
                 if (!hosts.Any(x => x.Ip == host.Ip))
@@ -302,7 +306,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void ResetSettings()
         {
-            settings.ChromecastHosts = new List<SettingHost>();
+            settings.ChromecastHosts = new List<UserSettingHost>();
             settings.UseKeyboardShortCuts = false;
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;

@@ -119,12 +119,12 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 pictureVolumeMute.Image = Properties.Resources.Unmute;
         }
 
-        private void trbVolume_Scroll(object sender, EventArgs e)
+        private void TrbVolume_Scroll(object sender, EventArgs e)
         {
             device.VolumeSet(trbVolume.Value / 100f);
         }
 
-        private void pictureVolumeMute_Click(object sender, EventArgs e)
+        private void PictureVolumeMute_Click(object sender, EventArgs e)
         {
             device.VolumeMute();
         }
@@ -151,7 +151,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             ((IMainForm)((DeviceControl)sender).ParentForm).DoDragDrop(sender, e);
         }
 
-        private void btnDevice_Click(object sender, EventArgs e)
+        private void BtnDevice_Click(object sender, EventArgs e)
         {
             StartPause_Click(sender, e);
         }
