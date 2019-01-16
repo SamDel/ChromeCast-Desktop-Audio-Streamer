@@ -70,9 +70,10 @@
             this.tabPageLog = new System.Windows.Forms.TabPage();
             this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
+            this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.btnClearLog = new System.Windows.Forms.Button();
+            this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -286,6 +287,7 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.chkLogDeviceCommunication);
             this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
             this.grpOptions.Controls.Add(this.pnlOptionsComboBoxes);
             this.grpOptions.Controls.Add(this.chkShowLagControl);
@@ -539,6 +541,18 @@
             this.btnClipboardCopy.UseVisualStyleBackColor = true;
             this.btnClipboardCopy.Click += new System.EventHandler(this.BtnClipboardCopy_Click);
             // 
+            // btnClearLog
+            // 
+            this.btnClearLog.AutoSize = true;
+            this.btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnClearLog.Location = new System.Drawing.Point(566, 3);
+            this.btnClearLog.Name = "btnClearLog";
+            this.btnClearLog.Size = new System.Drawing.Size(79, 27);
+            this.btnClearLog.TabIndex = 4;
+            this.btnClearLog.Text = "Clear Log";
+            this.btnClearLog.UseVisualStyleBackColor = true;
+            this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
+            // 
             // lblPingPong
             // 
             this.lblPingPong.AutoSize = true;
@@ -559,17 +573,15 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
-            // btnClearLog
+            // chkLogDeviceCommunication
             // 
-            this.btnClearLog.AutoSize = true;
-            this.btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClearLog.Location = new System.Drawing.Point(566, 3);
-            this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(79, 27);
-            this.btnClearLog.TabIndex = 4;
-            this.btnClearLog.Text = "Clear Log";
-            this.btnClearLog.UseVisualStyleBackColor = true;
-            this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
+            this.chkLogDeviceCommunication.AutoSize = true;
+            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 292);
+            this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
+            this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
+            this.chkLogDeviceCommunication.TabIndex = 35;
+            this.chkLogDeviceCommunication.Text = "Log device communication";
+            this.chkLogDeviceCommunication.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -659,6 +671,7 @@
         private System.Windows.Forms.FlowLayoutPanel pnlLogCopyToClipboard;
         private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
         private System.Windows.Forms.Button btnClearLog;
+        private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
     }
 }
 

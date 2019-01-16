@@ -86,6 +86,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             cmbLanguage.Items.Add(Properties.Strings.Language_English);
             cmbLanguage.Items.Add(Properties.Strings.Language_French);
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
+            chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
         }
 
         private void FillStreamFormats()
@@ -234,7 +235,8 @@ namespace ChromeCast.Desktop.AudioStreamer
                 }
                 else
                 {
-                    txtLog.AppendText(message + "\r\n\r\n");
+                    if (chkLogDeviceCommunication.Checked)
+                        txtLog.AppendText(message + "\r\n\r\n");
                 }
             }
             catch (Exception)
@@ -517,6 +519,16 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void BtnClearLog_Click(object sender, EventArgs e)
         {
             txtLog.Clear();
+        }
+
+        public void SetLogDeviceCommunication(bool logDeviceCommunication)
+        {
+            chkLogDeviceCommunication.Checked = logDeviceCommunication;
+        }
+
+        public bool GetLogDeviceCommunication()
+        {
+            return chkLogDeviceCommunication.Checked;
         }
     }
 }

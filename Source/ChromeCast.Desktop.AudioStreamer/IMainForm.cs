@@ -31,6 +31,8 @@ namespace ChromeCast.Desktop.AudioStreamer
         int? GetLagValue();
         void SetStreamFormat(SupportedStreamFormat format);
         void GetStreamFormat();
-        void SetCulture(string v);
+        void SetCulture(string culture);
+        void SetLogDeviceCommunication(bool logDeviceCommunication);
+        bool GetLogDeviceCommunication();
     }
 }

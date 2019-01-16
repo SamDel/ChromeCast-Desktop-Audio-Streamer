@@ -614,6 +614,10 @@
           <source>Clear Log</source>
           <target state="new">Clear Log</target>
         </trans-unit>
+        <trans-unit id="Check_LogDeviceCommunication_Text" translate="yes" xml:space="preserve">
+          <source>Log device communication</source>
+          <target state="new">Log device communication</target>
+        </trans-unit>
       </group>
     </body>
   </file>

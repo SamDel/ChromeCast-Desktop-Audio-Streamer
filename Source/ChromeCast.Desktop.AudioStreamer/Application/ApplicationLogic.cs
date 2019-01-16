@@ -253,6 +253,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+            mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             if (settings.ChromecastHosts != null)
@@ -298,6 +299,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoRestart = mainForm.GetAutoRestart();
             settings.StreamFormat = StreamFormatSelected;
             settings.Culture = Culture;
+            settings.LogDeviceCommunication = mainForm.GetLogDeviceCommunication();
             settings.ShowLagControl = mainForm.GetShowLagControl();
             settings.LagControlValue = mainForm.GetLagValue();
 
@@ -313,6 +315,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoRestart = false;
             settings.StreamFormat = SupportedStreamFormat.Wav;
             settings.Culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+            settings.LogDeviceCommunication = false;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
@@ -322,6 +325,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
             mainForm.SetStreamFormat(settings.StreamFormat.Value);
             mainForm.SetCulture(settings.Culture);
+            mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication.Value);
             mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
             settings.Save();

@@ -123,6 +123,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public bool? LogDeviceCommunication
+        {
+            get
+            {
+                return (bool?)this["LogDeviceCommunication"];
+            }
+            set
+            {
+                this["LogDeviceCommunication"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public List<UserSettingHost> ChromecastHosts
         {
             get

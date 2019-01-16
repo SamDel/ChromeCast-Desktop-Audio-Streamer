@@ -153,6 +153,9 @@
   <data name="Check_KeyboardShortcuts_Text" xml:space="preserve">
     <value>Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M</value>
   </data>
+  <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
+    <value>Log device communication</value>
+  </data>
   <data name="Check_ShowLagControl_Text" xml:space="preserve">
     <value>Show lag control (experimental)</value>
   </data>

@@ -169,6 +169,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log device communication.
+        /// </summary>
+        internal static string Check_LogDeviceCommunication_Text {
+            get {
+                return ResourceManager.GetString("Check_LogDeviceCommunication_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show lag control (experimental).
         /// </summary>
         internal static string Check_ShowLagControl_Text {
