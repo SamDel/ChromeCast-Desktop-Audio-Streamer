@@ -70,6 +70,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear Log.
+        /// </summary>
+        internal static string Button_ClearLog_Text {
+            get {
+                return ResourceManager.GetString("Button_ClearLog_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy to clipboard.
         /// </summary>
         internal static string Button_ClipboardCopy_Text {

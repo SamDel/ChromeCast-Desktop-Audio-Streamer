@@ -17,6 +17,7 @@ https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki
 - Protocol Buffers - https://github.com/google/protobuf
 - protobuf-csharp-port - https://github.com/jskeet/protobuf-csharp-port
 - Microsoft Visual Studio Installer Projects (Visual Studio 2017, 2019) - https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects
+- Multilingual App Toolkit v4.0 (VS 2017) - https://marketplace.visualstudio.com/items?itemName=MultilingualAppToolkit.MultilingualAppToolkit-18308
 
 # Learned from
 

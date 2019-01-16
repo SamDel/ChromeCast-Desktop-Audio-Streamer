@@ -1,0 +1,620 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" datatype="resx" />
+    </body>
+  </file>
+  <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/MAINFORM.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/MAINFORM.RESX" datatype="resx">
+        <trans-unit id="$this.Icon" translate="yes" extype="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64" xml:space="preserve">
+          <source>
+        AAABAAEAgIAQAAAAAABoKAAAFgAAACgAAACAAAAAAAEAAAEABAAAAAAAACgAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAACP/////////3AAAAAAD//////4AAAAAACP//////AAAAAAB/////////////////
+        /////////4cAAAAAAAAAAAj/////////8AAAAAAA//////9wAAAAAAj//////wAAAAAAf///////////
+        ////////////////9wAAAAAAAAAI//////////AAAAAAAP//////cAAAAAAI//////8AAAAAAH//////
+        //////////////////////+AAAAAAAAACP/////////wAAAAAAf//////3AAAAAACP//////AAAAAAB/
+        ////////////////////////////+AAAAAAAAAj/////////gAAAAAAH//////9wAAAAAA//////+AAA
+        AAAAf/////////////////////////////+AAAAAAAAI/////////3AAAAAAB///////AAAAAAAP////
+        //gAAAAAAH//////////////////////////////9wAAAAAACP////////8AAAAAAAj//////wAAAAAA
+        D//////3AAAAAAB///////////////////////////////gAAAAAAAj////////3AAAAAAAP//////8A
+        AAAAAH//////9wAAAAAAf///////////////////////////////AAAAAAAI////////gAAAAAAAf///
+        ///4AAAAAAB///////cAAAAAAH///////////////////////////////3AAAAAACP///////wAAAAAA
+        AI//////9wAAAAAAf//////wAAAAAAB///////////////////////////////9wAAAAAAj///////cA
+        AAAAAAD///////AAAAAAAI//////8AAAAAAACIiIiIiIiIiIiIiIiIiIiIiIiP//////gAAAAAAI////
+        //9wAAAAAAAI//////+AAAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAA
+        CP/////3AAAAAAAAD///////cAAAAAAH//////+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+A
+        AAAAAAj////4AAAAAAAAAI///////wAAAAAAB///////cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//
+        ////gAAAAAAI///4cAAAAAAAAAf///////gAAAAAAA///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD//////4AAAAAACPiHAAAAAAAAAAAP///////3AAAAAAAP//////8AAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAj///////gAAAAAAAf//////3AAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAP//////gAAAAAAAAAAAAAAAAAAAB////////3AAAAAAAP//////9wAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAD//////4AAAAAAAAAAAAAAAAAAAH////////gAAAAAAAf///////AAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAAAAAAAAAAAAAf////////wAAAAAAAI//////+AAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAAAAAAAAAAAAB/////////cAAAAAAAf///////
+        cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAAAAAAAAAAAAAI////////+AAAAAAAAI//
+        /////wAAAAAAB4iIiIiIiIiIiIiIiIiIgAAAAAAA//////+AAAAAAAAAAAAAAAAH//////////AAAAAA
+        AAf///////cAAAAAAA////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAHj/////////9w
+        AAAAAAAI///////wAAAAAAB////////////////////3AAAAAAD//////4AAAAAAAAAAAAAHj///////
+        ///3AAAAAAAAf///////gAAAAAAAj///////////////////9wAAAAAA//////+AAAAAAAAAAAB3////
+        ////////cAAAAAAAAP///////wAAAAAAAP////////////////////cAAAAAAP//////gAAAAAAAd3iP
+        ////////////9wAAAAAAAAj///////gAAAAAAAj////////////////////3AAAAAAD//////4AAAAAA
+        CP///////////////3AAAAAAAAB////////wAAAAAAAP////////////////////9wAAAAAA//////+A
+        AAAAAAj///////////////cAAAAAAAAA////////cAAAAAAAf/////////////////////cAAAAAAP//
+        ////gAAAAAAI//////////////9wAAAAAAAACP///////wAAAAAAAP/////////////////////3AAAA
+        AAD//////4AAAAAACP////////////+AAAAAAAAAAH////////cAAAAAAAf/////////////////////
+        9wAAAAAA//////+AAAAAAAj////////////3AAAAAAAAAAf///////+AAAAAAAAP////////////////
+        //////cAAAAAAP//////gAAAAAAI///////////3AAAAAAAAAAB/////////AAAAAAAAf///////////
+        ///////////3AAAAAAD//////4AAAAAACP/////////4AAAAAAAAAAAH////////9wAAAAAAAP//////
+        ////////////////9wAAAAAA//////+AAAAAAAj////////3AAAAAAAAAAAAf////////4AAAAAAAAf/
+        //////////////////////cAAAAAAP//////gAAAAAAI//////+HAAAAAAAAAAAAB/////////8AAAAA
+        AAAP///////////////////////3AAAAAAD//////4AAAAAACP//+IcAAAAAAAAAAAAAAH/////////3
+        AAAAAAAAj///////////////////////9wAAAAAA//////+AAAAAAAB3AAAAAAAAAAAAAAAAAAj/////
+        ////cAAAAAAAB/////////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAAAAACP
+        ////////9wAAAAAAAA/////////////////////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAA
+        AAB//////////4AAAAAAAACP////////////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAA
+        AAAAAAAI//////////gAAAAAAAAH//////////////////////////cAAAAAAP//////gAAAAAAAAAAA
+        AAAAAAAAAAAH//////////+AAAAAAAAAD//////////////////////////3AAAAAAD//////4AAAAAA
+        AAAAAAAAAAAAAAAH///////////4AAAAAAAAAP//////////////////////////9wAAAAAA//////+A
+        AAAAAAAAAAAAAAAAAAAH////////////gAAAAAAAAAj///////////////////////////cAAAAAAP//
+        ////gAAAAAAAAAAAAAAAAAAH////////////9wAAAAAAAAB////////////////////////////3AAAA
+        AAD//////4AAAAAAAAAAAAAAAAB4/////////////3AAAAAAAAAH////////////////////////////
+        9wAAAAAA//////+AAAAAAAAAAAAAAHeP//////////////AAAAAAAAAAf///////////////////////
+        //////cAAAAAAP//////gAAAAAAAAAB3eP////////////////gAAAAAAAAAB///////////////////
+        ///////////3AAAAAAD//////4AAAAAACP////////////////////9wAAAAAAAAAA//////////////
+        ////////////////9wAAAAAA//////+AAAAAAAj///////////////////+AAAAAAAAAAAD/////////
+        //////////////////////cAAAAAAP//////gAAAAAAI//////////////////+HAAAAAAAAAAB/////
+        ///////////////////////////3AAAAAAD//////4AAAAAACP/////////////////3AAAAAAAAAAAH
+        ////////////////////////////////9wAAAAAA//////+AAAAAAAj////////////////3AAAAAAAA
+        AAAAf/////////////////////////////////cAAAAAAP//////gAAAAAAI///////////////3AAAA
+        AAAAAAAACP/////////////////////////////////3AAAAAAD//////4AAAAAACP////////////+H
+        AAAAAAAAAAAAAI//////////////////////////////////9wAAAAAA//////+AAAAAAAj/////////
+        //hwAAAAAAAAAAAAAH////////////////////////////////////cAAAAAAP//////gAAAAAAI////
+        /////4cAAAAAAAAAAAAAAAf////////////////////////////////////3AAAAAAD//////4AAAAAA
+        CP/////4dwAAAAAAAAAAAAAAAACP////////////////////////////////////9wAAAAAA//////+A
+        AAAAAAeHd3cAAAAAAAAAAAAAAAAAAAB///////////////////////////////////////cAAAAAAP//
+        ////gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4///////////////////////////////////////3AAAA
+        AAD//////4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAI////////////////////////////////////////
+        9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAAAAAAAAH////////////////////////////////////
+        //////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAAAAAAH////////////////////////////////
+        ///////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAAAAB4////////////////////////////
+        ////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAAAB4////////////////////////
+        //////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAeP////////////////////
+        ///////////////////////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAB/////////////////
+        ////////////////////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAf///////////
+        //////////////////////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAH//////
+        ///////////////////////////////////////////3AAAAAAD//////4AAAAAAB4iIiIiIAAAAAAB/
+        ////////////////////////////////////////////////9wAAAAAA//////+AAAAAAAj//////wAA
+        AAAAf/////////////////////////////////////////////////cAAAAAAP//////gAAAAAAI////
+        //8AAAAAAH/////////////////////////////////////////////////3AAAAAAD//////4AAAAAA
+        CP//////AAAAAAB/////////////////////////////////////////////////9wAAAAAA//////+A
+        AAAAAAj//////wAAAAAAf/////////////////////////////////////////////////cAAAAAAP//
+        ////gAAAAAAI//////8AAAAAAAiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiAAAAA
+        AAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////4iI
+        iIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiP//////gAAAAAAH////
+        /////////////////////////////////////////////////////////////////////////3AAAAAA
+        B/////////////////////////////////////////////////////////////////////////////9w
+        AAAAAAD/////////////////////////////////////////////////////////////////////////
+        ////AAAAAAAAj///////////////////////////////////////////////////////////////////
+        ////////+AAAAAAAAH//////////////////////////////////////////////////////////////
+        //////////////cAAAAAAAAI////////////////////////////////////////////////////////
+        //////////////////+AAAAAAAAAAI//////////////////////////////////////////////////
+        ///////////////////////4AAAAAAAAAAAI////////////////////////////////////////////
+        ////////////////////////////gAAAAAAAAAAAAH//////////////////////////////////////
+        ////////////////////////////////9wAAAAAAAAAAAAAAeP//////////////////////////////
+        ////////////////////////////////////hwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////AAH/wA/
+        /AH/4AAAAAD///wAB/8AP/wB/+AAAAAAD//8AAf/AD/8Af/gAAAAAAP//AAP/wA//AH/4AAAAAAB//wA
+        D/8AP/wB/+AAAAAAAP/8AA//AD/8Af/gAAAAAAB//AAf/wA/+AH/4AAAAAAAf/wAH/4Af/gB/+AAAAAA
+        AD/8AD/+AH/4Af/gAAAAAAA//AB//gB/+AH/4AAAAAAAP/wAf/wAf/gD////////AD/8Af/8AP/4A///
+        /////wA//AP//AD/8AP///////8AP/wH//gB//AD////////AD/8H//wAf/wA////////wA/////8AH/
+        4Af///////8AP////+AD/+AH////////AD/////AA//gB////////wA/////gAf/wA////////8AP///
+        /wAP/8AP////////AD////4AD/+AD////////wA////8AB//gB////////8AP///+AA//wAf/gAAAAf/
+        AD///+AAf/8AP/4AAAAH/wA///+AAH/+AD/+AAAAB/8AP//+AAD//gB//AAAAAf/AD//8AAB//wAf/wA
+        AAAH/wA//AAAA//4AP/8AAAAB/8AP/wAAA//+AD/+AAAAAf/AD/8AAAf//AB//gAAAAH/wA//AAAP//g
+        Af/wAAAAB/8AP/wAAP//wAP/8AAAAAf/AD/8AAP//8AH/+AAAAAH/wA//AAP//+AB//gAAAAB/8AP/wA
+        P///AA//wAAAAAf/AD/8Af///gAf/8AAAAAH/wA//D////gAP/+AAAAAB/8AP//////wAD//AAAAAAf/
+        AD//////4AB//wAAAAAH/wA//////8AA//4AAAAAB/8AP/////8AAf/8AAAAAAf/AD/////+AAP//AAA
+        AAAH/wA/////+AAH//gAAAAAB/8AP////+AAD//wAAAAAAf/AD////+AAB//4AAAAAAH/wA////8AAB/
+        /8AAAAAAB/8AP///4AAA///AAAAAAAf/AD///gAAAf//gAAAAAAH/wA//AAAAAf//wAAAAAAB/8AP/wA
+        AAAP//4AAAAAAAf/AD/8AAAAP//8AAAAAAAH/wA//AAAAP//+AAAAAAAB/8AP/wAAAP///AAAAAAAAf/
+        AD/8AAAP///AAAAAAAAH/wA//AAAf///gAAAAAAAB/8AP/wAAf///wAAAAAAAAf/AD/8AB////4AAAAA
+        AAAH/wA//AP////4AAAAAAAAB/8AP///////8AAAAAAAAAf/AD///////8AAAAAAAAAH/wA///////8A
+        AAAAAAAAB/8AP//////+AAAAAAAAAAf/AD//////+AAAAAAAAAAH/wA//////+AAAAAAAAAAB/8AP///
+        //8AAAAAAAAAAAf/AD/////8AAAAAAAAAAAH/wA/////4AAAAAAAAAAAB/8AP////+AAAAAAAAAAAAf/
+        AD/////gAAAAAAAAAAAH/wA/////4AAAAAAAAAAAB/8AP/wA/+AAAAAAAAAAAAf/AD/8AP/gAAAAAAAA
+        AAAH/wA//AD/4AAAAAAAAAAAB/8AP/wA/+AAAAAAAAAAAAf/AD/8AP///////////////wA//AD/////
+        //////////8AP/wA////////////////AD/8AP///////////////wA//AD///////////////8AP/wA
+        ////////////////AD/8AP///////////////wA//AD///////////////8AP/wA////////////////
+        AD/8AP///////////////wA//AD///////////////8AP/wA////////////////AD/8AAAAAAAAAAAA
+        AAAAAAA//AAAAAAAAAAAAAAAAAAAP/wAAAAAAAAAAAAAAAAAAD/+AAAAAAAAAAAAAAAAAAB//gAAAAAA
+        AAAAAAAAAAAAf/8AAAAAAAAAAAAAAAAAAP//gAAAAAAAAAAAAAAAAAH//8AAAAAAAAAAAAAAAAAD///w
+        AAAAAAAAAAAAAAAAD////wAAAAAAAAAAAAAAAP//////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////w==
+</source>
+          <target state="needs-review-translation">
+        AAABAAEAgIAQAAAAAABoKAAAFgAAACgAAACAAAAAAAEAAAEABAAAAAAAACgAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAACP/////////3AAAAAAD//////4AAAAAACP//////AAAAAAB/////////////////
+        /////////4cAAAAAAAAAAAj/////////8AAAAAAA//////9wAAAAAAj//////wAAAAAAf///////////
+        ////////////////9wAAAAAAAAAI//////////AAAAAAAP//////cAAAAAAI//////8AAAAAAH//////
+        //////////////////////+AAAAAAAAACP/////////wAAAAAAf//////3AAAAAACP//////AAAAAAB/
+        ////////////////////////////+AAAAAAAAAj/////////gAAAAAAH//////9wAAAAAA//////+AAA
+        AAAAf/////////////////////////////+AAAAAAAAI/////////3AAAAAAB///////AAAAAAAP////
+        //gAAAAAAH//////////////////////////////9wAAAAAACP////////8AAAAAAAj//////wAAAAAA
+        D//////3AAAAAAB///////////////////////////////gAAAAAAAj////////3AAAAAAAP//////8A
+        AAAAAH//////9wAAAAAAf///////////////////////////////AAAAAAAI////////gAAAAAAAf///
+        ///4AAAAAAB///////cAAAAAAH///////////////////////////////3AAAAAACP///////wAAAAAA
+        AI//////9wAAAAAAf//////wAAAAAAB///////////////////////////////9wAAAAAAj///////cA
+        AAAAAAD///////AAAAAAAI//////8AAAAAAACIiIiIiIiIiIiIiIiIiIiIiIiP//////gAAAAAAI////
+        //9wAAAAAAAI//////+AAAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAA
+        CP/////3AAAAAAAAD///////cAAAAAAH//////+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+A
+        AAAAAAj////4AAAAAAAAAI///////wAAAAAAB///////cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//
+        ////gAAAAAAI///4cAAAAAAAAAf///////gAAAAAAA///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAD//////4AAAAAACPiHAAAAAAAAAAAP///////3AAAAAAAP//////8AAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAj///////gAAAAAAAf//////3AAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAP//////gAAAAAAAAAAAAAAAAAAAB////////3AAAAAAAP//////9wAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAD//////4AAAAAAAAAAAAAAAAAAAH////////gAAAAAAAf///////AAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAAAAAAAAAAAAAf////////wAAAAAAAI//////+AAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAAAAAAAAAAAAB/////////cAAAAAAAf///////
+        cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAAAAAAAAAAAAAI////////+AAAAAAAAI//
+        /////wAAAAAAB4iIiIiIiIiIiIiIiIiIgAAAAAAA//////+AAAAAAAAAAAAAAAAH//////////AAAAAA
+        AAf///////cAAAAAAA////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAHj/////////9w
+        AAAAAAAI///////wAAAAAAB////////////////////3AAAAAAD//////4AAAAAAAAAAAAAHj///////
+        ///3AAAAAAAAf///////gAAAAAAAj///////////////////9wAAAAAA//////+AAAAAAAAAAAB3////
+        ////////cAAAAAAAAP///////wAAAAAAAP////////////////////cAAAAAAP//////gAAAAAAAd3iP
+        ////////////9wAAAAAAAAj///////gAAAAAAAj////////////////////3AAAAAAD//////4AAAAAA
+        CP///////////////3AAAAAAAAB////////wAAAAAAAP////////////////////9wAAAAAA//////+A
+        AAAAAAj///////////////cAAAAAAAAA////////cAAAAAAAf/////////////////////cAAAAAAP//
+        ////gAAAAAAI//////////////9wAAAAAAAACP///////wAAAAAAAP/////////////////////3AAAA
+        AAD//////4AAAAAACP////////////+AAAAAAAAAAH////////cAAAAAAAf/////////////////////
+        9wAAAAAA//////+AAAAAAAj////////////3AAAAAAAAAAf///////+AAAAAAAAP////////////////
+        //////cAAAAAAP//////gAAAAAAI///////////3AAAAAAAAAAB/////////AAAAAAAAf///////////
+        ///////////3AAAAAAD//////4AAAAAACP/////////4AAAAAAAAAAAH////////9wAAAAAAAP//////
+        ////////////////9wAAAAAA//////+AAAAAAAj////////3AAAAAAAAAAAAf////////4AAAAAAAAf/
+        //////////////////////cAAAAAAP//////gAAAAAAI//////+HAAAAAAAAAAAAB/////////8AAAAA
+        AAAP///////////////////////3AAAAAAD//////4AAAAAACP//+IcAAAAAAAAAAAAAAH/////////3
+        AAAAAAAAj///////////////////////9wAAAAAA//////+AAAAAAAB3AAAAAAAAAAAAAAAAAAj/////
+        ////cAAAAAAAB/////////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAAAAACP
+        ////////9wAAAAAAAA/////////////////////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAA
+        AAB//////////4AAAAAAAACP////////////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAA
+        AAAAAAAI//////////gAAAAAAAAH//////////////////////////cAAAAAAP//////gAAAAAAAAAAA
+        AAAAAAAAAAAH//////////+AAAAAAAAAD//////////////////////////3AAAAAAD//////4AAAAAA
+        AAAAAAAAAAAAAAAH///////////4AAAAAAAAAP//////////////////////////9wAAAAAA//////+A
+        AAAAAAAAAAAAAAAAAAAH////////////gAAAAAAAAAj///////////////////////////cAAAAAAP//
+        ////gAAAAAAAAAAAAAAAAAAH////////////9wAAAAAAAAB////////////////////////////3AAAA
+        AAD//////4AAAAAAAAAAAAAAAAB4/////////////3AAAAAAAAAH////////////////////////////
+        9wAAAAAA//////+AAAAAAAAAAAAAAHeP//////////////AAAAAAAAAAf///////////////////////
+        //////cAAAAAAP//////gAAAAAAAAAB3eP////////////////gAAAAAAAAAB///////////////////
+        ///////////3AAAAAAD//////4AAAAAACP////////////////////9wAAAAAAAAAA//////////////
+        ////////////////9wAAAAAA//////+AAAAAAAj///////////////////+AAAAAAAAAAAD/////////
+        //////////////////////cAAAAAAP//////gAAAAAAI//////////////////+HAAAAAAAAAAB/////
+        ///////////////////////////3AAAAAAD//////4AAAAAACP/////////////////3AAAAAAAAAAAH
+        ////////////////////////////////9wAAAAAA//////+AAAAAAAj////////////////3AAAAAAAA
+        AAAAf/////////////////////////////////cAAAAAAP//////gAAAAAAI///////////////3AAAA
+        AAAAAAAACP/////////////////////////////////3AAAAAAD//////4AAAAAACP////////////+H
+        AAAAAAAAAAAAAI//////////////////////////////////9wAAAAAA//////+AAAAAAAj/////////
+        //hwAAAAAAAAAAAAAH////////////////////////////////////cAAAAAAP//////gAAAAAAI////
+        /////4cAAAAAAAAAAAAAAAf////////////////////////////////////3AAAAAAD//////4AAAAAA
+        CP/////4dwAAAAAAAAAAAAAAAACP////////////////////////////////////9wAAAAAA//////+A
+        AAAAAAeHd3cAAAAAAAAAAAAAAAAAAAB///////////////////////////////////////cAAAAAAP//
+        ////gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4///////////////////////////////////////3AAAA
+        AAD//////4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAI////////////////////////////////////////
+        9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAAAAAAAAH////////////////////////////////////
+        //////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAAAAAAH////////////////////////////////
+        ///////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAAAAAB4////////////////////////////
+        ////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAAAB4////////////////////////
+        //////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAAeP////////////////////
+        ///////////////////////////3AAAAAAD//////4AAAAAAAAAAAAAAAAAAAAB/////////////////
+        ////////////////////////////////9wAAAAAA//////+AAAAAAAAAAAAAAAAAAAAAf///////////
+        //////////////////////////////////////cAAAAAAP//////gAAAAAAAAAAAAAAAAAAAAH//////
+        ///////////////////////////////////////////3AAAAAAD//////4AAAAAAB4iIiIiIAAAAAAB/
+        ////////////////////////////////////////////////9wAAAAAA//////+AAAAAAAj//////wAA
+        AAAAf/////////////////////////////////////////////////cAAAAAAP//////gAAAAAAI////
+        //8AAAAAAH/////////////////////////////////////////////////3AAAAAAD//////4AAAAAA
+        CP//////AAAAAAB/////////////////////////////////////////////////9wAAAAAA//////+A
+        AAAAAAj//////wAAAAAAf/////////////////////////////////////////////////cAAAAAAP//
+        ////gAAAAAAI//////8AAAAAAAiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiAAAAA
+        AAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////wAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////gAAAAAAI//////8AAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////4AAAAAACP//////AAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////+AAAAAAAj//////4iI
+        iIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiP//////gAAAAAAH////
+        /////////////////////////////////////////////////////////////////////////3AAAAAA
+        B/////////////////////////////////////////////////////////////////////////////9w
+        AAAAAAD/////////////////////////////////////////////////////////////////////////
+        ////AAAAAAAAj///////////////////////////////////////////////////////////////////
+        ////////+AAAAAAAAH//////////////////////////////////////////////////////////////
+        //////////////cAAAAAAAAI////////////////////////////////////////////////////////
+        //////////////////+AAAAAAAAAAI//////////////////////////////////////////////////
+        ///////////////////////4AAAAAAAAAAAI////////////////////////////////////////////
+        ////////////////////////////gAAAAAAAAAAAAH//////////////////////////////////////
+        ////////////////////////////////9wAAAAAAAAAAAAAAeP//////////////////////////////
+        ////////////////////////////////////hwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////AAH/wA/
+        /AH/4AAAAAD///wAB/8AP/wB/+AAAAAAD//8AAf/AD/8Af/gAAAAAAP//AAP/wA//AH/4AAAAAAB//wA
+        D/8AP/wB/+AAAAAAAP/8AA//AD/8Af/gAAAAAAB//AAf/wA/+AH/4AAAAAAAf/wAH/4Af/gB/+AAAAAA
+        AD/8AD/+AH/4Af/gAAAAAAA//AB//gB/+AH/4AAAAAAAP/wAf/wAf/gD////////AD/8Af/8AP/4A///
+        /////wA//AP//AD/8AP///////8AP/wH//gB//AD////////AD/8H//wAf/wA////////wA/////8AH/
+        4Af///////8AP////+AD/+AH////////AD/////AA//gB////////wA/////gAf/wA////////8AP///
+        /wAP/8AP////////AD////4AD/+AD////////wA////8AB//gB////////8AP///+AA//wAf/gAAAAf/
+        AD///+AAf/8AP/4AAAAH/wA///+AAH/+AD/+AAAAB/8AP//+AAD//gB//AAAAAf/AD//8AAB//wAf/wA
+        AAAH/wA//AAAA//4AP/8AAAAB/8AP/wAAA//+AD/+AAAAAf/AD/8AAAf//AB//gAAAAH/wA//AAAP//g
+        Af/wAAAAB/8AP/wAAP//wAP/8AAAAAf/AD/8AAP//8AH/+AAAAAH/wA//AAP//+AB//gAAAAB/8AP/wA
+        P///AA//wAAAAAf/AD/8Af///gAf/8AAAAAH/wA//D////gAP/+AAAAAB/8AP//////wAD//AAAAAAf/
+        AD//////4AB//wAAAAAH/wA//////8AA//4AAAAAB/8AP/////8AAf/8AAAAAAf/AD/////+AAP//AAA
+        AAAH/wA/////+AAH//gAAAAAB/8AP////+AAD//wAAAAAAf/AD////+AAB//4AAAAAAH/wA////8AAB/
+        /8AAAAAAB/8AP///4AAA///AAAAAAAf/AD///gAAAf//gAAAAAAH/wA//AAAAAf//wAAAAAAB/8AP/wA
+        AAAP//4AAAAAAAf/AD/8AAAAP//8AAAAAAAH/wA//AAAAP//+AAAAAAAB/8AP/wAAAP///AAAAAAAAf/
+        AD/8AAAP///AAAAAAAAH/wA//AAAf///gAAAAAAAB/8AP/wAAf///wAAAAAAAAf/AD/8AB////4AAAAA
+        AAAH/wA//AP////4AAAAAAAAB/8AP///////8AAAAAAAAAf/AD///////8AAAAAAAAAH/wA///////8A
+        AAAAAAAAB/8AP//////+AAAAAAAAAAf/AD//////+AAAAAAAAAAH/wA//////+AAAAAAAAAAB/8AP///
+        //8AAAAAAAAAAAf/AD/////8AAAAAAAAAAAH/wA/////4AAAAAAAAAAAB/8AP////+AAAAAAAAAAAAf/
+        AD/////gAAAAAAAAAAAH/wA/////4AAAAAAAAAAAB/8AP/wA/+AAAAAAAAAAAAf/AD/8AP/gAAAAAAAA
+        AAAH/wA//AD/4AAAAAAAAAAAB/8AP/wA/+AAAAAAAAAAAAf/AD/8AP///////////////wA//AD/////
+        //////////8AP/wA////////////////AD/8AP///////////////wA//AD///////////////8AP/wA
+        ////////////////AD/8AP///////////////wA//AD///////////////8AP/wA////////////////
+        AD/8AP///////////////wA//AD///////////////8AP/wA////////////////AD/8AAAAAAAAAAAA
+        AAAAAAA//AAAAAAAAAAAAAAAAAAAP/wAAAAAAAAAAAAAAAAAAD/+AAAAAAAAAAAAAAAAAAB//gAAAAAA
+        AAAAAAAAAAAAf/8AAAAAAAAAAAAAAAAAAP//gAAAAAAAAAAAAAAAAAH//8AAAAAAAAAAAAAAAAAD///w
+        AAAAAAAAAAAAAAAAD////wAAAAAAAAAAAAAAAP//////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////w==
+</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+  <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/RESOURCES.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/RESOURCES.RESX" datatype="resx">
+        <trans-unit id="Mute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+          <source>..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+          <target state="needs-review-translation">..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
+        <trans-unit id="Pause" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+          <source>..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+          <target state="needs-review-translation">..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
+        <trans-unit id="Play" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+          <source>..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+          <target state="needs-review-translation">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
+        <trans-unit id="silence" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+          <source>silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+          <target state="needs-review-translation">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+        </trans-unit>
+        <trans-unit id="Unmute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+          <source>..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+          <target state="needs-review-translation">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+  <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/STRINGS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/STRINGS.RESX" datatype="resx">
+        <trans-unit id="Buffering" translate="yes" xml:space="preserve">
+          <source>Buffering</source>
+          <target state="translated">Mise en mémoire tampon</target>
+        </trans-unit>
+        <trans-unit id="Button_ClipboardCopy_Text" translate="yes" xml:space="preserve">
+          <source>Copy to clipboard</source>
+          <target state="translated">Copier dans le presse-papier</target>
+        </trans-unit>
+        <trans-unit id="Button_Down_Text" translate="yes" xml:space="preserve">
+          <source>Down</source>
+          <target state="translated">Baisser</target>
+        </trans-unit>
+        <trans-unit id="Button_Mute_Text" translate="yes" xml:space="preserve">
+          <source>Mute</source>
+          <target state="translated">Sourdine</target>
+        </trans-unit>
+        <trans-unit id="Button_ResetSetting_Text" translate="yes" xml:space="preserve">
+          <source>Reset Settings</source>
+          <target state="translated">Réinitialiser les paramètres</target>
+        </trans-unit>
+        <trans-unit id="Button_ScanAgain_Text" translate="yes" xml:space="preserve">
+          <source>Scan again for devices</source>
+          <target state="translated">Rechercher à nouveau des périphériques</target>
+        </trans-unit>
+        <trans-unit id="Button_SyncDevices_Text" translate="yes" xml:space="preserve">
+          <source>Sync Devices</source>
+          <target state="translated">Synchroniser les périphériques</target>
+        </trans-unit>
+        <trans-unit id="Button_Up_Text" translate="yes" xml:space="preserve">
+          <source>Up</source>
+          <target state="translated">Augmenter</target>
+        </trans-unit>
+        <trans-unit id="Check_AutomaticallyRestart_Text" translate="yes" xml:space="preserve">
+          <source>Automatically restart when the stream is closed</source>
+          <target state="translated">Redémarrage automatique lorsque le flux est fermé</target>
+        </trans-unit>
+        <trans-unit id="Check_AutomaticallyStart_Text" translate="yes" xml:space="preserve">
+          <source>Automatically start devices at startup</source>
+          <target state="translated">Démarrage automatique des appareils au démarrage</target>
+        </trans-unit>
+        <trans-unit id="Check_KeyboardShortcuts_Text" translate="yes" xml:space="preserve">
+          <source>Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M</source>
+          <target state="translated">Utiliser les raccourcis clavier : Augmenter = Ctrl+Alt+U; Baisser = Ctrl+Alt+D; Sourdine = Ctrl+Alt+M</target>
+        </trans-unit>
+        <trans-unit id="Check_ShowLagControl_Text" translate="yes" xml:space="preserve">
+          <source>Show lag control (experimental)</source>
+          <target state="translated">Afficher le contrôle du décalage (expérimental)</target>
+        </trans-unit>
+        <trans-unit id="Check_ShowWindowOnStart_Text" translate="yes" xml:space="preserve">
+          <source>Show window at startup</source>
+          <target state="translated">Montrer la fenêtre au démarrage</target>
+        </trans-unit>
+        <trans-unit id="ChromeCast_StreamTitle" translate="yes" xml:space="preserve">
+          <source>Desktop Stream</source>
+          <target state="needs-review-translation">Desktop Stream</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="Closed" translate="yes" xml:space="preserve">
+          <source>Closed</source>
+          <target state="translated">Fermé</target>
+        </trans-unit>
+        <trans-unit id="ConnectError" translate="yes" xml:space="preserve">
+          <source>Connect Error</source>
+          <target state="translated">Erreur de connexion</target>
+        </trans-unit>
+        <trans-unit id="Disposed" translate="yes" xml:space="preserve">
+          <source>Disposed</source>
+          <target state="translated">Retiré</target>
+        </trans-unit>
+        <trans-unit id="Group_Devices_Text" translate="yes" xml:space="preserve">
+          <source>Devices (click name to start streaming)</source>
+          <target state="translated">Appareils (cliquez sur le nom pour commencer le streaming)</target>
+        </trans-unit>
+        <trans-unit id="Group_Lag_Text" translate="yes" xml:space="preserve">
+          <source>Lag Control</source>
+          <target state="translated">Contrôle du décalage</target>
+        </trans-unit>
+        <trans-unit id="Group_Options_Text" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <target state="needs-review-translation">Options</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="Group_VolumeAllDevices_Text" translate="yes" xml:space="preserve">
+          <source>Volume all devices:</source>
+          <target state="translated">Volume de tous les appareils :</target>
+        </trans-unit>
+        <trans-unit id="Idle" translate="yes" xml:space="preserve">
+          <source>Idle</source>
+          <target state="translated">Inactif</target>
+        </trans-unit>
+        <trans-unit id="InvalidRequest" translate="yes" xml:space="preserve">
+          <source>Invalid Request</source>
+          <target state="translated">Requête invalide</target>
+        </trans-unit>
+        <trans-unit id="Label_IPAddressUsed_Text" translate="yes" xml:space="preserve">
+          <source>IP4 address used:</source>
+          <target state="translated">Adresse IP4 utilisée :</target>
+        </trans-unit>
+        <trans-unit id="Label_KeepAlive_Text" translate="yes" xml:space="preserve">
+          <source>Latest keep-alive message:</source>
+          <target state="translated">Dernier message en direct :</target>
+        </trans-unit>
+        <trans-unit id="Label_LagExperimental_Text" translate="yes" xml:space="preserve">
+          <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</source>
+          <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'appareil, sans temps-mort.</target>
+        </trans-unit>
+        <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
+          <source>Language</source>
+          <target state="translated">La langue</target>
+        </trans-unit>
+        <trans-unit id="Label_MaximumLag_Text" translate="yes" xml:space="preserve">
+          <source>maximum lag / best quality</source>
+          <target state="translated">décalage maximum / meilleure quality</target>
+        </trans-unit>
+        <trans-unit id="Label_MinimumLag_Text" translate="yes" xml:space="preserve">
+          <source>minimum lag / poor quality</source>
+          <target state="translated">décalage minimum / faible qualité</target>
+        </trans-unit>
+        <trans-unit id="Label_RecordingDevice_Text" translate="yes" xml:space="preserve">
+          <source>Recording device:</source>
+          <target state="translated">Appareil d'enregistrement :</target>
+        </trans-unit>
+        <trans-unit id="Label_StreamFormatExtra_Text" translate="yes" xml:space="preserve">
+          <source>The mp3 formats have a long lag and buffering time.</source>
+          <target state="translated">Les formats mp3 ont un décalage et un temps de mise en mémoire tampon important.</target>
+        </trans-unit>
+        <trans-unit id="Label_StreamFormat_Text" translate="yes" xml:space="preserve">
+          <source>Stream format</source>
+          <target state="translated">Format du flux</target>
+        </trans-unit>
+        <trans-unit id="Language_English" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="translated">Anglais</target>
+        </trans-unit>
+        <trans-unit id="Language_French" translate="yes" xml:space="preserve">
+          <source>French</source>
+          <target state="translated">Français</target>
+        </trans-unit>
+        <trans-unit id="LaunchedApplication" translate="yes" xml:space="preserve">
+          <source>Launched Application</source>
+          <target state="translated">Application lancée</target>
+        </trans-unit>
+        <trans-unit id="LaunchingApplication" translate="yes" xml:space="preserve">
+          <source>Launching Application</source>
+          <target state="translated">Lancement de l'application</target>
+        </trans-unit>
+        <trans-unit id="LoadCancelled" translate="yes" xml:space="preserve">
+          <source>Load Cancelled</source>
+          <target state="translated">Chargement annulé</target>
+        </trans-unit>
+        <trans-unit id="LoadFailed" translate="yes" xml:space="preserve">
+          <source>Load Failed</source>
+          <target state="translated">Échec du chargement</target>
+        </trans-unit>
+        <trans-unit id="LoadingMedia" translate="yes" xml:space="preserve">
+          <source>Loading Media</source>
+          <target state="translated">Chargement du média</target>
+        </trans-unit>
+        <trans-unit id="Log_In" translate="yes" xml:space="preserve">
+          <source>in</source>
+          <target state="translated">entrée</target>
+        </trans-unit>
+        <trans-unit id="Log_Out" translate="yes" xml:space="preserve">
+          <source>out</source>
+          <target state="translated">sortie</target>
+        </trans-unit>
+        <trans-unit id="MainForm_Text" translate="yes" xml:space="preserve">
+          <source>ChromeCast Desktop Audio Streamer</source>
+          <target state="needs-review-translation">ChromeCast Desktop Audio Streamer</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
+          <source>No recording devices found.</source>
+          <target state="translated">Aucun appareil d'enregistrement trouvé.</target>
+        </trans-unit>
+        <trans-unit id="NotConnected" translate="yes" xml:space="preserve">
+          <source>Not Connected</source>
+          <target state="translated">Non connecté</target>
+        </trans-unit>
+        <trans-unit id="Paused" translate="yes" xml:space="preserve">
+          <source>Paused</source>
+          <target state="translated">Suspendu</target>
+        </trans-unit>
+        <trans-unit id="Playing" translate="yes" xml:space="preserve">
+          <source>Playing</source>
+          <target state="translated">Jouer</target>
+        </trans-unit>
+        <trans-unit id="Tab_Log_Text" translate="yes" xml:space="preserve">
+          <source>Log</source>
+          <target state="needs-review-translation">Log</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="Tab_Options_Text" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <target state="needs-review-translation">Options</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="TrayIcon_Close" translate="yes" xml:space="preserve">
+          <source>Close</source>
+          <target state="translated">Fermer</target>
+        </trans-unit>
+        <trans-unit id="Version" translate="yes" xml:space="preserve">
+          <source>Version</source>
+          <target state="needs-review-translation">Version</target>
+          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+        </trans-unit>
+        <trans-unit id="Button_ClearLog_Text" translate="yes" xml:space="preserve">
+          <source>Clear Log</source>
+          <target state="new">Clear Log</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>
