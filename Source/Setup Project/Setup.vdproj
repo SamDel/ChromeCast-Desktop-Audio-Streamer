@@ -243,6 +243,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_70B8FC819C4E4058BE190ED66FF40208"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_77842EE959AE5A3FC5C13B1BB4C00294"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
@@ -1923,6 +1929,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70B8FC819C4E4058BE190ED66FF40208"
+            {
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\Properties\\silence.mp3"
+            "TargetName" = "8:silence.mp3"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77842EE959AE5A3FC5C13B1BB4C00294"
             {
             "AssemblyRegister" = "3:1"
@@ -3425,15 +3451,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{94AA5303-6C23-48CF-B783-9B3AF05CCA42}"
-        "PackageCode" = "8:{F7D25241-4083-46E9-AB96-94B1BD5D326A}"
+        "ProductCode" = "8:{1CA01708-2C8E-4446-876C-3410F4EC256F}"
+        "PackageCode" = "8:{FE9B417E-22CE-4A18-B6D5-3457C9199EBB}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.9"
+        "ProductVersion" = "8:1.9.3"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
