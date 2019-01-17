@@ -190,7 +190,7 @@
         ////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////w==
 </source>
-          <target state="translated">
+          <target state="new">
         AAABAAEAgIAQAAAAAABoKAAAFgAAACgAAACAAAAAAAEAAAEABAAAAAAAACgAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
         AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -377,23 +377,23 @@
       <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/RESOURCES.RESX" datatype="resx">
         <trans-unit id="Mute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="translated">..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="new">..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="Pause" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="translated">..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="new">..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="Play" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="translated">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="new">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="silence" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-          <target state="translated">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+          <target state="new">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         </trans-unit>
         <trans-unit id="Unmute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="translated">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="new">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
       </group>
     </body>
@@ -510,7 +510,7 @@
         </trans-unit>
         <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="translated">La langue</target>
+          <target state="needs-review-translation">La langue</target>
         </trans-unit>
         <trans-unit id="Label_MaximumLag_Text" translate="yes" xml:space="preserve">
           <source>maximum lag / best quality</source>
@@ -534,11 +534,11 @@
         </trans-unit>
         <trans-unit id="Language_English" translate="yes" xml:space="preserve">
           <source>English</source>
-          <target state="translated">Anglais</target>
+          <target state="needs-review-translation">Anglais</target>
         </trans-unit>
         <trans-unit id="Language_French" translate="yes" xml:space="preserve">
           <source>French</source>
-          <target state="translated">Français</target>
+          <target state="needs-review-translation">Français</target>
         </trans-unit>
         <trans-unit id="LaunchedApplication" translate="yes" xml:space="preserve">
           <source>Launched Application</source>
@@ -570,7 +570,7 @@
         </trans-unit>
         <trans-unit id="MainForm_Text" translate="yes" xml:space="preserve">
           <source>ChromeCast Desktop Audio Streamer</source>
-          <target state="translated">ChromeCast Desktop Audio Streamer</target>
+          <target state="new">ChromeCast Desktop Audio Streamer</target>
         </trans-unit>
         <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
           <source>No recording devices found.</source>
@@ -606,23 +606,23 @@
         </trans-unit>
         <trans-unit id="Button_ClearLog_Text" translate="yes" xml:space="preserve">
           <source>Clear Log</source>
-          <target state="new">Clear Log</target>
+          <target state="needs-review-translation">Clear Log</target>
         </trans-unit>
         <trans-unit id="Check_LogDeviceCommunication_Text" translate="yes" xml:space="preserve">
           <source>Log device communication</source>
-          <target state="new">Log device communication</target>
+          <target state="needs-review-translation">Log device communication</target>
         </trans-unit>
         <trans-unit id="Mp3_128" translate="yes" xml:space="preserve">
           <source>Mp3 (128 kbps)</source>
-          <target state="translated">Mp3 (128 kbps)</target>
+          <target state="new">Mp3 (128 kbps)</target>
         </trans-unit>
         <trans-unit id="Mp3_320" translate="yes" xml:space="preserve">
           <source>Mp3 (320 kbps)</source>
-          <target state="translated">Mp3 (320 kbps)</target>
+          <target state="new">Mp3 (320 kbps)</target>
         </trans-unit>
         <trans-unit id="Wav" translate="yes" xml:space="preserve">
           <source>Wav (44100 Hz)</source>
-          <target state="translated">Wav (44100 Hz)</target>
+          <target state="new">Wav (44100 Hz)</target>
         </trans-unit>
       </group>
     </body>

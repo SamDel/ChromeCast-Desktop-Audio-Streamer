@@ -135,9 +135,6 @@
   <data name="Log_Out" xml:space="preserve">
     <value>sortie</value>
   </data>
-  <data name="MainForm_Text" xml:space="preserve">
-    <value>ChromeCast Desktop Audio Streamer</value>
-  </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
     <value>Aucun appareil d'enregistrement trouvé.</value>
   </data>
@@ -162,13 +159,10 @@
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
-  <data name="Mp3_128" xml:space="preserve">
-    <value>Mp3 (128 kbps)</value>
+  <data name="Button_ClearLog_Text" xml:space="preserve">
+    <value>Clear Log</value>
   </data>
-  <data name="Mp3_320" xml:space="preserve">
-    <value>Mp3 (320 kbps)</value>
-  </data>
-  <data name="Wav" xml:space="preserve">
-    <value>Wav (44100 Hz)</value>
+  <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
+    <value>Log device communication</value>
   </data>
 </root>
