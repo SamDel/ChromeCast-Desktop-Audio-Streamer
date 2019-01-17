@@ -190,7 +190,7 @@
         ////////////////////////////////////////////////////////////////////////////////
         /////////////////////////////////////////////////////////////w==
 </source>
-          <target state="needs-review-translation">
+          <target state="translated">
         AAABAAEAgIAQAAAAAABoKAAAFgAAACgAAACAAAAAAAEAAAEABAAAAAAAACgAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAgICAAMDAwAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
         AAD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -377,23 +377,23 @@
       <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/PROPERTIES/RESOURCES.RESX" datatype="resx">
         <trans-unit id="Mute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="needs-review-translation">..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="translated">..\UserControls\Mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="Pause" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="needs-review-translation">..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="translated">..\UserControls\Pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="Play" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="needs-review-translation">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="translated">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
         <trans-unit id="silence" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-          <target state="needs-review-translation">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
+          <target state="translated">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         </trans-unit>
         <trans-unit id="Unmute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
-          <target state="needs-review-translation">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+          <target state="translated">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
       </group>
     </body>
@@ -458,8 +458,7 @@
         </trans-unit>
         <trans-unit id="ChromeCast_StreamTitle" translate="yes" xml:space="preserve">
           <source>Desktop Stream</source>
-          <target state="needs-review-translation">Desktop Stream</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">Desktop Stream</target>
         </trans-unit>
         <trans-unit id="Closed" translate="yes" xml:space="preserve">
           <source>Closed</source>
@@ -483,8 +482,7 @@
         </trans-unit>
         <trans-unit id="Group_Options_Text" translate="yes" xml:space="preserve">
           <source>Options</source>
-          <target state="needs-review-translation">Options</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">Options</target>
         </trans-unit>
         <trans-unit id="Group_VolumeAllDevices_Text" translate="yes" xml:space="preserve">
           <source>Volume all devices:</source>
@@ -572,8 +570,7 @@
         </trans-unit>
         <trans-unit id="MainForm_Text" translate="yes" xml:space="preserve">
           <source>ChromeCast Desktop Audio Streamer</source>
-          <target state="needs-review-translation">ChromeCast Desktop Audio Streamer</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">ChromeCast Desktop Audio Streamer</target>
         </trans-unit>
         <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
           <source>No recording devices found.</source>
@@ -593,13 +590,11 @@
         </trans-unit>
         <trans-unit id="Tab_Log_Text" translate="yes" xml:space="preserve">
           <source>Log</source>
-          <target state="needs-review-translation">Log</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">Log</target>
         </trans-unit>
         <trans-unit id="Tab_Options_Text" translate="yes" xml:space="preserve">
           <source>Options</source>
-          <target state="needs-review-translation">Options</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">Options</target>
         </trans-unit>
         <trans-unit id="TrayIcon_Close" translate="yes" xml:space="preserve">
           <source>Close</source>
@@ -607,8 +602,7 @@
         </trans-unit>
         <trans-unit id="Version" translate="yes" xml:space="preserve">
           <source>Version</source>
-          <target state="needs-review-translation">Version</target>
-          <note from="MultilingualUpdate" priority="2">When the XLIFF file support was added via MAT, existing resources were found and auto-imported.  This source and target string contained the same value so the resource was marked as 'Needs review' to ensure the translation could be easily reviewed.</note>
+          <target state="translated">Version</target>
         </trans-unit>
         <trans-unit id="Button_ClearLog_Text" translate="yes" xml:space="preserve">
           <source>Clear Log</source>
@@ -620,15 +614,15 @@
         </trans-unit>
         <trans-unit id="Mp3_128" translate="yes" xml:space="preserve">
           <source>Mp3 (128 kbps)</source>
-          <target state="new">Mp3 (128 kbps)</target>
+          <target state="translated">Mp3 (128 kbps)</target>
         </trans-unit>
         <trans-unit id="Mp3_320" translate="yes" xml:space="preserve">
           <source>Mp3 (320 kbps)</source>
-          <target state="new">Mp3 (320 kbps)</target>
+          <target state="translated">Mp3 (320 kbps)</target>
         </trans-unit>
         <trans-unit id="Wav" translate="yes" xml:space="preserve">
           <source>Wav (44100 Hz)</source>
-          <target state="new">Wav (44100 Hz)</target>
+          <target state="translated">Wav (44100 Hz)</target>
         </trans-unit>
       </group>
     </body>

@@ -162,4 +162,13 @@
   <data name="Version" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="Mp3_128" xml:space="preserve">
+    <value>Mp3 (128 kbps)</value>
+  </data>
+  <data name="Mp3_320" xml:space="preserve">
+    <value>Mp3 (320 kbps)</value>
+  </data>
+  <data name="Wav" xml:space="preserve">
+    <value>Wav (44100 Hz)</value>
+  </data>
 </root>
