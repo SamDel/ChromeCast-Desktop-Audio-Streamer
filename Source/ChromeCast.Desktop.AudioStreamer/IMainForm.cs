@@ -11,7 +11,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         void Log(string message);
         void ToggleVisibility();
         void SetKeyboardHooks(bool useShortCuts);
-        void ShowLog(bool boolShowLog);
         void ShowLagControl(bool showLag);
         void SetLagValue(int lagValue);
         void SetWindowVisibility(bool visible);

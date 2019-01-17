@@ -166,19 +166,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkShowLagControl.Checked = showLag;
         }
 
-        public void ShowLog(bool boolShowLog)
-        {
-            if (InvokeRequired)
-            {
-                Invoke(new Action<bool>(ShowLog), new object[] { boolShowLog });
-                return;
-            }
-            if (IsDisposed) return;
-
-            if (!boolShowLog)
-                tabControl.TabPages.Remove(tabPageLog);
-        }
-
         public void SetLagValue(int lagValue)
         {
             if (InvokeRequired)
@@ -524,11 +511,26 @@ namespace ChromeCast.Desktop.AudioStreamer
         public void SetLogDeviceCommunication(bool logDeviceCommunication)
         {
             chkLogDeviceCommunication.Checked = logDeviceCommunication;
+            if (logDeviceCommunication)
+            {
+                if (!tabControl.TabPages.Contains(tabPageLog))
+                    tabControl.TabPages.Add(tabPageLog);
+            }
+            else
+            {
+                if (tabControl.TabPages.Contains(tabPageLog))
+                    tabControl.TabPages.Remove(tabPageLog);
+            }
         }
 
         public bool GetLogDeviceCommunication()
         {
             return chkLogDeviceCommunication.Checked;
+        }
+
+        private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
+        {
+            SetLogDeviceCommunication(chkLogDeviceCommunication.Checked);
         }
     }
 }

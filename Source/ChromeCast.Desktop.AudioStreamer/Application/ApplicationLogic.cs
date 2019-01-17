@@ -158,8 +158,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void SetConfiguration(bool showLog, bool showLagControl, int lagValue, string ipAddressesDevices)
         {
-            mainForm.ShowLog(showLog);
-
             if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
             {
                 var ipDevices = ipAddressesDevices.Split(';');

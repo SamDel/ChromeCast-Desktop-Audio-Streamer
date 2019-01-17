@@ -47,6 +47,7 @@
             this.btnSyncDevices = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
@@ -73,7 +74,6 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -302,6 +302,17 @@
             this.grpOptions.TabIndex = 14;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
+            // 
+            // chkLogDeviceCommunication
+            // 
+            this.chkLogDeviceCommunication.AutoSize = true;
+            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 292);
+            this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
+            this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
+            this.chkLogDeviceCommunication.TabIndex = 35;
+            this.chkLogDeviceCommunication.Text = "Log device communication";
+            this.chkLogDeviceCommunication.UseVisualStyleBackColor = true;
+            this.chkLogDeviceCommunication.CheckedChanged += new System.EventHandler(this.ChkLogDeviceCommunication_CheckedChanged);
             // 
             // pnlOptionsResetSettings
             // 
@@ -572,16 +583,6 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
-            // 
-            // chkLogDeviceCommunication
-            // 
-            this.chkLogDeviceCommunication.AutoSize = true;
-            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 292);
-            this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
-            this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
-            this.chkLogDeviceCommunication.TabIndex = 35;
-            this.chkLogDeviceCommunication.Text = "Log device communication";
-            this.chkLogDeviceCommunication.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
