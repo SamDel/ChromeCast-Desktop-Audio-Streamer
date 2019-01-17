@@ -120,6 +120,7 @@
     <Compile Include="Application\Configuration.cs" />
     <Compile Include="Application\Device.cs" />
     <Compile Include="Application\Devices.cs" />
+    <Compile Include="Classes\ComboboxItem.cs" />
     <Compile Include="Classes\Resource.cs" />
     <Compile Include="Classes\SupportedStreamFormat.cs" />
     <Compile Include="Classes\Mp3Stream.cs" />

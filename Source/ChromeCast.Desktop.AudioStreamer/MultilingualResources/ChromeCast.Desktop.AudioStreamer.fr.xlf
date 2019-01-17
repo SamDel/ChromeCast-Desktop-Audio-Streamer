@@ -618,6 +618,18 @@
           <source>Log device communication</source>
           <target state="new">Log device communication</target>
         </trans-unit>
+        <trans-unit id="Mp3_128" translate="yes" xml:space="preserve">
+          <source>Mp3 (128 kbps)</source>
+          <target state="new">Mp3 (128 kbps)</target>
+        </trans-unit>
+        <trans-unit id="Mp3_320" translate="yes" xml:space="preserve">
+          <source>Mp3 (320 kbps)</source>
+          <target state="new">Mp3 (320 kbps)</target>
+        </trans-unit>
+        <trans-unit id="Wav" translate="yes" xml:space="preserve">
+          <source>Wav (44100 Hz)</source>
+          <target state="new">Wav (44100 Hz)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

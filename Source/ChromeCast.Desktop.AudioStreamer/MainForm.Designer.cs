@@ -59,7 +59,6 @@
             this.pnlOptionsComboBoxesRight = new System.Windows.Forms.Panel();
             this.cmbLanguage = new System.Windows.Forms.ComboBox();
             this.cmbIP4AddressUsed = new System.Windows.Forms.ComboBox();
-            this.lblStreamFormatExtra = new System.Windows.Forms.Label();
             this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
             this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
             this.chkShowLagControl = new System.Windows.Forms.CheckBox();
@@ -398,7 +397,6 @@
             this.pnlOptionsComboBoxesRight.AutoSize = true;
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
-            this.pnlOptionsComboBoxesRight.Controls.Add(this.lblStreamFormatExtra);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
             this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
@@ -425,15 +423,6 @@
             this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 24);
             this.cmbIP4AddressUsed.TabIndex = 20;
             // 
-            // lblStreamFormatExtra
-            // 
-            this.lblStreamFormatExtra.AutoSize = true;
-            this.lblStreamFormatExtra.Location = new System.Drawing.Point(107, 62);
-            this.lblStreamFormatExtra.Name = "lblStreamFormatExtra";
-            this.lblStreamFormatExtra.Size = new System.Drawing.Size(338, 17);
-            this.lblStreamFormatExtra.TabIndex = 30;
-            this.lblStreamFormatExtra.Text = "The mp3 formats have a long lag and buffering time.";
-            // 
             // cmbRecordingDevice
             // 
             this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -449,7 +438,7 @@
             this.cmbStreamFormat.FormattingEnabled = true;
             this.cmbStreamFormat.Location = new System.Drawing.Point(3, 59);
             this.cmbStreamFormat.Name = "cmbStreamFormat";
-            this.cmbStreamFormat.Size = new System.Drawing.Size(98, 24);
+            this.cmbStreamFormat.Size = new System.Drawing.Size(442, 24);
             this.cmbStreamFormat.TabIndex = 29;
             this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.CmbStreamFormat_SelectedIndexChanged);
             // 
@@ -617,7 +606,6 @@
             this.pnlOptionsComboBoxesLabels.ResumeLayout(false);
             this.pnlOptionsComboBoxesLabels.PerformLayout();
             this.pnlOptionsComboBoxesRight.ResumeLayout(false);
-            this.pnlOptionsComboBoxesRight.PerformLayout();
             this.tabPageLog.ResumeLayout(false);
             this.tabPageLog.PerformLayout();
             this.pnlLogCopyToClipboard.ResumeLayout(false);
@@ -662,7 +650,6 @@
         private System.Windows.Forms.CheckBox chkShowLagControl;
         private System.Windows.Forms.ComboBox cmbStreamFormat;
         private System.Windows.Forms.Label lblStreamFormat;
-        private System.Windows.Forms.Label lblStreamFormatExtra;
         private System.Windows.Forms.ComboBox cmbLanguage;
         private System.Windows.Forms.Label lblLanguage;
         private System.Windows.Forms.FlowLayoutPanel pnlVolumeAllButtons;

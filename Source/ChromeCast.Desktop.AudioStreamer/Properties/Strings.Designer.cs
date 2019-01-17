@@ -466,6 +466,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mp3 (128 kbps).
+        /// </summary>
+        internal static string Mp3_128 {
+            get {
+                return ResourceManager.GetString("Mp3_128", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mp3 (320 kbps).
+        /// </summary>
+        internal static string Mp3_320 {
+            get {
+                return ResourceManager.GetString("Mp3_320", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not Connected.
         /// </summary>
         internal static string NotConnected {
@@ -525,6 +543,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wav (44100 Hz).
+        /// </summary>
+        internal static string Wav {
+            get {
+                return ResourceManager.GetString("Wav", resourceCulture);
             }
         }
     }

@@ -71,7 +71,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             lblIpAddressUsed.Text = Properties.Strings.Label_IPAddressUsed_Text;
             lblDevice.Text = Properties.Strings.Label_RecordingDevice_Text;
             lblStreamFormat.Text = Properties.Strings.Label_StreamFormat_Text;
-            lblStreamFormatExtra.Text = Properties.Strings.Label_StreamFormatExtra_Text;
             chkHook.Text = Properties.Strings.Check_KeyboardShortcuts_Text;
             chkShowWindowOnStart.Text = Properties.Strings.Check_ShowWindowOnStart_Text;
             chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
@@ -93,10 +92,10 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (cmbStreamFormat.Items.Count == 0)
             {
-                cmbStreamFormat.Items.Add(SupportedStreamFormat.Wav);
-                cmbStreamFormat.Items.Add(SupportedStreamFormat.Mp3_128);
-                cmbStreamFormat.Items.Add(SupportedStreamFormat.Mp3_320);
-                cmbStreamFormat.SelectedItem = SupportedStreamFormat.Wav;
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav));
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_128));
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_320));
+                cmbStreamFormat.SelectedIndex = 0;
                 SetStreamFormat();
             }
         }
@@ -459,7 +458,11 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (IsDisposed) return;
 
             FillStreamFormats();
-            cmbStreamFormat.SelectedItem = format;
+            for (int i = 0; i < cmbStreamFormat.Items.Count; i++)
+            {
+                if ((SupportedStreamFormat)((ComboboxItem)cmbStreamFormat.Items[i]).Value == format)
+                    cmbStreamFormat.SelectedIndex = i;
+            }
             SetStreamFormat();
         }
 
@@ -483,7 +486,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void SetStreamFormat()
         {
             if (cmbStreamFormat.SelectedItem != null)
-                applicationLogic.SetStreamFormat((SupportedStreamFormat)cmbStreamFormat.SelectedItem);
+                applicationLogic.SetStreamFormat((SupportedStreamFormat)((ComboboxItem)cmbStreamFormat.SelectedItem).Value);
         }
 
         private void CmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
