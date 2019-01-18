@@ -72,7 +72,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var wasPlaying = false;
             foreach (var device in deviceList)
             {
-                wasPlaying = wasPlaying || device.Stop();
+                wasPlaying = device.Stop() || wasPlaying;
             }
             return wasPlaying;
         }
