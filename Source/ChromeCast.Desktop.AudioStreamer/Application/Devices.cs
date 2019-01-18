@@ -114,8 +114,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             foreach (var device in deviceList)
             {
-                if (device.IsConnected())
-                    device.OnGetStatus();
+                device.OnGetStatus();
             }
         }
 

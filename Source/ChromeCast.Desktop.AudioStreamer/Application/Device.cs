@@ -23,19 +23,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
-        private DateTime lastVolumeChange;
 
         public Device(IDeviceCommunication deviceCommunicationIn)
         {
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, IsConnected, GetHost);
-            volumeSetting = new Volume
-            {
-                controlType = "attenuation",
-                level = 0.0f,
-                muted = false,
-                stepInterval = 0.05f
-            };
+            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, GetHost);
         }
 
         public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn)
@@ -88,15 +80,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceControl?.SetStatus(state, text);
         }
 
-        //TODO: remove here, move to communication.
-        public bool IsConnected()
-        {
-            var state = deviceCommunication.GetDeviceState();
-            return !(state.Equals(DeviceState.NotConnected) ||
-                state.Equals(DeviceState.ConnectError) ||
-                state.Equals(DeviceState.Closed));
-        }
-
         public void OnVolumeUpdate(Volume volume)
         {
             volumeSetting = volume;
@@ -105,46 +88,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void VolumeSet(float level)
         {
-            if (!IsConnected())
-                return;
-
-            if (lastVolumeChange != null && DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
-                return;
-
-            lastVolumeChange = DateTime.Now;
-
-            if (volumeSetting.level > level)
-                while (volumeSetting.level > level) volumeSetting.level -= volumeSetting.stepInterval;
-            if (volumeSetting.level < level)
-                while (volumeSetting.level < level) volumeSetting.level += volumeSetting.stepInterval;
-            if (level > 1) level = 1;
-            if (level < 0) level = 0;
-
-            volumeSetting.level = level;
-            deviceCommunication.VolumeSet(volumeSetting);
+            deviceCommunication.VolumeSet(level);
         }
 
         public void VolumeUp()
         {
-            if (!IsConnected())
-                return;
-
             VolumeSet(volumeSetting.level + 0.05f);
         }
 
         public void VolumeDown()
         {
-            if (!IsConnected())
-                return;
-
             VolumeSet(volumeSetting.level - 0.05f);
         }
 
         public void VolumeMute()
         {
-            if (!IsConnected())
-                return;
-
             deviceCommunication.VolumeMute(!volumeSetting.muted);
         }
 

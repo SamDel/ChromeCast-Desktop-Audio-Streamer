@@ -15,7 +15,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private DeviceState deviceState;
         private Action<DeviceState, string> setControlDeviceState;
         private Action<Volume> onVolumeUpdate;
-        private Func<bool> isDeviceConnected;
         private Func<string> getHost;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
@@ -27,6 +26,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private int requestId;
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
+        private Volume volumeSetting;
+        private DateTime lastVolumeChange;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn, IDeviceConnection deviceConnectionIn)
         {
@@ -38,13 +39,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             chromeCastSource = string.Format("client-8{0}", new Random().Next(10000, 99999));
             requestId = 0;
             SetDeviceState(DeviceState.NotConnected);
+            volumeSetting = new Volume
+            {
+                controlType = "attenuation",
+                level = 0.0f,
+                muted = false,
+                stepInterval = 0.05f
+            };
         }
 
         private void LaunchAndLoadMedia()
         {
             SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
-            if (isDeviceConnected())
+            if (IsConnected())
                 Launch();
         }
 
@@ -70,13 +78,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetPauseMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
-        public void VolumeSet(Volume volumeSetting)
+        public void VolumeSet(float level)
         {
-            if (deviceConnection.IsConnected())
-            {
-                nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
-                SendVolumeSet();
-            }
+            if (!IsConnected())
+                return;
+
+            if (lastVolumeChange != null && DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
+                return;
+
+            lastVolumeChange = DateTime.Now;
+
+            if (volumeSetting.level > level)
+                while (volumeSetting.level > level) volumeSetting.level -= volumeSetting.stepInterval;
+            if (volumeSetting.level < level)
+                while (volumeSetting.level < level) volumeSetting.level += volumeSetting.stepInterval;
+            if (level > 1) level = 1;
+            if (level < 0) level = 0;
+
+            volumeSetting.level = level;
+
+            nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
+            SendVolumeSet();
         }
 
         private void SendVolumeSet()
@@ -110,7 +132,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void GetMediaStatus()
         {
-            SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+            if (IsConnected())
+                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
         public bool Stop()
@@ -265,11 +288,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         }
 
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn,
-            Func<bool> isDeviceConnectedIn, Func<string> getHostIn)
+            Func<string> getHostIn)
         {
             setControlDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
-            isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
             deviceConnection.SetCallback(getHostIn, setDeviceStateIn, OnReceiveMessage);
         }
@@ -307,6 +329,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public DeviceState GetDeviceState()
         {
             return deviceState;
+        }
+
+        private bool IsConnected()
+        {
+            return !(deviceState.Equals(DeviceState.NotConnected) ||
+                deviceState.Equals(DeviceState.ConnectError) ||
+                deviceState.Equals(DeviceState.Closed));
         }
     }
 

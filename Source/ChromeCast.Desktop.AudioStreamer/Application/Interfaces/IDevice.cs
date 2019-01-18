@@ -13,7 +13,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public interface IDevice
     {
-        bool IsConnected();
         void SetDeviceState(DeviceState disposed, string text = null);
         void SetDiscoveredDevices(DiscoveredSsdpDevice device, SsdpDevice fullDevice);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
