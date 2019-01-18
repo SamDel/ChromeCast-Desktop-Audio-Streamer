@@ -11,10 +11,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
     public class DeviceCommunication : IDeviceCommunication
     {
+        private IDeviceConnection deviceConnection;
         private Action<DeviceState, string> setDeviceState;
         private Action<Volume> onVolumeUpdate;
-        private Action<byte[]> sendMessage;
-        private Func<bool> isConnected;
         private Func<bool> isDeviceConnected;
         private Func<string> getHost;
         private Func<DeviceState> getDeviceState;
@@ -29,9 +28,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
 
-        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
+        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn, IDeviceConnection deviceConnectionIn)
         {
             applicationLogic = applicationLogicIn;
+            deviceConnection = deviceConnectionIn;
             logger = loggerIn;
             chromeCastMessages = chromeCastMessagesIn;
             chromeCastDestination = string.Empty;
@@ -39,7 +39,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             requestId = 0;
         }
 
-        public void LaunchAndLoadMedia()
+        private void LaunchAndLoadMedia()
         {
             setDeviceState?.Invoke(DeviceState.LaunchingApplication, null);
             Connect();
@@ -47,12 +47,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 Launch();
         }
 
-        public void Connect(string sourceId = null, string destinationId = null)
+        private void Connect(string sourceId = null, string destinationId = null)
         {
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
         }
 
-        public void Launch()
+        private void Launch()
         {
             SendMessage(chromeCastMessages.GetLaunchMessage(GetNextRequestId()));
         }
@@ -71,7 +71,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeSet(Volume volumeSetting)
         {
-            if (isConnected())
+            if (deviceConnection.IsConnected())
             {
                 nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
                 SendVolumeSet();
@@ -93,19 +93,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeMute(bool muted)
         {
-            if (isConnected())
+            if (deviceConnection.IsConnected())
                 SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
         }
 
-        public void Pong()
+        private void Pong()
         {
             SendMessage(chromeCastMessages.GetPongMessage());
         }
 
-        public void GetReceiverStatus()
-        {
-            SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
-        }
+        //public void GetReceiverStatus()
+        //{
+        //    SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
+        //}
 
         public void GetMediaStatus()
         {
@@ -117,15 +117,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
-        public int GetNextRequestId()
+        private int GetNextRequestId()
         {
             return ++requestId;
         }
 
-        public void SendMessage(CastMessage castMessage)
+        private void SendMessage(CastMessage castMessage)
         {
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
-            sendMessage?.Invoke(byteMessage);
+            deviceConnection.SendMessage(byteMessage);
 
             logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
         }
@@ -181,7 +181,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
-            if (isConnected() && mediaStatusMessage.status.Any())
+            if (deviceConnection.IsConnected() && mediaStatusMessage.status.Any())
             {
                 switch (mediaStatusMessage.status.First().playerState)
                 {
@@ -244,16 +244,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
-        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn, Action<byte[]> sendMessageIn, 
-            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn)
+        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn,
+            Func<DeviceState> getDeviceStateIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn)
         {
             setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
-            sendMessage = sendMessageIn;
             getDeviceState = getDeviceStateIn;
-            isConnected = isConnectedIn;
             isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
+            deviceConnection.SetCallback(getHostIn, setDeviceStateIn, OnReceiveMessage);
         }
 
         public void OnClickDeviceButton(DeviceState deviceState)

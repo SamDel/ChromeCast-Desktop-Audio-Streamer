@@ -11,7 +11,6 @@ using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
-using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -19,7 +18,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         private IDeviceCommunication deviceCommunication;
         private IStreamingConnection streamingConnection;
-        private IDeviceConnection deviceConnection;
         private DiscoveredSsdpDevice discoveredSsdpDevice;
         private SsdpDevice ssdpDevice;
         private DeviceState deviceState;
@@ -28,12 +26,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Volume volumeSetting;
         private DateTime lastVolumeChange;
 
-        public Device(IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
+        public Device(IDeviceCommunication deviceCommunicationIn)
         {
-            deviceConnection = deviceConnectionIn;
-            deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost);
+            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, GetDeviceState, IsConnected, GetHost);
             deviceState = DeviceState.NotConnected;
             volumeSetting = new Volume
             {
@@ -220,12 +216,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public IDeviceConnection GetDeviceConnection()
         {
-            return deviceConnection;
+            throw new NotImplementedException();
         }
 
-        public void OnReceiveMessage(CastMessage castMessage)
-        {
-            deviceCommunication?.OnReceiveMessage(castMessage);
-        }
     }
 }
