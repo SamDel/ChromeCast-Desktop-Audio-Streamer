@@ -182,7 +182,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Dispose()
         {
-            Stop(); //TODO: implement Close!?
+            Stop();
+            deviceCommunication.Close();
         }
     }
 }

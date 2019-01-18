@@ -49,6 +49,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return GetCastMessage(new PayloadMessageBase { type = "CONNECT" }, namespaceConnect, sourceId, destinationId);
         }
 
+        public CastMessage GetCloseMessage()
+        {
+            return GetCastMessage(new PayloadMessageBase { type = "CLOSE" }, namespaceConnect, null, null);
+        }
+
         public CastMessage GetLaunchMessage(int requestId)
         {
             var message = new MessageLaunch { type = "LAUNCH", appId = "CC1AD845", requestId = requestId };

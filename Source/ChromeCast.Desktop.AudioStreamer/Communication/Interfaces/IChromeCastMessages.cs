@@ -6,6 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
     public interface IChromeCastMessages
     {
         CastMessage GetConnectMessage(string sourceId, string destinationId);
+        CastMessage GetCloseMessage();
         CastMessage GetLaunchMessage(int requestId);
         CastMessage GetLoadMessage(string streamUrl, string chromeCastSource, string chromeCastDestination);
         CastMessage GetStopMessage(string chromeCastSessionId, int chromeCastMediaSessionId, int requestId, string chromeCastSource, string chromeCastDestination);

@@ -61,6 +61,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
         }
 
+        private void Close(string sourceId = null, string destinationId = null)
+        {
+            SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
+        }
+
         private void Launch()
         {
             SendMessage(chromeCastMessages.GetLaunchMessage(GetNextRequestId()));
@@ -144,6 +149,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 default:
                     break;
             }
+            //TODO: implement DeviceState.Stopped?
             SetDeviceState(DeviceState.Closed);
             return previousState.Equals(DeviceState.Playing);
         }
@@ -346,6 +352,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             if (deviceConnection.IsConnected())
                 SendMessage(chromeCastMessages.GetVolumeMuteMessage(!volumeSetting.muted, GetNextRequestId()));
+        }
+
+        public void Close()
+        {
+            SendMessage(chromeCastMessages.GetCloseMessage());
         }
     }
 

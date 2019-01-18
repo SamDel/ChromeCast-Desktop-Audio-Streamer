@@ -18,6 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void SetCallback(Action<DeviceState, string> setDeviceState, Action<Volume> onVolumeUpdate,  
             Func<string> getHost);
         bool Stop();
+        void Close();
         DeviceState GetDeviceState();
     }
 }
