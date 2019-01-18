@@ -120,7 +120,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public bool Stop()
         {
             wasPlayingBeforeStopped = deviceCommunication.Stop();
-            deviceCommunication.Close();
             return wasPlayingBeforeStopped;
         }
 

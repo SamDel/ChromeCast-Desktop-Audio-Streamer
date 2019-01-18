@@ -328,7 +328,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Save();
         }
 
-        public void SetStreamFormat(SupportedStreamFormat format)
+        public async void SetStreamFormat(SupportedStreamFormat format)
         {
             if (format != StreamFormatSelected)
             {
@@ -338,7 +338,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 playingOnIpOrFormatChange = devices.Stop();
                 if (playingOnIpOrFormatChange)
                 {
+                    await Task.Delay(2500);
                     devices.Start();
+                    await Task.Delay(15000);
                     playingOnIpOrFormatChange = false;
                 }
             }
