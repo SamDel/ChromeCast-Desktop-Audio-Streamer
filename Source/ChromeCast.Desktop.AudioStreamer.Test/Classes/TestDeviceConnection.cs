@@ -37,5 +37,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
             Array.Copy(data, index, result, 0, length);
             return result;
         }
+
+        public void SetCallback(Func<string> getHost, Action<DeviceState, string> setDeviceState, Action<CastMessage> onReceiveMessage, Action OnClosed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
