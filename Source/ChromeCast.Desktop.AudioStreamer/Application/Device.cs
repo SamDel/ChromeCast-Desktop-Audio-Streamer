@@ -22,6 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private SsdpDevice ssdpDevice;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
+        private bool wasPlayingBeforeStopped;
 
         public Device(IDeviceCommunication deviceCommunicationIn)
         {
@@ -42,7 +43,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Start()
         {
-            deviceCommunication.LoadMedia();
+            if (wasPlayingBeforeStopped)
+                deviceCommunication.LoadMedia();
+
+            wasPlayingBeforeStopped = false;
         }
 
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
@@ -115,7 +119,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool Stop()
         {
-            return deviceCommunication.Stop();
+            wasPlayingBeforeStopped = deviceCommunication.Stop();
+            return wasPlayingBeforeStopped;
         }
 
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
