@@ -263,7 +263,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
             {
-                onVolumeUpdate(receiverStatusMessage.status.volume);
+                OnVolumeUpdate(receiverStatusMessage.status.volume);
 
                 var deviceApplication = receiverStatusMessage.status.applications.Where(a => a.appId.Equals("CC1AD845"));
                 if (deviceApplication.Any())
@@ -285,6 +285,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 lastVolumeSetItem = null;
                 SendVolumeSet();
             }
+        }
+
+        private void OnVolumeUpdate(Volume volume)
+        {
+            onVolumeUpdate(volume);
+            volumeSetting = volume;
         }
 
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn,
