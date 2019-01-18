@@ -150,7 +150,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadingMedia:
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
-                    SendMessage(chromeCastMessages.GetCloseMessage());
+                    SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
                     break;
                 default:
                     break;
