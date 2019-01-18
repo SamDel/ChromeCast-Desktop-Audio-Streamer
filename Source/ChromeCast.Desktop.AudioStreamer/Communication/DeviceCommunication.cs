@@ -114,12 +114,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
-        public void VolumeMute(bool muted)
-        {
-            if (deviceConnection.IsConnected())
-                SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
-        }
-
         private void Pong()
         {
             SendMessage(chromeCastMessages.GetPongMessage());
@@ -336,6 +330,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return !(deviceState.Equals(DeviceState.NotConnected) ||
                 deviceState.Equals(DeviceState.ConnectError) ||
                 deviceState.Equals(DeviceState.Closed));
+        }
+
+        public void VolumeUp()
+        {
+            VolumeSet(volumeSetting.level + 0.05f);
+        }
+
+        public void VolumeDown()
+        {
+            VolumeSet(volumeSetting.level - 0.05f);
+        }
+
+        public void VolumeMute()
+        {
+            if (deviceConnection.IsConnected())
+                SendMessage(chromeCastMessages.GetVolumeMuteMessage(!volumeSetting.muted, GetNextRequestId()));
         }
     }
 

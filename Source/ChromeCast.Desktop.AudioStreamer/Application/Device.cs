@@ -22,7 +22,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private SsdpDevice ssdpDevice;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
-        private Volume volumeSetting;
 
         public Device(IDeviceCommunication deviceCommunicationIn)
         {
@@ -78,11 +77,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDeviceState(DeviceState state, string text = null)
         {
             deviceControl?.SetStatus(state, text);
+
+            switch (state)
+            {
+                case DeviceState.NotConnected:
+                case DeviceState.Idle:
+                case DeviceState.Disposed:
+                case DeviceState.LaunchingApplication:
+                case DeviceState.LaunchedApplication:
+                case DeviceState.LoadingMedia:
+                case DeviceState.Closed:
+                case DeviceState.Paused:
+                case DeviceState.ConnectError:
+                case DeviceState.LoadCancelled:
+                case DeviceState.LoadFailed:
+                case DeviceState.InvalidRequest:
+                    menuItem.Checked = false;
+                    break;
+                case DeviceState.Buffering:
+                case DeviceState.Playing:
+                    menuItem.Checked = true;
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void OnVolumeUpdate(Volume volume)
         {
-            volumeSetting = volume;
             deviceControl?.OnVolumeUpdate(volume);
         }
 
@@ -93,17 +115,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void VolumeUp()
         {
-            VolumeSet(volumeSetting.level + 0.05f);
+            deviceCommunication.VolumeUp();
         }
 
         public void VolumeDown()
         {
-            VolumeSet(volumeSetting.level - 0.05f);
+            deviceCommunication.VolumeDown();
         }
 
         public void VolumeMute()
         {
-            deviceCommunication.VolumeMute(!volumeSetting.muted);
+            deviceCommunication.VolumeMute();
         }
 
         public bool Stop()
@@ -148,9 +170,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return string.Empty;
         }
 
-        public DeviceControl GetDeviceControl()
+        public void SetDeviceName(string name)
         {
-            return deviceControl;
+            deviceControl?.SetDeviceName(name);
+            menuItem.Text = name;
         }
 
         public void SetDeviceControl(DeviceControl deviceControlIn)
@@ -161,11 +184,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetMenuItem(MenuItem menuItemIn)
         {
             menuItem = menuItemIn;
-        }
-
-        public MenuItem GetMenuItem()
-        {
-            return menuItem;
         }
 
         public IDeviceConnection GetDeviceConnection()
