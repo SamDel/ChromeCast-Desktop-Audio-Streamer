@@ -15,7 +15,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetLagValue(int lagValue);
         void SetWindowVisibility(bool visible);
         void AddDevice(IDevice device);
-        bool DoSyncDevices();
         void Dispose();
         void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
         void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice);

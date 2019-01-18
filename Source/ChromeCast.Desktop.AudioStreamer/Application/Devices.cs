@@ -21,12 +21,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
 
-        public void OnDeviceAvailable(DiscoveredSsdpDevice discoveredSsdpDevice, SsdpDevice ssdpDevice)
-        {
-            AddDevice(discoveredSsdpDevice, ssdpDevice);
-        }
-
-        private void AddDevice(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
+        public void OnDeviceAvailable(DiscoveredSsdpDevice device, SsdpDevice fullDevice)
         {
             var existingDevice = deviceList.FirstOrDefault(d => d.GetHost().Equals(device.DescriptionLocation.Host));
             if (existingDevice == null)
@@ -127,7 +122,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             foreach (var device in deviceList)
             {
-                device.SetDeviceState(DeviceState.Disposed);
+                device.Dispose();
             }
         }
 
@@ -143,7 +138,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Sync()
         {
-            if (mainForm.DoSyncDevices())
+            if (deviceList.Count() > 1)
             {
                 mainForm.SetLagValue(2);
                 applicationLogic.SetLagThreshold(2);

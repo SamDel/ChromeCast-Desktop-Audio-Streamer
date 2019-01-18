@@ -75,7 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.GetMediaStatus();
         }
 
-        public void SetDeviceState(DeviceState state, string text = null)
+        private void SetDeviceState(DeviceState state, string text = null)
         {
             deviceControl?.SetStatus(state, text);
 
@@ -83,9 +83,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 menuItem.Checked = true;
             else
                 menuItem.Checked = false;
-
-            if (state == DeviceState.Disposed)
-                Stop(); //TODO: implement Close!?
         }
 
         private void OnVolumeUpdate(Volume volume)
@@ -183,5 +180,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             throw new NotImplementedException();
         }
 
+        public void Dispose()
+        {
+            Stop(); //TODO: implement Close!?
+        }
     }
 }

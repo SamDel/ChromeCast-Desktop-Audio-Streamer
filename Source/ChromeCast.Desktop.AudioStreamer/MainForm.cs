@@ -270,11 +270,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             Hide();
         }
 
-        public bool DoSyncDevices()
-        {
-            return devices.Count() > 1;
-        }
-
         private void BtnSyncDevices_Click(object sender, EventArgs e)
         {
             devices.Sync();
