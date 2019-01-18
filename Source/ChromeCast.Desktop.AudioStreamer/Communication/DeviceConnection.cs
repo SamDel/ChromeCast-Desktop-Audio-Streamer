@@ -15,6 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<string> getHost;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
+        public Action OnClosed { get; private set; }
         private ILogger logger;
         private IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
@@ -78,6 +79,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                 }
             }
+            else
+            {
+                state = DeviceConnectionState.Disconnected;
+                OnClosed();
+            }
         }
 
         private void StartReceive()
@@ -130,11 +136,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return true;
         }
 
-        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn, Action onClosedIn)
         {
             getHost = getHostIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
+            OnClosed = onClosedIn;
         }
     }
 }

@@ -493,6 +493,7 @@
             this.chkAutoRestart.TabIndex = 18;
             this.chkAutoRestart.Text = "Automatically restart when the stream is closed";
             this.chkAutoRestart.UseVisualStyleBackColor = true;
+            this.chkAutoRestart.CheckedChanged += new System.EventHandler(this.ChkAutoRestart_CheckedChanged);
             // 
             // chkHook
             // 

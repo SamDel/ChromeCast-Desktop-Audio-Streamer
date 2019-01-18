@@ -5,6 +5,7 @@
         None,
         Connecting,
         Connected,
-        Error
+        Error,
+        Disconnected
     }
 }

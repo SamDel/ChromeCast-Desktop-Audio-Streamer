@@ -293,6 +293,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                         cmbRecordingDevice.SelectedIndex = index;
                 }
             }
+            cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
         }
 
         public void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice)

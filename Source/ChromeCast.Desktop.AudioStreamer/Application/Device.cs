@@ -52,13 +52,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (streamingConnection.IsConnected())
                 {
                     var state = deviceCommunication.GetDeviceState();
-                    if (state != DeviceState.Paused && state != DeviceState.Closed)
+                    if (state != DeviceState.Closed)
                     {
                         streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
 
-                        //TODO: updates only the shown state, not the communication state!?
                         // After a close message the stream continues sometimes. Keep the device control green then.
-                        if (state != DeviceState.Buffering && state != DeviceState.Playing)
+                        if (state != DeviceState.Buffering &&
+                            state != DeviceState.Playing &&
+                            state != DeviceState.Paused &&
+                            state != DeviceState.LaunchedApplication &&
+                            state != DeviceState.LaunchingApplication)
                             SetDeviceState(DeviceState.Playing, "");
                     }
                 }

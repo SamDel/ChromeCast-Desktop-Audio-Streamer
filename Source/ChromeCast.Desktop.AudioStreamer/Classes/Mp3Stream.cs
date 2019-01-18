@@ -6,8 +6,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
     public class Mp3Stream
     {
-        public MemoryStream Output { get; set; }
-        public LameMP3FileWriter Writer { get; set; }
+        private MemoryStream Output { get; set; }
+        private LameMP3FileWriter Writer { get; set; }
 
         public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected)
         {

@@ -10,7 +10,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void PauseMedia();
         void GetMediaStatus();
         void OnPlayPause_Click();
-        void OnReceiveMessage(CastMessage castMessage);
         void VolumeSet(float level);
         void VolumeUp();
         void VolumeDown();
@@ -19,6 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
             Func<string> getHost);
         bool Stop();
         void Close();
+        void Dispose();
         DeviceState GetDeviceState();
     }
 }

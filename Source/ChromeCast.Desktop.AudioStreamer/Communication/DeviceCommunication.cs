@@ -83,6 +83,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetPauseMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
+        public void PlayMedia()
+        {
+            SetDeviceState(DeviceState.Playing, null);
+            SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
+        }
+
         public void VolumeSet(float level)
         {
             if (!IsConnected())
@@ -144,12 +150,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadingMedia:
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
-                    SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
+                    SendMessage(chromeCastMessages.GetCloseMessage());
                     break;
                 default:
                     break;
             }
-            //TODO: implement DeviceState.Stopped?
             SetDeviceState(DeviceState.Closed);
             return previousState.Equals(DeviceState.Playing);
         }
@@ -167,8 +172,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
         }
 
-        public async void OnReceiveMessage(CastMessage castMessage)
+        private async void OnReceiveMessage(CastMessage castMessage)
         {
+            if (deviceState == DeviceState.Disposed)
+                return;
+
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
@@ -190,7 +198,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case "CLOSE":
                     var previousState = deviceState;
                     var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
+                    Stop();
+                    Close();
                     SetDeviceState(DeviceState.Closed, null);
+                    deviceConnection.Dispose();
+
+                    // Restart
                     if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
                     {
                         await Task.Delay(5000);
@@ -299,7 +312,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             setControlDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
             getHost = getHostIn;
-            deviceConnection.SetCallback(getHostIn, setDeviceStateIn, OnReceiveMessage);
+            deviceConnection.SetCallback(getHostIn, setDeviceStateIn, OnReceiveMessage, OnClosed);
+        }
+
+        private void OnClosed()
+        {
+            SetDeviceState(DeviceState.Closed);
         }
 
         public void OnPlayPause_Click()
@@ -314,8 +332,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LaunchedApplication:
                 case DeviceState.LoadingMedia:
                 case DeviceState.Idle:
-                case DeviceState.Paused:
                     LoadMedia();
+                    break;
+                case DeviceState.Paused:
+                    PlayMedia();
                     break;
                 case DeviceState.NotConnected:
                 case DeviceState.ConnectError:
@@ -363,6 +383,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void Close()
         {
             SendMessage(chromeCastMessages.GetCloseMessage());
+        }
+
+        public void Dispose()
+        {
+            Close();
+            SetDeviceState(DeviceState.Disposed, null);
         }
     }
 
