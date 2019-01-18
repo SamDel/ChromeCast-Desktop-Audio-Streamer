@@ -130,10 +130,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetPongMessage());
         }
 
-        //public void GetReceiverStatus()
-        //{
-        //    SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
-        //}
+        public void GetReceiverStatus()
+        {
+            SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
+        }
 
         public void GetMediaStatus()
         {
