@@ -76,25 +76,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool Stop()
         {
-            var playing = false;
+            var wasPlaying = false;
             foreach (var device in deviceList)
             {
-                switch (device.GetDeviceState())
-                {
-                    case DeviceState.Playing:
-                        playing = true;
-                        device.Stop();
-                        break;
-                    case DeviceState.LoadingMedia:
-                    case DeviceState.Buffering:
-                    case DeviceState.Paused:
-                        device.Stop();
-                        break;
-                    default:
-                        break;
-                }
+                wasPlaying = wasPlaying || device.Stop();
             }
-            return playing;
+            return wasPlaying;
         }
 
         public void Start()

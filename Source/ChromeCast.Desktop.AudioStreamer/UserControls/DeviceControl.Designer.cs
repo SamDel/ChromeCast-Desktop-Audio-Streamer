@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblStatus = new System.Windows.Forms.Label();
+            this.lblState = new System.Windows.Forms.Label();
             this.btnDevice = new System.Windows.Forms.Button();
             this.trbVolume = new System.Windows.Forms.TrackBar();
             this.pictureVolumeMute = new System.Windows.Forms.PictureBox();
@@ -38,18 +38,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblStatus
+            // lblState
             // 
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.lblStatus.Location = new System.Drawing.Point(3, 116);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(301, 21);
-            this.lblStatus.TabIndex = 4;
-            this.lblStatus.Text = "status";
-            this.lblStatus.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
-            this.lblStatus.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceChildControl_MouseDown);
+            this.lblState.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblState.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.lblState.Location = new System.Drawing.Point(3, 116);
+            this.lblState.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
+            this.lblState.Name = "lblState";
+            this.lblState.Size = new System.Drawing.Size(301, 21);
+            this.lblState.TabIndex = 4;
+            this.lblState.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
+            this.lblState.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceChildControl_MouseDown);
             // 
             // btnDevice
             // 
@@ -119,7 +118,7 @@
             this.Controls.Add(this.pictureVolumeMute);
             this.Controls.Add(this.picturePlayPause);
             this.Controls.Add(this.trbVolume);
-            this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.lblState);
             this.Controls.Add(this.btnDevice);
             this.Name = "DeviceControl";
             this.Size = new System.Drawing.Size(314, 137);
@@ -136,7 +135,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblStatus;
+        private System.Windows.Forms.Label lblState;
         private System.Windows.Forms.Button btnDevice;
         private System.Windows.Forms.TrackBar trbVolume;
         private System.Windows.Forms.PictureBox picturePlayPause;

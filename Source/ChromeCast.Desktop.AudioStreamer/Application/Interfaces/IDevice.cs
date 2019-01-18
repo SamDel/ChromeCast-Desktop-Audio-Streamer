@@ -23,7 +23,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         string GetUsn();
         string GetHost();
         string GetFriendlyName();
-        DeviceState GetDeviceState();
         void SetDeviceControl(DeviceControl deviceControl);
         MenuItem GetMenuItem();
         void SetMenuItem(MenuItem menuItem);
@@ -32,7 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeDown();
         void VolumeMute();
         void VolumeSet(float level);
-        void Stop();
+        bool Stop();
         void Start();
         DeviceControl GetDeviceControl();
     }

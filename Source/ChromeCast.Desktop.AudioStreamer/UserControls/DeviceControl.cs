@@ -43,7 +43,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 return;
             }
 
-            lblStatus.Text = $"{Resource.Get(state.ToString())} {text}";
+            lblState.Text = $"{Resource.Get(state.ToString())} {text}";
 
             switch (state)
             {
@@ -88,7 +88,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
             BackColor = color;
             btnDevice.BackColor = color;
-            lblStatus.BackColor = color;
+            lblState.BackColor = color;
             Update();
         }
 

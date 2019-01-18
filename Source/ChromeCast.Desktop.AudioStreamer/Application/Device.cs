@@ -20,7 +20,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IStreamingConnection streamingConnection;
         private DiscoveredSsdpDevice discoveredSsdpDevice;
         private SsdpDevice ssdpDevice;
-        private DeviceState deviceState;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
@@ -29,8 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public Device(IDeviceCommunication deviceCommunicationIn)
         {
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, GetDeviceState, IsConnected, GetHost);
-            deviceState = DeviceState.NotConnected;
+            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, IsConnected, GetHost);
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -48,7 +46,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnClickDeviceButton(object sender, EventArgs e)
         {
-            deviceCommunication.OnClickDeviceButton(deviceState);
+            deviceCommunication.OnPlayPause_Click();
         }
 
         public void Start()
@@ -62,10 +60,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 if (streamingConnection.IsConnected())
                 {
-                    if (deviceState != DeviceState.Paused && deviceState != DeviceState.Closed)
+                    var state = deviceCommunication.GetDeviceState();
+                    if (state != DeviceState.Paused && state != DeviceState.Closed)
                     {
                         streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
-                        if (deviceState != DeviceState.Buffering && deviceState != DeviceState.Playing)
+
+                        //TODO: updates only the shown state, not the communication state!?
+                        if (state != DeviceState.Buffering && state != DeviceState.Playing)
                             SetDeviceState(DeviceState.Playing, "");
                     }
                 }
@@ -84,15 +85,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void SetDeviceState(DeviceState state, string text = null)
         {
-            deviceState = state;
             deviceControl?.SetStatus(state, text);
         }
 
+        //TODO: remove here, move to communication.
         public bool IsConnected()
         {
-            return !(deviceState.Equals(DeviceState.NotConnected) ||
-                deviceState.Equals(DeviceState.ConnectError) ||
-                deviceState.Equals(DeviceState.Closed));
+            var state = deviceCommunication.GetDeviceState();
+            return !(state.Equals(DeviceState.NotConnected) ||
+                state.Equals(DeviceState.ConnectError) ||
+                state.Equals(DeviceState.Closed));
         }
 
         public void OnVolumeUpdate(Volume volume)
@@ -146,10 +148,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.VolumeMute(!volumeSetting.muted);
         }
 
-        public void Stop()
+        public bool Stop()
         {
-            deviceCommunication.Stop();
-            SetDeviceState(DeviceState.Closed);
+            return deviceCommunication.Stop();
         }
 
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
@@ -187,11 +188,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return ssdpDevice.FriendlyName;
 
             return string.Empty;
-        }
-
-        public DeviceState GetDeviceState()
-        {
-            return deviceState;
         }
 
         public DeviceControl GetDeviceControl()
