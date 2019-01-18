@@ -35,7 +35,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             ssdpDevice = ssdpDeviceIn;
         }
 
-        public void OnClickDeviceButton(object sender, EventArgs e)
+        public void OnClickPlayPause()
         {
             deviceCommunication.OnPlayPause_Click();
         }
@@ -57,6 +57,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
 
                         //TODO: updates only the shown state, not the communication state!?
+                        // After a close message the stream continues sometimes. Keep the device control green then.
                         if (state != DeviceState.Buffering && state != DeviceState.Playing)
                             SetDeviceState(DeviceState.Playing, "");
                     }
@@ -78,32 +79,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             deviceControl?.SetStatus(state, text);
 
-            switch (state)
-            {
-                case DeviceState.NotConnected:
-                case DeviceState.Idle:
-                case DeviceState.Disposed:
-                case DeviceState.LaunchingApplication:
-                case DeviceState.LaunchedApplication:
-                case DeviceState.LoadingMedia:
-                case DeviceState.Closed:
-                case DeviceState.Paused:
-                case DeviceState.ConnectError:
-                case DeviceState.LoadCancelled:
-                case DeviceState.LoadFailed:
-                case DeviceState.InvalidRequest:
-                    menuItem.Checked = false;
-                    break;
-                case DeviceState.Buffering:
-                case DeviceState.Playing:
-                    menuItem.Checked = true;
-                    break;
-                default:
-                    break;
-            }
+            if (state == DeviceState.Buffering || state == DeviceState.Playing)
+                menuItem.Checked = true;
+            else
+                menuItem.Checked = false;
+
+            if (state == DeviceState.Disposed)
+                Stop(); //TODO: implement Close!?
         }
 
-        public void OnVolumeUpdate(Volume volume)
+        private void OnVolumeUpdate(Volume volume)
         {
             deviceControl?.OnVolumeUpdate(volume);
         }
@@ -179,11 +164,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDeviceControl(DeviceControl deviceControlIn)
         {
             deviceControl = deviceControlIn;
+            deviceControl.SetClickCallBack(OnClickPlayPause);
         }
 
         public void SetMenuItem(MenuItem menuItemIn)
         {
             menuItem = menuItemIn;
+            menuItem.Click += OnClickMenuItem;
+        }
+
+        private void OnClickMenuItem(object sender, EventArgs e)
+        {
+            OnClickPlayPause();
         }
 
         public IDeviceConnection GetDeviceConnection()

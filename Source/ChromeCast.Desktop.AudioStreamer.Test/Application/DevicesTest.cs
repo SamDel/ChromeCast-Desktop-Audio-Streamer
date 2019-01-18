@@ -78,19 +78,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 
         private void TestConnectAndLoadMedia(Devices devices)
         {
-            //var testDeviceConnection = (TestDeviceConnection)device.GetDeviceConnection();
+            var testDeviceConnection = (TestDeviceConnection)device.GetDeviceConnection();
 
-            //// Connect & Launch
-            //device.OnClickDeviceButton(null, null);
+            // Connect & Launch
+            device.OnClickPlayPause();
 
-            //// Connect & Load Media
+            // Connect & Load Media
             //device.OnReceiveMessage(ReceiverStatusMessageFromDevice());
 
-            //Assert.AreEqual(4, testDeviceConnection.messagesSend.Count);
-            //Assert.AreEqual("CONNECT", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[0].PayloadUtf8).type);
-            //Assert.AreEqual("LAUNCH", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[1].PayloadUtf8).type);
-            //Assert.AreEqual("CONNECT", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[2].PayloadUtf8).type);
-            //Assert.AreEqual("LOAD", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[3].PayloadUtf8).type);
+            Assert.AreEqual(4, testDeviceConnection.messagesSend.Count);
+            Assert.AreEqual("CONNECT", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[0].PayloadUtf8).type);
+            Assert.AreEqual("LAUNCH", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[1].PayloadUtf8).type);
+            Assert.AreEqual("CONNECT", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[2].PayloadUtf8).type);
+            Assert.AreEqual("LOAD", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[3].PayloadUtf8).type);
         }
 
         private void TestMessages(Devices devices)

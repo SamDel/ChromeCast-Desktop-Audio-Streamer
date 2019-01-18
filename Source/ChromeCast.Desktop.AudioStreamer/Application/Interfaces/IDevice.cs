@@ -18,7 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
-        void OnClickDeviceButton(object sender, EventArgs e);
+        void OnClickPlayPause();
         string GetUsn();
         string GetHost();
         string GetFriendlyName();

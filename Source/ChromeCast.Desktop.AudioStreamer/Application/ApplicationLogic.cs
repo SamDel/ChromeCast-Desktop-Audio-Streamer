@@ -118,7 +118,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 Text = device.GetFriendlyName()
             };
-            menuItem.Click += device.OnClickDeviceButton;
             notifyIcon.ContextMenu.MenuItems.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
             device.SetMenuItem(menuItem);
 

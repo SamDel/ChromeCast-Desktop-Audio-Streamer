@@ -39,7 +39,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     onAddDeviceCallback?.Invoke(newDevice);
 
                     if (AutoStart)
-                        newDevice.OnClickDeviceButton(null, null);
+                        newDevice.OnClickPlayPause();
                 }
             }
             else
@@ -75,6 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool Stop()
         {
+            //TODO: change to Close?
             var wasPlaying = false;
             foreach (var device in deviceList)
             {
@@ -124,7 +125,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void Dispose()
         {
-            Stop();
             foreach (var device in deviceList)
             {
                 device.SetDeviceState(DeviceState.Disposed);

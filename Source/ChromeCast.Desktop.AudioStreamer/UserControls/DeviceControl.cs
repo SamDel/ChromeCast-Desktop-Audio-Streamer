@@ -11,7 +11,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
     public partial class DeviceControl : UserControl
     {
         private IDevice device;
-        private EventHandler StartPause_Click;
+        private Action StartPause_Click;
 
         public DeviceControl(IDevice deviceIn)
         {
@@ -89,9 +89,9 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             Update();
         }
 
-        public void SetClickCallBack(EventHandler handler)
+        public void SetClickCallBack(Action action)
         {
-            StartPause_Click = handler;
+            StartPause_Click = action;
         }
 
         public void OnVolumeUpdate(Volume volume)
@@ -150,7 +150,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void BtnDevice_Click(object sender, EventArgs e)
         {
-            StartPause_Click(sender, e);
+            StartPause_Click();
         }
     }
 }
