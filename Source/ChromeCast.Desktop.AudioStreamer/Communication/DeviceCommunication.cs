@@ -217,7 +217,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     }
                     else
                     {
-                        await Task.Delay(500);
+                        await Task.Delay(2000);
                         ConnectAndGetReceiverStatus();
                     }
                     break;
