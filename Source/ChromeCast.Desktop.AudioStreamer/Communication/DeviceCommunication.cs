@@ -56,6 +56,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 Launch();
         }
 
+        public void ConnectAndLaunch()
+        {
+            Connect();
+            Task.Delay(250);
+            GetReceiverStatus();
+        }
+
         private void Connect(string sourceId = null, string destinationId = null)
         {
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
@@ -91,9 +98,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeSet(float level)
         {
-            if (!IsConnected())
-                return;
-
             if (lastVolumeChange != null && DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
                 return;
 
@@ -137,8 +141,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void GetMediaStatus()
         {
-            if (IsConnected())
-                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+            if (!IsConnected())
+                ConnectAndLaunch();
+
+            SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
         public bool Stop()
@@ -208,6 +214,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     {
                         await Task.Delay(5000);
                         OnPlayPause_Click();
+                    }
+                    else
+                    {
+                        await Task.Delay(500);
+                        ConnectAndLaunch();
                     }
                     break;
                 case "LOAD_FAILED":

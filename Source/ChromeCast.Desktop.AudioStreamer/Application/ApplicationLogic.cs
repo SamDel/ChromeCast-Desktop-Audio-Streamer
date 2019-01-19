@@ -122,6 +122,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             device.SetMenuItem(menuItem);
 
             mainForm.AddDevice(device);
+            device.OnGetStatus();
         }
 
         private void AddNotifyIcon()

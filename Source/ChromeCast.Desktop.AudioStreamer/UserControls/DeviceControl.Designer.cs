@@ -70,7 +70,6 @@
             // 
             // trbVolume
             // 
-            this.trbVolume.Enabled = false;
             this.trbVolume.Location = new System.Drawing.Point(43, 59);
             this.trbVolume.Maximum = 100;
             this.trbVolume.MinimumSize = new System.Drawing.Size(250, 0);
