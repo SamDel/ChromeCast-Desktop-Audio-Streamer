@@ -56,7 +56,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 Launch();
         }
 
-        public void ConnectAndLaunch()
+        public void ConnectAndGetReceiverStatus()
         {
             Connect();
             Task.Delay(250);
@@ -142,7 +142,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void GetMediaStatus()
         {
             if (!IsConnected())
-                ConnectAndLaunch();
+                ConnectAndGetReceiverStatus();
 
             SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
@@ -218,7 +218,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     else
                     {
                         await Task.Delay(500);
-                        ConnectAndLaunch();
+                        ConnectAndGetReceiverStatus();
                     }
                     break;
                 case "LOAD_FAILED":

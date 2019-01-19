@@ -80,7 +80,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void OnGetStatus()
         {
             deviceCommunication.GetMediaStatus();
-            deviceCommunication.GetReceiverStatus();
         }
 
         private void SetDeviceState(DeviceState state, string text = null)

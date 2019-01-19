@@ -6,7 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
 {
     public interface IDeviceCommunication
     {
-        void ConnectAndLaunch();
+        void ConnectAndGetReceiverStatus();
         void LoadMedia();
         void PauseMedia();
         void GetMediaStatus();
