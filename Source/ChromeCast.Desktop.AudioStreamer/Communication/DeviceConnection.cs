@@ -90,8 +90,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             try
             {
-                receiveBuffer = new byte[bufferSize];
-                sslStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, DataReceived, sslStream);
+                if (sslStream != null)
+                {
+                    receiveBuffer = new byte[bufferSize];
+                    sslStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, DataReceived, sslStream);
+                }
             }
             catch (Exception ex)
             {
@@ -129,6 +132,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             tcpClient?.Close();
             sslStream?.Close();
+            sslStream?.Dispose();
+            tcpClient = null;
+            sslStream = null;
         }
 
         public bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

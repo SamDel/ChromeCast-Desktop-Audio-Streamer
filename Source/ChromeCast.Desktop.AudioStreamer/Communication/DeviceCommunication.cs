@@ -207,7 +207,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     Stop();
                     Close();
                     SetDeviceState(DeviceState.Closed, null);
-                    deviceConnection.Dispose();
 
                     // Restart
                     if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
