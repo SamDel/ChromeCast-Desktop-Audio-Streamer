@@ -98,6 +98,7 @@
             // 
             // pictureVolumeMute
             // 
+            this.pictureVolumeMute.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureVolumeMute.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Unmute;
             this.pictureVolumeMute.Location = new System.Drawing.Point(10, 59);
             this.pictureVolumeMute.Margin = new System.Windows.Forms.Padding(0);
