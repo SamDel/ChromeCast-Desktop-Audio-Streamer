@@ -41,6 +41,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.OnPlayPause_Click();
         }
 
+        private void OnClickStop()
+        {
+            deviceCommunication.OnStop_Click();
+        }
+
         public void Start()
         {
             if (wasPlayingBeforeStopped)
@@ -64,6 +69,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         if (state != DeviceState.Buffering &&
                             state != DeviceState.Playing &&
                             state != DeviceState.Paused &&
+                            state != DeviceState.Idle &&
                             state != DeviceState.LaunchedApplication &&
                             state != DeviceState.LaunchingApplication)
                             SetDeviceState(DeviceState.Playing, "");
@@ -169,7 +175,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDeviceControl(DeviceControl deviceControlIn)
         {
             deviceControl = deviceControlIn;
-            deviceControl.SetClickCallBack(OnClickPlayPause);
+            deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
         }
 
         public void SetMenuItem(MenuItem menuItemIn)

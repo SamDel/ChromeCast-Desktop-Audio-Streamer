@@ -11,6 +11,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
     public class DeviceCommunication : IDeviceCommunication
     {
+        private const string CastingText = "Casting:";
         private IDeviceConnection deviceConnection;
         private DeviceState deviceState;
         private Action<DeviceState, string> setControlDeviceState;
@@ -284,9 +285,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
+            if (receiverStatusMessage?.status?.applications != null)
             {
                 OnVolumeUpdate(receiverStatusMessage.status.volume);
+                var statusText = receiverStatusMessage.status.applications.FirstOrDefault()?.statusText;
+                if (statusText != null && statusText.StartsWith(CastingText))
+                    SetDeviceState(GetDeviceState(), $" - {statusText.Replace(CastingText, string.Empty)}");
 
                 var deviceApplication = receiverStatusMessage.status.applications.Where(a => a.appId.Equals("CC1AD845"));
                 if (deviceApplication.Any())
@@ -357,6 +361,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     break;
                 case DeviceState.Disposed:
                     break;
+                default:
+                    break;
+            }
+        }
+
+        public void OnStop_Click()
+        {
+            switch (deviceState)
+            {
+                case DeviceState.Buffering:
+                case DeviceState.Playing:
+                case DeviceState.LaunchingApplication:
+                case DeviceState.LaunchedApplication:
+                case DeviceState.LoadingMedia:
+                case DeviceState.Paused:
+                    Stop();
+                    break;
+                case DeviceState.Idle:
+                case DeviceState.NotConnected:
+                case DeviceState.ConnectError:
+                case DeviceState.Closed:
+                case DeviceState.LoadCancelled:
+                case DeviceState.LoadFailed:
+                case DeviceState.InvalidRequest:
+                case DeviceState.Disposed:
                 default:
                     break;
             }

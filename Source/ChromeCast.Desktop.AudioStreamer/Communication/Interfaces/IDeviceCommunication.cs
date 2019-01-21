@@ -22,5 +22,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void Close();
         void Dispose();
         DeviceState GetDeviceState();
+        void OnStop_Click();
     }
 }

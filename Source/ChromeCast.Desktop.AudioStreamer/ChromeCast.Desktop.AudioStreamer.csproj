@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>ChromeCast.ico</ApplicationIcon>
@@ -253,6 +254,7 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="UserControls\Stop.png" />
   </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\ChromeCast.Desktop.AudioStreamer.fr.xlf" />
