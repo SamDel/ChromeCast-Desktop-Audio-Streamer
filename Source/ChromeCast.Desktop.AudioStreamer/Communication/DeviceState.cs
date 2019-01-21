@@ -15,6 +15,7 @@
         LoadFailed,
         LoadCancelled,
         InvalidRequest,
-        Closed
+        Closed,
+        Connected
     };
 }

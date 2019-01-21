@@ -44,7 +44,10 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 return;
             }
 
-            lblState.Text = $"{Resource.Get(state.ToString())} {text}";
+            if (state != DeviceState.Connected && state != DeviceState.Idle)
+                lblState.Text = $"{Resource.Get(state.ToString())} {text}";
+            else
+                lblState.Text = text;
 
             switch (state)
             {
@@ -56,6 +59,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.LoadingMedia:
                 case DeviceState.Closed:
                 case DeviceState.Paused:
+                case DeviceState.Connected:
                     SetBackColor(Color.LightGray);
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;

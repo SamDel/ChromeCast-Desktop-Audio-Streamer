@@ -628,6 +628,10 @@
           <source>Wav (44100 Hz)</source>
           <target state="new">Wav (44100 Hz)</target>
         </trans-unit>
+        <trans-unit id="Connected" translate="yes" xml:space="preserve">
+          <source>Connected</source>
+          <target state="needs-review-translation">Connected</target>
+        </trans-unit>
       </group>
     </body>
   </file>

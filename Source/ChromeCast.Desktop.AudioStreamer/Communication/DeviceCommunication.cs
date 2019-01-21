@@ -51,8 +51,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void LaunchAndLoadMedia()
         {
+            if (deviceState != DeviceState.Connected)
+                Connect();
+
             SetDeviceState(DeviceState.LaunchingApplication, null);
-            Connect();
+
             if (IsConnected())
                 Launch();
         }
@@ -67,6 +70,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private void Connect(string sourceId = null, string destinationId = null)
         {
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
+            if (deviceConnection.IsConnected() && deviceState != DeviceState.Idle)
+                SetDeviceState(DeviceState.Connected, null);
         }
 
         private void Close(string sourceId = null, string destinationId = null)
@@ -142,10 +147,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void GetMediaStatus()
         {
-            if (!IsConnected())
+            if (!IsConnected() || deviceState == DeviceState.Connected || deviceState == DeviceState.Idle)
                 ConnectAndGetReceiverStatus();
-
-            SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+            else
+                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
         public bool Stop()
@@ -176,7 +181,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             deviceConnection.SendMessage(byteMessage);
 
-            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}] [{deviceState}]: {castMessage.PayloadUtf8}");
         }
 
         private async void OnReceiveMessage(CastMessage castMessage)
@@ -184,7 +189,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (deviceState == DeviceState.Disposed)
                 return;
 
-            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}] [{deviceState}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
@@ -205,8 +210,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case "CLOSE":
                     var previousState = deviceState;
                     var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
-                    Stop();
-                    Close();
+                    switch (deviceState)
+                    {
+                        case DeviceState.Playing:
+                        case DeviceState.LoadingMedia:
+                        case DeviceState.Buffering:
+                        case DeviceState.Paused:
+                            Stop();
+                            Close();
+                            break;
+                        default:
+                            break;
+                    }
                     SetDeviceState(DeviceState.Closed, null);
 
                     // Restart
@@ -290,7 +305,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 OnVolumeUpdate(receiverStatusMessage.status.volume);
                 var statusText = receiverStatusMessage.status.applications.FirstOrDefault()?.statusText;
                 if (statusText != null && statusText.StartsWith(CastingText))
-                    SetDeviceState(GetDeviceState(), $" - {statusText.Replace(CastingText, string.Empty)}");
+                    SetDeviceState(GetDeviceState(), $" {statusText}");
 
                 var deviceApplication = receiverStatusMessage.status.applications.Where(a => a.appId.Equals("CC1AD845"));
                 if (deviceApplication.Any())
@@ -357,6 +372,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadCancelled:
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
+                case DeviceState.Connected:
                     LaunchAndLoadMedia();
                     break;
                 case DeviceState.Disposed:
@@ -386,7 +402,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
                 case DeviceState.Disposed:
+                case DeviceState.Connected:
                 default:
+                    LaunchAndLoadMedia();
+                    Task.Delay(500).Wait();
+                    Stop();
                     break;
             }
         }

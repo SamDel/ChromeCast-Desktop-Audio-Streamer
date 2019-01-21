@@ -165,4 +165,7 @@
   <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
     <value>Log device communication</value>
   </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
 </root>
