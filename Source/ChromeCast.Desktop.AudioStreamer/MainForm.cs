@@ -21,6 +21,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private IApplicationLogic applicationLogic;
         private IDevices devices;
         private ILogger logger;
+        private IPAddress previousIpAddress;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILogger loggerIn)
         {
@@ -353,30 +354,38 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
             }
 
+            if (cmbIP4AddressUsed == null)
+                return;
+
             var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
             var ip4Adresses = Network.GetIp4ddresses();
-            foreach (var adapter in ip4Adresses)
-            {
-                if (cmbIP4AddressUsed.Items.IndexOf(adapter.IPAddress) < 0)
-                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
-            }
-            for (int i = cmbIP4AddressUsed.Items.Count - 1; i >= 0; i--)
-            {
-                if (!ip4Adresses.Any(x => x.IPAddress.ToString() == ((IPAddress)cmbIP4AddressUsed.Items[i]).ToString()))
-                    cmbIP4AddressUsed.Items.RemoveAt(i);
-            }
 
-            if (!ip4Adresses.Any(x => x.IPAddress.ToString() == oldAddressUsed?.ToString()))
+            cmbIP4AddressUsed.Items.Clear();
+            if (ip4Adresses.Count > 0)
             {
-                var addressUsed = Network.GetIp4Address();
-                cmbIP4AddressUsed.SelectedItem = addressUsed;
+                foreach (var adapter in ip4Adresses)
+                {
+                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
+                }
+
+                if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
+                {
+                    cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
+                }
+                else
+                {
+                    var addressUsed = Network.GetIp4Address();
+                    cmbIP4AddressUsed.SelectedItem = addressUsed;
+                }
             }
         }
 
         private void CmbIP4AddressUsed_SelectedIndexChanged(object sender, EventArgs e)
         {
             var ipAddress = (IPAddress)cmbIP4AddressUsed.SelectedItem;
-            applicationLogic.ChangeIPAddressUsed(ipAddress);
+            if (ipAddress?.ToString() != previousIpAddress?.ToString())
+                applicationLogic.ChangeIPAddressUsed(ipAddress);
+            previousIpAddress = ipAddress;
         }
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
