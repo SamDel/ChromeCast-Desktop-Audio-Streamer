@@ -247,7 +247,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
-            OnSetHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
