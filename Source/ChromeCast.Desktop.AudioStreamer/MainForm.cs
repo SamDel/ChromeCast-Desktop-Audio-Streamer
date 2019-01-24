@@ -46,6 +46,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             AddIP4Addresses();
             applicationLogic.Start();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
+            cmbIP4AddressUsed.SelectedIndexChanged += CmbIP4AddressUsed_SelectedIndexChanged;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -300,6 +301,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                         cmbRecordingDevice.SelectedIndex = index;
                 }
             }
+            cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
         }
 
         public void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice)

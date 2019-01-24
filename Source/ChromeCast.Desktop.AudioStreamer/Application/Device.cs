@@ -119,9 +119,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void VolumeSet(float level)
         {
-            if (!IsConnected())
-                return;
-
             if (lastVolumeChange != null && DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
                 return;
 
@@ -140,25 +137,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void VolumeUp()
         {
-            if (!IsConnected())
-                return;
-
             VolumeSet(volumeSetting.level + 0.05f);
         }
 
         public void VolumeDown()
         {
-            if (!IsConnected())
-                return;
-
             VolumeSet(volumeSetting.level - 0.05f);
         }
 
         public void VolumeMute()
         {
-            if (!IsConnected())
-                return;
-
             deviceCommunication.VolumeMute(!volumeSetting.muted);
         }
 

@@ -101,12 +101,12 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         public void OnVolumeUpdate(Volume volume)
         {
+            if (IsDisposed) return;
             if (InvokeRequired)
             {
                 Invoke(new Action<Volume>(OnVolumeUpdate), new object[] { volume });
                 return;
             }
-            if (IsDisposed) return;
 
             trbVolume.Value = (int)(volume.level * 100);
             trbVolume.Enabled = true;
