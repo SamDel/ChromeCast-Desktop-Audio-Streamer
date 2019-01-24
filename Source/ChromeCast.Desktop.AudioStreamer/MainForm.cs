@@ -382,7 +382,8 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLog.Text);
+            if (!string.IsNullOrEmpty(txtLog.Text))
+                Clipboard.SetText(txtLog.Text);
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
