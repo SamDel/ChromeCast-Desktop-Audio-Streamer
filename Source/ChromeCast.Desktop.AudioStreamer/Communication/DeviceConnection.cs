@@ -22,6 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private SslStream sslStream;
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
+        private ushort Port = 8009;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -41,13 +42,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
                     tcpClient = new TcpClient();
                     tcpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                    tcpClient.Connect(host, 8009);
-
-                    sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
-                    sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
-                    StartReceive();
-
-                    state = DeviceConnectionState.Connected;
+                    IAsyncResult ar = tcpClient.BeginConnect(host, Port, new AsyncCallback(ConnectCallback), tcpClient);
+                    System.Threading.WaitHandle wh = ar.AsyncWaitHandle;
+                    try
+                    {
+                        if (!ar.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
+                        {
+                            tcpClient.Close();
+                            throw new TimeoutException();
+                        }
+                    }
+                    finally
+                    {
+                        wh.Close();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -55,6 +63,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
                     logger.Log($"ex [{host}]: {ex.Message}");
                 }
+            }
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            var host = getHost?.Invoke();
+
+            try
+            {
+                tcpClient.EndConnect(ar);
+                sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
+                sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
+                StartReceive();
+
+                state = DeviceConnectionState.Connected;
+            }
+            catch (Exception ex)
+            {
+                state = DeviceConnectionState.Error;
+                setDeviceState?.Invoke(DeviceState.ConnectError, null);
+                logger.Log($"ex [{host}]: {ex.Message}");
             }
         }
 
@@ -135,6 +164,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             getHost = getHostIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
+        }
+
+        public void SetPort(ushort portIn)
+        {
+            Port = portIn;
+        }
+
+        public ushort GetPort()
+        {
+            return Port;
         }
     }
 }
