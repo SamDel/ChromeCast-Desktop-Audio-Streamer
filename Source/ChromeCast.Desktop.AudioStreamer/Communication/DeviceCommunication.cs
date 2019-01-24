@@ -69,6 +69,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetPauseMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
+        public void PlayMedia()
+        {
+            setDeviceState?.Invoke(DeviceState.Playing, null);
+            SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
+        }
+
         public void VolumeSet(Volume volumeSetting)
         {
             if (isConnected())
@@ -157,7 +163,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
                     {
                         await Task.Delay(5000);
-                        OnClickDeviceButton(DeviceState.Closed);
+                        OnPlayPause_Click();
                     }
                     break;
                 case "LOAD_FAILED":
@@ -256,9 +262,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             getHost = getHostIn;
         }
 
-        public void OnClickDeviceButton(DeviceState deviceState)
+        public void OnPlayPause_Click()
         {
-            switch (deviceState)
+            switch (getDeviceState())
             {
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
@@ -268,8 +274,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LaunchedApplication:
                 case DeviceState.LoadingMedia:
                 case DeviceState.Idle:
-                case DeviceState.Paused:
                     LoadMedia();
+                    break;
+                case DeviceState.Paused:
+                    PlayMedia();
                     break;
                 case DeviceState.NotConnected:
                 case DeviceState.ConnectError:
@@ -281,6 +289,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     break;
                 case DeviceState.Disposed:
                     break;
+                default:
+                    break;
+            }
+        }
+
+        public void OnStop_Click()
+        {
+            switch (getDeviceState())
+            {
+                case DeviceState.Buffering:
+                case DeviceState.Playing:
+                case DeviceState.LaunchingApplication:
+                case DeviceState.LaunchedApplication:
+                case DeviceState.LoadingMedia:
+                case DeviceState.Paused:
+                    Stop();
+                    break;
+                case DeviceState.Idle:
+                case DeviceState.NotConnected:
+                case DeviceState.ConnectError:
+                case DeviceState.Closed:
+                case DeviceState.LoadCancelled:
+                case DeviceState.LoadFailed:
+                case DeviceState.InvalidRequest:
+                case DeviceState.Disposed:
                 default:
                     break;
             }

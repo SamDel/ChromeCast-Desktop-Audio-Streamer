@@ -122,7 +122,6 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             var deviceControl = new DeviceControl(device);
             deviceControl.SetDeviceName(device.GetFriendlyName());
-            deviceControl.SetClickCallBack(device.OnClickDeviceButton);
             deviceControl.SetStatus(device.GetDeviceState(), null);
             pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);

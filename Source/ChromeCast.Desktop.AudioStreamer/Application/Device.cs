@@ -50,9 +50,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             ssdpDevice = ssdpDeviceIn;
         }
 
+        public void OnClickPlayPause()
+        {
+            deviceCommunication.OnPlayPause_Click();
+        }
+
+        private void OnClickStop()
+        {
+            deviceCommunication.OnStop_Click();
+        }
+
         public void OnClickDeviceButton(object sender, EventArgs e)
         {
-            deviceCommunication.OnClickDeviceButton(deviceState);
+            deviceCommunication.OnPlayPause_Click();
         }
 
         public void Start()
@@ -69,7 +79,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (deviceState != DeviceState.Paused && deviceState != DeviceState.Closed)
                     {
                         streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
-                        if (deviceState != DeviceState.Buffering && deviceState != DeviceState.Playing)
+                        if (deviceState != DeviceState.Buffering && 
+                            deviceState != DeviceState.Playing &&
+                            deviceState != DeviceState.Idle)
                             SetDeviceState(DeviceState.Playing, "");
                     }
                 }
@@ -206,6 +218,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDeviceControl(DeviceControl deviceControlIn)
         {
             deviceControl = deviceControlIn;
+            deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
         }
 
         public void SetMenuItem(MenuItem menuItemIn)

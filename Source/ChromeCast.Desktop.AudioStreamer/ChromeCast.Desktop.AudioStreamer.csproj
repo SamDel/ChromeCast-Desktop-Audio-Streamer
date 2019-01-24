@@ -249,6 +249,7 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="UserControls\Stop.png" />
   </ItemGroup>
   <ItemGroup>
     <XliffResource Include="MultilingualResources\ChromeCast.Desktop.AudioStreamer.fr.xlf" />

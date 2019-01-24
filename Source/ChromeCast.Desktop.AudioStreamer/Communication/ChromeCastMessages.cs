@@ -87,6 +87,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return GetCastMessage(new MessagePause { type = "PAUSE", sessionId = sessionId, mediaSessionId = mediaSessionId, requestId = requestId }, namespaceMedia, sourceId, destinationId);
         }
 
+        public CastMessage GetPlayMessage(string sessionId, int mediaSessionId, int requestId, string sourceId, string destinationId)
+        {
+            return GetCastMessage(new MessagePause { type = "PLAY", sessionId = sessionId, mediaSessionId = mediaSessionId, requestId = requestId }, namespaceMedia, sourceId, destinationId);
+        }
+
         public CastMessage GetPingMessage()
         {
             return GetCastMessage(new PayloadMessageBase { type = "PING" }, namespaceHeartbeat);
