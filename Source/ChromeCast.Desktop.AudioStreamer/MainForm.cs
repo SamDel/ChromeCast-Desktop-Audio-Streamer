@@ -307,14 +307,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (InvokeRequired)
             {
-                try
-                {
-                    SetDevice(startRecordingSetDevice);
-                    return;
-                }
-                catch (Exception)
-                {
-                }
                 Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
                 return;
             }
