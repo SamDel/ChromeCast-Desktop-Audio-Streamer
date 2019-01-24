@@ -167,7 +167,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     var arrDevice = ipDevice.Split(',');
                     devices.OnDeviceAvailable(
                             new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{arrDevice[0]}") },
-                            new SsdpRootDevice { FriendlyName = arrDevice[1] }
+                            new SsdpRootDevice { FriendlyName = arrDevice[1] },
+                            // Port = 8009, adding device groups via the config is not possible now.
+                            8009
                         );
                 }
             }
@@ -265,9 +267,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         var response = await http.GetAsync($"http://{settings.ChromecastHosts[i].Ip}:8008/setup/eureka_info?options=detail");
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
+                            var port = settings.ChromecastHosts[i].Port ?? (ushort)8009;
+
                             devices.OnDeviceAvailable(
                                     new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{settings.ChromecastHosts[i].Ip}") },
-                                    new SsdpRootDevice { FriendlyName = settings.ChromecastHosts[i].Name }
+                                    new SsdpRootDevice { FriendlyName = settings.ChromecastHosts[i].Name },
+                                    port
                                 );
                         }
                     }
@@ -285,7 +290,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 hosts = new List<UserSettingHost>();
             foreach (var host in devices.GetHosts())
             {
-                if (!hosts.Any(x => x.Ip == host.Ip))
+                if (!hosts.Any(x => x.Ip == host.Ip && x.Port == host.Port))
                 {
                     hosts.Add(host);
                 }

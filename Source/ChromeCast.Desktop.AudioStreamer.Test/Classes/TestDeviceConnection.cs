@@ -37,5 +37,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
             Array.Copy(data, index, result, 0, length);
             return result;
         }
+
+        public void SetPort(ushort portIn)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ushort GetPort()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,6 +5,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover.Interfaces
 {
     public interface IDiscoverDevices
     {
-        void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered);
+        void Discover(Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscovered);
     }
 }

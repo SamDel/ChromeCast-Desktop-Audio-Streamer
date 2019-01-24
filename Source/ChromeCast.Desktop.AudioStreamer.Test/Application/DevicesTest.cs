@@ -58,7 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             devices.SetCallback(OnAddDeviceCallback);
             var discoveredSsdpDevice = new DiscoveredSsdpDevice { Usn = "usn", DescriptionLocation = new System.Uri("http://192.168.111.111") };
             var ssdpDevice = new SsdpRootDevice { FriendlyName = "Device_Name" };
-            devices.OnDeviceAvailable(discoveredSsdpDevice, ssdpDevice);
+            devices.OnDeviceAvailable(discoveredSsdpDevice, ssdpDevice, 8009);
 
             asyncEvent.WaitOne(100);
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
-using Zeroconf;
-using System.Threading.Tasks;
-using System.Net.Http;
-using Newtonsoft.Json;
+using Tmds.MDns;
+using System.Linq;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
@@ -13,7 +11,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public const int Interval = 2000;
         public const int MaxNumberOfTries = 15;
         private IDiscoverServiceSSDP discoverServiceSSDP;
-        private Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered;
+        private Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscovered;
         private int numberDiscovered;
 
         public DiscoverDevices(IDiscoverServiceSSDP discoverServiceSSDPIn)
@@ -21,12 +19,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             discoverServiceSSDP = discoverServiceSSDPIn;
         }
 
-        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn)
+        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscoveredIn)
         {
             onDiscovered = onDiscoveredIn;
-
-            // SSDP search
-            discoverServiceSSDP.Discover(onDiscovered, UpdateCounter);
 
             // MDNS search
             MdnsSearch();
@@ -39,43 +34,54 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             numberDiscovered++;
         }
 
-        public async void MdnsSearch()
+        public void MdnsSearch()
         {
-            await ZeroconfResolver.BrowseDomainsAsync(scanTime: new TimeSpan(1000000000), retries: 5, callback: MdnsCallback);
+            string serviceType = "_googlecast._tcp";
+            ServiceBrowser serviceBrowser = new ServiceBrowser();
+            serviceBrowser.ServiceAdded += OnServiceAdded;
+            serviceBrowser.ServiceRemoved += OnServiceRemoved;
+            serviceBrowser.ServiceChanged += OnServiceChanged;
+            serviceBrowser.StartBrowse(serviceType);
+
+            string serviceTypeEmbedded = "_googlezone._tcp";
+            ServiceBrowser serviceBrowserEmbedded = new ServiceBrowser();
+            serviceBrowserEmbedded.ServiceAdded += OnServiceAdded;
+            serviceBrowserEmbedded.ServiceRemoved += OnServiceRemoved;
+            serviceBrowserEmbedded.ServiceChanged += OnServiceChanged;
+            serviceBrowserEmbedded.StartBrowse(serviceTypeEmbedded);
         }
 
-        private void MdnsCallback(string protocol, string ipAddress)
+        private void OnServiceChanged(object sender, ServiceAnnouncementEventArgs e)
         {
-            if (protocol.StartsWith("_googlecast"))
+        }
+
+        private void OnServiceRemoved(object sender, ServiceAnnouncementEventArgs e)
+        {
+        }
+
+        private void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
+        {
+            var protocol = e.Announcement.Type;
+            var ipAddress = e.Announcement.Addresses[0].ToString();
+            var port = e.Announcement.Port;
+            var name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", "");
+
+            if (name != null)
+            {
+                MdnsCallback(protocol, ipAddress, port, name);
+            }
+        }
+
+        private void MdnsCallback(string protocol, string ipAddress, ushort port, string name)
+        {
+            if (protocol.IndexOf("_googlecast._tcp") >= 0 || protocol.IndexOf("_googlezone._tcp") >= 0)
             {
                 onDiscovered(
                     new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{ipAddress}"), Usn = ipAddress },
-                   new SsdpRootDevice { FriendlyName = GetDeviceFriendlyNameAsync(ipAddress).Result }
+                    new SsdpRootDevice { FriendlyName = name },
+                    port
                 );
             }
         }
-
-        private async Task<string> GetDeviceFriendlyNameAsync(string ipAddress)
-        {
-            var friendlyName = "";
-            try
-            {
-                var http = new HttpClient();
-                var response = await http.GetAsync($"http://{ipAddress}:8008/setup/eureka_info?options=detail");
-                var json = await response.Content.ReadAsStringAsync();
-                var info = JsonConvert.DeserializeObject<EurekaInfo>(json);
-                friendlyName = info.Name;
-            }
-            catch (Exception)
-            {
-                friendlyName = ipAddress;
-            }
-            return friendlyName;
-        }
-    }
-
-    public class EurekaInfo
-    {
-        public string Name { get; set; }
     }
 }

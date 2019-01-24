@@ -271,6 +271,7 @@
             this.btnSyncDevices.TabIndex = 16;
             this.btnSyncDevices.Text = "Sync Devices";
             this.btnSyncDevices.UseVisualStyleBackColor = true;
+            this.btnSyncDevices.Visible = false;
             this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
             // 
             // tabPageOptions

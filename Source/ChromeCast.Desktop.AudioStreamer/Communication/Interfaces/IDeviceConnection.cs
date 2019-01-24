@@ -8,5 +8,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void SendMessage(byte[] byteMessage);
         bool IsConnected();
         void SetCallback(Func<string> getHost, Action<DeviceState, string> setDeviceState, Action<CastMessage> onReceiveMessage);
+        void SetPort(ushort portIn);
+        ushort GetPort();
     }
 }

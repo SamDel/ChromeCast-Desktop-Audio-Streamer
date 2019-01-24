@@ -24,7 +24,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Discover
             Assert.IsNotNull(discoveredSsdpDevice, "Device not found within 30 seconds.");
         }
 
-        private void DiscoverCallBack(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDevice)
+        private void DiscoverCallBack(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDevice, ushort port)
         {
             discoveredSsdpDevice = discoveredSsdpDeviceIn;
             asyncEvent.Set();

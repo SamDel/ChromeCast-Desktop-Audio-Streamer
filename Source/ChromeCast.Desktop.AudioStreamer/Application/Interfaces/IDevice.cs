@@ -15,7 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         bool IsConnected();
         void SetDeviceState(DeviceState disposed, string text = null);
-        void SetDiscoveredDevices(DiscoveredSsdpDevice device, SsdpDevice fullDevice);
+        void SetDiscoveredDevices(DiscoveredSsdpDevice device, SsdpDevice fullDevice, ushort port);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
@@ -36,5 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void Start();
         void OnReceiveMessage(CastMessage castMessage);
         DeviceControl GetDeviceControl();
+        void SetDeviceName(string name);
+        ushort GetPort();
     }
 }

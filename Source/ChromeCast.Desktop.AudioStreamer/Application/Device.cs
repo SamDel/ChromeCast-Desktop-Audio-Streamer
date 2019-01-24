@@ -44,10 +44,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
         }
 
-        public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn)
+        public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn, ushort portIn)
         {
             discoveredSsdpDevice = discoveredSsdpDeviceIn;
             ssdpDevice = ssdpDeviceIn;
+            deviceConnection.SetPort(portIn);
         }
 
         public void OnClickPlayPause()
@@ -76,7 +77,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 if (streamingConnection.IsConnected())
                 {
-                    if (deviceState != DeviceState.Paused && deviceState != DeviceState.Closed)
+                    if (deviceState != DeviceState.NotConnected)
                     {
                         streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                         if (deviceState != DeviceState.Buffering &&
@@ -96,7 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnGetStatus()
         {
-            deviceCommunication.GetMediaStatus();
+            deviceCommunication.GetStatus();
         }
 
         public void SetDeviceState(DeviceState state, string text = null)
@@ -159,7 +160,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
         {
-            if (discoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
+            if ((deviceState == DeviceState.LoadingMedia || 
+                    deviceState == DeviceState.Buffering || 
+                    deviceState == DeviceState.Idle) &&
+                discoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
                 streamingConnection.SetSocket(socket);
@@ -228,6 +232,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void OnReceiveMessage(CastMessage castMessage)
         {
             deviceCommunication?.OnReceiveMessage(castMessage);
+        }
+
+        public void SetDeviceName(string name)
+        {
+            deviceControl?.SetDeviceName(name);
+            menuItem.Text = name;
+        }
+
+        public ushort GetPort()
+        {
+            return deviceConnection.GetPort();
         }
     }
 }

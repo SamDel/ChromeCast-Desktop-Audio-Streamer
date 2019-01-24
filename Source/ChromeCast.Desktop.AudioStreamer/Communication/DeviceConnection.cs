@@ -4,7 +4,6 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
@@ -24,8 +23,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
         private ushort Port = 8009;
-        private IAsyncResult currentAynchResult;
-        private bool connecting = false;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -36,77 +33,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void Connect()
         {
-            if (connecting)
-                return;
-
-            try
+            if (tcpClient == null || !tcpClient.Connected)
             {
-                if (tcpClient == null || !tcpClient.Connected)
+                var host = getHost?.Invoke();
+                try
                 {
-                    connecting = true;
-                    var host = getHost();
                     state = DeviceConnectionState.Connecting;
 
                     tcpClient = new TcpClient();
                     tcpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                    currentAynchResult = tcpClient.BeginConnect(host, Port, new AsyncCallback(ConnectCallback), tcpClient);
-                    WaitHandle wh = currentAynchResult.AsyncWaitHandle;
-                    try
-                    {
-                        if (!currentAynchResult.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
-                        {
-                            tcpClient.Close();
-                            throw new TimeoutException();
-                        }
-                    }
-                    finally
-                    {
-                        wh.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    state = DeviceConnectionState.Error;
-                    setDeviceState?.Invoke(DeviceState.ConnectError, null);
-                    var host = getHost?.Invoke();
-                    logger.Log($"ex [{host}]: {ex.Message}");
-                }
-                catch (Exception)
-                {
-                }
-            }
-        }
+                    tcpClient.Connect(host, Port);
 
-        private void ConnectCallback(IAsyncResult ar)
-        {
-            try
-            {
-                if (ar == currentAynchResult)
-                {
-                    connecting = false;
-                    tcpClient.EndConnect(ar);
                     sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
-                    var host = getHost?.Invoke();
                     sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
                     StartReceive();
 
                     state = DeviceConnectionState.Connected;
                 }
-            }
-            catch (Exception ex)
-            {
-                try
+                catch (Exception ex)
                 {
                     state = DeviceConnectionState.Error;
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
-                    var host = getHost?.Invoke();
                     logger.Log($"ex [{host}]: {ex.Message}");
-                }
-                catch (Exception)
-                {
                 }
             }
         }
@@ -119,7 +67,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void SendMessage(byte[] send)
         {
             Connect();
-            while (connecting) { }
 
             if (tcpClient != null && tcpClient.Client != null && tcpClient.Connected)
             {

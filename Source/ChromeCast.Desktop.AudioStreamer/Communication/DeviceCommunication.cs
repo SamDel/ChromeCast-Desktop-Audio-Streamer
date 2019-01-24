@@ -78,8 +78,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeSet(Volume volumeSetting)
         {
-            nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
-            SendVolumeSet();
+            if (isConnected())
+            {
+                nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
+                SendVolumeSet();
+            }
         }
 
         private void SendVolumeSet()
@@ -97,7 +100,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeMute(bool muted)
         {
-            SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
+            if (isConnected())
+                SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
         }
 
         public void Pong()
@@ -211,7 +215,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
             {
                 Task.Delay(5000).Wait();
-                LaunchAndLoadMedia();
+                PlayMedia();
             }
             else
             {
@@ -261,13 +265,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage?.status?.volume != null)
-                onVolumeUpdate(receiverStatusMessage.status.volume);
-
-            var statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
-            statusText = statusText?.Replace("Default Media Receiver", string.Empty);
-            setDeviceState(getDeviceState(), $" {statusText}");
-
             if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
             {
                 onVolumeUpdate(receiverStatusMessage.status.volume);

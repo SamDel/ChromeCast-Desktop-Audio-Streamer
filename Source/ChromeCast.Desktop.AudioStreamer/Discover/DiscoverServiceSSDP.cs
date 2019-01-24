@@ -8,10 +8,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
     public class DiscoverServiceSSDP : IDiscoverServiceSSDP
     {
         private const string ChromeCastUpnpDeviceType = "urn:dial-multiscreen-org:device:dial:1";
-        private Action<DiscoveredSsdpDevice, SsdpDevice> onDiscovered;
+        private Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscovered;
         private Action updateCounter;
 
-        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice> onDiscoveredIn, Action updateCounterIn)
+        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscoveredIn, Action updateCounterIn)
         {
             onDiscovered = onDiscoveredIn;
             updateCounter = updateCounterIn;
@@ -37,7 +37,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         private async void OnDeviceAvailable(object sender, DeviceAvailableEventArgs e)
         {
             var fullDevice = await e.DiscoveredDevice.GetDeviceInfo();
-            onDiscovered?.Invoke(e.DiscoveredDevice, fullDevice);
+            //TODO: Port = 8009, are groups discovered by SSDP?
+            onDiscovered?.Invoke(e.DiscoveredDevice, fullDevice, 8009);
             updateCounter?.Invoke();
         }
 

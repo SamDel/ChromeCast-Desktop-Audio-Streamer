@@ -12,7 +12,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void LoadMedia();
         void PauseMedia();
         void Pong();
-        void GetMediaStatus();
+        void GetStatus();
         void OnReceiveMessage(CastMessage castMessage);
         void VolumeSet(Volume volumeSetting);
         void VolumeMute(bool muted);
