@@ -37,7 +37,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceConnection = deviceConnectionIn;
             deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost);
+            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost, GetPort);
             deviceState = DeviceState.NotConnected;
             discoveredDevice = new DiscoveredDevice();
             volumeSetting = new Volume

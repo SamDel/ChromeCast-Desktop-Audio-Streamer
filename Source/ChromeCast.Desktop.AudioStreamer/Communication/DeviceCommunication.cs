@@ -17,6 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<bool> isConnected;
         private Func<bool> isDeviceConnected;
         private Func<string> getHost;
+        private Func<ushort> getPort;
         private Func<DeviceState> getDeviceState;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
@@ -152,12 +153,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             sendMessage?.Invoke(byteMessage);
 
-            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
         }
 
         public void OnReceiveMessage(CastMessage castMessage)
         {
-            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
@@ -297,7 +298,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         }
 
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn, Action<byte[]> sendMessageIn, 
-            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn)
+            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn, 
+            Func<ushort> getPortIn)
         {
             setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
@@ -306,6 +308,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             isConnected = isConnectedIn;
             isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
+            getPort = getPortIn;
         }
 
         public void OnPlayPause_Click()

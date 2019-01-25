@@ -145,8 +145,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     sslStream.Write(sendBuffer);
                     sslStream.Flush();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine($"DoSendMessage: {ex.Message}");
                 }
                 finally
                 {
@@ -164,7 +165,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"StartReceive: {ex.Message}");
                 Dispose();
             }
         }
