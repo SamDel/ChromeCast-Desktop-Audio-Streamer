@@ -79,11 +79,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeSet(Volume volumeSetting)
         {
-            if (isConnected())
-            {
-                nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
-                SendVolumeSet();
-            }
+            nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
+            SendVolumeSet();
         }
 
         private void SendVolumeSet()
@@ -101,8 +98,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void VolumeMute(bool muted)
         {
-            if (isConnected())
-                SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
+            SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
         }
 
         public void Pong()
@@ -364,6 +360,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.InvalidRequest:
                 case DeviceState.Disposed:
                 default:
+                    LaunchAndLoadMedia();
+                    Task.Delay(750).Wait();
+                    Stop();
                     break;
             }
         }

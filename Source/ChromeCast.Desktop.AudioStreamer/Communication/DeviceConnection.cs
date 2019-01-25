@@ -44,8 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 if (!(tcpClient != null &&
                     tcpClient.Client != null &&
-                    tcpClient.Connected &&
-                    state == DeviceConnectionState.Connected))
+                    tcpClient.Connected))
                 {
                     connecting = true;
                     var host = getHost();
@@ -80,7 +79,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 }
                 catch (Exception innerEx)
                 {
-                    Console.WriteLine($"Connect:{innerEx.Message}");
+                    Console.WriteLine($"ConnectCallback:{innerEx.Message}");
                 }
             }
         }
@@ -112,7 +111,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 }
                 catch (Exception innerEx)
                 {
-                    Console.WriteLine($"ConnectCallback:{innerEx.Message}");
                 }
             }
         }
@@ -136,8 +134,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void DoSendMessage()
         {
-            if (tcpClient != null && 
-                tcpClient.Client != null && 
+            if (tcpClient != null &&
+                tcpClient.Client != null &&
                 tcpClient.Connected &&
                 state == DeviceConnectionState.Connected &&
                 sendBuffer != null)

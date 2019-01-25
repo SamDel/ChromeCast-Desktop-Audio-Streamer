@@ -123,6 +123,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnGetStatus()
         {
+            try
+            {
+                for (int i = deviceList.Count - 1; i >= 0; i--)
+                {
+                    if (deviceList[i].GetDeviceState() == DeviceState.Disposed)
+                        deviceList.RemoveAt(i);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Devices.OnGetStatus: {ex.Message}");
+            }
+
             foreach (var device in deviceList)
             {
                 device.OnGetStatus();
