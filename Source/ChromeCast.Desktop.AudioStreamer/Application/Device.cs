@@ -57,6 +57,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
             deviceConnection.SetPort(discoveredDevice.Port);
+            OnGetStatus();
             logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDevice)}");
         }
 
@@ -132,8 +133,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             else
             {
-                if (state == DeviceState.ConnectError &&
-                    discoveredDevice.Headers.IndexOf("\"md=Google Cast Group\"") >= 0)
+                if (state == DeviceState.ConnectError && IsGroup())
                 {
                     deviceState = DeviceState.Disposed;
                     deviceControl.Dispose();
@@ -142,8 +142,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     deviceState = state;
                     deviceControl?.SetStatus(state, text);
+                    if (deviceControl != null) deviceControl.Visible = true;
                 }
             }
+        }
+
+        private bool IsGroup()
+        {
+            return discoveredDevice.Headers.IndexOf("\"md=Google Cast Group\"") >= 0;
         }
 
         public bool IsConnected()
@@ -252,6 +258,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             deviceControl = deviceControlIn;
             deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
+            if (deviceControl != null)
+                deviceControl.Visible = !IsGroup();
         }
 
         public void SetMenuItem(MenuItem menuItemIn)
