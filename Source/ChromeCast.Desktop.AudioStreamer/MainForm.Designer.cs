@@ -37,7 +37,6 @@
             this.lblLagMax = new System.Windows.Forms.Label();
             this.trbLag = new System.Windows.Forms.TrackBar();
             this.grpDevices = new System.Windows.Forms.GroupBox();
-            this.btnScan = new System.Windows.Forms.Button();
             this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.grpVolume = new System.Windows.Forms.GroupBox();
             this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
@@ -45,6 +44,7 @@
             this.btnVolumeDown = new System.Windows.Forms.Button();
             this.btnVolumeMute = new System.Windows.Forms.Button();
             this.btnSyncDevices = new System.Windows.Forms.Button();
+            this.btnScan = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
@@ -179,18 +179,6 @@
             this.grpDevices.TabStop = false;
             this.grpDevices.Text = "Devices (click name to start streaming)";
             // 
-            // btnScan
-            // 
-            this.btnScan.AutoSize = true;
-            this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScan.Location = new System.Drawing.Point(507, 3);
-            this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(162, 27);
-            this.btnScan.TabIndex = 11;
-            this.btnScan.Text = "Scan again for devices";
-            this.btnScan.UseVisualStyleBackColor = true;
-            this.btnScan.Click += new System.EventHandler(this.BtnScan_Click);
-            // 
             // pnlDevices
             // 
             this.pnlDevices.AutoScroll = true;
@@ -273,6 +261,18 @@
             this.btnSyncDevices.UseVisualStyleBackColor = true;
             this.btnSyncDevices.Visible = false;
             this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
+            // 
+            // btnScan
+            // 
+            this.btnScan.AutoSize = true;
+            this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnScan.Location = new System.Drawing.Point(507, 3);
+            this.btnScan.Name = "btnScan";
+            this.btnScan.Size = new System.Drawing.Size(162, 27);
+            this.btnScan.TabIndex = 11;
+            this.btnScan.Text = "Scan again for devices";
+            this.btnScan.UseVisualStyleBackColor = true;
+            this.btnScan.Click += new System.EventHandler(this.BtnScan_Click);
             // 
             // tabPageOptions
             // 

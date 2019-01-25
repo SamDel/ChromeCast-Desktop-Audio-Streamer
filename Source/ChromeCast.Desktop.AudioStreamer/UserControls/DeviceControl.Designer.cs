@@ -87,12 +87,14 @@
             // pictureStop
             // 
             this.pictureStop.BackColor = System.Drawing.Color.White;
+            this.pictureStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureStop.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureStop.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Stop;
             this.pictureStop.Location = new System.Drawing.Point(34, 4);
             this.pictureStop.Name = "pictureStop";
             this.pictureStop.Padding = new System.Windows.Forms.Padding(1);
-            this.pictureStop.Size = new System.Drawing.Size(30, 30);
+            this.pictureStop.Size = new System.Drawing.Size(27, 27);
+            this.pictureStop.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureStop.TabIndex = 9;
             this.pictureStop.TabStop = false;
             this.pictureStop.Click += new System.EventHandler(this.BtnDeviceStop_Click);
@@ -113,12 +115,14 @@
             // picturePlayPause
             // 
             this.picturePlayPause.BackColor = System.Drawing.Color.White;
+            this.picturePlayPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
             this.picturePlayPause.Location = new System.Drawing.Point(3, 4);
             this.picturePlayPause.Name = "picturePlayPause";
             this.picturePlayPause.Padding = new System.Windows.Forms.Padding(1);
-            this.picturePlayPause.Size = new System.Drawing.Size(30, 30);
+            this.picturePlayPause.Size = new System.Drawing.Size(27, 27);
+            this.picturePlayPause.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.picturePlayPause.TabIndex = 7;
             this.picturePlayPause.TabStop = false;
             this.picturePlayPause.Click += new System.EventHandler(this.BtnDevicePlay_Click);
