@@ -265,10 +265,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
-            {
+            if (receiverStatusMessage?.status?.volume != null)
                 onVolumeUpdate(receiverStatusMessage.status.volume);
 
+            var statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
+            statusText = statusText?.Replace("Default Media Receiver", string.Empty);
+            setDeviceState(getDeviceState(), $" {statusText}");
+
+            if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
+            {
                 var deviceApplication = receiverStatusMessage.status.applications.Where(a => a.appId.Equals("CC1AD845"));
                 if (deviceApplication.Any())
                 {

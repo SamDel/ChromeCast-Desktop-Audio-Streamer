@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using Rssdp;
 using NAudio.Wave;
 using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
@@ -12,6 +11,9 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using ChromeCast.Desktop.AudioStreamer.Discover;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using Newtonsoft.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -20,21 +22,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IDeviceCommunication deviceCommunication;
         private IStreamingConnection streamingConnection;
         private IDeviceConnection deviceConnection;
-        private DiscoveredSsdpDevice discoveredSsdpDevice;
-        private SsdpDevice ssdpDevice;
+        private DiscoveredDevice discoveredDevice;
         private DeviceState deviceState;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
         private DateTime lastVolumeChange;
+        private ILogger logger;
+        delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
-        public Device(IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
+        public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
         {
+            logger = loggerIn;
             deviceConnection = deviceConnectionIn;
             deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
             deviceCommunication = deviceCommunicationIn;
             deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost);
             deviceState = DeviceState.NotConnected;
+            discoveredDevice = new DiscoveredDevice();
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -44,11 +49,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
         }
 
-        public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn, ushort portIn)
+        public void SetDiscoveredDevices(DiscoveredDevice discoveredDeviceIn)
         {
-            discoveredSsdpDevice = discoveredSsdpDeviceIn;
-            ssdpDevice = ssdpDeviceIn;
-            deviceConnection.SetPort(portIn);
+            if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
+            if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
+            if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
+            if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
+            if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
+            deviceConnection.SetPort(discoveredDevice.Port);
+            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDevice)}");
         }
 
         public void OnClickPlayPause()
@@ -97,13 +106,44 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnGetStatus()
         {
-            deviceCommunication.GetStatus();
+            if (deviceState != DeviceState.Disposed)
+                deviceCommunication.GetStatus();
         }
 
         public void SetDeviceState(DeviceState state, string text = null)
         {
-            deviceState = state;
-            deviceControl?.SetStatus(state, text);
+            if (deviceControl.IsDisposed)
+                return;
+
+            if (deviceControl.InvokeRequired)
+            {
+                if (!this.deviceControl.IsDisposed)
+                {
+                    try
+                    {
+                        SetDeviceStateCallback callback = new SetDeviceStateCallback(SetDeviceState);
+                        this.deviceControl?.Invoke(callback, new object[] { state, text });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"SetDeviceState: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                if (state == DeviceState.ConnectError &&
+                    discoveredDevice.Headers.IndexOf("\"md=Google Cast Group\"") >= 0)
+                {
+                    deviceState = DeviceState.Disposed;
+                    deviceControl.Dispose();
+                }
+                else
+                {
+                    deviceState = state;
+                    deviceControl?.SetStatus(state, text);
+                }
+            }
         }
 
         public bool IsConnected()
@@ -163,7 +203,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if ((deviceState == DeviceState.LoadingMedia || 
                     deviceState == DeviceState.Buffering || 
                     deviceState == DeviceState.Idle) &&
-                discoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
+                discoveredDevice.IPAddress.Equals(remoteAddress))
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
                 streamingConnection.SetSocket(socket);
@@ -176,24 +216,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public string GetUsn()
         {
-            if (discoveredSsdpDevice != null)
-                return discoveredSsdpDevice.Usn;
+            if (discoveredDevice != null)
+                return discoveredDevice.Usn;
 
             return string.Empty;
         }
 
         public string GetHost()
         {
-            if (discoveredSsdpDevice != null)
-                return discoveredSsdpDevice.DescriptionLocation.Host;
+            if (discoveredDevice != null)
+                return discoveredDevice.IPAddress;
 
             return string.Empty;
         }
 
         public string GetFriendlyName()
         {
-            if (ssdpDevice != null)
-                return ssdpDevice.FriendlyName;
+            if (discoveredDevice != null)
+                return discoveredDevice.Name;
 
             return string.Empty;
         }
@@ -242,7 +282,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public ushort GetPort()
         {
-            return deviceConnection.GetPort();
+            return discoveredDevice.Port;
+        }
+
+        public DiscoveredDevice GetDiscoveredDevice()
+        {
+            return discoveredDevice;
         }
     }
 }

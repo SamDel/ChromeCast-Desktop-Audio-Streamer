@@ -171,7 +171,6 @@
             // 
             // grpDevices
             // 
-            this.grpDevices.Controls.Add(this.btnScan);
             this.grpDevices.Controls.Add(this.pnlDevices);
             this.grpDevices.Location = new System.Drawing.Point(44, 124);
             this.grpDevices.Name = "grpDevices";
@@ -184,7 +183,7 @@
             // 
             this.btnScan.AutoSize = true;
             this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScan.Location = new System.Drawing.Point(22, 308);
+            this.btnScan.Location = new System.Drawing.Point(507, 3);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(162, 27);
             this.btnScan.TabIndex = 11;
@@ -195,9 +194,9 @@
             // pnlDevices
             // 
             this.pnlDevices.AutoScroll = true;
-            this.pnlDevices.Location = new System.Drawing.Point(22, 34);
+            this.pnlDevices.Location = new System.Drawing.Point(11, 34);
             this.pnlDevices.Name = "pnlDevices";
-            this.pnlDevices.Size = new System.Drawing.Size(969, 290);
+            this.pnlDevices.Size = new System.Drawing.Size(988, 290);
             this.pnlDevices.TabIndex = 10;
             // 
             // grpVolume
@@ -216,9 +215,10 @@
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
             this.pnlVolumeAllButtons.Controls.Add(this.btnSyncDevices);
-            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(25, 30);
+            this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(11, 31);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(966, 71);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(988, 71);
             this.pnlVolumeAllButtons.TabIndex = 17;
             // 
             // btnVolumeUp
@@ -593,7 +593,6 @@
             this.grpLag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).EndInit();
             this.grpDevices.ResumeLayout(false);
-            this.grpDevices.PerformLayout();
             this.grpVolume.ResumeLayout(false);
             this.pnlVolumeAllButtons.ResumeLayout(false);
             this.pnlVolumeAllButtons.PerformLayout();

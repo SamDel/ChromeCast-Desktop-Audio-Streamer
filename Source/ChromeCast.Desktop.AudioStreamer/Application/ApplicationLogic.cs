@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Rssdp;
 using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Globalization;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -166,11 +166,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     var arrDevice = ipDevice.Split(',');
                     devices.OnDeviceAvailable(
-                            new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{arrDevice[0]}") },
-                            new SsdpRootDevice { FriendlyName = arrDevice[1] },
+                        new Discover.DiscoveredDevice {
+                            IPAddress = arrDevice[0],
+                            Name = arrDevice[1],
                             // Port = 8009, adding device groups via the config is not possible now.
-                            8009
-                        );
+                            Port = 8009
+                        });
                 }
             }
         }
@@ -256,24 +257,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
-            if (settings.ChromecastHosts != null)
+            if (settings.ChromecastDiscoveredDevices != null)
             {
-                for (int i = 0; i < settings.ChromecastHosts.Count; i++)
+                for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
                     try
                     {
                         // Check if the device is on.
                         var http = new HttpClient();
-                        var response = await http.GetAsync($"http://{settings.ChromecastHosts[i].Ip}:8008/setup/eureka_info?options=detail");
+                        var response = await http.GetAsync($"http://{settings.ChromecastDiscoveredDevices[i].IPAddress}:8008/setup/eureka_info?options=detail");
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
-                            var port = settings.ChromecastHosts[i].Port ?? (ushort)8009;
-
-                            devices.OnDeviceAvailable(
-                                    new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{settings.ChromecastHosts[i].Ip}") },
-                                    new SsdpRootDevice { FriendlyName = settings.ChromecastHosts[i].Name },
-                                    port
-                                );
+                            devices.OnDeviceAvailable(settings.ChromecastDiscoveredDevices[i]);
                         }
                     }
                     catch (Exception)
@@ -285,17 +280,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         private void SaveSettings()
         {
-            var hosts = settings.ChromecastHosts;
-            if (hosts == null)
-                hosts = new List<UserSettingHost>();
+            var discoveredDevices = settings.ChromecastDiscoveredDevices;
+            if (discoveredDevices == null)
+                discoveredDevices = new List<DiscoveredDevice>();
             foreach (var host in devices.GetHosts())
             {
-                if (!hosts.Any(x => x.Ip == host.Ip && x.Port == host.Port))
+                if (!discoveredDevices.Any(x => x.IPAddress == host.IPAddress && x.Port == host.Port))
                 {
-                    hosts.Add(host);
+                    discoveredDevices.Add(host);
                 }
             }
-            settings.ChromecastHosts = hosts;
+            settings.ChromecastDiscoveredDevices = discoveredDevices;
             settings.UseKeyboardShortCuts = mainForm.GetUseKeyboardShortCuts();
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
@@ -311,7 +306,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void ResetSettings()
         {
-            settings.ChromecastHosts = new List<UserSettingHost>();
+            settings.ChromecastDiscoveredDevices = new List<DiscoveredDevice>();
             settings.UseKeyboardShortCuts = false;
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;

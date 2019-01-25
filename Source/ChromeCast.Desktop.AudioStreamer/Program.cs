@@ -34,7 +34,6 @@ namespace ChromeCast.Desktop.AudioStreamer
                 .RegisterType<IDeviceConnection, DeviceConnection>()
                 .RegisterType<IDeviceCommunication, DeviceCommunication>()
                 .RegisterType<IStreamingConnection, StreamingConnection>()
-                .RegisterType<IDiscoverServiceSSDP, DiscoverServiceSSDP>()
                 .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
                 .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
                 .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()

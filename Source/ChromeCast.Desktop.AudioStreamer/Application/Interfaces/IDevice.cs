@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using Rssdp;
 using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Classes;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -15,7 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         bool IsConnected();
         void SetDeviceState(DeviceState disposed, string text = null);
-        void SetDiscoveredDevices(DiscoveredSsdpDevice device, SsdpDevice fullDevice, ushort port);
+        void SetDiscoveredDevices(DiscoveredDevice discoveredDevice);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
@@ -38,5 +38,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         DeviceControl GetDeviceControl();
         void SetDeviceName(string name);
         ushort GetPort();
+        DiscoveredDevice GetDiscoveredDevice();
     }
 }

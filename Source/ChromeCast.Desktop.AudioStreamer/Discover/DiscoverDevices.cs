@@ -1,8 +1,10 @@
 ﻿using System;
-using Rssdp;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using Tmds.MDns;
 using System.Linq;
+using System.Timers;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
@@ -10,18 +12,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
     {
         public const int Interval = 2000;
         public const int MaxNumberOfTries = 15;
-        private IDiscoverServiceSSDP discoverServiceSSDP;
-        private Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscovered;
+        private Action<DiscoveredDevice> onDiscovered;
         private int numberDiscovered;
+        private List<DiscoveredDevice> discoveredDevices;
+        private Timer timer;
 
-        public DiscoverDevices(IDiscoverServiceSSDP discoverServiceSSDPIn)
+        public DiscoverDevices()
         {
-            discoverServiceSSDP = discoverServiceSSDPIn;
         }
 
-        public void Discover(Action<DiscoveredSsdpDevice, SsdpDevice, ushort> onDiscoveredIn)
+        public void Discover(Action<DiscoveredDevice> onDiscoveredIn)
         {
             onDiscovered = onDiscoveredIn;
+            discoveredDevices = new List<DiscoveredDevice>();
+            timer = new Timer
+            {
+                Interval = 500,
+                Enabled = true
+            };
+            timer.Elapsed += new ElapsedEventHandler(OnAddDevice);
+            timer.Start();
 
             // MDNS search
             MdnsSearch();
@@ -61,26 +71,36 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
 
         private void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
         {
-            var protocol = e.Announcement.Type;
-            var ipAddress = e.Announcement.Addresses[0].ToString();
-            var port = e.Announcement.Port;
-            var name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", "");
-
-            if (name != null)
+            var discoveredDevice = new DiscoveredDevice
             {
-                MdnsCallback(protocol, ipAddress, port, name);
+                IPAddress = e.Announcement.Addresses[0].ToString(),
+                Protocol = e.Announcement.Type,
+                Port = e.Announcement.Port,
+                Name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", ""),
+                Headers = JsonConvert.SerializeObject(e.Announcement.Txt),
+                Usn = e.Announcement.Hostname
+            };
+
+            if (discoveredDevice.Name != null 
+                && discoveredDevice.Usn != null 
+                && discoveredDevice.Headers != null
+                && (discoveredDevice.Protocol.IndexOf("_googlecast._tcp") >= 0 
+                    || discoveredDevice.Protocol.IndexOf("_googlezone._tcp") >= 0))
+            {
+                discoveredDevices.Add(discoveredDevice);
             }
         }
 
-        private void MdnsCallback(string protocol, string ipAddress, ushort port, string name)
+        private void OnAddDevice(object sender, ElapsedEventArgs e)
         {
-            if (protocol.IndexOf("_googlecast._tcp") >= 0 || protocol.IndexOf("_googlezone._tcp") >= 0)
+            lock (discoveredDevices)
             {
-                onDiscovered(
-                    new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{ipAddress}"), Usn = ipAddress },
-                    new SsdpRootDevice { FriendlyName = name },
-                    port
-                );
+                if (discoveredDevices.Count > 0)
+                {
+                    var discoveredDevice = discoveredDevices[0];
+                    onDiscovered(discoveredDevice);
+                    discoveredDevices.RemoveAt(0);
+                }
             }
         }
     }

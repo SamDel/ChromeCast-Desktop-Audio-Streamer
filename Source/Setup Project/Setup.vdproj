@@ -159,12 +159,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4A11C6167A3BB52FAA55FD9612F83FBF"
-        "OwnerKey" = "8:_C8419095549A0787411C888F472CA17F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_51D4A938F6834528F3AA8274A44B1436"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
@@ -202,6 +196,12 @@
         "Entry"
         {
         "MsmKey" = "8:_5A9550DC9BE008437051258E2AA96F84"
+        "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5C859A21BC9D1E276C3D1E01530CBFFC"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -334,12 +334,6 @@
         "Entry"
         {
         "MsmKey" = "8:_954DBD9262DD7568176E54EAE1B2D41C"
-        "OwnerKey" = "8:_F053DE31D61F921A5DB154DF96A2406A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_954DBD9262DD7568176E54EAE1B2D41C"
         "OwnerKey" = "8:_E19AFF4A7F9F605B37B14CB8547308EE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -441,12 +435,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C8419095549A0787411C888F472CA17F"
-        "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CF079DC6CB25698535E54659BB81ACA3"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
@@ -537,12 +525,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F053DE31D61F921A5DB154DF96A2406A"
-        "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F49E9F6CDC05D9D13BAE84BC5296314B"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
@@ -622,7 +604,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C8419095549A0787411C888F472CA17F"
+        "OwnerKey" = "8:_5C859A21BC9D1E276C3D1E01530CBFFC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -647,12 +629,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D604D3F0287B484BB96292D688E4B5A0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F053DE31D61F921A5DB154DF96A2406A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1805,6 +1781,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5C859A21BC9D1E276C3D1E01530CBFFC"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Tmds.MDns, Version=0.7.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_5C859A21BC9D1E276C3D1E01530CBFFC"
+                    {
+                    "Name" = "8:Tmds.MDns.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Tmds.MDns.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5EAB36E62D0BEE7F955159856BB935BA"
             {
             "AssemblyRegister" = "3:1"
@@ -2744,37 +2751,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8419095549A0787411C888F472CA17F"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Rssdp, Version=4.0.2.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C8419095549A0787411C888F472CA17F"
-                    {
-                    "Name" = "8:Rssdp.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Rssdp.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CF079DC6CB25698535E54659BB81ACA3"
             {
             "AssemblyRegister" = "3:1"
@@ -3068,37 +3044,6 @@
                     }
                 }
             "SourcePath" = "8:System.Runtime.InteropServices.WindowsRuntime.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F053DE31D61F921A5DB154DF96A2406A"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Zeroconf, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_F053DE31D61F921A5DB154DF96A2406A"
-                    {
-                    "Name" = "8:Zeroconf.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Zeroconf.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
@@ -3451,15 +3396,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{2B5972C0-904A-43D9-8004-7FA9F433867E}"
-        "PackageCode" = "8:{BEE2A590-A785-43EB-B9D6-E3B0DF2BEDFB}"
+        "ProductCode" = "8:{6342F1F3-F6B5-4AEE-B6D3-FAABC7E51F3A}"
+        "PackageCode" = "8:{CEE689D1-033C-4433-B7E8-A008D6026B3A}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.9.26"
+        "ProductVersion" = "8:1.9.30"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -4015,7 +3960,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FBE92F1B590048F2B35033658721B8BE"
             {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Release\\ChromeCast.Desktop.AudioStreamer.exe"
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Debug\\ChromeCast.Desktop.AudioStreamer.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"

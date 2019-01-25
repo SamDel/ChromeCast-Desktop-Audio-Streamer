@@ -42,10 +42,5 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
         {
             throw new NotImplementedException();
         }
-
-        public ushort GetPort()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -3,13 +3,13 @@ using System.Net;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net.Sockets;
-using Rssdp;
 using NAudio.Wave;
 using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -21,29 +21,30 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
 
-        public void OnDeviceAvailable(DiscoveredSsdpDevice device, SsdpDevice fullDevice, ushort port)
+        public void OnDeviceAvailable(DiscoveredDevice discoveredDevice)
         {
-            lock(deviceList)
+            var existingDevice = deviceList.FirstOrDefault(
+                d => d.GetHost().Equals(discoveredDevice.IPAddress)
+                && d.GetPort().Equals(discoveredDevice.Port));
+            if (existingDevice == null)
             {
-                var existingDevice = deviceList.FirstOrDefault(d => d.GetHost().Equals(device.DescriptionLocation.Host) && d.GetPort().Equals(port));
-                if (existingDevice == null)
+                if (!deviceList.Any(d => d.GetUsn() != null && 
+                    d.GetUsn().Equals(discoveredDevice.Usn) && 
+                    d.GetPort().Equals(discoveredDevice.Usn)))
                 {
-                    if (!deviceList.Any(d => d.GetUsn() != null && d.GetUsn().Equals(device.Usn) && d.GetPort().Equals(port)))
-                    {
-                        var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.SetDiscoveredDevices(device, fullDevice, port);
-                        deviceList.Add(newDevice);
-                        onAddDeviceCallback?.Invoke(newDevice);
+                    var newDevice = DependencyFactory.Container.Resolve<Device>();
+                    newDevice.SetDiscoveredDevices(discoveredDevice);
+                    deviceList.Add(newDevice);
+                    onAddDeviceCallback?.Invoke(newDevice);
 
-                        if (AutoStart)
-                            newDevice.OnClickPlayPause();
-                    }
+                    if (AutoStart)
+                        newDevice.OnClickPlayPause();
                 }
-                else
-                {
-                    existingDevice.SetDiscoveredDevices(device, fullDevice, port);
-                    existingDevice.SetDeviceName(existingDevice.GetFriendlyName());
-                }
+            }
+            else
+            {
+                existingDevice.SetDiscoveredDevices(discoveredDevice);
+                existingDevice.SetDeviceName(existingDevice.GetFriendlyName());
             }
         }
 
@@ -178,17 +179,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             applicationLogic = applicationLogicIn;
         }
 
-        public List<UserSettingHost> GetHosts()
+        public List<DiscoveredDevice> GetHosts()
         {
-            var hosts = new List<UserSettingHost>();
+            var hosts = new List<DiscoveredDevice>();
             foreach (var device in deviceList)
             {
-                hosts.Add(new UserSettingHost
-                {
-                    Ip = device.GetHost(),
-                    Name = device.GetFriendlyName(),
-                    Port = device.GetPort()
-                });
+                hosts.Add(device.GetDiscoveredDevice());
             }
             return hosts;
         }
