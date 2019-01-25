@@ -26,6 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private ushort Port = 8009;
         private IAsyncResult currentAynchResult;
         private bool connecting = false;
+        private byte[] sendBuffer;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -41,7 +42,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             try
             {
-                if (tcpClient == null || !tcpClient.Connected)
+                if (tcpClient != null &&
+                    tcpClient.Client != null &&
+                    tcpClient.Connected &&
+                    state == DeviceConnectionState.Connected)
                 {
                     connecting = true;
                     var host = getHost();
@@ -92,7 +96,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     var host = getHost?.Invoke();
                     sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
                     StartReceive();
-
+                    DoSendMessage();
                     state = DeviceConnectionState.Connected;
                 }
             }
@@ -118,18 +122,35 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void SendMessage(byte[] send)
         {
-            Connect();
-            while (connecting) { }
+            sendBuffer = send;
+            if (tcpClient != null &&
+                tcpClient.Client != null &&
+                tcpClient.Connected &&
+                state == DeviceConnectionState.Connected)
+                DoSendMessage();
+            else
+                Connect();
+        }
 
-            if (tcpClient != null && tcpClient.Client != null && tcpClient.Connected)
+        private void DoSendMessage()
+        {
+            if (tcpClient != null && 
+                tcpClient.Client != null && 
+                tcpClient.Connected &&
+                state == DeviceConnectionState.Connected &&
+                sendBuffer != null)
             {
                 try
                 {
-                    sslStream.Write(send);
+                    sslStream.Write(sendBuffer);
                     sslStream.Flush();
                 }
                 catch (Exception)
                 {
+                }
+                finally
+                {
+                    sendBuffer = null;
                 }
             }
         }
