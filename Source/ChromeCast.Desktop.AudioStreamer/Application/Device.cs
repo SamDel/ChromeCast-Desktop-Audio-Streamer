@@ -113,25 +113,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void SetDeviceState(DeviceState state, string text = null)
         {
-            var isDisposed = true;
-            try
-            {
-                isDisposed = deviceControl.IsDisposed;
-            }
-            catch (Exception)
-            {
-            }
-            if (isDisposed)
+            if (deviceControl == null || deviceControl.IsDisposed)
                 return;
 
             if (deviceControl.InvokeRequired)
             {
-                if (!this.deviceControl.IsDisposed)
+                if (!deviceControl.IsDisposed)
                 {
                     try
                     {
                         SetDeviceStateCallback callback = new SetDeviceStateCallback(SetDeviceState);
-                        this.deviceControl?.Invoke(callback, new object[] { state, text });
+                        deviceControl?.Invoke(callback, new object[] { state, text });
                     }
                     catch (Exception ex)
                     {
@@ -144,7 +136,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (state == DeviceState.ConnectError && IsGroup())
                 {
                     deviceState = DeviceState.Disposed;
-                    deviceControl.Dispose();
+                    deviceControl?.Dispose();
+                    menuItem?.Dispose();
                 }
                 else
                 {
