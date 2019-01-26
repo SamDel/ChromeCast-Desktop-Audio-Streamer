@@ -29,6 +29,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Volume volumeSetting;
         private DateTime lastVolumeChange;
         private ILogger logger;
+        private DateTime lastGetStatus;
+
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
         public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
@@ -107,13 +109,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void OnGetStatus()
         {
-            if (deviceState != DeviceState.Disposed)
+            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 2)
+            {
                 deviceCommunication.GetStatus();
+                lastGetStatus = DateTime.Now;
+            }
         }
 
         public void SetDeviceState(DeviceState state, string text = null)
         {
-            if (deviceControl.IsDisposed)
+            var isDisposed = true;
+            try
+            {
+                isDisposed = deviceControl.IsDisposed;
+            }
+            catch (Exception)
+            {
+            }
+            if (isDisposed)
                 return;
 
             if (deviceControl.InvokeRequired)
