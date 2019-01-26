@@ -51,6 +51,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         public void SetDiscoveredDevices(DiscoveredDevice discoveredDeviceIn)
         {
+            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
             if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
@@ -58,7 +59,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
-            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDevice)}");
         }
 
         public void OnClickPlayPause()
