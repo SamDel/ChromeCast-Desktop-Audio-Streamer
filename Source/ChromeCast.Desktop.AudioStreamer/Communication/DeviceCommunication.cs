@@ -216,8 +216,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             else
             {
-                //Task.Delay(2000).Wait();
-                //GetReceiverStatus();
+                Task.Delay(2000).Wait();
+                GetReceiverStatus();
             }
         }
 
