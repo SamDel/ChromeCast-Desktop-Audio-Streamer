@@ -23,7 +23,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
             Func<bool> isConnected, 
             Func<bool> isDeviceConnected, 
             Func<string> getHost, 
-            Func<ushort> getPort);
+            Func<ushort> getPort,
+            Action sendSilence);
         void Stop();
         void OnPlayPause_Click();
         void OnStop_Click();

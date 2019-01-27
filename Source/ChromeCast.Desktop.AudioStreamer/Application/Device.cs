@@ -67,7 +67,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 IsConnected,
                 deviceConnection.IsConnected,
                 GetHost,
-                GetPort);
+                GetPort,
+                SendSilence);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
             volumeSetting = new Volume
@@ -459,6 +460,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             volumeSetting = volume;
             deviceControl.OnVolumeUpdate(volume);
+        }
+
+        /// <summary>
+        /// Send silence to the device.
+        /// </summary>
+        public void SendSilence()
+        {
+            OnRecordingDataAvailable(Properties.Resources.silence,
+                new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
         }
 
         #endregion

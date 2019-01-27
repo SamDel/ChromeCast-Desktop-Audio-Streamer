@@ -37,5 +37,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetDeviceName(string name);
         ushort GetPort();
         DiscoveredDevice GetDiscoveredDevice();
+        void SendSilence();
     }
 }

@@ -18,6 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<bool> isDeviceConnected;
         private Func<string> getHost;
         private Func<ushort> getPort;
+        private Action sendSilence;
         private Func<DeviceState> getDeviceState;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
@@ -139,6 +140,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void Stop()
         {
+            var deviceState = getDeviceState();
+
+            // Hack to stop a device. If nothing is send the device is in buffering state and doesn't respond to stop messages. Send some silence first.
+            if (deviceState == DeviceState.Buffering)
+                sendSilence();
+
             SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
@@ -309,7 +316,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             Func<bool> isConnectedIn, 
             Func<bool> isDeviceConnectedIn, 
             Func<string> getHostIn, 
-            Func<ushort> getPortIn)
+            Func<ushort> getPortIn,
+            Action sendSilenceIn)
         {
             setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
@@ -319,6 +327,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
             getPort = getPortIn;
+            sendSilence = sendSilenceIn;
         }
 
         public void OnPlayPause_Click()
