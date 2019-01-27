@@ -61,6 +61,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void LoadMedia()
         {
+            if (applicationLogic == null)
+                return;
+
             setDeviceState?.Invoke(DeviceState.LoadingMedia, null);
             SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
@@ -296,8 +299,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
-        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn, Action<byte[]> sendMessageIn, 
-            Func<DeviceState> getDeviceStateIn, Func<bool> isConnectedIn, Func<bool> isDeviceConnectedIn, Func<string> getHostIn, 
+        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, 
+            Action<Volume> onVolumeUpdateIn, 
+            Action<byte[]> sendMessageIn, 
+            Func<DeviceState> getDeviceStateIn, 
+            Func<bool> isConnectedIn, 
+            Func<bool> isDeviceConnectedIn, 
+            Func<string> getHostIn, 
             Func<ushort> getPortIn)
         {
             setDeviceState = setDeviceStateIn;

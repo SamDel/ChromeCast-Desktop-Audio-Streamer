@@ -33,9 +33,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     d.GetPort().Equals(discoveredDevice.Usn)))
                 {
                     var newDevice = DependencyFactory.Container.Resolve<Device>();
-                    newDevice.SetDiscoveredDevices(discoveredDevice);
+                    newDevice.Initialize(discoveredDevice);
                     deviceList.Add(newDevice);
                     onAddDeviceCallback?.Invoke(newDevice);
+                    newDevice.OnGetStatus();
 
                     if (AutoStart)
                         newDevice.OnClickPlayPause();
@@ -43,7 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             else
             {
-                existingDevice.SetDiscoveredDevices(discoveredDevice);
+                existingDevice.Initialize(discoveredDevice);
                 existingDevice.SetDeviceName(existingDevice.GetFriendlyName());
             }
         }

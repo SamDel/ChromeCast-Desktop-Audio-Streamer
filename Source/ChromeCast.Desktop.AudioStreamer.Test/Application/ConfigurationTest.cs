@@ -8,9 +8,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
     public class ConfigurationTest
     {
         AutoResetEvent asyncEvent;
-        bool boolShowLog;
-        bool showLag;
-        int lagValue;
         string ipAddressesDevices;
 
         [TestMethod]
@@ -23,17 +20,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 
             asyncEvent.WaitOne(100);
 
-            Assert.IsFalse(boolShowLog);
-            Assert.IsFalse(showLag);
-            Assert.AreEqual(1000, lagValue);
             Assert.AreEqual(string.Empty, ipAddressesDevices);
         }
 
-        private void ConfigurationCallback(bool boolShowLogIn, bool showLagIn, int lagValueIn, string ipAddressesDevicesIn)
+        private void ConfigurationCallback(string ipAddressesDevicesIn)
         {
-            boolShowLog = boolShowLogIn;
-            showLag = showLagIn;
-            lagValue = lagValueIn;
             ipAddressesDevices = ipAddressesDevicesIn;
 
             asyncEvent.Set();

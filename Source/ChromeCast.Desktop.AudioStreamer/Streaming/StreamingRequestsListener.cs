@@ -18,13 +18,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     public class StreamingRequestsListener : IStreamingRequestsListener
     {
         public ManualResetEvent allDone = new ManualResetEvent(false);
-        private Action<string, int> onListenCallback;
         private Action<Socket, string> onConnectCallback;
         private Socket listener;
+        private string ip;
+        private int port;
 
-        public void StartListening(IPAddress ipAddress, Action<string, int> onListenCallbackIn, Action<Socket, string> onConnectCallbackIn)
+        public string GetStreamimgUrl()
         {
-            onListenCallback = onListenCallbackIn;
+            return string.Format($"http://{ip}:{port}/");
+        }
+
+        public void StartListening(IPAddress ipAddress, Action<Socket, string> onConnectCallbackIn)
+        {
             onConnectCallback = onConnectCallbackIn;
             var localEndPoint = new IPEndPoint(ipAddress, 0);
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -33,13 +38,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
-                onListenCallback?.Invoke(((IPEndPoint)listener.LocalEndPoint).Address.ToString(), ((IPEndPoint)listener.LocalEndPoint).Port);
-
-                while (true)
+                var endPoint = (IPEndPoint)listener.LocalEndPoint;
+                if (endPoint != null)
                 {
-                    allDone.Reset();
-                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
-                    allDone.WaitOne();
+                    ip = endPoint.Address?.ToString();
+                    port = endPoint.Port;
+                    Console.WriteLine(string.Format("Streaming from {0}:{1}", ip, port));
+
+                    while (true)
+                    {
+                        allDone.Reset();
+                        listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
+                        allDone.WaitOne();
+                    }
                 }
             }
             catch (Exception ex)

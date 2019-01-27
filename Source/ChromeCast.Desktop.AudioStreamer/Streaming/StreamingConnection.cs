@@ -89,6 +89,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return Socket != null && Socket.Connected;
         }
 
+        //TODO: Poll this function and change device state.
+        private bool Poll()
+        {
+            return !(Socket.Poll(1, SelectMode.SelectRead) && Socket.Available == 0);
+        }
+
         public string GetRemoteEndPoint()
         {
             if (Socket == null)

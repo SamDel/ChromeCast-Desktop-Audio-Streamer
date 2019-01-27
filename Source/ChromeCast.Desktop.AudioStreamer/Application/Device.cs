@@ -30,6 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DateTime lastVolumeChange;
         private ILogger logger;
         private DateTime lastGetStatus;
+        private Func<string> getStreamingUrl;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -39,19 +40,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceConnection = deviceConnectionIn;
             deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, deviceConnection.SendMessage, GetDeviceState, IsConnected, deviceConnection.IsConnected, GetHost, GetPort);
             deviceState = DeviceState.NotConnected;
             discoveredDevice = new DiscoveredDevice();
-            volumeSetting = new Volume
-            {
-                controlType = "attenuation",
-                level = 0.0f,
-                muted = false,
-                stepInterval = 0.05f
-            };
         }
 
-        public void SetDiscoveredDevices(DiscoveredDevice discoveredDeviceIn)
+        public void Initialize(DiscoveredDevice discoveredDeviceIn)
         {
             logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
@@ -59,8 +52,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
+            deviceCommunication.SetCallback(SetDeviceState,
+                OnVolumeUpdate,
+                deviceConnection.SendMessage,
+                GetDeviceState,
+                IsConnected,
+                deviceConnection.IsConnected,
+                GetHost,
+                GetPort);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
+            volumeSetting = new Volume
+            {
+                controlType = "attenuation",
+                level = 0.0f,
+                muted = false,
+                stepInterval = 0.05f
+            };
         }
 
         public void OnClickPlayPause()
@@ -297,6 +305,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public DiscoveredDevice GetDiscoveredDevice()
         {
             return discoveredDevice;
+        }
+
+        public void SetCallback(Func<string> getSteamingUrlIn)
+        {
+            getStreamingUrl = getSteamingUrlIn;
         }
     }
 }

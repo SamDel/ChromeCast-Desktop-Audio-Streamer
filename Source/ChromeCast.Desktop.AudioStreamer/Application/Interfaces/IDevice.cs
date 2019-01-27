@@ -15,7 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         bool IsConnected();
         void SetDeviceState(DeviceState disposed, string text = null);
-        void SetDiscoveredDevices(DiscoveredDevice discoveredDevice);
+        void Initialize(DiscoveredDevice discoveredDevice);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
@@ -39,5 +39,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetDeviceName(string name);
         ushort GetPort();
         DiscoveredDevice GetDiscoveredDevice();
+        void SetCallback(Func<string> getSteamingUrl);
     }
 }

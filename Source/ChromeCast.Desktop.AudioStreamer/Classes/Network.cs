@@ -8,6 +8,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
     public static class Network
     {
+        /// <summary>
+        /// Return all IP4 addresses that are in use on the system.
+        /// </summary>
+        /// <returns></returns>
         public static List<NetworkAdapter> GetIp4ddresses()
         {
             var adapters = new List<NetworkAdapter>();
@@ -15,27 +19,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (var networkInterface in networkInterfaces)
             {
-                foreach (var ip in networkInterface.GetIPProperties().UnicastAddresses)
+                var properties = networkInterface.GetIPProperties();
+                if (properties != null)
                 {
-                    var address = ip.Address;
-                    var props = networkInterface.GetIPProperties();
-                    if (address.AddressFamily == AddressFamily.InterNetwork
-                        && (address.ToString().StartsWith("192.168.")
-                            || address.ToString().StartsWith("10.")
-                            || address.ToString().StartsWith("172."))
-                        && networkInterface.OperationalStatus != OperationalStatus.Down
-                        && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback
-                        && props.GatewayAddresses.Count > 0)
+                    foreach (var ip in properties.UnicastAddresses)
                     {
-                        adapters.Add(
-                            new NetworkAdapter {
-                                IPAddress = address,
-                                IsEthernet = networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet || 
-                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet3Megabit ||
-                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.GigabitEthernet ||
-                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetFx ||
-                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetT
-                            });
+                        if (ip != null && ip.Address != null)
+                        {
+                            var address = ip.Address;
+                            if (address.AddressFamily == AddressFamily.InterNetwork
+                                && (address.ToString().StartsWith("192.168.")
+                                    || address.ToString().StartsWith("10.")
+                                    || address.ToString().StartsWith("172."))
+                                && networkInterface.OperationalStatus != OperationalStatus.Down
+                                && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                                && properties.GatewayAddresses.Count > 0)
+                            {
+                                adapters.Add(
+                                    new NetworkAdapter
+                                    {
+                                        IPAddress = address,
+                                        IsEthernet = networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet ||
+                                                        networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet3Megabit ||
+                                                        networkInterface.NetworkInterfaceType == NetworkInterfaceType.GigabitEthernet ||
+                                                        networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetFx ||
+                                                        networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetT
+                                    });
+                            }
+                        }
                     }
                 }
             }
@@ -43,11 +54,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             return adapters;
         }
 
+        /// <summary>
+        /// Return the local IP address. 
+        /// If there are multiple IP addresses the first ethernet address is returned.
+        /// </summary>
+        /// <returns>the IP address, or null if there aren't any</returns>
         public static IPAddress GetIp4Address()
         {
             var addressesInUse = GetIp4ddresses();
             var ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            var ipAddress = ipHostInfo.AddressList[0];
+            if (addressesInUse.Count == 0 || ipHostInfo.AddressList.Count() == 0)
+                return null;
+
+            var ipAddress = addressesInUse.First().IPAddress;
             var addressFound = false;
             foreach (var address in ipHostInfo.AddressList)
             {

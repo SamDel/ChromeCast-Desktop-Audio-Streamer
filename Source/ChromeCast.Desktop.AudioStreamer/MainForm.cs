@@ -44,7 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             Update();
             AddIP4Addresses();
-            applicationLogic.Start();
+            applicationLogic.Initialize();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
             cmbIP4AddressUsed.SelectedIndexChanged += CmbIP4AddressUsed_SelectedIndexChanged;
 
@@ -190,8 +190,13 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkHook.Checked = useShortCuts;
         }
 
-        public void ToggleVisibility()
+        public void ToggleFormVisibility(object sender, EventArgs e)
         {
+            if (e.GetType().Equals(typeof(MouseEventArgs)))
+            {
+                if (((MouseEventArgs)e).Button != MouseButtons.Left) return;
+            }
+
             if (Visible)
             {
                 Hide();
@@ -238,7 +243,10 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void ChkHook_CheckedChanged(object sender, EventArgs e)
         {
-            applicationLogic.OnSetHooks(chkHook.Checked);
+            if (chkHook.Checked)
+                SetWindowsHook.Start(devices);
+            else
+                SetWindowsHook.Stop();
         }
 
         private void BtnVolumeUp_Click(object sender, EventArgs e)
@@ -368,7 +376,8 @@ namespace ChromeCast.Desktop.AudioStreamer
                 else
                 {
                     var addressUsed = Network.GetIp4Address();
-                    cmbIP4AddressUsed.SelectedItem = addressUsed;
+                    if (addressUsed != null)
+                        cmbIP4AddressUsed.SelectedItem = addressUsed;
                 }
             }
         }
