@@ -249,6 +249,9 @@
   <data name="MainForm_Text" xml:space="preserve">
     <value>ChromeCast Desktop Audio Streamer</value>
   </data>
+  <data name="MessageBox_NoIPAddress" xml:space="preserve">
+    <value>No IP addresses found on your device.</value>
+  </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
     <value>No recording devices found.</value>
   </data>

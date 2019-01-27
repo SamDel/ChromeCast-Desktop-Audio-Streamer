@@ -61,7 +61,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var ipAddress = Network.GetIp4Address();
             if (ipAddress == null)
             {
-                MessageBox.Show("No IP addresses found on your device.");
+                MessageBox.Show(Properties.Strings.MessageBox_NoIPAddress);
                 return;
             }
 
@@ -124,10 +124,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 Text = deviceIn.GetFriendlyName()
             };
-            menuItem.Click += deviceIn.OnClickDeviceButton;
+            menuItem.Click += deviceIn.OnClickPlayPause;
             notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
             deviceIn.SetMenuItem(menuItem);
-            deviceIn.SetCallback(GetStreamingUrl);
             mainForm.AddDevice(deviceIn);
         }
 
@@ -191,7 +190,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (playingOnIpOrFormatChange)
             {
                 await Task.Delay(2500);
-                devices.Start();
+                devices.Load();
                 await Task.Delay(15000);
                 playingOnIpOrFormatChange = false;
             }
@@ -215,7 +214,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 playingOnIpOrFormatChange = devices.Stop();
                 if (playingOnIpOrFormatChange)
                 {
-                    devices.Start();
+                    devices.Load();
                     playingOnIpOrFormatChange = false;
                 }
             }

@@ -165,4 +165,7 @@
   <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
     <value>Log device communication</value>
   </data>
+  <data name="MessageBox_NoIPAddress" xml:space="preserve">
+    <value>No IP addresses found on your device.</value>
+  </data>
 </root>

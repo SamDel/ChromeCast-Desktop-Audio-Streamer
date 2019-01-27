@@ -457,6 +457,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No IP addresses found on your device..
+        /// </summary>
+        internal static string MessageBox_NoIPAddress {
+            get {
+                return ResourceManager.GetString("MessageBox_NoIPAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No recording devices found..
         /// </summary>
         internal static string MessageBox_NoRecordingDevices {

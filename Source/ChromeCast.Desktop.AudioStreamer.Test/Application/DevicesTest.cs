@@ -82,7 +82,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             var testDeviceConnection = (TestDeviceConnection)device.GetDeviceConnection();
 
             // Connect & Launch
-            device.OnClickDeviceButton(null, null);
+            device.OnClickPlayPause(null, null);
 
             // Connect & Load Media
             device.OnReceiveMessage(ReceiverStatusMessageFromDevice());

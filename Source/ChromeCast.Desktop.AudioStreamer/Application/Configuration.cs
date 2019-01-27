@@ -6,13 +6,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class Configuration : IConfiguration
     {
+        /// <summary>
+        /// Load the configuration from app.config.
+        /// </summary>
+        /// <param name="configurationCallback">callback to process the configuration</param>
         public void Load(Action<string> configurationCallback)
         {
             try
             {
-                string ipAddressesDevices = ConfigurationManager.AppSettings["IpAddressesDevices"];
-
-                configurationCallback(ipAddressesDevices);
+                configurationCallback(ConfigurationManager.AppSettings["IpAddressesDevices"]);
             }
             catch (Exception)
             {

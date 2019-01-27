@@ -13,13 +13,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public interface IDevice
     {
-        bool IsConnected();
         void SetDeviceState(DeviceState disposed, string text = null);
         void Initialize(DiscoveredDevice discoveredDevice);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
-        void OnClickDeviceButton(object sender, EventArgs e);
+        void OnClickPlayPause(object sender, EventArgs e);
         string GetUsn();
         string GetHost();
         string GetFriendlyName();
@@ -27,18 +26,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetDeviceControl(DeviceControl deviceControl);
         MenuItem GetMenuItem();
         void SetMenuItem(MenuItem menuItem);
-        void OnVolumeUpdate(Volume volume);
         void VolumeUp();
         void VolumeDown();
         void VolumeMute();
         void VolumeSet(float level);
         void Stop();
-        void Start();
+        void Load();
         void OnReceiveMessage(CastMessage castMessage);
         DeviceControl GetDeviceControl();
         void SetDeviceName(string name);
         ushort GetPort();
         DiscoveredDevice GetDiscoveredDevice();
-        void SetCallback(Func<string> getSteamingUrl);
     }
 }

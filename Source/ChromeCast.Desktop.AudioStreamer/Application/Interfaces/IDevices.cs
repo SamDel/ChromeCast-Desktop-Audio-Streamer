@@ -17,7 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeUp();
         void VolumeDown();
         void VolumeMute();
-        void Start();
+        void Load();
         bool Stop();
         void SetAutoStart(bool autoStart);
         void SetCallback(Action<Device> onAddDeviceCallbackIn);
