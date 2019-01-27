@@ -192,6 +192,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     var invalidRequestMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     setDeviceState(DeviceState.InvalidRequest, null);
                     break;
+                case "LAUNCH_ERROR":
+                    setDeviceState(DeviceState.LoadCancelled, null);
+                    break;
                 default:
                     break;
             }
