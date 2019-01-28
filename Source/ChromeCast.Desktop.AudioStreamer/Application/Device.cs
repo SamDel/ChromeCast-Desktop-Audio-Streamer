@@ -132,7 +132,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (streamingConnection.IsConnected())
             {
-                if (deviceState != DeviceState.NotConnected)
+                if (deviceState != DeviceState.NotConnected &&
+                    deviceState != DeviceState.Paused)
                 {
                     streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                 }
