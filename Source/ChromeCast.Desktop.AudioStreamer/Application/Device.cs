@@ -133,7 +133,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (streamingConnection.IsConnected())
             {
                 if (deviceState != DeviceState.NotConnected &&
-                    deviceState != DeviceState.Paused)
+                    deviceState != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
                 {
                     streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                 }
