@@ -73,6 +73,7 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -287,6 +288,7 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.lblNewReleaseAvailable);
             this.grpOptions.Controls.Add(this.chkLogDeviceCommunication);
             this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
             this.grpOptions.Controls.Add(this.pnlOptionsComboBoxes);
@@ -574,6 +576,18 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
+            // lblNewReleaseAvailable
+            // 
+            this.lblNewReleaseAvailable.AutoSize = true;
+            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(12, 485);
+            this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
+            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(206, 17);
+            this.lblNewReleaseAvailable.TabIndex = 36;
+            this.lblNewReleaseAvailable.TabStop = true;
+            this.lblNewReleaseAvailable.Text = "Version x is available on Github";
+            this.lblNewReleaseAvailable.Visible = false;
+            this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -660,6 +674,7 @@
         private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
+        private System.Windows.Forms.LinkLabel lblNewReleaseAvailable;
     }
 }
 

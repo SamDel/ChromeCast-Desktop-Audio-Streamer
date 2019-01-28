@@ -13,6 +13,9 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -50,8 +53,12 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
             FillStreamFormats();
+            lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
+            Task.Run(() =>
+            {
+                CheckForNewVersion(fvi.FileVersion);
+            });
         }
 
         private void ApplyLocalization()
@@ -546,6 +553,59 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
         {
             SetLogDeviceCommunication(chkLogDeviceCommunication.Checked);
+        }
+
+        private void CheckForNewVersion(string currentVersion)
+        {
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
+                ((HttpWebRequest)request).KeepAlive = false;
+                ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
+                var response = request.GetResponse();
+                var dataStream = response.GetResponseStream();
+                var reader = new StreamReader(dataStream);
+                var responseFromServer = reader.ReadToEnd();
+                var json = JsonConvert.DeserializeObject(responseFromServer);
+                var latestRelease = ((JObject)json)["tag_name"].ToString().Replace("v", "");
+                if (latestRelease.CompareTo(currentVersion) > 0)
+                {
+                    var latestReleaseUrl = ((JObject)json)["html_url"].ToString();
+                    ShowLatestRelease(latestRelease, latestReleaseUrl);
+                }
+
+                reader.Close();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                logger.Log($"CheckForNewVersion: {ex.Message}");
+            }
+        }
+
+        private void ShowLatestRelease(string latestRelease, string latestReleaseUrl)
+        {
+            if (IsDisposed) return;
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string, string>(ShowLatestRelease), new object[] { latestRelease, latestReleaseUrl });
+                return;
+            }
+
+            lblNewReleaseAvailable.Text = $"{Properties.Strings.Label_NewVersionAvailable} ({latestRelease})";
+            var link = new LinkLabel.Link
+            {
+                LinkData = latestReleaseUrl
+            };
+            lblNewReleaseAvailable.Links.Add(link);
+            lblNewReleaseAvailable.Visible = true;
+        }
+
+        private void LblNewReleaseAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(e.Link.LinkData as string);
         }
     }
 }

@@ -340,6 +340,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new version is available on Github.
+        /// </summary>
+        internal static string Label_NewVersionAvailable {
+            get {
+                return ResourceManager.GetString("Label_NewVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording device:.
         /// </summary>
         internal static string Label_RecordingDevice_Text {

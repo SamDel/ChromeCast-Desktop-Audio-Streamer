@@ -168,4 +168,7 @@
   <data name="MessageBox_NoIPAddress" xml:space="preserve">
     <value>No IP addresses found on your device.</value>
   </data>
+  <data name="Label_NewVersionAvailable" xml:space="preserve">
+    <value>A new version is available on Github</value>
+  </data>
 </root>

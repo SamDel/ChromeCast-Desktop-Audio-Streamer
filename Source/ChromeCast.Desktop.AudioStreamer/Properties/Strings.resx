@@ -210,6 +210,9 @@
   <data name="Label_MinimumLag_Text" xml:space="preserve">
     <value>minimum lag / poor quality</value>
   </data>
+  <data name="Label_NewVersionAvailable" xml:space="preserve">
+    <value>A new version is available on Github</value>
+  </data>
   <data name="Label_RecordingDevice_Text" xml:space="preserve">
     <value>Recording device:</value>
   </data>

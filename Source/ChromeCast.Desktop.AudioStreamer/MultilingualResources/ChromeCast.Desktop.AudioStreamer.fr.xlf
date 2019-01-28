@@ -632,6 +632,10 @@
           <source>No IP addresses found on your device.</source>
           <target state="needs-review-translation">No IP addresses found on your device.</target>
         </trans-unit>
+        <trans-unit id="Label_NewVersionAvailable" translate="yes" xml:space="preserve">
+          <source>A new version is available on Github</source>
+          <target state="needs-review-translation">A new version is available on Github</target>
+        </trans-unit>
       </group>
     </body>
   </file>
