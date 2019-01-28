@@ -57,9 +57,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 try
                 {
-                    Socket.Send(data);
+                    var poll = Socket.Poll(100, SelectMode.SelectWrite);
+                    var nrSend = Socket.Send(data);
+                    Console.WriteLine($"Send:{nrSend} {poll}");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                 }
             }
