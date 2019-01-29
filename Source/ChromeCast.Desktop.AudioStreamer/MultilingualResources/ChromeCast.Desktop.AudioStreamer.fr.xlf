@@ -636,6 +636,10 @@
           <source>A new version is available on Github</source>
           <target state="needs-review-translation">A new version is available on Github</target>
         </trans-unit>
+        <trans-unit id="Connected" translate="yes" xml:space="preserve">
+          <source>Connected</source>
+          <target state="new">Connected</target>
+        </trans-unit>
       </group>
     </body>
   </file>
