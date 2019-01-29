@@ -335,10 +335,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             switch (getDeviceState())
             {
                 case DeviceState.Buffering:
-                    Stop();
-                    break;
                 case DeviceState.Playing:
-                    PauseMedia();
+                    Stop();
                     break;
                 case DeviceState.LaunchingApplication:
                 case DeviceState.LaunchedApplication:

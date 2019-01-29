@@ -64,7 +64,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.Playing:
                     SetBackColor(Color.PaleGreen);
                     device.GetMenuItem().Checked = true;
-                    picturePlayPause.Image = Properties.Resources.Pause;
+                    picturePlayPause.Image = Properties.Resources.Stop;
                     break;
                 case DeviceState.ConnectError:
                 case DeviceState.LoadCancelled:
