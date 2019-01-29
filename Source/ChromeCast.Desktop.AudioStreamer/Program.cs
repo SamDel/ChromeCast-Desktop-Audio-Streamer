@@ -9,6 +9,7 @@ using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
+using System.Windows.Forms;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -20,6 +21,9 @@ namespace ChromeCast.Desktop.AudioStreamer
         [STAThread]
         static void Main()
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledHandler);
+
             DependencyFactory.Container
                 .RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager())
                 .RegisterType<IApplicationLogic, ApplicationLogic>(new ContainerControlledLifetimeManager())
@@ -30,7 +34,6 @@ namespace ChromeCast.Desktop.AudioStreamer
                 .RegisterType<IDeviceConnection, DeviceConnection>()
                 .RegisterType<IDeviceCommunication, DeviceCommunication>()
                 .RegisterType<IStreamingConnection, StreamingConnection>()
-                .RegisterType<IDiscoverServiceSSDP, DiscoverServiceSSDP>()
                 .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
                 .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
                 .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
@@ -42,6 +45,12 @@ namespace ChromeCast.Desktop.AudioStreamer
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             System.Windows.Forms.Application.Run(DependencyFactory.Container.Resolve<MainForm>());
+        }
+
+        private static void UnhandledHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception exception = (Exception)e.ExceptionObject;
+            MessageBox.Show(exception.Message);
         }
     }
 }

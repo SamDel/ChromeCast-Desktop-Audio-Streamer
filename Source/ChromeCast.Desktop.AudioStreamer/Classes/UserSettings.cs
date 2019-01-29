@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ChromeCast.Desktop.AudioStreamer.Discover;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
@@ -136,15 +137,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
-        public List<UserSettingHost> ChromecastHosts
+        public List<DiscoveredDevice> ChromecastDiscoveredDevices
         {
             get
             {
-                return (List<UserSettingHost>)this["ChromecastHosts"];
+                return (List<DiscoveredDevice>)this["ChromecastDiscoveredDevices"];
             }
             set
             {
-                this["ChromecastHosts"] = value;
+                this["ChromecastDiscoveredDevices"] = value;
             }
         }
     }

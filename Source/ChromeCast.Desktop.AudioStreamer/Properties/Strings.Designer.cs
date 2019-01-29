@@ -349,6 +349,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A new version is available on Github.
+        /// </summary>
+        internal static string Label_NewVersionAvailable {
+            get {
+                return ResourceManager.GetString("Label_NewVersionAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording device:.
         /// </summary>
         internal static string Label_RecordingDevice_Text {
@@ -462,6 +471,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string MainForm_Text {
             get {
                 return ResourceManager.GetString("MainForm_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No IP addresses found on your device..
+        /// </summary>
+        internal static string MessageBox_NoIPAddress {
+            get {
+                return ResourceManager.GetString("MessageBox_NoIPAddress", resourceCulture);
             }
         }
         

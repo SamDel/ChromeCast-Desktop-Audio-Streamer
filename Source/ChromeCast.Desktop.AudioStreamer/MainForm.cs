@@ -13,6 +13,9 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -21,6 +24,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private IApplicationLogic applicationLogic;
         private IDevices devices;
         private ILogger logger;
+        private IPAddress previousIpAddress;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILogger loggerIn)
         {
@@ -43,13 +47,18 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             Update();
             AddIP4Addresses();
-            applicationLogic.Start();
+            applicationLogic.Initialize();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
+            cmbIP4AddressUsed.SelectedIndexChanged += CmbIP4AddressUsed_SelectedIndexChanged;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
             FillStreamFormats();
+            lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
+            Task.Run(() =>
+            {
+                CheckForNewVersion(fvi.FileVersion);
+            });
         }
 
         private void ApplyLocalization()
@@ -121,6 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             var deviceControl = new DeviceControl(device);
             deviceControl.SetDeviceName(device.GetFriendlyName());
+            deviceControl.SetStatus(device.GetDeviceState(), null);
             pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);
 
@@ -187,8 +197,13 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkHook.Checked = useShortCuts;
         }
 
-        public void ToggleVisibility()
+        public void ToggleFormVisibility(object sender, EventArgs e)
         {
+            if (e.GetType().Equals(typeof(MouseEventArgs)))
+            {
+                if (((MouseEventArgs)e).Button != MouseButtons.Left) return;
+            }
+
             if (Visible)
             {
                 Hide();
@@ -235,7 +250,10 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void ChkHook_CheckedChanged(object sender, EventArgs e)
         {
-            applicationLogic.OnSetHooks(chkHook.Checked);
+            if (chkHook.Checked)
+                SetWindowsHook.Start(devices);
+            else
+                SetWindowsHook.Stop();
         }
 
         private void BtnVolumeUp_Click(object sender, EventArgs e)
@@ -270,6 +288,11 @@ namespace ChromeCast.Desktop.AudioStreamer
             Hide();
         }
 
+        public bool DoSyncDevices()
+        {
+            return devices.Count() > 1;
+        }
+
         private void BtnSyncDevices_Click(object sender, EventArgs e)
         {
             devices.Sync();
@@ -300,14 +323,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (InvokeRequired)
             {
-                try
-                {
-                    SetDevice(startRecordingSetDevice);
-                    return;
-                }
-                catch (Exception)
-                {
-                }
                 Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
                 return;
             }
@@ -347,35 +362,45 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
             }
 
+            if (cmbIP4AddressUsed == null)
+                return;
+
             var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
             var ip4Adresses = Network.GetIp4ddresses();
-            foreach (var adapter in ip4Adresses)
-            {
-                if (cmbIP4AddressUsed.Items.IndexOf(adapter.IPAddress) < 0)
-                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
-            }
-            for (int i = cmbIP4AddressUsed.Items.Count - 1; i >= 0; i--)
-            {
-                if (!ip4Adresses.Any(x => x.IPAddress.ToString() == ((IPAddress)cmbIP4AddressUsed.Items[i]).ToString()))
-                    cmbIP4AddressUsed.Items.RemoveAt(i);
-            }
 
-            if (!ip4Adresses.Any(x => x.IPAddress.ToString() == oldAddressUsed?.ToString()))
+            cmbIP4AddressUsed.Items.Clear();
+            if (ip4Adresses.Count > 0)
             {
-                var addressUsed = Network.GetIp4Address();
-                cmbIP4AddressUsed.SelectedItem = addressUsed;
+                foreach (var adapter in ip4Adresses)
+                {
+                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
+                }
+
+                if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
+                {
+                    cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
+                }
+                else
+                {
+                    var addressUsed = Network.GetIp4Address();
+                    if (addressUsed != null)
+                        cmbIP4AddressUsed.SelectedItem = addressUsed;
+                }
             }
         }
 
         private void CmbIP4AddressUsed_SelectedIndexChanged(object sender, EventArgs e)
         {
             var ipAddress = (IPAddress)cmbIP4AddressUsed.SelectedItem;
-            applicationLogic.ChangeIPAddressUsed(ipAddress);
+            if (ipAddress?.ToString() != previousIpAddress?.ToString())
+                applicationLogic.ChangeIPAddressUsed(ipAddress);
+            previousIpAddress = ipAddress;
         }
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(txtLog.Text);
+            if (!string.IsNullOrEmpty(txtLog.Text))
+                Clipboard.SetText(txtLog.Text);
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
@@ -528,6 +553,59 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
         {
             SetLogDeviceCommunication(chkLogDeviceCommunication.Checked);
+        }
+
+        private void CheckForNewVersion(string currentVersion)
+        {
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
+                ((HttpWebRequest)request).KeepAlive = false;
+                ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
+                var response = request.GetResponse();
+                var dataStream = response.GetResponseStream();
+                var reader = new StreamReader(dataStream);
+                var responseFromServer = reader.ReadToEnd();
+                var json = JsonConvert.DeserializeObject(responseFromServer);
+                var latestRelease = ((JObject)json)["tag_name"].ToString().Replace("v", "");
+                if (latestRelease.CompareTo(currentVersion) > 0)
+                {
+                    var latestReleaseUrl = ((JObject)json)["html_url"].ToString();
+                    ShowLatestRelease(latestRelease, latestReleaseUrl);
+                }
+
+                reader.Close();
+                response.Close();
+            }
+            catch (Exception ex)
+            {
+                logger.Log($"CheckForNewVersion: {ex.Message}");
+            }
+        }
+
+        private void ShowLatestRelease(string latestRelease, string latestReleaseUrl)
+        {
+            if (IsDisposed) return;
+            if (InvokeRequired)
+            {
+                Invoke(new Action<string, string>(ShowLatestRelease), new object[] { latestRelease, latestReleaseUrl });
+                return;
+            }
+
+            lblNewReleaseAvailable.Text = $"{Properties.Strings.Label_NewVersionAvailable} ({latestRelease})";
+            var link = new LinkLabel.Link
+            {
+                LinkData = latestReleaseUrl
+            };
+            lblNewReleaseAvailable.Links.Add(link);
+            lblNewReleaseAvailable.Visible = true;
+        }
+
+        private void LblNewReleaseAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(e.Link.LinkData as string);
         }
     }
 }

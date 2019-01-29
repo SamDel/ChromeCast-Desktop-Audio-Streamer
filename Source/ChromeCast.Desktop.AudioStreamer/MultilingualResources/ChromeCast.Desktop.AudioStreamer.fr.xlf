@@ -628,9 +628,13 @@
           <source>Wav (44100 Hz)</source>
           <target state="new">Wav (44100 Hz)</target>
         </trans-unit>
-        <trans-unit id="Connected" translate="yes" xml:space="preserve">
-          <source>Connected</source>
-          <target state="needs-review-translation">Connected</target>
+        <trans-unit id="MessageBox_NoIPAddress" translate="yes" xml:space="preserve">
+          <source>No IP addresses found on your device.</source>
+          <target state="needs-review-translation">No IP addresses found on your device.</target>
+        </trans-unit>
+        <trans-unit id="Label_NewVersionAvailable" translate="yes" xml:space="preserve">
+          <source>A new version is available on Github</source>
+          <target state="needs-review-translation">A new version is available on Github</target>
         </trans-unit>
       </group>
     </body>

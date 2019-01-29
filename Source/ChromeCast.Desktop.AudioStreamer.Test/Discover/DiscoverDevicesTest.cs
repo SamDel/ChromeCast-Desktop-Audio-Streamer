@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Rssdp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 
@@ -9,24 +8,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Discover
     public class DiscoverDevicesTest
     {
         AutoResetEvent asyncEvent;
-        DiscoveredSsdpDevice discoveredSsdpDevice;
+        DiscoveredDevice discoveredDevice;
 
         [TestMethod]
         public void TestDiscover()
         {
             asyncEvent = new AutoResetEvent(false);
 
-            var discoverDevice = new DiscoverDevices(new DiscoverServiceSSDP());
+            var discoverDevice = new DiscoverDevices();
             discoverDevice.Discover(DiscoverCallBack);
 
             asyncEvent.WaitOne(30000);
 
-            Assert.IsNotNull(discoveredSsdpDevice, "Device not found within 30 seconds.");
+            Assert.IsNotNull(discoveredDevice, "Device not found within 30 seconds.");
         }
 
-        private void DiscoverCallBack(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDevice)
+        private void DiscoverCallBack(DiscoveredDevice discoveredDevice)
         {
-            discoveredSsdpDevice = discoveredSsdpDeviceIn;
+            this.discoveredDevice = discoveredDevice;
             asyncEvent.Set();
         }
     }

@@ -11,12 +11,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
     public class DeviceCommunication : IDeviceCommunication
     {
-        private const string CastingText = "Casting:";
-        private IDeviceConnection deviceConnection;
-        private DeviceState deviceState;
-        private Action<DeviceState, string> setControlDeviceState;
+        private Action<DeviceState, string> setDeviceState;
         private Action<Volume> onVolumeUpdate;
+        private Action<byte[]> sendMessage;
+        private Func<bool> isConnected;
+        private Func<bool> isDeviceConnected;
         private Func<string> getHost;
+        private Func<ushort> getPort;
+        private Action sendSilence;
+        private Func<DeviceState> getDeviceState;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
         private IChromeCastMessages chromeCastMessages;
@@ -27,97 +30,59 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private int requestId;
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
-        private Volume volumeSetting;
-        private DateTime lastVolumeChange;
+        private bool Connected = false;
 
-        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn, IDeviceConnection deviceConnectionIn)
+        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
             applicationLogic = applicationLogicIn;
-            deviceConnection = deviceConnectionIn;
             logger = loggerIn;
             chromeCastMessages = chromeCastMessagesIn;
             chromeCastDestination = string.Empty;
             chromeCastSource = string.Format("client-8{0}", new Random().Next(10000, 99999));
             requestId = 0;
-            SetDeviceState(DeviceState.NotConnected);
-            volumeSetting = new Volume
-            {
-                controlType = "attenuation",
-                level = 0.0f,
-                muted = false,
-                stepInterval = 0.05f
-            };
         }
 
-        private void LaunchAndLoadMedia()
+        public void LaunchAndLoadMedia()
         {
-            if (deviceState != DeviceState.Connected)
-                Connect();
-
-            SetDeviceState(DeviceState.LaunchingApplication, null);
-
-            if (IsConnected())
+            setDeviceState?.Invoke(DeviceState.LaunchingApplication, null);
+            Connect();
+            if (isDeviceConnected())
                 Launch();
         }
 
-        public void ConnectAndGetReceiverStatus()
-        {
-            Connect();
-            Task.Delay(250);
-            GetReceiverStatus();
-        }
-
-        private void Connect(string sourceId = null, string destinationId = null)
-        {
-            SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
-            if (deviceConnection.IsConnected() && deviceState != DeviceState.Idle)
-                SetDeviceState(DeviceState.Connected, null);
-        }
-
-        private void Close(string sourceId = null, string destinationId = null)
+        public void Connect(string sourceId = null, string destinationId = null)
         {
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
         }
 
-        private void Launch()
+        public void Launch()
         {
             SendMessage(chromeCastMessages.GetLaunchMessage(GetNextRequestId()));
         }
 
         public void LoadMedia()
         {
-            SetDeviceState(DeviceState.LoadingMedia, null);
+            if (applicationLogic == null)
+                return;
+
+            setDeviceState?.Invoke(DeviceState.LoadingMedia, null);
             SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
 
         public void PauseMedia()
         {
-            SetDeviceState(DeviceState.Paused, null);
+            setDeviceState?.Invoke(DeviceState.Paused, null);
             SendMessage(chromeCastMessages.GetPauseMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
         public void PlayMedia()
         {
-            SetDeviceState(DeviceState.Playing, null);
+            setDeviceState?.Invoke(DeviceState.Playing, null);
             SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
-        public void VolumeSet(float level)
+        public void VolumeSet(Volume volumeSetting)
         {
-            if (lastVolumeChange != null && DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
-                return;
-
-            lastVolumeChange = DateTime.Now;
-
-            if (volumeSetting.level > level)
-                while (volumeSetting.level > level) volumeSetting.level -= volumeSetting.stepInterval;
-            if (volumeSetting.level < level)
-                while (volumeSetting.level < level) volumeSetting.level += volumeSetting.stepInterval;
-            if (level > 1) level = 1;
-            if (level < 0) level = 0;
-
-            volumeSetting.level = level;
-
             nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
             SendVolumeSet();
         }
@@ -135,61 +100,71 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
-        private void Pong()
+        public void VolumeMute(bool muted)
+        {
+            SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
+        }
+
+        public void Pong()
         {
             SendMessage(chromeCastMessages.GetPongMessage());
         }
 
-        public void GetReceiverStatus()
+        public void GetStatus()
         {
+            var deviceState = getDeviceState();
+            if (deviceState == DeviceState.Playing ||
+                deviceState == DeviceState.Buffering ||
+                deviceState == DeviceState.Paused)
+                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+            else
+                GetReceiverStatus();
+        }
+
+        private void GetReceiverStatus()
+        {
+            ConnectionConnect();
             SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
         }
 
-        public void GetMediaStatus()
+        private void ConnectionConnect()
         {
-            if (!IsConnected() || deviceState == DeviceState.Connected || deviceState == DeviceState.Idle)
-                ConnectAndGetReceiverStatus();
-            else
-                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
-        }
-
-        public bool Stop()
-        {
-            var previousState = deviceState;
-            switch (deviceState)
+            var deviceState = getDeviceState();
+            if (!Connected)
             {
-                case DeviceState.Playing:
-                case DeviceState.LoadingMedia:
-                case DeviceState.Buffering:
-                case DeviceState.Paused:
-                    SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
-                    break;
-                default:
-                    break;
+                SendMessage(chromeCastMessages.GetConnectMessage(null, null));
+                if (isDeviceConnected())
+                    Connected = true;
             }
-            SetDeviceState(DeviceState.Closed);
-            return previousState.Equals(DeviceState.Playing);
         }
 
-        private int GetNextRequestId()
+        public void Stop()
+        {
+            var deviceState = getDeviceState();
+
+            // Hack to stop a device. If nothing is send the device is in buffering state and doesn't respond to stop messages. Send some silence first.
+            if (deviceState == DeviceState.Buffering)
+                sendSilence();
+
+            SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
+        }
+
+        public int GetNextRequestId()
         {
             return ++requestId;
         }
 
-        private void SendMessage(CastMessage castMessage)
+        public void SendMessage(CastMessage castMessage)
         {
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
-            deviceConnection.SendMessage(byteMessage);
+            sendMessage?.Invoke(byteMessage);
 
-            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}] [{deviceState}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
         }
 
-        private async void OnReceiveMessage(CastMessage castMessage)
+        public void OnReceiveMessage(CastMessage castMessage)
         {
-            if (deviceState == DeviceState.Disposed)
-                return;
-
-            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}] [{deviceState}]: {castMessage.PayloadUtf8}");
+            logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
@@ -208,76 +183,76 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     var pongMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     break;
                 case "CLOSE":
-                    var previousState = deviceState;
+                    var previousState = getDeviceState();
                     var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
-                    switch (deviceState)
-                    {
-                        case DeviceState.Playing:
-                        case DeviceState.LoadingMedia:
-                        case DeviceState.Buffering:
-                        case DeviceState.Paused:
-                            Stop();
-                            Close();
-                            break;
-                        default:
-                            break;
-                    }
-                    SetDeviceState(DeviceState.Closed, null);
-
-                    // Restart
-                    if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
-                    {
-                        await Task.Delay(5000);
-                        OnPlayPause_Click();
-                    }
-                    else
-                    {
-                        await Task.Delay(2000);
-                        ConnectAndGetReceiverStatus();
-                    }
+                    OnReceiveCloseMessage(closeMessage);
                     break;
                 case "LOAD_FAILED":
                     var loadFailedMessage = js.Deserialize<MessageLoadFailed>(castMessage.PayloadUtf8);
-                    SetDeviceState(DeviceState.LoadFailed, null);
+                    setDeviceState(DeviceState.LoadFailed, null);
                     break;
                 case "LOAD_CANCELLED":
                     var loadCancelledMessage = js.Deserialize<MessageLoadCancelled>(castMessage.PayloadUtf8);
-                    SetDeviceState(DeviceState.LoadCancelled, null);
+                    setDeviceState(DeviceState.LoadCancelled, null);
                     break;
                 case "INVALID_REQUEST":
                     var invalidRequestMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
-                    SetDeviceState(DeviceState.InvalidRequest, null);
+                    setDeviceState(DeviceState.InvalidRequest, null);
+                    break;
+                case "LAUNCH_ERROR":
+                    setDeviceState(DeviceState.LoadCancelled, null);
                     break;
                 default:
                     break;
             }
         }
 
-        private void SetDeviceState(DeviceState state, string text = null)
+        private void OnReceiveCloseMessage(PayloadMessageBase closeMessage)
         {
-            deviceState = state;
-            setControlDeviceState?.Invoke(state, text);
+            var deviceState = getDeviceState();
+            var previousState = deviceState;
+            if (deviceState == DeviceState.Playing ||
+                deviceState == DeviceState.Buffering ||
+                deviceState == DeviceState.Paused ||
+                deviceState == DeviceState.LoadingMedia)
+            {
+                Stop();
+            }
+            setDeviceState(DeviceState.Closed, null);
+            Connected = false;
+
+            // Restart
+            if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
+            {
+                Task.Delay(5000).Wait();
+                PlayMedia();
+            }
+            else
+            {
+                Task.Delay(2000).Wait();
+                GetReceiverStatus();
+            }
         }
 
         private void OnReceiveMediaStatus(MessageMediaStatus mediaStatusMessage)
         {
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
-            if (deviceConnection.IsConnected() && mediaStatusMessage.status.Any())
+            if (isConnected() && mediaStatusMessage.status.Any())
             {
                 switch (mediaStatusMessage.status.First().playerState)
                 {
                     case "IDLE":
-                        SetDeviceState(DeviceState.Idle, null);
+                        setDeviceState(DeviceState.Idle, null);
                         break;
                     case "BUFFERING":
-                        SetDeviceState(DeviceState.Buffering, GetPlayingTime(mediaStatusMessage));
+                        setDeviceState(DeviceState.Buffering, GetPlayingTime(mediaStatusMessage));
                         break;
                     case "PAUSED":
-                        SetDeviceState(DeviceState.Paused, null);
+                        setDeviceState(DeviceState.Paused, null);
                         break;
                     case "PLAYING":
-                        SetDeviceState(DeviceState.Playing, GetPlayingTime(mediaStatusMessage));
+                        setDeviceState(DeviceState.Playing, GetPlayingTime(mediaStatusMessage));
                         break;
                     default:
                         break;
@@ -300,22 +275,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage?.status?.applications != null)
-            {
-                OnVolumeUpdate(receiverStatusMessage.status.volume);
-                var statusText = receiverStatusMessage.status.applications.FirstOrDefault()?.statusText;
-                if (statusText != null && statusText.StartsWith(CastingText))
-                    SetDeviceState(GetDeviceState(), $" {statusText}");
+            if (receiverStatusMessage?.status?.volume != null)
+                onVolumeUpdate(receiverStatusMessage.status.volume);
 
+            var statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
+            statusText = statusText?.Replace("Default Media Receiver", string.Empty);
+            var state = getDeviceState();
+            if (state == DeviceState.ConnectError)
+                state = DeviceState.NotConnected;
+            setDeviceState(getDeviceState(), $" {statusText}");
+
+            if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
+            {
                 var deviceApplication = receiverStatusMessage.status.applications.Where(a => a.appId.Equals("CC1AD845"));
                 if (deviceApplication.Any())
                 {
                     chromeCastDestination = deviceApplication.First().transportId;
                     chromeCastApplicationSessionNr = deviceApplication.First().sessionId;
 
-                    if (deviceState.Equals(DeviceState.LaunchingApplication))
+                    if (getDeviceState().Equals(DeviceState.LaunchingApplication))
                     {
-                        SetDeviceState(DeviceState.LaunchedApplication, null);
+                        setDeviceState(DeviceState.LaunchedApplication, null);
                         Connect(chromeCastSource, chromeCastDestination);
                         LoadMedia();
                     }
@@ -329,33 +309,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
-        private void OnVolumeUpdate(Volume volume)
+        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, 
+            Action<Volume> onVolumeUpdateIn, 
+            Action<byte[]> sendMessageIn, 
+            Func<DeviceState> getDeviceStateIn, 
+            Func<bool> isConnectedIn, 
+            Func<bool> isDeviceConnectedIn, 
+            Func<string> getHostIn, 
+            Func<ushort> getPortIn,
+            Action sendSilenceIn)
         {
-            onVolumeUpdate(volume);
-            volumeSetting = volume;
-        }
-
-        public void SetCallback(Action<DeviceState, string> setDeviceStateIn, Action<Volume> onVolumeUpdateIn,
-            Func<string> getHostIn)
-        {
-            setControlDeviceState = setDeviceStateIn;
+            setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
+            sendMessage = sendMessageIn;
+            getDeviceState = getDeviceStateIn;
+            isConnected = isConnectedIn;
+            isDeviceConnected = isDeviceConnectedIn;
             getHost = getHostIn;
-            deviceConnection.SetCallback(getHostIn, setDeviceStateIn, OnReceiveMessage, OnClosed);
-        }
-
-        private void OnClosed()
-        {
-            SetDeviceState(DeviceState.Closed);
+            getPort = getPortIn;
+            sendSilence = sendSilenceIn;
         }
 
         public void OnPlayPause_Click()
         {
-            switch (deviceState)
+            switch (getDeviceState())
             {
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
-                    PauseMedia();
+                    Stop();
                     break;
                 case DeviceState.LaunchingApplication:
                 case DeviceState.LaunchedApplication:
@@ -372,7 +353,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadCancelled:
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
-                case DeviceState.Connected:
                     LaunchAndLoadMedia();
                     break;
                 case DeviceState.Disposed:
@@ -384,7 +364,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void OnStop_Click()
         {
-            switch (deviceState)
+            switch (getDeviceState())
             {
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
@@ -402,52 +382,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
                 case DeviceState.Disposed:
-                case DeviceState.Connected:
                 default:
                     LaunchAndLoadMedia();
-                    Task.Delay(500).Wait();
+                    Task.Delay(750).Wait();
                     Stop();
                     break;
             }
-        }
-
-        public DeviceState GetDeviceState()
-        {
-            return deviceState;
-        }
-
-        private bool IsConnected()
-        {
-            return !(deviceState.Equals(DeviceState.NotConnected) ||
-                deviceState.Equals(DeviceState.ConnectError) ||
-                deviceState.Equals(DeviceState.Closed));
-        }
-
-        public void VolumeUp()
-        {
-            VolumeSet(volumeSetting.level + 0.05f);
-        }
-
-        public void VolumeDown()
-        {
-            VolumeSet(volumeSetting.level - 0.05f);
-        }
-
-        public void VolumeMute()
-        {
-            if (deviceConnection.IsConnected())
-                SendMessage(chromeCastMessages.GetVolumeMuteMessage(!volumeSetting.muted, GetNextRequestId()));
-        }
-
-        public void Close()
-        {
-            SendMessage(chromeCastMessages.GetCloseMessage());
-        }
-
-        public void Dispose()
-        {
-            Close();
-            SetDeviceState(DeviceState.Disposed, null);
         }
     }
 

@@ -213,6 +213,9 @@
   <data name="Label_MinimumLag_Text" xml:space="preserve">
     <value>minimum lag / poor quality</value>
   </data>
+  <data name="Label_NewVersionAvailable" xml:space="preserve">
+    <value>A new version is available on Github</value>
+  </data>
   <data name="Label_RecordingDevice_Text" xml:space="preserve">
     <value>Recording device:</value>
   </data>
@@ -251,6 +254,9 @@
   </data>
   <data name="MainForm_Text" xml:space="preserve">
     <value>ChromeCast Desktop Audio Streamer</value>
+  </data>
+  <data name="MessageBox_NoIPAddress" xml:space="preserve">
+    <value>No IP addresses found on your device.</value>
   </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
     <value>No recording devices found.</value>

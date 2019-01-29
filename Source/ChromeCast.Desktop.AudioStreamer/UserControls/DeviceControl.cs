@@ -44,10 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 return;
             }
 
-            if (state != DeviceState.Connected && state != DeviceState.Idle)
-                lblState.Text = $"{Resource.Get(state.ToString())} {text}";
-            else
-                lblState.Text = text;
+            lblStatus.Text = $"{Resource.Get(state.ToString())} {text}";
 
             switch (state)
             {
@@ -59,20 +56,22 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.LoadingMedia:
                 case DeviceState.Closed:
                 case DeviceState.Paused:
-                case DeviceState.Connected:
                     SetBackColor(Color.LightGray);
+                    device.GetMenuItem().Checked = false;
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
                     SetBackColor(Color.PaleGreen);
-                    picturePlayPause.Image = Properties.Resources.Pause;
+                    device.GetMenuItem().Checked = true;
+                    picturePlayPause.Image = Properties.Resources.Stop;
                     break;
                 case DeviceState.ConnectError:
                 case DeviceState.LoadCancelled:
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
                     SetBackColor(Color.PeachPuff);
+                    device.GetMenuItem().Checked = false;
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 default:
@@ -90,7 +89,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
             BackColor = color;
             btnDevice.BackColor = color;
-            lblState.BackColor = color;
+            lblStatus.BackColor = color;
             Update();
         }
 
@@ -102,12 +101,12 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         public void OnVolumeUpdate(Volume volume)
         {
+            if (IsDisposed) return;
             if (InvokeRequired)
             {
                 Invoke(new Action<Volume>(OnVolumeUpdate), new object[] { volume });
                 return;
             }
-            if (IsDisposed) return;
 
             trbVolume.Value = (int)(volume.level * 100);
             trbVolume.Enabled = true;

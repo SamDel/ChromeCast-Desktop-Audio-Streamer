@@ -7,13 +7,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
 {
     public interface IApplicationLogic
     {
-        void Start();
-        string GetStreamingUrl();
+        void Initialize();
         void SetLagThreshold(int lagThreshold);
         void OnAddDevice(IDevice device);
-        void OnSetHooks(bool @checked);
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat waveFormat);
-        void OnStreamingRequestsListen(string host, int port);
         void OnStreamingRequestConnect(Socket handlerSocket, string httpRequest);
         void SetDependencies(MainForm mainForm);
         void CloseApplication();
@@ -25,5 +22,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void ResetSettings();
         void SetStreamFormat(SupportedStreamFormat format);
         void SetCulture(string culture);
+        string GetStreamingUrl();
     }
 }

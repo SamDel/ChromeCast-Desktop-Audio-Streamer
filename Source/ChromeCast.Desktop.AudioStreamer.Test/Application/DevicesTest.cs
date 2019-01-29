@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-using Rssdp;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Application;
@@ -38,7 +37,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
                 .RegisterType<IDeviceConnection, TestDeviceConnection>()
                 .RegisterType<IDeviceCommunication, DeviceCommunication>()
                 .RegisterType<IStreamingConnection, StreamingConnection>()
-                .RegisterType<IDiscoverServiceSSDP, DiscoverServiceSSDP>()
                 .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
                 .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
                 .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
@@ -56,15 +54,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             // Add a device
             var devices = new Devices();
             devices.SetCallback(OnAddDeviceCallback);
-            var discoveredSsdpDevice = new DiscoveredSsdpDevice { Usn = "usn", DescriptionLocation = new System.Uri("http://192.168.111.111") };
-            var ssdpDevice = new SsdpRootDevice { FriendlyName = "Device_Name" };
-            devices.OnDeviceAvailable(discoveredSsdpDevice, ssdpDevice);
+            var discoveredDevice = new DiscoveredDevice();
+            discoveredDevice.IPAddress = "192.168.111.111";
+            discoveredDevice.Usn = "usn";
+            discoveredDevice.Name = "Device_Name";
+            discoveredDevice.Port = 8009;
+            devices.OnDeviceAvailable(discoveredDevice);
 
             asyncEvent.WaitOne(100);
 
-            Assert.AreEqual(ssdpDevice.FriendlyName, device.GetFriendlyName());
-            Assert.AreEqual(discoveredSsdpDevice.Usn, device.GetUsn());
-            Assert.AreEqual(discoveredSsdpDevice.DescriptionLocation.Host, device.GetHost());
+            Assert.AreEqual(discoveredDevice.Name, device.GetFriendlyName());
+            Assert.AreEqual(discoveredDevice.Usn, device.GetUsn());
+            Assert.AreEqual(discoveredDevice.IPAddress, device.GetHost());
 
             // Not connected, volume messages are not send.
             TestMessagesWhenNotConnected(devices);
@@ -81,10 +82,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             var testDeviceConnection = (TestDeviceConnection)device.GetDeviceConnection();
 
             // Connect & Launch
-            device.OnClickPlayPause();
+            device.OnClickPlayPause(null, null);
 
             // Connect & Load Media
-            //device.OnReceiveMessage(ReceiverStatusMessageFromDevice());
+            device.OnReceiveMessage(ReceiverStatusMessageFromDevice());
 
             Assert.AreEqual(4, testDeviceConnection.messagesSend.Count);
             Assert.AreEqual("CONNECT", GetMessage<PayloadMessageBase>(testDeviceConnection.messagesSend[0].PayloadUtf8).type);

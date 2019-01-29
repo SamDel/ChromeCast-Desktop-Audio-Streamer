@@ -38,12 +38,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
             return result;
         }
 
-        public void SetCallback(Func<string> getHost, Action<DeviceState, string> setDeviceState, Action<CastMessage> onReceiveMessage, Action OnClosed)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Dispose()
+        public void SetPort(ushort portIn)
         {
             throw new NotImplementedException();
         }

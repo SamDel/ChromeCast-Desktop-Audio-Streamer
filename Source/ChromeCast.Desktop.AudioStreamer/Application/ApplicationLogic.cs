@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Rssdp;
 using NAudio.Wave;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
@@ -14,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Globalization;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -29,18 +29,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private NotifyIcon notifyIcon;
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
-        private string streamingUrl = string.Empty;
         private bool playingOnIpOrFormatChange;
         private UserSettings settings = new UserSettings();
         private Mp3Stream Mp3Stream = null;
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Wav;
         private string Culture;
+        private ILogger logger;
 
         private bool AutoRestart { get; set; } = false;
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
             , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
-            , IStreamingRequestsListener streamingRequestListenerIn, IDeviceStatusTimer deviceStatusTimerIn)
+            , IStreamingRequestsListener streamingRequestListenerIn, IDeviceStatusTimer deviceStatusTimerIn
+            , ILogger loggerIn)
         {
             devices = devicesIn;
             devices.SetCallback(OnAddDevice);
@@ -49,160 +50,117 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             configuration = configurationIn;
             streamingRequestListener = streamingRequestListenerIn;
             deviceStatusTimer = deviceStatusTimerIn;
+            logger = loggerIn;
         }
 
-        public void Start()
+        /// <summary>
+        /// Initialize the application.
+        /// </summary>
+        public void Initialize()
         {
             var ipAddress = Network.GetIp4Address();
-            Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
+            if (ipAddress == null)
+            {
+                MessageBox.Show(Properties.Strings.MessageBox_NoIPAddress);
+                return;
+            }
+
+            Task.Run(() => {
+                streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect);
+            });
             AddNotifyIcon();
             LoadSettings();
-            configuration.Load(SetConfiguration);
+            configuration.Load(ApplyConfiguration);
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             loopbackRecorder.GetDevices(mainForm);
         }
 
-        private void ToggleFormVisibility(object sender, EventArgs e)
+        /// <summary>
+        /// Callback for the StreamingRequestListener, a device has made a new streaming connection.
+        /// </summary>
+        /// <param name="socketIn">the connected socket</param>
+        /// <param name="httpRequestIn">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
+        public void OnStreamingRequestConnect(Socket socketIn, string httpRequestIn)
         {
-            if (e.GetType().Equals(typeof(MouseEventArgs)))
-            {
-                if (((MouseEventArgs)e).Button != MouseButtons.Left) return;
-            }
+            Console.WriteLine(string.Format("Connection added from {0}", socketIn.RemoteEndPoint));
 
-            mainForm.ToggleVisibility();
+            loopbackRecorder?.StartRecording(OnRecordingDataAvailable);
+            devices?.AddStreamingConnection(socketIn, httpRequestIn);
         }
 
-        public void OnStreamingRequestsListen(string host, int port)
-        {
-            Console.WriteLine(string.Format("Streaming from {0}:{1}", host, port));
-            streamingUrl = string.Format("http://{0}:{1}/", host, port);
-        }
-
-        public void OnStreamingRequestConnect(Socket socket, string httpRequest)
-        {
-            Console.WriteLine(string.Format("Connection added from {0}", socket.RemoteEndPoint));
-
-            loopbackRecorder.StartRecording(OnRecordingDataAvailable);
-            devices.AddStreamingConnection(socket, httpRequest);
-        }
-
-        public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format)
+        /// <summary>
+        /// Callback for the loopback recorder, new audio data is captured.
+        /// </summary>
+        /// <param name="dataToSendIn">the audio data in wav format</param>
+        /// <param name="formatIn">the wav format that's used</param>
+        public void OnRecordingDataAvailable(byte[] dataToSendIn, WaveFormat formatIn)
         {
             if (!StreamFormatSelected.Equals(SupportedStreamFormat.Wav))
             {
                 if (Mp3Stream == null)
                 {
-                    Mp3Stream = new Mp3Stream(format, StreamFormatSelected);
+                    Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected);
                 }
-                Mp3Stream.Encode(dataToSend);
-                dataToSend = Mp3Stream.Read();
+                Mp3Stream.Encode(dataToSendIn);
+                dataToSendIn = Mp3Stream.Read();
             }
-            if (dataToSend.Length > 0)
+            if (dataToSendIn.Length > 0)
             {
-                devices.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, StreamFormatSelected);
+                devices?.OnRecordingDataAvailable(dataToSendIn, formatIn, reduceLagThreshold, StreamFormatSelected);
             }
         }
 
-        public void OnSetHooks(bool setHooks)
+        /// <summary>
+        /// Callback for Devices, a new device is added.
+        /// </summary>
+        /// <param name="deviceIn">the new device</param>
+        public void OnAddDevice(IDevice deviceIn)
         {
-            if (setHooks)
-                SetWindowsHook.Start(devices);
-            else
-                SetWindowsHook.Stop();
-        }
+            if (deviceIn == null)
+                return;
 
-        public void OnAddDevice(IDevice device)
-        {
             var menuItem = new MenuItem
             {
-                Text = device.GetFriendlyName()
+                Text = deviceIn.GetFriendlyName()
             };
-            notifyIcon.ContextMenu.MenuItems.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
-            device.SetMenuItem(menuItem);
-
-            mainForm.AddDevice(device);
-            device.OnGetStatus();
+            menuItem.Click += deviceIn.OnClickPlayPause;
+            notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
+            deviceIn.SetMenuItem(menuItem);
+            mainForm.AddDevice(deviceIn);
         }
 
-        private void AddNotifyIcon()
-        {
-            var contextMenu = new ContextMenu();
-            var menuItem = new MenuItem
-            {
-                Index = 0,
-                Text = Properties.Strings.TrayIcon_Close
-            };
-            menuItem.Click += new EventHandler(CloseApplication);
-            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
-
-            notifyIcon = new NotifyIcon();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            notifyIcon.Icon = ((Icon)(resources.GetObject("$this.Icon")));
-            notifyIcon.Visible = true;
-            notifyIcon.Text = Properties.Strings.MainForm_Text;
-            notifyIcon.ContextMenu = contextMenu;
-            notifyIcon.Click += ToggleFormVisibility;
-        }
-
-        public string GetStreamingUrl()
-        {
-            mainForm.GetStreamFormat();
-            return streamingUrl;
-        }
-
-        public void SetLagThreshold(int lagThreshold)
-        {
-            reduceLagThreshold = lagThreshold;
-        }
-
-        public void SetConfiguration(bool showLog, bool showLagControl, int lagValue, string ipAddressesDevices)
-        {
-            if (!string.IsNullOrWhiteSpace(ipAddressesDevices))
-            {
-                var ipDevices = ipAddressesDevices.Split(';');
-                foreach (var ipDevice in ipDevices)
-                {
-                    var arrDevice = ipDevice.Split(',');
-                    devices.OnDeviceAvailable(
-                            new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{arrDevice[0]}") },
-                            new SsdpRootDevice { FriendlyName = arrDevice[1] }
-                        );
-                }
-            }
-        }
-
-        public void CloseApplication()
-        {
-            SaveSettings();
-            SetWindowsHook.Stop();
-            loopbackRecorder.StopRecording();
-            devices.Dispose();
-            streamingRequestListener.StopListening();
-            notifyIcon.Visible = false;
-            mainForm.Dispose();
-        }
-
-        private void CloseApplication(object sender, EventArgs e)
-        {
-            CloseApplication();
-        }
-
+        /// <summary>
+        /// Set the dependencies.
+        /// </summary>
+        /// <param name="mainFormIn">the form</param>
         public void SetDependencies(MainForm mainFormIn)
         {
             mainForm = mainFormIn;
         }
 
+        /// <summary>
+        /// The user changed the recording device in the user interface.
+        /// </summary>
         public void RecordingDeviceChanged()
         {
+            if (loopbackRecorder == null)
+                return;
+
             loopbackRecorder.StartRecordingDevice();
         }
 
-        public void OnSetAutoRestart(bool autoRestart)
+        /// <summary>
+        /// The user changed the checkbox to automatically restart devices when closed.
+        /// </summary>
+        public void OnSetAutoRestart(bool autoRestartIn)
         {
-            AutoRestart = autoRestart;
+            AutoRestart = autoRestartIn;
         }
 
+        /// <summary>
+        /// Automaticaly restart devices y/n.
+        /// </summary>
         public bool GetAutoRestart()
         {
             if (playingOnIpOrFormatChange)
@@ -216,27 +174,80 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
-        public async void ChangeIPAddressUsed(IPAddress ipAddress)
+        /// <summary>
+        /// The user changed the ip address in the user interface.
+        /// Restart streaming using the new ip address.
+        /// </summary>
+        /// <param name="ipAddressIn">the selected ip address</param>
+        public async void ChangeIPAddressUsed(IPAddress ipAddressIn)
         {
+            if (devices == null || streamingRequestListener == null)
+                return;
+
             playingOnIpOrFormatChange = devices.Stop();
             streamingRequestListener.StopListening();
-            await Task.Run(() => { streamingRequestListener.StartListening(ipAddress, OnStreamingRequestsListen, OnStreamingRequestConnect); });
+            await Task.Run(() => { streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect); });
             if (playingOnIpOrFormatChange)
             {
                 await Task.Delay(2500);
-                devices.Start();
+                devices.Load();
                 await Task.Delay(15000);
                 playingOnIpOrFormatChange = false;
             }
         }
 
+        /// <summary>
+        /// The user changed the stream format in the user interface.
+        /// Restart streaming in the new format.
+        /// </summary>
+        /// <param name="formatIn">the chosen format</param>
+        public void SetStreamFormat(SupportedStreamFormat formatIn)
+        {
+            if (devices == null)
+                return;
+
+            if (formatIn != StreamFormatSelected)
+            {
+                StreamFormatSelected = formatIn;
+                Mp3Stream = null;
+
+                playingOnIpOrFormatChange = devices.Stop();
+                if (playingOnIpOrFormatChange)
+                {
+                    devices.Load();
+                    playingOnIpOrFormatChange = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The user changed the language in the user interface.
+        /// </summary>
+        /// <param name="cultureIn">the chosen culture</param>
+        public void SetCulture(string cultureIn)
+        {
+            Culture = cultureIn;
+        }
+
+        /// <summary>
+        /// Search for new devices in the network.
+        /// </summary>
         public void ScanForDevices()
         {
+            if (devices == null || discoverDevices == null)
+                return;
+
             discoverDevices.Discover(devices.OnDeviceAvailable);
         }
 
+        /// <summary>
+        /// Load and apply the settings.
+        /// </summary>
         private async void LoadSettings()
         {
+            if (settings == null || devices == null || mainForm == null)
+                return;
+
             if (!settings.Upgraded ?? true)
             {
                 settings.Upgrade();
@@ -247,28 +258,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
-            OnSetHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
-            if (settings.ChromecastHosts != null)
+            if (settings.ChromecastDiscoveredDevices != null)
             {
-                for (int i = 0; i < settings.ChromecastHosts.Count; i++)
+                for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
                     try
                     {
                         // Check if the device is on.
                         var http = new HttpClient();
-                        var response = await http.GetAsync($"http://{settings.ChromecastHosts[i].Ip}:8008/setup/eureka_info?options=detail");
-                        if (response.StatusCode == HttpStatusCode.OK)
+                        var response = await http.GetAsync($"http://{settings.ChromecastDiscoveredDevices[i].IPAddress}:8008/setup/eureka_info?options=detail");
+                        if (response?.StatusCode == HttpStatusCode.OK)
                         {
-                            devices.OnDeviceAvailable(
-                                    new DiscoveredSsdpDevice { DescriptionLocation = new Uri($"http://{settings.ChromecastHosts[i].Ip}") },
-                                    new SsdpRootDevice { FriendlyName = settings.ChromecastHosts[i].Name }
-                                );
+                            devices.OnDeviceAvailable(settings.ChromecastDiscoveredDevices[i]);
                         }
                     }
                     catch (Exception)
@@ -278,19 +285,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Save the settings.
+        /// </summary>
         private void SaveSettings()
         {
-            var hosts = settings.ChromecastHosts;
-            if (hosts == null)
-                hosts = new List<UserSettingHost>();
+            if (settings == null || devices == null || mainForm == null)
+                return;
+
+            var discoveredDevices = settings.ChromecastDiscoveredDevices;
+            if (discoveredDevices == null)
+                discoveredDevices = new List<DiscoveredDevice>();
             foreach (var host in devices.GetHosts())
             {
-                if (!hosts.Any(x => x.Ip == host.Ip))
+                if (!discoveredDevices.Any(x => x.IPAddress == host.IPAddress && x.Port == host.Port))
                 {
-                    hosts.Add(host);
+                    discoveredDevices.Add(host);
                 }
             }
-            settings.ChromecastHosts = hosts;
+            settings.ChromecastDiscoveredDevices = discoveredDevices;
             settings.UseKeyboardShortCuts = mainForm.GetUseKeyboardShortCuts();
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
@@ -304,9 +317,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Save();
         }
 
+        /// <summary>
+        /// Reset to the deafult setting.
+        /// </summary>
         public void ResetSettings()
         {
-            settings.ChromecastHosts = new List<UserSettingHost>();
+            if (devices == null || mainForm == null)
+                return;
+
+            if (settings == null)
+                settings = new UserSettings();
+
+            settings.ChromecastDiscoveredDevices = new List<DiscoveredDevice>();
             settings.UseKeyboardShortCuts = false;
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;
@@ -329,27 +351,112 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Save();
         }
 
-        public async void SetStreamFormat(SupportedStreamFormat format)
+        /// <summary>
+        /// Get the streaming url.
+        /// </summary>
+        /// <returns>the url that can be used to open a stream</returns>
+        public string GetStreamingUrl()
         {
-            if (format != StreamFormatSelected)
-            {
-                StreamFormatSelected = format;
-                Mp3Stream = null;
+            if (mainForm == null || streamingRequestListener == null)
+                return null;
 
-                playingOnIpOrFormatChange = devices.Stop();
-                if (playingOnIpOrFormatChange)
+            mainForm.GetStreamFormat();
+            return streamingRequestListener.GetStreamimgUrl();
+        }
+
+        /// <summary>
+        /// Close the application.
+        /// </summary>
+        public void CloseApplication()
+        {
+            SaveSettings();
+            SetWindowsHook.Stop();
+            loopbackRecorder?.StopRecording();
+            devices?.Dispose();
+            streamingRequestListener?.StopListening();
+            if (notifyIcon != null) notifyIcon.Visible = false;
+            if (mainForm != null) mainForm.Dispose();
+        }
+
+        public void SetLagThreshold(int lagThresholdIn)
+        {
+            reduceLagThreshold = lagThresholdIn;
+        }
+
+        
+        #region private helpers
+
+        /// <summary>
+        /// Add an icon to the systray, with a context menu for the devices.
+        /// </summary>
+        private void AddNotifyIcon()
+        {
+            try
+            {
+                var contextMenu = new ContextMenu();
+                var menuItem = new MenuItem
                 {
-                    await Task.Delay(2500);
-                    devices.Start();
-                    await Task.Delay(15000);
-                    playingOnIpOrFormatChange = false;
-                }
+                    Index = 0,
+                    Text = Properties.Strings.TrayIcon_Close
+                };
+                menuItem.Click += new EventHandler(CloseApplication);
+                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
+
+                notifyIcon = new NotifyIcon();
+                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+                notifyIcon.Icon = (Icon)resources.GetObject("$this.Icon");
+                notifyIcon.Visible = true;
+                notifyIcon.Text = Properties.Strings.MainForm_Text;
+                notifyIcon.ContextMenu = contextMenu;
+                notifyIcon.Click += mainForm.ToggleFormVisibility;
+            }
+            catch (Exception ex)
+            {
+                logger.Log($"AddNotifyIcon: {ex.Message}");
             }
         }
 
-        public void SetCulture(string culture)
+        /// <summary>
+        /// Apply the settings in the configuration file.
+        /// </summary>
+        /// <param name="ipAddressesDevicesIn">
+        /// ip addresses & device names
+        /// format: 192.168.0.1,DeviceName1;192.168.0.2,DeviceName2
+        /// </param>
+        private void ApplyConfiguration(string ipAddressesDevicesIn)
         {
-            Culture = culture;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(ipAddressesDevicesIn))
+                {
+                    var ipDevices = ipAddressesDevicesIn.Split(';');
+                    foreach (var ipDevice in ipDevices)
+                    {
+                        var arrDevice = ipDevice.Split(',');
+                        devices.OnDeviceAvailable(
+                            new DiscoveredDevice
+                            {
+                                IPAddress = arrDevice[0],
+                                Name = arrDevice[1],
+                                Port = 8009 // Port = 8009, adding device groups via the config is not possible.
+                            });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Log($"ApplyConfiguration: {ex.Message}");
+            }
         }
+
+        /// <summary>
+        /// Callback for the systray icon to close the application.
+        /// </summary>
+        private void CloseApplication(object sender, EventArgs e)
+        {
+            CloseApplication();
+        }
+
+        #endregion
     }
 }

@@ -4,6 +4,8 @@ using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
@@ -15,7 +17,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<string> getHost;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
-        public Action OnClosed { get; private set; }
         private ILogger logger;
         private IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
@@ -23,6 +24,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private SslStream sslStream;
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
+        private ushort Port = 8009;
+        private IAsyncResult currentAynchResult;
+        private byte[] sendBuffer;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -33,28 +37,96 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void Connect()
         {
-            if (tcpClient == null || !tcpClient.Connected)
+            Close();
+
+            try
             {
-                var host = getHost?.Invoke();
-                try
+                if (!(tcpClient != null &&
+                    tcpClient.Client != null &&
+                    tcpClient.Connected))
                 {
-                    state = DeviceConnectionState.Connecting;
+                    var host = getHost();
 
                     tcpClient = new TcpClient();
                     tcpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                    tcpClient.Connect(host, 8009);
-
-                    sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
-                    sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
-                    StartReceive();
-
-                    state = DeviceConnectionState.Connected;
+                    currentAynchResult = tcpClient.BeginConnect(host, Port, new AsyncCallback(ConnectCallback), tcpClient);
+                    WaitHandle wh = currentAynchResult.AsyncWaitHandle;
+                    try
+                    {
+                        if (!currentAynchResult.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
+                        {
+                            Dispose();
+                            throw new TimeoutException();
+                        }
+                    }
+                    finally
+                    {
+                        wh.Close();
+                    }
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                try
                 {
                     state = DeviceConnectionState.Error;
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
-                    logger.Log($"ex [{host}]: {ex.Message}");
+                    var host = getHost?.Invoke();
+                    logger.Log($"ex [{host}]: Connect {ex.Message}");
+                    Dispose();
+                }
+                catch (Exception innerEx)
+                {
+                    Console.WriteLine($"Connect:{innerEx.Message}");
+                }
+            }
+        }
+
+        private void Close()
+        {
+            try
+            {
+                if (tcpClient != null && 
+                    (tcpClient.Client != null || tcpClient.Connected) &&
+                    state != DeviceConnectionState.Connecting)
+                {
+                    Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Connect:{ex.Message}");
+            }
+        }
+
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                if (ar == currentAynchResult)
+                {
+                    tcpClient.EndConnect(ar);
+                    sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
+                    var host = getHost?.Invoke();
+                    sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
+                    StartReceive();
+                    DoSendMessage();
+                    state = DeviceConnectionState.Connected;
+                }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    state = DeviceConnectionState.Error;
+                    setDeviceState?.Invoke(DeviceState.ConnectError, null);
+                    var host = getHost?.Invoke();
+                    logger.Log($"ex [{host}]: ConnectCallback {ex.Message}");
+                    Dispose();
+                }
+                catch (Exception innerEx)
+                {
+                    Console.WriteLine($"ConnectCallback:{innerEx.Message}");
                 }
             }
         }
@@ -66,23 +138,47 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void SendMessage(byte[] send)
         {
-            Connect();
+            Task.Run(() => {
+                sendBuffer = send;
+                if (tcpClient != null &&
+                    tcpClient.Client != null &&
+                    tcpClient.Connected &&
+                    state == DeviceConnectionState.Connected)
+                {
+                    DoSendMessage();
+                }
+                else
+                {
+                    if (state != DeviceConnectionState.Connecting)
+                    {
+                        state = DeviceConnectionState.Connecting;
+                        Connect();
+                    }
+                }
+            });
+        }
 
-            if (tcpClient != null && tcpClient.Client != null && tcpClient.Connected)
+        private void DoSendMessage()
+        {
+            if (tcpClient != null &&
+                tcpClient.Client != null &&
+                tcpClient.Connected &&
+                state == DeviceConnectionState.Connected &&
+                sendBuffer != null)
             {
                 try
                 {
-                    sslStream.Write(send);
+                    sslStream.Write(sendBuffer);
                     sslStream.Flush();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Console.WriteLine($"DoSendMessage: {ex.Message}");
                 }
-            }
-            else
-            {
-                state = DeviceConnectionState.Disconnected;
-                OnClosed();
+                finally
+                {
+                    sendBuffer = null;
+                }
             }
         }
 
@@ -90,15 +186,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             try
             {
-                if (sslStream != null)
-                {
-                    receiveBuffer = new byte[bufferSize];
-                    sslStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, DataReceived, sslStream);
-                }
+                receiveBuffer = new byte[bufferSize];
+                sslStream.BeginRead(receiveBuffer, 0, receiveBuffer.Length, DataReceived, sslStream);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"StartReceive: {ex.Message}");
                 Dispose();
             }
         }
@@ -130,11 +223,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void Dispose()
         {
-            tcpClient?.Close();
-            sslStream?.Close();
-            sslStream?.Dispose();
-            tcpClient = null;
-            sslStream = null;
+            try
+            {
+                tcpClient?.Close();
+                sslStream?.Close();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Dispose:{ex.Message}");
+            }
         }
 
         public bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
@@ -142,12 +239,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return true;
         }
 
-        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn, Action onClosedIn)
+        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
         {
             getHost = getHostIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
-            OnClosed = onClosedIn;
+        }
+
+        public void SetPort(ushort portIn)
+        {
+            Port = portIn;
+        }
+
+        public ushort GetPort()
+        {
+            return Port;
         }
     }
 }

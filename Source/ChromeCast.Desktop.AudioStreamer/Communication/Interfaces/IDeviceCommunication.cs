@@ -6,22 +6,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
 {
     public interface IDeviceCommunication
     {
-        void ConnectAndGetReceiverStatus();
+        void Connect(string sourceId = null, string destinationId = null);
+        void Launch();
+        void LaunchAndLoadMedia();
         void LoadMedia();
         void PauseMedia();
-        void GetMediaStatus();
-        void GetReceiverStatus();
+        void Pong();
+        void GetStatus();
+        void OnReceiveMessage(CastMessage castMessage);
+        void VolumeSet(Volume volumeSetting);
+        void VolumeMute(bool muted);
+        void SetCallback(Action<DeviceState, string> setDeviceState, 
+            Action<Volume> onVolumeUpdate, 
+            Action<byte[]> sendMessage, 
+            Func<DeviceState> getDeviceState, 
+            Func<bool> isConnected, 
+            Func<bool> isDeviceConnected, 
+            Func<string> getHost, 
+            Func<ushort> getPort,
+            Action sendSilence);
+        void Stop();
         void OnPlayPause_Click();
-        void VolumeSet(float level);
-        void VolumeUp();
-        void VolumeDown();
-        void VolumeMute();
-        void SetCallback(Action<DeviceState, string> setDeviceState, Action<Volume> onVolumeUpdate,  
-            Func<string> getHost);
-        bool Stop();
-        void Close();
-        void Dispose();
-        DeviceState GetDeviceState();
         void OnStop_Click();
     }
 }

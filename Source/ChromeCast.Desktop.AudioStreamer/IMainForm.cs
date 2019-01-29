@@ -9,7 +9,7 @@ namespace ChromeCast.Desktop.AudioStreamer
     public interface IMainForm
     {
         void Log(string message);
-        void ToggleVisibility();
+        void ToggleFormVisibility(object sender, EventArgs e);
         void SetKeyboardHooks(bool useShortCuts);
         void ShowLagControl(bool showLag);
         void SetLagValue(int lagValue);

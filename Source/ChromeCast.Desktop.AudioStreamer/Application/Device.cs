@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Windows.Forms;
-using Rssdp;
 using NAudio.Wave;
 using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
@@ -11,127 +10,284 @@ using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
+using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using ChromeCast.Desktop.AudioStreamer.Discover;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using Newtonsoft.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
+    /// <summary>
+    /// Device represents a Chromecast device, or a Chromecast group.
+    /// </summary>
     public class Device : IDevice
     {
         private IDeviceCommunication deviceCommunication;
         private IStreamingConnection streamingConnection;
-        private DiscoveredSsdpDevice discoveredSsdpDevice;
-        private SsdpDevice ssdpDevice;
+        private IDeviceConnection deviceConnection;
+        private DiscoveredDevice discoveredDevice;
+        private DeviceState deviceState;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
-        private bool wasPlayingBeforeStopped;
+        private Volume volumeSetting;
+        private DateTime lastVolumeChange;
+        private ILogger logger;
+        private DateTime lastGetStatus;
+        delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
-        public Device(IDeviceCommunication deviceCommunicationIn)
+        public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
         {
+            logger = loggerIn;
+            deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
-            deviceCommunication.SetCallback(SetDeviceState, OnVolumeUpdate, GetHost);
+            deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
+            deviceState = DeviceState.NotConnected;
+            discoveredDevice = new DiscoveredDevice();
         }
 
-        public void SetDiscoveredDevices(DiscoveredSsdpDevice discoveredSsdpDeviceIn, SsdpDevice ssdpDeviceIn)
+        /// <summary>
+        /// Initialize a device.
+        /// </summary>
+        /// <param name="discoveredDeviceIn">the discovered device</param>
+        public void Initialize(DiscoveredDevice discoveredDeviceIn)
         {
-            discoveredSsdpDevice = discoveredSsdpDeviceIn;
-            ssdpDevice = ssdpDeviceIn;
+            if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
+                return;
+
+            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
+            if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
+            if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
+            if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
+            if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
+            if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
+            deviceCommunication.SetCallback(SetDeviceState,
+                OnVolumeUpdate,
+                deviceConnection.SendMessage,
+                GetDeviceState,
+                IsConnected,
+                deviceConnection.IsConnected,
+                GetHost,
+                GetPort,
+                SendSilence);
+            deviceConnection.SetPort(discoveredDevice.Port);
+            OnGetStatus();
+            volumeSetting = new Volume
+            {
+                controlType = "attenuation",
+                level = 0.0f,
+                muted = false,
+                stepInterval = 0.05f
+            };
         }
 
+        /// <summary>
+        /// Play/Pause button is clicked.
+        /// </summary>
         public void OnClickPlayPause()
         {
+            if (deviceCommunication == null)
+                return;
+
             deviceCommunication.OnPlayPause_Click();
         }
 
+        public void OnClickPlayPause(object sender, EventArgs e)
+        {
+            OnClickPlayPause();
+        }
+
+        /// <summary>
+        /// Stop button is clicked.
+        /// </summary>
         private void OnClickStop()
         {
+            if (deviceCommunication == null)
+                return;
+
             deviceCommunication.OnStop_Click();
         }
 
-        public void Start()
+        /// <summary>
+        /// Load the stream on the device.
+        /// </summary>
+        public void Load()
         {
-            if (wasPlayingBeforeStopped)
-                deviceCommunication.LoadMedia();
+            if (deviceCommunication == null)
+                return;
 
-            wasPlayingBeforeStopped = false;
+            deviceCommunication.LoadMedia();
         }
 
+        /// <summary>
+        /// Stream the recorded data to the device.
+        /// </summary>
+        /// <param name="dataToSend">tha audio data</param>
+        /// <param name="format">the wav format</param>
+        /// <param name="reduceLagThreshold">lag value</param>
+        /// <param name="streamFormat">the stream format</param>
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
-            if (streamingConnection != null)
-            {
-                if (streamingConnection.IsConnected())
-                {
-                    var state = deviceCommunication.GetDeviceState();
-                    if (state != DeviceState.Closed && state != DeviceState.Connected)
-                    {
-                        streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
+            if (streamingConnection == null || dataToSend == null || dataToSend.Length == 0)
+                return;
 
-                        // After a close message the stream continues sometimes. Keep the device control green then.
-                        if (state != DeviceState.Buffering &&
-                            state != DeviceState.Playing &&
-                            state != DeviceState.Paused &&
-                            state != DeviceState.Idle &&
-                            state != DeviceState.LaunchedApplication &&
-                            state != DeviceState.LaunchingApplication)
-                            SetDeviceState(DeviceState.Playing, "");
+            if (streamingConnection.IsConnected())
+            {
+                if (deviceState != DeviceState.NotConnected &&
+                    deviceState != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
+                {
+                    streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
+                }
+            }
+            else
+            {
+                Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
+                streamingConnection = null;
+            }
+        }
+
+        /// <summary>
+        /// Get the device status.
+        /// </summary>
+        public void OnGetStatus()
+        {
+            if (deviceCommunication == null)
+                return;
+
+            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 2)
+            {
+                deviceCommunication.GetStatus();
+                lastGetStatus = DateTime.Now;
+            }
+        }
+
+        /// <summary>
+        /// Set the device status.
+        /// </summary>
+        /// <param name="state">the state</param>
+        /// <param name="statusText">status text</param>
+        public void SetDeviceState(DeviceState state, string statusText = null)
+        {
+            if (deviceControl == null || deviceControl.IsDisposed)
+                return;
+
+            if (deviceControl.InvokeRequired)
+            {
+                if (!deviceControl.IsDisposed)
+                {
+                    try
+                    {
+                        SetDeviceStateCallback callback = new SetDeviceStateCallback(SetDeviceState);
+                        deviceControl?.Invoke(callback, new object[] { state, statusText });
                     }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"SetDeviceState: {ex.Message}");
+                    }
+                }
+            }
+            else
+            {
+                if (state == DeviceState.ConnectError && IsGroup())
+                {
+                    deviceState = DeviceState.Disposed;
+                    deviceControl?.Dispose();
+                    menuItem?.Dispose();
                 }
                 else
                 {
-                    Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
-                    streamingConnection = null;
+                    deviceState = state;
+                    deviceControl?.SetStatus(state, statusText);
+                    if (deviceControl != null) deviceControl.Visible = true;
                 }
             }
         }
 
-        public void OnGetStatus()
-        {
-            deviceCommunication.GetMediaStatus();
-        }
-
-        private void SetDeviceState(DeviceState state, string text = null)
-        {
-            deviceControl?.SetStatus(state, text);
-
-            if (state == DeviceState.Buffering || state == DeviceState.Playing)
-                menuItem.Checked = true;
-            else
-                menuItem.Checked = false;
-        }
-
-        private void OnVolumeUpdate(Volume volume)
-        {
-            deviceControl?.OnVolumeUpdate(volume);
-        }
-
+        /// <summary>
+        /// Set the volume on the device
+        /// </summary>
+        /// <param name="level"></param>
         public void VolumeSet(float level)
         {
-            deviceCommunication.VolumeSet(level);
+            if (deviceCommunication == null || volumeSetting == null)
+                return;
+
+            if (DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
+                return;
+
+            lastVolumeChange = DateTime.Now;
+
+            if (volumeSetting.level > level)
+                while (volumeSetting.level > level) volumeSetting.level -= volumeSetting.stepInterval;
+            if (volumeSetting.level < level)
+                while (volumeSetting.level < level) volumeSetting.level += volumeSetting.stepInterval;
+            if (level > 1) level = 1;
+            if (level < 0) level = 0;
+
+            volumeSetting.level = level;
+            deviceCommunication.VolumeSet(volumeSetting);
         }
 
+        /// <summary>
+        /// Volume up.
+        /// </summary>
         public void VolumeUp()
         {
-            deviceCommunication.VolumeUp();
+            if (volumeSetting == null)
+                return;
+
+            VolumeSet(volumeSetting.level + 0.05f);
         }
 
+        /// <summary>
+        /// Volume down.
+        /// </summary>
         public void VolumeDown()
         {
-            deviceCommunication.VolumeDown();
+            if (volumeSetting == null)
+                return;
+
+            VolumeSet(volumeSetting.level - 0.05f);
         }
 
+        /// <summary>
+        /// Volume mute.
+        /// </summary>
         public void VolumeMute()
         {
-            deviceCommunication.VolumeMute();
+            if (deviceCommunication == null || volumeSetting == null)
+                return;
+
+            deviceCommunication.VolumeMute(!volumeSetting.muted);
         }
 
-        public bool Stop()
+        /// <summary>
+        /// Stop playing on the device.
+        /// </summary>
+        public void Stop()
         {
-            wasPlayingBeforeStopped = deviceCommunication.Stop();
-            return wasPlayingBeforeStopped;
+            if (deviceCommunication == null)
+                return;
+
+            deviceCommunication.Stop();
+            SetDeviceState(DeviceState.Closed);
         }
 
+        /// <summary>
+        /// Add the streaming connection if it's for this device.
+        /// </summary>
+        /// <param name="remoteAddress">remote IP address of the streaming connection</param>
+        /// <param name="socket">socket of the streaming connection</param>
+        /// <returns></returns>
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
         {
-            if (discoveredSsdpDevice.DescriptionLocation.Host.Equals(remoteAddress))
+            if (discoveredDevice == null)
+                return false;
+
+            //TODO: Is this right for device groups?
+            if ((deviceState == DeviceState.LoadingMedia || 
+                deviceState == DeviceState.Buffering || 
+                deviceState == DeviceState.Idle) &&
+                discoveredDevice.IPAddress == remoteAddress)
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
                 streamingConnection.SetSocket(socket);
@@ -142,62 +298,180 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return false;
         }
 
+        /// <summary>
+        /// Get the Usn of the device.
+        /// </summary>
         public string GetUsn()
         {
-            if (discoveredSsdpDevice != null)
-                return discoveredSsdpDevice.Usn;
+            if (discoveredDevice == null)
+                return string.Empty;
 
-            return string.Empty;
+            return discoveredDevice.Usn;
         }
 
+        /// <summary>
+        /// Get the host of the device.
+        /// </summary>
         public string GetHost()
         {
-            if (discoveredSsdpDevice != null)
-                return discoveredSsdpDevice.DescriptionLocation.Host;
+            if (discoveredDevice == null)
+                return string.Empty;
 
-            return string.Empty;
+            return discoveredDevice.IPAddress;
         }
 
+        /// <summary>
+        /// Get the friendly name of the device.
+        /// </summary>
+        /// <returns></returns>
         public string GetFriendlyName()
         {
-            if (ssdpDevice != null)
-                return ssdpDevice.FriendlyName;
+            if (discoveredDevice == null)
+                return string.Empty;
 
-            return string.Empty;
+            return discoveredDevice.Name;
         }
 
+        /// <summary>
+        /// Set the friendly name of the device.
+        /// </summary>
         public void SetDeviceName(string name)
         {
-            deviceControl?.SetDeviceName(name);
+            if (deviceControl == null || menuItem == null)
+                return;
+
+            deviceControl.SetDeviceName(name);
             menuItem.Text = name;
         }
 
-        public void SetDeviceControl(DeviceControl deviceControlIn)
+        /// <summary>
+        /// Returns the device state.
+        /// </summary>
+        public DeviceState GetDeviceState()
         {
-            deviceControl = deviceControlIn;
-            deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
+            return deviceState;
         }
 
+        /// <summary>
+        /// Returns the user interface control of the device.
+        /// </summary>
+        public DeviceControl GetDeviceControl()
+        {
+            return deviceControl;
+        }
+
+        /// <summary>
+        /// Set the user interface control of the device.
+        /// </summary>
+        public void SetDeviceControl(DeviceControl deviceControlIn)
+        {
+            if (deviceControlIn == null)
+                return;
+
+            deviceControl = deviceControlIn;
+            deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
+            deviceControl.Visible = !IsGroup();
+        }
+
+        /// <summary>
+        /// Set the menu item in the systray.
+        /// </summary>
         public void SetMenuItem(MenuItem menuItemIn)
         {
             menuItem = menuItemIn;
-            menuItem.Click += OnClickMenuItem;
         }
 
-        private void OnClickMenuItem(object sender, EventArgs e)
+        /// <summary>
+        /// Return the menuitem in the systray.
+        /// </summary>
+        public MenuItem GetMenuItem()
         {
-            OnClickPlayPause();
+            return menuItem;
         }
 
+        /// <summary>
+        /// Returns the connection for the control messages.
+        /// </summary>
         public IDeviceConnection GetDeviceConnection()
         {
-            throw new NotImplementedException();
+            return deviceConnection;
         }
 
-        public void Dispose()
+        /// <summary>
+        /// A message from the device is received.
+        /// </summary>
+        public void OnReceiveMessage(CastMessage castMessage)
         {
-            Stop();
-            deviceCommunication.Close();
+            if (deviceCommunication == null)
+                return;
+
+            deviceCommunication.OnReceiveMessage(castMessage);
         }
+
+        /// <summary>
+        /// Get the port of the device.
+        /// </summary>
+        /// <returns>the port of the device, or 0</returns>
+        public ushort GetPort()
+        {
+            if (discoveredDevice == null)
+                return 0;
+
+            return discoveredDevice.Port;
+        }
+
+        /// <summary>
+        /// Return the discovered device.
+        /// </summary>
+        public DiscoveredDevice GetDiscoveredDevice()
+        {
+            return discoveredDevice;
+        }
+
+        #region private helpers
+
+        /// <summary>
+        /// Determine if this is a Chromecast group.
+        /// </summary>
+        /// <returns>true if it's a group, false if it's not a group</returns>
+        private bool IsGroup()
+        {
+            return discoveredDevice?.Headers?.IndexOf("\"md=Google Cast Group\"") >= 0;
+        }
+
+        /// <summary>
+        /// Determine if the device is in a connected state.
+        /// </summary>
+        /// <returns>true if it's connected, or false if not</returns>
+        private bool IsConnected()
+        {
+            return !(deviceState.Equals(DeviceState.NotConnected) ||
+                deviceState.Equals(DeviceState.ConnectError) ||
+                deviceState.Equals(DeviceState.Closed));
+        }
+
+        /// <summary>
+        /// A volume update from the device.
+        /// </summary>
+        /// <param name="volume">the volume on the device</param>
+        private void OnVolumeUpdate(Volume volume)
+        {
+            if (deviceControl == null)
+                return;
+
+            volumeSetting = volume;
+            deviceControl.OnVolumeUpdate(volume);
+        }
+
+        /// <summary>
+        /// Send silence to the device.
+        /// </summary>
+        public void SendSilence()
+        {
+            OnRecordingDataAvailable(Properties.Resources.silence,
+                new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
+        }
+
+        #endregion
     }
 }

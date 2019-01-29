@@ -10,11 +10,11 @@ Please read the [wiki](https://github.com/SamDel/ChromeCast-Desktop-Audio-Stream
 
 # Dependencies
 
-- [Really Simple Service Discovery Protocol](https://github.com/Yortw/RSSDP)
 - [NAudio](https://github.com/naudio/NAudio)
 - [NAudio.Lame](https://github.com/Corey-M/NAudio.Lame)
 - [CSCore](https://github.com/filoe/cscore)
 - [Protocol Buffers](https://github.com/google/protobuf)
+- [Tmds.MDns](https://github.com/tmds/Tmds.MDns)
 - [protobuf-csharp-port](https://github.com/jskeet/protobuf-csharp-port)
 - [Microsoft Visual Studio Installer Projects (Visual Studio 2017, 2019)](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2017InstallerProjects)
 - [Multilingual App Toolkit v4.0 (VS 2017)](https://marketplace.visualstudio.com/items?itemName=MultilingualAppToolkit.MultilingualAppToolkit-18308)

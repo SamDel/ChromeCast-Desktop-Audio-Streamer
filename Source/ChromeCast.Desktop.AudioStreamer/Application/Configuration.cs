@@ -6,20 +6,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class Configuration : IConfiguration
     {
-        public void Load(Action<bool, bool, int, string> configurationCallback)
+        /// <summary>
+        /// Load the configuration from app.config.
+        /// </summary>
+        /// <param name="configurationCallback">callback to process the configuration</param>
+        public void Load(Action<string> configurationCallback)
         {
             try
             {
-                string showLog = ConfigurationManager.AppSettings["ShowLog"];
-                string showLagControl = ConfigurationManager.AppSettings["ShowLagControl"];
-                string lagControlValue = ConfigurationManager.AppSettings["LagControlValue"];
-                string ipAddressesDevices = ConfigurationManager.AppSettings["IpAddressesDevices"];
-
-                bool.TryParse(showLog, out bool boolShowLog);
-                bool.TryParse(showLagControl, out bool showLag);
-                int.TryParse(lagControlValue, out int lagValue);
-
-                configurationCallback(boolShowLog, showLag, lagValue, ipAddressesDevices);
+                configurationCallback(ConfigurationManager.AppSettings["IpAddressesDevices"]);
             }
             catch (Exception)
             {
