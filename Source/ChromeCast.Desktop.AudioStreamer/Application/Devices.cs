@@ -21,8 +21,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
 
+        /// <summary>
+        /// A new device is discoverd. Add the device, or update if it already exists.
+        /// </summary>
+        /// <param name="discoveredDevice">the discovered device</param>
         public void OnDeviceAvailable(DiscoveredDevice discoveredDevice)
         {
+            if (deviceList == null || discoveredDevice == null)
+                return;
+
             var existingDevice = deviceList.FirstOrDefault(
                 d => d.GetHost().Equals(discoveredDevice.IPAddress)
                 && d.GetPort().Equals(discoveredDevice.Port));
@@ -49,6 +56,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Volume up for all devices.
+        /// </summary>
         public void VolumeUp()
         {
             foreach (var device in deviceList)
@@ -57,6 +67,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Volume down for all devices.
+        /// </summary>
         public void VolumeDown()
         {
             foreach (var device in deviceList)
@@ -65,6 +78,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Volume mute for all devices.
+        /// </summary>
         public void VolumeMute()
         {
             foreach (var device in deviceList)
@@ -73,17 +89,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
-        public bool Stop()
+        /// <summary>
+        /// Stop for all devices. 
+        /// </summary>
+        /// <returns>true if one of the devices was playing, or false</returns>
+        public void Stop()
         {
-            var playing = false;
             foreach (var device in deviceList)
             {
                 switch (device.GetDeviceState())
                 {
                     case DeviceState.Playing:
-                        playing = true;
-                        device.Stop();
-                        break;
                     case DeviceState.LoadingMedia:
                     case DeviceState.Buffering:
                     case DeviceState.Paused:
@@ -93,14 +109,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         break;
                 }
             }
-            return playing;
         }
 
-        public void Load()
+        /// <summary>
+        /// Start all devices.
+        /// </summary>
+        public void Start()
         {
             foreach (var device in deviceList)
             {
-                device.Load();
+                device.Start();
             }
         }
 

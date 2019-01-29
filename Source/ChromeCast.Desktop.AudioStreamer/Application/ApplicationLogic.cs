@@ -29,7 +29,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private NotifyIcon notifyIcon;
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
-        private bool playingOnIpOrFormatChange;
         private UserSettings settings = new UserSettings();
         private Mp3Stream Mp3Stream = null;
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Wav;
@@ -163,15 +162,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public bool GetAutoRestart()
         {
-            if (playingOnIpOrFormatChange)
-            {
-                playingOnIpOrFormatChange = false;
-                return true;
-            }
-            else
-            {
-                return AutoRestart;
-            }
+            return AutoRestart;
         }
 
         /// <summary>
@@ -184,16 +175,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (devices == null || streamingRequestListener == null)
                 return;
 
-            playingOnIpOrFormatChange = devices.Stop();
+            devices.Stop();
             streamingRequestListener.StopListening();
             await Task.Run(() => { streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect); });
-            if (playingOnIpOrFormatChange)
-            {
-                await Task.Delay(2500);
-                devices.Load();
-                await Task.Delay(15000);
-                playingOnIpOrFormatChange = false;
-            }
+            await Task.Delay(2500);
+            devices.Start();
         }
 
         /// <summary>
@@ -211,12 +197,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 StreamFormatSelected = formatIn;
                 Mp3Stream = null;
 
-                playingOnIpOrFormatChange = devices.Stop();
-                if (playingOnIpOrFormatChange)
-                {
-                    devices.Load();
-                    playingOnIpOrFormatChange = false;
-                }
+                devices.Stop();
+                devices.Start();
             }
         }
 

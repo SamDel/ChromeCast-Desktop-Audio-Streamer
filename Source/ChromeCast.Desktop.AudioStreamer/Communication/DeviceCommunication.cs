@@ -19,6 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<string> getHost;
         private Func<ushort> getPort;
         private Action sendSilence;
+        private Func<bool> wasPlayingWhenStopped;
         private Func<DeviceState> getDeviceState;
         private IApplicationLogic applicationLogic;
         private ILogger logger;
@@ -77,7 +78,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public void PlayMedia()
         {
-            setDeviceState?.Invoke(DeviceState.Playing, null);
             SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
@@ -129,7 +129,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         private void ConnectionConnect()
         {
-            var deviceState = getDeviceState();
             if (!Connected)
             {
                 SendMessage(chromeCastMessages.GetConnectMessage(null, null));
@@ -222,15 +221,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             Connected = false;
 
             // Restart
-            if (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing)
+            if (wasPlayingWhenStopped() ||
+                (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing))
             {
-                Task.Delay(5000).Wait();
-                PlayMedia();
+                Task.Run(() => {
+                    Task.Delay(5000).Wait();
+                    OnPlayPause_Click();
+                });
             }
             else
             {
-                Task.Delay(2000).Wait();
-                GetReceiverStatus();
+                Task.Run(() => {
+                    Task.Delay(2000).Wait();
+                    GetReceiverStatus();
+                });
             }
         }
 
@@ -317,7 +321,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             Func<bool> isDeviceConnectedIn, 
             Func<string> getHostIn, 
             Func<ushort> getPortIn,
-            Action sendSilenceIn)
+            Action sendSilenceIn,
+            Func<bool> wasPlayingWhenStoppedIn)
         {
             setDeviceState = setDeviceStateIn;
             onVolumeUpdate = onVolumeUpdateIn;
@@ -328,6 +333,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             getHost = getHostIn;
             getPort = getPortIn;
             sendSilence = sendSilenceIn;
+            wasPlayingWhenStopped = wasPlayingWhenStoppedIn;
         }
 
         public void OnPlayPause_Click()

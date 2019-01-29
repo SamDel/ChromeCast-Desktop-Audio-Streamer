@@ -33,6 +33,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DateTime lastVolumeChange;
         private ILogger logger;
         private DateTime lastGetStatus;
+        private bool devicePlayedWhenStopped;
+
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
         public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
@@ -68,7 +70,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 deviceConnection.IsConnected,
                 GetHost,
                 GetPort,
-                SendSilence);
+                SendSilence,
+                WasPlayingWhenStopped);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
             volumeSetting = new Volume
@@ -110,12 +113,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Load the stream on the device.
         /// </summary>
-        public void Load()
+        public void Start()
         {
             if (deviceCommunication == null)
                 return;
 
-            deviceCommunication.LoadMedia();
+            if (devicePlayedWhenStopped)
+                deviceCommunication.LoadMedia();
         }
 
         /// <summary>
@@ -267,6 +271,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             if (deviceCommunication == null)
                 return;
+
+            devicePlayedWhenStopped = deviceState == DeviceState.Playing;
 
             deviceCommunication.Stop();
             SetDeviceState(DeviceState.Closed);
@@ -470,6 +476,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             OnRecordingDataAvailable(Properties.Resources.silence,
                 new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
+        }
+
+        /// <summary>
+        /// Return if the device was playing when stopped. Used for auto restart.
+        /// </summary>
+        /// <returns></returns>
+        private bool WasPlayingWhenStopped()
+        {
+            var returnValue = devicePlayedWhenStopped;
+            devicePlayedWhenStopped = false;
+            return returnValue;
         }
 
         #endregion
