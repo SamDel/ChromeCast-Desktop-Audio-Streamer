@@ -68,7 +68,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             btnVolumeUp.Text = Properties.Strings.Button_Up_Text;
             btnVolumeDown.Text = Properties.Strings.Button_Down_Text;
             btnVolumeMute.Text = Properties.Strings.Button_Mute_Text;
-            btnSyncDevices.Text = Properties.Strings.Button_SyncDevices_Text;
             grpDevices.Text = Properties.Strings.Group_Devices_Text;
             btnScan.Text = Properties.Strings.Button_ScanAgain_Text;
             grpLag.Text = Properties.Strings.Group_Lag_Text;
@@ -286,16 +285,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             await Task.Delay(1000);
             Hide();
-        }
-
-        public bool DoSyncDevices()
-        {
-            return devices.Count() > 1;
-        }
-
-        private void BtnSyncDevices_Click(object sender, EventArgs e)
-        {
-            devices.Sync();
         }
 
         public void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice)

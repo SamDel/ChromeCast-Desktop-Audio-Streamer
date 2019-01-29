@@ -43,10 +43,10 @@
             this.btnVolumeUp = new System.Windows.Forms.Button();
             this.btnVolumeDown = new System.Windows.Forms.Button();
             this.btnVolumeMute = new System.Windows.Forms.Button();
-            this.btnSyncDevices = new System.Windows.Forms.Button();
             this.btnScan = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResetSettings = new System.Windows.Forms.Button();
@@ -73,7 +73,6 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -203,7 +202,6 @@
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeUp);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
-            this.pnlVolumeAllButtons.Controls.Add(this.btnSyncDevices);
             this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
             this.pnlVolumeAllButtons.Location = new System.Drawing.Point(11, 31);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
@@ -249,25 +247,11 @@
             this.btnVolumeMute.UseVisualStyleBackColor = true;
             this.btnVolumeMute.Click += new System.EventHandler(this.BtnVolumeMute_Click);
             // 
-            // btnSyncDevices
-            // 
-            this.btnSyncDevices.AutoSize = true;
-            this.btnSyncDevices.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSyncDevices.Location = new System.Drawing.Point(381, 3);
-            this.btnSyncDevices.MinimumSize = new System.Drawing.Size(120, 0);
-            this.btnSyncDevices.Name = "btnSyncDevices";
-            this.btnSyncDevices.Size = new System.Drawing.Size(120, 27);
-            this.btnSyncDevices.TabIndex = 16;
-            this.btnSyncDevices.Text = "Sync Devices";
-            this.btnSyncDevices.UseVisualStyleBackColor = true;
-            this.btnSyncDevices.Visible = false;
-            this.btnSyncDevices.Click += new System.EventHandler(this.BtnSyncDevices_Click);
-            // 
             // btnScan
             // 
             this.btnScan.AutoSize = true;
             this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScan.Location = new System.Drawing.Point(507, 3);
+            this.btnScan.Location = new System.Drawing.Point(381, 3);
             this.btnScan.Name = "btnScan";
             this.btnScan.Size = new System.Drawing.Size(162, 27);
             this.btnScan.TabIndex = 11;
@@ -304,6 +288,18 @@
             this.grpOptions.TabIndex = 14;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
+            // 
+            // lblNewReleaseAvailable
+            // 
+            this.lblNewReleaseAvailable.AutoSize = true;
+            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(12, 485);
+            this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
+            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(206, 17);
+            this.lblNewReleaseAvailable.TabIndex = 36;
+            this.lblNewReleaseAvailable.TabStop = true;
+            this.lblNewReleaseAvailable.Text = "Version x is available on Github";
+            this.lblNewReleaseAvailable.Visible = false;
+            this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
             // 
             // chkLogDeviceCommunication
             // 
@@ -577,18 +573,6 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
-            // lblNewReleaseAvailable
-            // 
-            this.lblNewReleaseAvailable.AutoSize = true;
-            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(12, 485);
-            this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
-            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(206, 17);
-            this.lblNewReleaseAvailable.TabIndex = 36;
-            this.lblNewReleaseAvailable.TabStop = true;
-            this.lblNewReleaseAvailable.Text = "Version x is available on Github";
-            this.lblNewReleaseAvailable.Visible = false;
-            this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -647,7 +631,6 @@
         private System.Windows.Forms.Label lblLagExperimental;
         private System.Windows.Forms.Button btnVolumeUp;
         private System.Windows.Forms.Button btnVolumeDown;
-        private System.Windows.Forms.Button btnSyncDevices;
         private System.Windows.Forms.Button btnClipboardCopy;
         private System.Windows.Forms.Button btnScan;
         private System.Windows.Forms.TabPage tabPageOptions;

@@ -7,11 +7,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         private Action<string> logCallback;
 
+        /// <summary>
+        /// Log a message.
+        /// </summary>
+        /// <param name="message">the message to log</param>
         public void Log(string message)
         {
             logCallback?.Invoke(message);
         }
 
+        /// <summary>
+        /// Set the callback that does the actual logging.
+        /// </summary>
         public void SetCallback(Action<string> logCallbackIn)
         {
             logCallback = logCallbackIn;

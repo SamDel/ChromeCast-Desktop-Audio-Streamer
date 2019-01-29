@@ -32,6 +32,5 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetCulture(string culture);
         void SetLogDeviceCommunication(bool logDeviceCommunication);
         bool GetLogDeviceCommunication();
-        bool DoSyncDevices();
     }
 }

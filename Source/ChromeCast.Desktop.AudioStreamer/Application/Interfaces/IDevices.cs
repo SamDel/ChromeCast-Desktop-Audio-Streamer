@@ -21,8 +21,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void Stop();
         void SetAutoStart(bool autoStart);
         void SetCallback(Action<Device> onAddDeviceCallbackIn);
-        int Count();
-        void Sync();
         void Dispose();
         void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn);
         List<DiscoveredDevice> GetHosts();

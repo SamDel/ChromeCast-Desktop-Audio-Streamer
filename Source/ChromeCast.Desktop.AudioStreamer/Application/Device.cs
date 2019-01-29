@@ -272,10 +272,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            devicePlayedWhenStopped = deviceState == DeviceState.Playing;
-
-            deviceCommunication.Stop();
-            SetDeviceState(DeviceState.Closed);
+            switch (deviceState)
+            {
+                case DeviceState.Playing:
+                case DeviceState.LoadingMedia:
+                case DeviceState.Buffering:
+                case DeviceState.Paused:
+                    devicePlayedWhenStopped = deviceState == DeviceState.Playing;
+                    deviceCommunication.Stop();
+                    SetDeviceState(DeviceState.Closed);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>

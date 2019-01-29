@@ -7,7 +7,6 @@ using NAudio.Wave;
 using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Classes;
-using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 
@@ -61,6 +60,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeUp()
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.VolumeUp();
@@ -72,6 +74,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeDown()
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.VolumeDown();
@@ -83,6 +88,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeMute()
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.VolumeMute();
@@ -95,19 +103,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if one of the devices was playing, or false</returns>
         public void Stop()
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
-                switch (device.GetDeviceState())
-                {
-                    case DeviceState.Playing:
-                    case DeviceState.LoadingMedia:
-                    case DeviceState.Buffering:
-                    case DeviceState.Paused:
-                        device.Stop();
-                        break;
-                    default:
-                        break;
-                }
+                device.Stop();
             }
         }
 
@@ -116,14 +117,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Start()
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.Start();
             }
         }
 
+        /// <summary>
+        /// A device has made a new streaming connection. Add the connection to the right device.
+        /// </summary>
+        /// <param name="socket">the socket</param>
+        /// <param name="httpRequest">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
         public void AddStreamingConnection(Socket socket, string httpRequest)
         {
+            if (deviceList == null || socket == null)
+                return;
+
             var remoteAddress = ((IPEndPoint)socket.RemoteEndPoint).Address.ToString();
             foreach (var device in deviceList)
             {
@@ -132,16 +144,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// New audio data is available.
+        /// </summary>
+        /// <param name="dataToSend">the data</param>
+        /// <param name="format">the wav format that's used</param>
+        /// <param name="reduceLagThreshold">value for the lag control</param>
+        /// <param name="streamFormat">the stream format</param>
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
+            if (deviceList == null || dataToSend == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
             }
         }
 
+        /// <summary>
+        /// Get the status of a device.
+        /// Also used to cleanup disposed devices (groups).
+        /// </summary>
         public void OnGetStatus()
         {
+            if (deviceList == null)
+                return;
+
+            // Cleanup disposed devices first.
             try
             {
                 for (int i = deviceList.Count - 1; i >= 0; i--)
@@ -161,13 +191,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Set the value to auto start a device right after it has been added.
+        /// </summary>
+        /// <param name="autoStartIn"></param>
         public void SetAutoStart(bool autoStartIn)
         {
             AutoStart = autoStartIn;
         }
 
+        /// <summary>
+        /// Dispose all devices.
+        /// </summary>
         public void Dispose()
         {
+            if (deviceList == null)
+                return;
+
             Stop();
             foreach (var device in deviceList)
             {
@@ -175,44 +215,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Set the callback for when a device is added.
+        /// </summary>
+        /// <param name="onAddDeviceCallbackIn"></param>
         public void SetCallback(Action<Device> onAddDeviceCallbackIn)
         {
             onAddDeviceCallback = onAddDeviceCallbackIn;
         }
 
-        public int Count()
-        {
-            return deviceList.Count();
-        }
-
-        public void Sync()
-        {
-            if (mainForm.DoSyncDevices())
-            {
-                mainForm.SetLagValue(2);
-                applicationLogic.SetLagThreshold(2);
-
-                var timerReset = new Timer { Interval = 3000, Enabled = true };
-                timerReset.Elapsed += new ElapsedEventHandler(ResetLagThreshold);
-                timerReset.Start();
-            }
-        }
-
-        private void ResetLagThreshold(object sender, ElapsedEventArgs e)
-        {
-            mainForm.SetLagValue(1000);
-            applicationLogic.SetLagThreshold(1000);
-            ((Timer)sender).Stop();
-        }
-
+        /// <summary>
+        /// Set the objects this class is depending on.
+        /// </summary>
+        /// <param name="mainFormIn">the main form</param>
+        /// <param name="applicationLogicIn">the application logic</param>
         public void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn)
         {
             mainForm = mainFormIn;
             applicationLogic = applicationLogicIn;
         }
 
+        /// <summary>
+        /// Return a list of all devices.
+        /// </summary>
         public List<DiscoveredDevice> GetHosts()
         {
+            if (deviceList == null)
+                return new List<DiscoveredDevice>();
+
             var hosts = new List<DiscoveredDevice>();
             foreach (var device in deviceList)
             {
