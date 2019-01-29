@@ -14,6 +14,7 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -34,6 +35,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private ILogger logger;
         private DateTime lastGetStatus;
         private bool devicePlayedWhenStopped;
+        private bool wasPlayingWhenConnectError;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -191,6 +193,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             else
             {
+                // Restart when recovering from a connection error.
+                if (state != DeviceState.ConnectError && wasPlayingWhenConnectError)
+                {
+                    wasPlayingWhenConnectError = false;
+                    if (state != DeviceState.Playing)
+                    {
+                        Task.Run(() => {
+                            OnClickPlayPause();
+                        });
+                    }
+                }
+                else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
+                {
+                    wasPlayingWhenConnectError = true;
+                }
+
                 if (state == DeviceState.ConnectError && IsGroup())
                 {
                     deviceState = DeviceState.Disposed;

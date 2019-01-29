@@ -286,7 +286,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             statusText = statusText?.Replace("Default Media Receiver", string.Empty);
             var state = getDeviceState();
             if (state == DeviceState.ConnectError)
-                state = DeviceState.NotConnected;
+                setDeviceState(DeviceState.NotConnected, null);
             setDeviceState(getDeviceState(), $" {statusText}");
 
             if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
