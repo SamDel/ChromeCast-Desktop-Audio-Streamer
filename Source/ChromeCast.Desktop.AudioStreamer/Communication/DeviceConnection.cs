@@ -40,7 +40,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void Connect()
         {
-            if (!(tcpClient != null && tcpClient.Client != null && tcpClient.Connected))
+            if (tcpClient != null && tcpClient.Client != null && tcpClient.Connected)
                 return;
 
             Close();
