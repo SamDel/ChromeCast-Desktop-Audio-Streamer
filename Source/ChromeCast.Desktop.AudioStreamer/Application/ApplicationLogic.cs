@@ -183,7 +183,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             });
             Task.Run(() =>
             {
-                Task.Delay(2500);
+                Task.Delay(2500).Wait();
                 devices.Start();
             });
         }
