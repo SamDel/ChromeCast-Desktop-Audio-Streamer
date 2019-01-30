@@ -170,7 +170,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Restart streaming using the new ip address.
         /// </summary>
         /// <param name="ipAddressIn">the selected ip address</param>
-        public async void ChangeIPAddressUsed(IPAddress ipAddressIn)
+        public void ChangeIPAddressUsed(IPAddress ipAddressIn)
         {
             if (devices == null || streamingRequestListener == null)
                 return;
@@ -178,9 +178,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger.Log($"Change IP4 address: {ipAddressIn.ToString()}");
             devices.Stop();
             streamingRequestListener.StopListening();
-            await Task.Run(() => { streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect); });
-            await Task.Delay(2500);
-            devices.Start();
+            Task.Run(() => {
+                streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect);
+            });
+            Task.Run(() =>
+            {
+                Task.Delay(2500);
+                devices.Start();
+            });
         }
 
         /// <summary>
