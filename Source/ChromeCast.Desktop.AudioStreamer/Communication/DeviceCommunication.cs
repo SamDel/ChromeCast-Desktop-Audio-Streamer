@@ -222,7 +222,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             // Restart
             if (wasPlayingWhenStopped() ||
-                (applicationLogic.GetAutoRestart() && previousState == DeviceState.Playing))
+                (applicationLogic.GetAutoRestart() && (previousState == DeviceState.Playing || previousState == DeviceState.ConnectError)))
             {
                 Task.Run(() => {
                     Task.Delay(5000).Wait();
