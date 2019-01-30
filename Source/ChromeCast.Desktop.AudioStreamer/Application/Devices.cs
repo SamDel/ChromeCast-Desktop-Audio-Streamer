@@ -44,7 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     onAddDeviceCallback?.Invoke(newDevice);
                     newDevice.OnGetStatus();
 
-                    if (AutoStart)
+                    if (AutoStart && !newDevice.IsGroup())
                         newDevice.OnClickPlayPause();
                 }
             }

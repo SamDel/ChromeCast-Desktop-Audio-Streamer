@@ -467,7 +467,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Determine if this is a Chromecast group.
         /// </summary>
         /// <returns>true if it's a group, false if it's not a group</returns>
-        private bool IsGroup()
+        public bool IsGroup()
         {
             return discoveredDevice?.Headers?.IndexOf("\"md=Google Cast Group\"") >= 0;
         }
