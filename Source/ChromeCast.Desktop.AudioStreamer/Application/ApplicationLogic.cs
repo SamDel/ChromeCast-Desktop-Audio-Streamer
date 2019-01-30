@@ -175,6 +175,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (devices == null || streamingRequestListener == null)
                 return;
 
+            logger.Log($"Change IP4 address: {ipAddressIn.ToString()}");
             devices.Stop();
             streamingRequestListener.StopListening();
             await Task.Run(() => { streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect); });
@@ -194,6 +195,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (formatIn != StreamFormatSelected)
             {
+                logger.Log($"Set stream format to {formatIn.ToString()}");
                 StreamFormatSelected = formatIn;
                 Mp3Stream = null;
 

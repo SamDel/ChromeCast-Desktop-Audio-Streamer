@@ -49,8 +49,10 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private static void UnhandledHandler(object sender, UnhandledExceptionEventArgs e)
         {
+#if DEBUG
             Exception exception = (Exception)e.ExceptionObject;
             MessageBox.Show(exception.Message);
+#endif
         }
     }
 }

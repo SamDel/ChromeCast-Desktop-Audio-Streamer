@@ -304,6 +304,8 @@
             // chkLogDeviceCommunication
             // 
             this.chkLogDeviceCommunication.AutoSize = true;
+            this.chkLogDeviceCommunication.Checked = true;
+            this.chkLogDeviceCommunication.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 292);
             this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
             this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
