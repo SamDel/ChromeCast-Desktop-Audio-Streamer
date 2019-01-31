@@ -124,7 +124,6 @@
     <Compile Include="Classes\Mp3Stream.cs" />
     <Compile Include="Classes\Network.cs" />
     <Compile Include="Classes\NetworkAdapter.cs" />
-    <Compile Include="Classes\UserSettingHost.cs" />
     <Compile Include="Classes\UserSettings.cs" />
     <Compile Include="Discover\DiscoverDevices.cs" />
     <Compile Include="Application\DeviceStatusTimer.cs" />

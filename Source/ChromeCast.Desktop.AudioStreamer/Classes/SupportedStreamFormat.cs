@@ -1,5 +1,8 @@
 ﻿namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
+    /// <summary>
+    /// Enumeration of supported stream formats.
+    /// </summary>
     public enum SupportedStreamFormat
     {
         Wav,

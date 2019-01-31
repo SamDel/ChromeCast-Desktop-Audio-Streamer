@@ -21,6 +21,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private static bool isPressedInM = false;
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
+        /// <summary>
+        /// Start using hte hook.
+        /// </summary>
+        /// <param name="devicesIn">devices object that's used to trigger the events</param>
         public static void Start(IDevices devicesIn)
         {
             devices = devicesIn;
@@ -34,6 +38,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+        /// <summary>
+        /// Stop using the hooks.
+        /// </summary>
         public static void Stop()
         {
             try
@@ -45,6 +52,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+        /// <summary>
+        /// Set the hooks on the system.
+        /// </summary>
+        /// <param name="proc">the callback</param>
+        /// <returns></returns>
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (Process currentProcess = Process.GetCurrentProcess())
@@ -54,6 +66,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+        /// <summary>
+        /// Callback function for the system hooks, the key combinations are detected here.
+        /// </summary>
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             var isKeyDown = wParam == (IntPtr)WM_KEYDOWN;

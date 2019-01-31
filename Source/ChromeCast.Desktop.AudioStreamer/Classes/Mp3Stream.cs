@@ -4,11 +4,19 @@ using NAudio.Wave;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
+    /// <summary>
+    /// MP3 encode a WAV stream.
+    /// </summary>
     public class Mp3Stream
     {
         private MemoryStream Output { get; set; }
         private LameMP3FileWriter Writer { get; set; }
 
+        /// <summary>
+        /// Setup MP3 encoding with the selected WAV and stream formats.
+        /// </summary>
+        /// <param name="format">the WAV input format</param>
+        /// <param name="formatSelected">the mp3 output format</param>
         public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected)
         {
             Output = new MemoryStream();
@@ -19,14 +27,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             Writer = new LameMP3FileWriter(Output, format, bitRate);
         }
 
+        /// <summary>
+        /// Add WAV data that should be encoded. 
+        /// </summary>
+        /// <param name="buffer"></param>
         public void Encode(byte[] buffer)
         {
+            if (Writer == null || buffer == null)
+                return;
+
             Writer.Write(buffer, 0, buffer.Length);
         }
 
+        /// <summary>
+        /// Read the data that's encoded in MP3 format.
+        /// </summary>
+        /// <returns></returns>
         public byte[] Read()
         {
-            var byteArray =  Output.ToArray();
+            if (Output == null)
+                return new byte[0];
+
+            var byteArray = Output.ToArray();
             Output.SetLength(0);
             return byteArray;
         }

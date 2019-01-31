@@ -4,6 +4,9 @@ using System.Configuration;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
+    /// <summary>
+    /// Class to keep, save and load the user settings.
+    /// </summary>
     public class UserSettings : ApplicationSettingsBase
     {
         [UserScopedSetting()]

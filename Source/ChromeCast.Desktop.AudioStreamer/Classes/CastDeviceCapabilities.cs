@@ -3,6 +3,9 @@ using System.Web.Script.Serialization;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
+    /// <summary>
+    /// The capabilities of a device.
+    /// </summary>
     public class CastDeviceCapabilities
     {
         public bool bluetooth_supported;
@@ -12,6 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
 
     /// <summary>
     /// When connecting to a stream the device adds a http header with his capabilities.
+    /// It's not now, maybe for later use.
     /// </summary>
     public static class CastDeviceCapabilitiesHelper
     {
