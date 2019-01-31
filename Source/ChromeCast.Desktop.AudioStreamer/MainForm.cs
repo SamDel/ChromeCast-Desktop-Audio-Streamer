@@ -74,6 +74,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             lblLagMin.Text = Properties.Strings.Label_MinimumLag_Text;
             lblLagMax.Text = Properties.Strings.Label_MaximumLag_Text;
             lblLagExperimental.Text = Properties.Strings.Label_LagExperimental_Text;
+            tabPageMain.Text = Properties.Strings.Tab_Main_Text;
             tabPageOptions.Text = Properties.Strings.Tab_Options_Text;
             grpOptions.Text = Properties.Strings.Group_Options_Text;
             lblIpAddressUsed.Text = Properties.Strings.Label_IPAddressUsed_Text;

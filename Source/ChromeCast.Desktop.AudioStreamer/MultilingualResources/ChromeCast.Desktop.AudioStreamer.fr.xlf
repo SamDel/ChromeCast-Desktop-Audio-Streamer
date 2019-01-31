@@ -644,6 +644,10 @@
           <source>Connected</source>
           <target state="new">Connected</target>
         </trans-unit>
+        <trans-unit id="Tab_Main_Text" translate="yes" xml:space="preserve">
+          <source>Devices</source>
+          <target state="needs-review-translation">Appareils</target>
+        </trans-unit>
       </group>
     </body>
   </file>

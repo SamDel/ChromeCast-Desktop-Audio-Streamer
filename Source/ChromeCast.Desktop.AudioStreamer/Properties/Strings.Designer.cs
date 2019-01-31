@@ -547,6 +547,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devices.
+        /// </summary>
+        internal static string Tab_Main_Text {
+            get {
+                return ResourceManager.GetString("Tab_Main_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Options.
         /// </summary>
         internal static string Tab_Options_Text {

@@ -171,4 +171,7 @@
   <data name="Label_NewVersionAvailable" xml:space="preserve">
     <value>A new version is available on Github</value>
   </data>
+  <data name="Tab_Main_Text" xml:space="preserve">
+    <value>Appareils</value>
+  </data>
 </root>
