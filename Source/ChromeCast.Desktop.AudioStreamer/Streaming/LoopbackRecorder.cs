@@ -8,6 +8,7 @@ using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore;
 using System.Windows.Forms;
+using System.Timers;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -20,6 +21,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         SoundInSource soundInSource;
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
+        DateTime latestDataAvailable;
+        System.Timers.Timer dataAvailableTimer;
 
         public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
@@ -28,6 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             dataAvailableCallback = dataAvailableCallbackIn;
 
+            StartSilenceCheckTimer();
             StartRecordingDevice();
             isRecording = true;
         }
@@ -39,6 +43,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
         {
+            latestDataAvailable = DateTime.Now;
+
             if (dataAvailableCallback != null)
             {
                 byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
@@ -108,6 +114,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             var format = convertedSource.WaveFormat;
             waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+        }
+
+        private void StartSilenceCheckTimer()
+        {
+            latestDataAvailable = DateTime.Now;
+            dataAvailableTimer = new System.Timers.Timer
+            {
+                Interval = 1000,
+                Enabled = true
+            };
+            dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
+            dataAvailableTimer.Start();
+        }
+
+        private void OnCheckForSilence(object sender, ElapsedEventArgs e)
+        {
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 1)
+            {
+                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+            }
         }
     }
 }
