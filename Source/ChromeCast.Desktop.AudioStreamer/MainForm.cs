@@ -89,16 +89,38 @@ namespace ChromeCast.Desktop.AudioStreamer
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
             lblLanguage.Text = Properties.Strings.Label_Language_Text;
-            cmbLanguage.Items.Clear();
-            cmbLanguage.Items.Add(string.Empty);
-            cmbLanguage.Items.Add(Properties.Strings.Language_English);
-            cmbLanguage.Items.Add(Properties.Strings.Language_French);
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
+
+            if (cmbLanguage.Items.Count == 0)
+            {
+                cmbLanguage.Items.Add(Properties.Strings.Language_English);
+                cmbLanguage.Items.Add(Properties.Strings.Language_French);
+            }
+            else
+            {
+                if (cmbLanguage.Items[0].ToString() != Properties.Strings.Language_English)
+                    cmbLanguage.Items[0] = Properties.Strings.Language_English;
+                if (cmbLanguage.Items[1].ToString() != Properties.Strings.Language_French)
+                    cmbLanguage.Items[1] = Properties.Strings.Language_French;
+            }
+            if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
+            {
+                if (cmbLanguage.SelectedIndex != 1)
+                    cmbLanguage.SelectedIndex = 1;
+            }
+            else
+            {
+                if (cmbLanguage.SelectedIndex != 0)
+                    cmbLanguage.SelectedIndex = 0;
+            }
         }
 
         private void FillStreamFormats()
         {
+            if (cmbStreamFormat == null)
+                return;
+
             if (cmbStreamFormat.Items.Count == 0)
             {
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav));
@@ -116,11 +138,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.CloseApplication();
         }
 
         public void AddDevice(IDevice device)
         {
+            if (device == null || pnlDevices == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<Device>(AddDevice), new object[] { device });
@@ -152,6 +180,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void ShowLagControl(bool showLag)
         {
+            if (pnlDevices == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<bool>(ShowLagControl), new object[] { showLag });
@@ -175,6 +206,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void SetLagValue(int lagValue)
         {
+            if (trbLag == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<int>(SetLagValue), new object[] { lagValue });
@@ -187,6 +221,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void SetKeyboardHooks(bool useShortCuts)
         {
+            if (chkHook == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<bool>(SetKeyboardHooks), new object[] { useShortCuts });
@@ -218,6 +255,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void Log(string message)
         {
+            if (txtLog == null)
+                return;
+
             try
             {
                 if (InvokeRequired)
@@ -245,11 +285,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void TrbLag_Scroll(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.SetLagThreshold(trbLag.Value);
         }
 
         private void ChkHook_CheckedChanged(object sender, EventArgs e)
         {
+            if (chkHook == null)
+                return;
+
             if (chkHook.Checked)
                 SetWindowsHook.Start(devices);
             else
@@ -258,21 +304,33 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnVolumeUp_Click(object sender, EventArgs e)
         {
+            if (devices == null)
+                return;
+
             devices.VolumeUp();
         }
 
         private void BtnVolumeDown_Click(object sender, EventArgs e)
         {
+            if (devices == null)
+                return;
+
             devices.VolumeDown();
         }
 
         private void BtnVolumeMute_Click(object sender, EventArgs e)
         {
+            if (devices == null)
+                return;
+
             devices.VolumeMute();
         }
 
         public async void SetWindowVisibility(bool visible)
         {
+            if (chkShowWindowOnStart == null)
+                return;
+
             chkShowWindowOnStart.Checked = visible;
             if (visible)
                 Show();
@@ -290,6 +348,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice)
         {
+            if (devices == null || cmbRecordingDevice == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<MMDeviceCollection, MMDevice>(AddRecordingDevices), new object[] { devices, defaultdevice });
@@ -323,6 +384,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void SetDevice(Action<MMDevice> startRecordingSetDevice)
         {
+            if (cmbRecordingDevice == null)
+                return;
+
             if (cmbRecordingDevice.Items.Count > 0)
                 startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
             else
@@ -331,21 +395,33 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void CmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.RecordingDeviceChanged();
         }
 
         private void ChkAutoRestart_CheckedChanged(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.OnSetAutoRestart(chkAutoRestart.Checked);
         }
 
         public void SetAutoRestart(bool autoRestart)
         {
+            if (chkAutoRestart == null)
+                return;
+
             chkAutoRestart.Checked = autoRestart;
         }
 
         public void AddIP4Addresses()
         {
+            if (cmbIP4AddressUsed == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action(AddIP4Addresses));
@@ -358,7 +434,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
             var ip4Adresses = Network.GetIp4ddresses();
 
-            logger.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
+            logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
             cmbIP4AddressUsed.Items.Clear();
             if (ip4Adresses.Count > 0)
             {
@@ -386,6 +462,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void CmbIP4AddressUsed_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbIP4AddressUsed == null)
+                return;
+
             var ipAddress = (IPAddress)cmbIP4AddressUsed.SelectedItem;
             if (ipAddress?.ToString() != previousIpAddress?.ToString())
                 applicationLogic.ChangeIPAddressUsed(ipAddress);
@@ -394,47 +473,74 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
         {
+            if (txtLog == null)
+                return;
+
             if (!string.IsNullOrEmpty(txtLog.Text))
                 Clipboard.SetText(txtLog.Text);
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.ScanForDevices();
         }
 
         public void SetAutoStart(bool autoStart)
         {
+            if (chkAutoStart == null)
+                return;
+
             chkAutoStart.Checked = autoStart;
         }
 
         public bool GetUseKeyboardShortCuts()
         {
+            if (chkHook == null)
+                return false;
+
             return chkHook.Checked;
         }
 
         public bool GetAutoStartDevices()
         {
+            if (chkAutoStart == null)
+                return false;
+
             return chkAutoStart.Checked;
         }
 
         public bool GetShowWindowOnStart()
         {
+            if (chkShowWindowOnStart == null)
+                return false;
+
             return chkShowWindowOnStart.Checked;
         }
 
         public bool GetAutoRestart()
         {
+            if (chkAutoRestart == null)
+                return false;
+
             return chkAutoRestart.Checked;
         }
 
         private void BtnResetSettings_Click(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.ResetSettings();
         }
 
         public void DoDragDrop(object sender, DragEventArgs e)
         {
+            if (e == null || pnlDevices == null)
+                return;
+
             if (e.Data.GetFormats().Length >= 1 &&
                 e.Data.GetData(e.Data.GetFormats()[0]) is DeviceControl &&
                 sender is DeviceControl)
@@ -449,21 +555,33 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void ChkShowLagControl_CheckedChanged(object sender, EventArgs e)
         {
+            if (chkShowLagControl == null)
+                return;
+
             ShowLagControl(chkShowLagControl.Checked);
         }
 
         public bool? GetShowLagControl()
         {
+            if (chkShowLagControl == null)
+                return false;
+
             return chkShowLagControl.Checked;
         }
 
         public int? GetLagValue()
         {
+            if (trbLag == null)
+                return 1000;
+
             return trbLag.Value;
         }
 
         public void SetStreamFormat(SupportedStreamFormat format)
         {
+            if (cmbStreamFormat == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<SupportedStreamFormat>(SetStreamFormat), new object[] { format });
@@ -499,12 +617,18 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void SetStreamFormat()
         {
+            if (cmbStreamFormat == null || applicationLogic == null)
+                return;
+
             if (cmbStreamFormat.SelectedItem != null)
                 applicationLogic.SetStreamFormat((SupportedStreamFormat)((ComboboxItem)cmbStreamFormat.SelectedItem).Value);
         }
 
         private void CmbLanguage_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbLanguage == null)
+                return;
+
             if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_English)
                 SetCulture("en");
             else if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_French)
@@ -513,6 +637,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void SetCulture(string culture)
         {
+            if (applicationLogic == null)
+                return;
+
             CultureInfo ci = new CultureInfo(culture);
             Thread.CurrentThread.CurrentCulture = ci;
             Thread.CurrentThread.CurrentUICulture = ci;
@@ -522,11 +649,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClearLog_Click(object sender, EventArgs e)
         {
+            if (txtLog == null)
+                return;
+
             txtLog.Clear();
         }
 
         public void SetLogDeviceCommunication(bool logDeviceCommunication)
         {
+            if (chkLogDeviceCommunication == null || tabControl == null)
+                return;
+
             chkLogDeviceCommunication.Checked = logDeviceCommunication;
             if (logDeviceCommunication)
             {
@@ -542,11 +675,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public bool GetLogDeviceCommunication()
         {
+            if (chkLogDeviceCommunication == null)
+                return false;
+
             return chkLogDeviceCommunication.Checked;
         }
 
         private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
         {
+            if (chkLogDeviceCommunication == null)
+                return;
+
             SetLogDeviceCommunication(chkLogDeviceCommunication.Checked);
         }
 
@@ -582,6 +721,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void ShowLatestRelease(string latestRelease, string latestReleaseUrl)
         {
+            if (lblNewReleaseAvailable == null)
+                return;
+
             if (IsDisposed) return;
             if (InvokeRequired)
             {
@@ -600,6 +742,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void LblNewReleaseAvailable_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            if (e == null)
+                return;
+
             Process.Start(e.Link.LinkData as string);
         }
     }
