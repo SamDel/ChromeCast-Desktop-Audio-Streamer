@@ -604,12 +604,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E39F8A2A8E265CC15F93B80E39F29908"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_FBE92F1B590048F2B35033658721B8BE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1019,6 +1013,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F49E9F6CDC05D9D13BAE84BC5296314B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E39F8A2A8E265CC15F93B80E39F29908"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -3422,15 +3422,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{EBC1B890-41F6-4DD6-8C65-4D178609A1A4}"
-        "PackageCode" = "8:{E7119BFA-654D-4C61-99E5-447977674016}"
+        "ProductCode" = "8:{A1951DAE-CA76-49BD-AA73-B687059ADDAD}"
+        "PackageCode" = "8:{7DFDB9AB-EBE7-4350-AEE7-9B2BAA1BDD3A}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.9.46"
+        "ProductVersion" = "8:1.9.47"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
