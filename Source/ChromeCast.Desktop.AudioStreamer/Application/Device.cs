@@ -147,6 +147,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             else
             {
                 Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
+                SetDeviceState(DeviceState.ConnectError);
                 streamingConnection = null;
             }
         }
@@ -200,6 +201,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (state != DeviceState.Playing)
                     {
                         Task.Run(() => {
+                            Task.Delay(5000).Wait();
                             OnClickPlayPause();
                         });
                     }
