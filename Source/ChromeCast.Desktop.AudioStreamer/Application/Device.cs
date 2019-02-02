@@ -88,17 +88,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Play/Pause button is clicked.
         /// </summary>
-        public void OnClickPlayPause()
+        public void OnClickPlayStop()
         {
             if (deviceCommunication == null)
                 return;
 
-            deviceCommunication.OnPlayPause_Click();
+            deviceCommunication.OnPlayStop_Click();
         }
 
         public void OnClickPlayPause(object sender, EventArgs e)
         {
-            OnClickPlayPause();
+            OnClickPlayStop();
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     {
                         Task.Run(() => {
                             Task.Delay(5000).Wait();
-                            OnClickPlayPause();
+                            OnClickPlayStop();
                         });
                     }
                 }
@@ -404,7 +404,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             deviceControl = deviceControlIn;
-            deviceControl.SetClickCallBack(OnClickPlayPause, OnClickStop);
+            deviceControl.SetClickCallBack(OnClickPlayStop, OnClickStop);
             deviceControl.Visible = !IsGroup();
         }
 

@@ -9,6 +9,9 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
+    /// <summary>
+    /// Classes used to send messages to a Chromecast device.
+    /// </summary>
     public class ChromeCastMessages : IChromeCastMessages
     {
         private const string namespaceConnect = "urn:x-cast:com.google.cast.tp.connection";
@@ -18,6 +21,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public CastMessage GetVolumeSetMessage(Volume volume, int requestId, string sourceId = null, string destinationId = null)
         {
+            if (volume == null)
+                return null;
+
             var volumeMessage = new MessageVolume
             {
                 type = "SET_VOLUME",
@@ -141,6 +147,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
         public byte[] MessageToByteArray(CastMessage message)
         {
+            if (message == null)
+                return new byte[0];
+
             var messageStream = new MemoryStream();
             message.WriteTo(messageStream);
             var bufMsg = messageStream.ToArray();

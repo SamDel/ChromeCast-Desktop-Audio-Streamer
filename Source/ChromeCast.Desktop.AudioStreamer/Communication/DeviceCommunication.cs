@@ -43,6 +43,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             requestId = 0;
         }
 
+        /// <summary>
+        /// Launch the device, media is loaded when the device responded.
+        /// </summary>
         public void LaunchAndLoadMedia()
         {
             setDeviceState?.Invoke(DeviceState.LaunchingApplication, null);
@@ -51,44 +54,86 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 Launch();
         }
 
+        /// <summary>
+        /// Send a connect message
+        /// </summary>
+        /// <param name="sourceId"></param>
+        /// <param name="destinationId"></param>
         public void Connect(string sourceId = null, string destinationId = null)
         {
+            if (chromeCastMessages == null)
+                return;
+
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
         }
 
+        /// <summary>
+        /// Send a launch message.
+        /// </summary>
         public void Launch()
         {
+            if (chromeCastMessages == null)
+                return;
+
             SendMessage(chromeCastMessages.GetLaunchMessage(GetNextRequestId()));
         }
 
+        /// <summary>
+        /// Send a load media message.
+        /// </summary>
         public void LoadMedia()
         {
-            if (applicationLogic == null)
+            if (applicationLogic == null || chromeCastMessages == null)
                 return;
 
             setDeviceState?.Invoke(DeviceState.LoadingMedia, null);
             SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
 
+        /// <summary>
+        /// Send a pause media message.
+        /// </summary>
         public void PauseMedia()
         {
+            if (chromeCastMessages == null)
+                return;
+
             setDeviceState?.Invoke(DeviceState.Paused, null);
             SendMessage(chromeCastMessages.GetPauseMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
+        /// <summary>
+        /// Send a play message.
+        /// </summary>
         public void PlayMedia()
         {
+            if (chromeCastMessages == null)
+                return;
+
             SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
+        /// <summary>
+        /// Set the volume to the new level.
+        /// </summary>
+        /// <param name="volumeSetting">the new volume level</param>
         public void VolumeSet(Volume volumeSetting)
         {
+            if (volumeSetting == null)
+                return;
+
             nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
             SendVolumeSet();
         }
 
+        /// <summary>
+        /// Send a message to set the volume.
+        /// </summary>
         private void SendVolumeSet()
         {
+            if (chromeCastMessages == null)
+                return;
+
             if ((nextVolumeSetItem != null && lastVolumeSetItem == null)
                 || (lastVolumeSetItem != null && DateTime.Now.Subtract(lastVolumeSetItem.SendAt) > new TimeSpan(0, 0, 1)))
             {
@@ -100,18 +145,37 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Send a message to (un)mute the volume.
+        /// </summary>
+        /// <param name="muted">true = mute, false = unmute</param>
         public void VolumeMute(bool muted)
         {
+            if (chromeCastMessages == null)
+                return;
+
             SendMessage(chromeCastMessages.GetVolumeMuteMessage(muted, GetNextRequestId()));
         }
 
+        /// <summary>
+        /// Send a pong response to ping.
+        /// </summary>
         public void Pong()
         {
+            if (chromeCastMessages == null)
+                return;
+
             SendMessage(chromeCastMessages.GetPongMessage());
         }
 
+        /// <summary>
+        /// Send a message to get the device media or receiver status.
+        /// </summary>
         public void GetStatus()
         {
+            if (chromeCastMessages == null)
+                return;
+
             var deviceState = getDeviceState();
             if (deviceState == DeviceState.Playing ||
                 deviceState == DeviceState.Buffering ||
@@ -121,14 +185,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 GetReceiverStatus();
         }
 
+        /// <summary>
+        /// Send a message to get the receiver status.
+        /// </summary>
         private void GetReceiverStatus()
         {
+            if (chromeCastMessages == null)
+                return;
+
             ConnectionConnect();
             SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
         }
 
+        /// <summary>
+        /// Send a connect message, when not connected.
+        /// </summary>
         private void ConnectionConnect()
         {
+            if (chromeCastMessages == null)
+                return;
+
             if (!Connected)
             {
                 SendMessage(chromeCastMessages.GetConnectMessage(null, null));
@@ -137,8 +213,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Send a stop message.
+        /// </summary>
         public void Stop()
         {
+            if (chromeCastMessages == null)
+                return;
+
             var deviceState = getDeviceState();
 
             // Hack to stop a device. If nothing is send the device is in buffering state and doesn't respond to stop messages. Send some silence first.
@@ -148,21 +230,39 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             SendMessage(chromeCastMessages.GetStopMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
         }
 
+        /// <summary>
+        /// Create a new request id (to be used in the messages to the device).
+        /// </summary>
+        /// <returns></returns>
         public int GetNextRequestId()
         {
             return ++requestId;
         }
 
+        /// <summary>
+        /// Do send a message.
+        /// </summary>
+        /// <param name="castMessage">the message to send</param>
         public void SendMessage(CastMessage castMessage)
         {
+            if (chromeCastMessages == null)
+                return;
+
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             sendMessage?.Invoke(byteMessage);
 
             logger.Log($"{Properties.Strings.Log_Out} [{DateTime.Now.ToLongTimeString()}][{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
         }
 
+        /// <summary>
+        /// Handle a message from the device.
+        /// </summary>
+        /// <param name="castMessage">the received message</param>
         public void OnReceiveMessage(CastMessage castMessage)
         {
+            if (castMessage == null)
+                return;
+
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{getHost?.Invoke()}:{getPort?.Invoke()}] [{getDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
@@ -206,8 +306,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Handle a close message from the device.
+        /// </summary>
+        /// <param name="closeMessage">the close message</param>
         private void OnReceiveCloseMessage(PayloadMessageBase closeMessage)
         {
+            if (applicationLogic == null)
+                return;
+
             var deviceState = getDeviceState();
             var previousState = deviceState;
             if (deviceState == DeviceState.Playing ||
@@ -226,7 +333,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 Task.Run(() => {
                     Task.Delay(5000).Wait();
-                    OnPlayPause_Click();
+                    OnPlayStop_Click();
                 });
             }
             else
@@ -238,8 +345,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Handle a media status message from the device.
+        /// </summary>
+        /// <param name="mediaStatusMessage">the media status message</param>
         private void OnReceiveMediaStatus(MessageMediaStatus mediaStatusMessage)
         {
+            if (mediaStatusMessage == null)
+                return;
+
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
             if (isConnected() && mediaStatusMessage.status.Any())
@@ -264,8 +378,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Extract the playing time from a media status message.
+        /// </summary>
+        /// <param name="mediaStatusMessage">a media status message</param>
+        /// <returns>the playing time, format hh:mm</returns>
         private string GetPlayingTime(MessageMediaStatus mediaStatusMessage)
         {
+            if (mediaStatusMessage == null)
+                return string.Empty;
+
             if (mediaStatusMessage.status != null && mediaStatusMessage.status.First() != null)
             {
                 var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
@@ -277,8 +399,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return null;
         }
 
+        /// <summary>
+        /// Handle a receiver status message from the device.
+        /// </summary>
+        /// <param name="receiverStatusMessage">a receiver status message</param>
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
+            if (receiverStatusMessage == null)
+                return;
+
             if (receiverStatusMessage?.status?.volume != null)
                 onVolumeUpdate(receiverStatusMessage.status.volume);
 
@@ -313,6 +442,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Set the callbacks for the device communication.
+        /// </summary>
         public void SetCallback(Action<DeviceState, string> setDeviceStateIn, 
             Action<Volume> onVolumeUpdateIn, 
             Action<byte[]> sendMessageIn, 
@@ -336,7 +468,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             wasPlayingWhenStopped = wasPlayingWhenStoppedIn;
         }
 
-        public void OnPlayPause_Click()
+        /// <summary>
+        /// Handle a clcik on the play button.
+        /// </summary>
+        public void OnPlayStop_Click()
         {
             switch (getDeviceState())
             {
@@ -395,12 +530,5 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     break;
             }
         }
-    }
-
-    public class VolumeSetItem
-    {
-        public Volume Setting { get; set; }
-        public int RequestId { get; set; }
-        public DateTime SendAt { get; set; }
     }
 }

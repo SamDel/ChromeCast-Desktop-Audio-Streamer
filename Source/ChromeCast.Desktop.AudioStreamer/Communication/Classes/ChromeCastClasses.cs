@@ -2,6 +2,9 @@
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
 {
+    /// <summary>
+    /// Classes used for messages received from a Chromecast device.
+    /// </summary>
     public class PayloadMessageBase
     {
         public string type;
