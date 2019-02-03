@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using NAudio.Lame;
 using NAudio.Wave;
 
@@ -11,6 +13,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
     {
         private MemoryStream Output { get; set; }
         private LameMP3FileWriter Writer { get; set; }
+        public ILogger logger { get; set; }
+
+        public Mp3Stream(ILogger loggerIn)
+        {
+            logger = loggerIn;
+        }
 
         /// <summary>
         /// Setup MP3 encoding with the selected WAV and stream formats.
@@ -36,7 +44,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             if (Writer == null || buffer == null)
                 return;
 
-            Writer.Write(buffer, 0, buffer.Length);
+            try
+            {
+                Writer.Write(buffer, 0, buffer.Length);
+            }
+            catch (Exception ex)
+            {
+                logger.Log($"ex : {ex.Message}");
+            }
         }
 
         /// <summary>

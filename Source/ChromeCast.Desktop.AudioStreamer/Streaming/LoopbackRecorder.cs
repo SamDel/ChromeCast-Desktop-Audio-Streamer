@@ -9,6 +9,7 @@ using CSCore.Streams;
 using CSCore;
 using System.Windows.Forms;
 using System.Timers;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -132,7 +133,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         {
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 1)
             {
-                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                Task.Run(() => {
+                    dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                });
             }
         }
     }
