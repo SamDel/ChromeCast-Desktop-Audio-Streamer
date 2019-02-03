@@ -86,7 +86,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public bool IsConnected()
         {
-            return Socket != null && Socket.Poll(1, SelectMode.SelectWrite);
+            return Socket != null && Socket.Connected;
         }
 
         //TODO: Poll this function and change device state.

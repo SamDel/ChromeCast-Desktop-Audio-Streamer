@@ -147,7 +147,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             else
             {
                 Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
-                //SetDeviceState(DeviceState.ConnectError);
                 streamingConnection = null;
             }
         }
