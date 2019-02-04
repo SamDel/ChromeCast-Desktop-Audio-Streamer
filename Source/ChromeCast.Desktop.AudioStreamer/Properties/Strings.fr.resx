@@ -174,4 +174,7 @@
   <data name="Tab_Main_Text" xml:space="preserve">
     <value>Appareils</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>Français</value>
+  </data>
 </root>

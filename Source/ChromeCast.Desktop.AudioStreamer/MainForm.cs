@@ -94,15 +94,15 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             if (cmbLanguage.Items.Count == 0)
             {
-                cmbLanguage.Items.Add(Properties.Strings.Language_English);
-                cmbLanguage.Items.Add(Properties.Strings.Language_French);
+                cmbLanguage.Items.Add(Resource.Get("Language", CultureInfo.GetCultureInfo("en")));
+                cmbLanguage.Items.Add(Resource.Get("Language", CultureInfo.GetCultureInfo("fr")));
             }
             else
             {
-                if (cmbLanguage.Items[0].ToString() != Properties.Strings.Language_English)
-                    cmbLanguage.Items[0] = Properties.Strings.Language_English;
-                if (cmbLanguage.Items[1].ToString() != Properties.Strings.Language_French)
-                    cmbLanguage.Items[1] = Properties.Strings.Language_French;
+                if (cmbLanguage.Items[0].ToString() != Resource.Get("Language", CultureInfo.GetCultureInfo("en")))
+                    cmbLanguage.Items[0] = Resource.Get("Language", CultureInfo.GetCultureInfo("en"));
+                if (cmbLanguage.Items[1].ToString() != Resource.Get("Language", CultureInfo.GetCultureInfo("fr")))
+                    cmbLanguage.Items[1] = Resource.Get("Language", CultureInfo.GetCultureInfo("fr"));
             }
             if (Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName == "fr")
             {
@@ -629,9 +629,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbLanguage == null)
                 return;
 
-            if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_English)
+            if (cmbLanguage.SelectedItem.ToString() == Resource.Get("Language", CultureInfo.GetCultureInfo("en")))
                 SetCulture("en");
-            else if (cmbLanguage.SelectedItem.ToString() == Properties.Strings.Language_French)
+            else if (cmbLanguage.SelectedItem.ToString() == Resource.Get("Language", CultureInfo.GetCultureInfo("fr")))
                 SetCulture("fr");
         }
 

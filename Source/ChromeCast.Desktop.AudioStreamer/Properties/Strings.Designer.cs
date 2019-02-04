@@ -387,6 +387,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
+        internal static string Language {
+            get {
+                return ResourceManager.GetString("Language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
         internal static string Language_English {
             get {
                 return ResourceManager.GetString("Language_English", resourceCulture);

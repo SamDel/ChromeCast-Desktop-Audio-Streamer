@@ -294,4 +294,7 @@
   <data name="Tab_Main_Text" xml:space="preserve">
     <value>Devices</value>
   </data>
+  <data name="Language" xml:space="preserve">
+    <value>English</value>
+  </data>
 </root>

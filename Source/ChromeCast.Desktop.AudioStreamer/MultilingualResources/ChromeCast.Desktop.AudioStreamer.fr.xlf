@@ -648,6 +648,10 @@
           <source>Devices</source>
           <target state="needs-review-translation">Appareils</target>
         </trans-unit>
+        <trans-unit id="Language" translate="yes" xml:space="preserve">
+          <source>English</source>
+          <target state="translated">Français</target>
+        </trans-unit>
       </group>
     </body>
   </file>
