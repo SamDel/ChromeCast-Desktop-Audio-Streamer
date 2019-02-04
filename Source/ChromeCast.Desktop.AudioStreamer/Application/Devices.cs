@@ -51,7 +51,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             else
             {
                 existingDevice.Initialize(discoveredDevice);
-                existingDevice.SetDeviceName(existingDevice.GetFriendlyName());
             }
         }
 

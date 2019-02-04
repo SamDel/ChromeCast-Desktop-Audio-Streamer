@@ -11,7 +11,6 @@ using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using System.Net;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Globalization;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 
@@ -232,7 +231,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Load and apply the settings.
         /// </summary>
-        private async void LoadSettings()
+        private void LoadSettings()
         {
             if (settings == null || devices == null || mainForm == null)
                 return;
@@ -257,19 +256,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
-                    try
-                    {
-                        // Check if the device is on.
-                        var http = new HttpClient();
-                        var response = await http.GetAsync($"http://{settings.ChromecastDiscoveredDevices[i].IPAddress}:8008/setup/eureka_info?options=detail");
-                        if (response?.StatusCode == HttpStatusCode.OK)
-                        {
-                            devices.OnDeviceAvailable(settings.ChromecastDiscoveredDevices[i]);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
+                    DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable);
                 }
             }
         }

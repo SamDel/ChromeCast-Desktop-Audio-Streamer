@@ -36,6 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DateTime lastGetStatus;
         private bool devicePlayedWhenStopped;
         private bool wasPlayingWhenConnectError;
+        private DeviceEureka eureka;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -76,6 +77,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 WasPlayingWhenStopped);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
+            DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -83,6 +85,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 muted = false,
                 stepInterval = 0.05f
             };
+        }
+
+        /// <summary>
+        /// Set the device information.
+        /// </summary>
+        /// <param name="eureka"></param>
+        private void SetDeviceInformation(DeviceEureka eurekaIn)
+        {
+            SetDeviceName(eureka.Name);
+            eureka = eurekaIn;
         }
 
         /// <summary>
@@ -369,7 +381,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Set the friendly name of the device.
         /// </summary>
-        public void SetDeviceName(string name)
+        private void SetDeviceName(string name)
         {
             if (deviceControl == null || menuItem == null)
                 return;

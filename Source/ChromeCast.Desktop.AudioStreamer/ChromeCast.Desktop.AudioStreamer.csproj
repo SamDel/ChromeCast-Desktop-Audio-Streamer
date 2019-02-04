@@ -117,6 +117,7 @@
     <Compile Include="Application\ApplicationLogic.cs" />
     <Compile Include="Application\Configuration.cs" />
     <Compile Include="Application\Device.cs" />
+    <Compile Include="Application\DeviceInformation.cs" />
     <Compile Include="Application\Devices.cs" />
     <Compile Include="Classes\ComboboxItem.cs" />
     <Compile Include="Classes\Resource.cs" />

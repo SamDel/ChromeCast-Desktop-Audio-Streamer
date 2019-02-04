@@ -34,7 +34,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void Start();
         void OnReceiveMessage(CastMessage castMessage);
         DeviceControl GetDeviceControl();
-        void SetDeviceName(string name);
         ushort GetPort();
         DiscoveredDevice GetDiscoveredDevice();
         void SendSilence();
