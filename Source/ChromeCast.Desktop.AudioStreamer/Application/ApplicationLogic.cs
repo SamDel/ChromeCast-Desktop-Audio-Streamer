@@ -30,7 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private int reduceLagThreshold = trbLagMaximumValue;
         private UserSettings settings = new UserSettings();
         private Mp3Stream Mp3Stream = null;
-        private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Wav;
+        private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Mp3_320;
         private string Culture;
         private ILogger logger;
 
@@ -247,7 +247,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
-            mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Wav);
+            mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
@@ -309,7 +309,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoStartDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
-            settings.StreamFormat = SupportedStreamFormat.Wav;
+            settings.StreamFormat = SupportedStreamFormat.Mp3_320;
             settings.Culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             settings.LogDeviceCommunication = false;
             settings.ShowLagControl = false;

@@ -126,7 +126,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_128));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_320));
-                cmbStreamFormat.SelectedIndex = 0;
+                cmbStreamFormat.SelectedIndex = 2;
                 SetStreamFormat();
             }
         }
