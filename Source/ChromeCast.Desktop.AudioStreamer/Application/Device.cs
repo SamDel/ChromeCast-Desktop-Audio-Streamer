@@ -37,6 +37,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool devicePlayedWhenStopped;
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
+        private Action<DeviceEureka> deviceInformationCallback;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -54,7 +55,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Initialize a device.
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
-        public void Initialize(DiscoveredDevice discoveredDeviceIn)
+        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> deviceInformationCallbackIn)
         {
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
                 return;
@@ -77,6 +78,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 WasPlayingWhenStopped);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
+            deviceInformationCallback = deviceInformationCallbackIn;
             DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
             volumeSetting = new Volume
             {
@@ -95,6 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             SetDeviceName(eurekaIn.Name);
             eureka = eurekaIn;
+            deviceInformationCallback?.Invoke(eureka);
         }
 
         /// <summary>
@@ -230,9 +233,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 }
                 else
                 {
-                    deviceState = state;
-                    deviceControl?.SetStatus(state, statusText);
-                    if (deviceControl != null) deviceControl.Visible = true;
                 }
             }
         }

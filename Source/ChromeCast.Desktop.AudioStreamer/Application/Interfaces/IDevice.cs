@@ -14,7 +14,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public interface IDevice
     {
         void SetDeviceState(DeviceState disposed, string text = null);
-        void Initialize(DiscoveredDevice discoveredDevice);
+        void Initialize(DiscoveredDevice discoveredDevice, Action<DeviceEureka> deviceInformationCallback);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);

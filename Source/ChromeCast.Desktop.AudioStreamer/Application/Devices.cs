@@ -29,28 +29,45 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null || discoveredDevice == null)
                 return;
 
-            var existingDevice = deviceList.FirstOrDefault(
-                d => d.GetHost().Equals(discoveredDevice.IPAddress)
-                && d.GetPort().Equals(discoveredDevice.Port));
+            var existingDevice = GetDevice(discoveredDevice.IPAddress, discoveredDevice.Port);
             if (existingDevice == null)
             {
-                if (!deviceList.Any(d => d.GetUsn() != null && 
-                    d.GetUsn().Equals(discoveredDevice.Usn) && 
-                    d.GetPort().Equals(discoveredDevice.Port)))
-                {
-                    var newDevice = DependencyFactory.Container.Resolve<Device>();
-                    newDevice.Initialize(discoveredDevice);
-                    deviceList.Add(newDevice);
-                    onAddDeviceCallback?.Invoke(newDevice);
-                    newDevice.OnGetStatus();
+                var newDevice = DependencyFactory.Container.Resolve<Device>();
+                newDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                deviceList.Add(newDevice);
+                onAddDeviceCallback?.Invoke(newDevice);
+                newDevice.OnGetStatus();
 
-                    if (AutoStart && !newDevice.IsGroup())
-                        newDevice.OnClickPlayStop();
-                }
+                if (AutoStart && !newDevice.IsGroup())
+                    newDevice.OnClickPlayStop();
             }
             else
             {
-                existingDevice.Initialize(discoveredDevice);
+                existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+            }
+        }
+
+        /// <summary>
+        /// Get the device with the IP and port.
+        /// </summary>
+        /// <returns></returns>
+        private IDevice GetDevice(string iPAddress, ushort port)
+        {
+            return deviceList.FirstOrDefault(d => d.GetHost().Equals(iPAddress) && d.GetPort().Equals(port));
+        }
+
+        /// <summary>
+        /// Callback for when the device information is collected.
+        /// </summary>
+        /// <param name="eurekaIn"></param>
+        private void SetDeviceInformation(DeviceEureka eurekaIn)
+        {
+            if (eurekaIn?.Multizone?.groups == null)
+                return;
+
+            foreach (var group in eurekaIn.Multizone.groups)
+            {
+
             }
         }
 
