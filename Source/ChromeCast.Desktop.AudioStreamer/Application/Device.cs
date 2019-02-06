@@ -77,7 +77,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 WasPlayingWhenStopped);
             deviceConnection.SetPort(discoveredDevice.Port);
             OnGetStatus();
-            DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+            if (!IsGroup())
+                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
