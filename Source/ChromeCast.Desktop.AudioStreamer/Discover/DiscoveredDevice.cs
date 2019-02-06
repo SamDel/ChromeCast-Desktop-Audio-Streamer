@@ -4,7 +4,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
     public class DiscoveredDevice
     {
-        public static string GroupIdentifier = "\"md=Google Cast Group\"";
+        private const string GroupIdentifier = "\"md=Google Cast Group\"";
 
         public string Name { get; set; }
         public string IPAddress { get; set; }
@@ -12,6 +12,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public string Protocol { get; set; }
         public string Usn { get; set; }
         public string Headers { get; set; }
+        public bool AddedByDeviceInfo { get; internal set; }
         public bool IsGroup {
             get
             {
@@ -19,6 +20,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                     return true;
 
                 return false;
+            }
+            set
+            {
+                if (value)
+                    Headers = GroupIdentifier;
             }
         }
     }

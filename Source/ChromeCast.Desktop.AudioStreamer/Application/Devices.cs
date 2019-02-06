@@ -80,12 +80,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     var discoveredDevice = new DiscoveredDevice
                     {
-                        Headers = DiscoveredDevice.GroupIdentifier,
                         IPAddress = GetIpOfLeader(group, eurekaIn),
                         Name = group.name,
                         Port = GetPortOfLeader(group, eurekaIn),
                         Protocol = "",
-                        Usn = null
+                        Usn = null,
+                        IsGroup = true,
+                        AddedByDeviceInfo = true
                     };
                     OnDeviceAvailable(discoveredDevice);
                     Console.WriteLine($":{eurekaIn.Name} {eurekaIn.Net.ip_address} => ::::::::::::::::::{discoveredDevice.Name} {discoveredDevice.IPAddress}:{discoveredDevice.Port}");
