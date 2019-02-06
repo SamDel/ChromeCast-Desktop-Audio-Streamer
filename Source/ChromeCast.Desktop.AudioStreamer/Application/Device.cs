@@ -93,7 +93,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="eureka"></param>
         private void SetDeviceInformation(DeviceEureka eurekaIn)
         {
-            SetDeviceName(eureka.Name);
+            SetDeviceName(eurekaIn.Name);
             eureka = eurekaIn;
         }
 
