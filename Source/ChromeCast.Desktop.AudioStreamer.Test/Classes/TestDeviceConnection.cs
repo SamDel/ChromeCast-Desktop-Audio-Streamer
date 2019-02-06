@@ -38,7 +38,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
             return result;
         }
 
-        public void SetPort(ushort portIn)
+        public void SetPort(int portIn)
         {
             throw new NotImplementedException();
         }

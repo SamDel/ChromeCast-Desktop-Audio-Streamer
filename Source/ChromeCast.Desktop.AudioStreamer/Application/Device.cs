@@ -46,7 +46,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger = loggerIn;
             deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
-            deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
+            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
             deviceState = DeviceState.NotConnected;
             discoveredDevice = new DiscoveredDevice();
         }
@@ -76,10 +76,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 GetPort,
                 SendSilence,
                 WasPlayingWhenStopped);
-            deviceConnection.SetPort(discoveredDevice.Port);
-            OnGetStatus();
+            if (IsGroup())
+            {
+                if (discoveredDevice.Headers.Equals(DiscoveredDevice.GroupIdentifier))
+                    OnGetStatus();
+            }
+            else
+            {
+                OnGetStatus();
+            }
             deviceInformationCallback = deviceInformationCallbackIn;
-            DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+            if (!IsGroup())
+                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -227,12 +235,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
                 if (state == DeviceState.ConnectError && IsGroup())
                 {
-                    deviceState = DeviceState.Disposed;
-                    deviceControl?.Dispose();
-                    menuItem?.Dispose();
+                    deviceState = state;
+                    deviceControl?.SetStatus(deviceState, statusText);
                 }
                 else
                 {
+                    deviceState = state;
+                    deviceControl?.SetStatus(deviceState, statusText);
                 }
             }
         }
@@ -416,7 +425,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             deviceControl = deviceControlIn;
             deviceControl.SetClickCallBack(OnClickPlayStop, OnClickStop);
-            deviceControl.Visible = !IsGroup();
+            //deviceControl.Visible = !IsGroup();
         }
 
         /// <summary>
@@ -458,7 +467,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Get the port of the device.
         /// </summary>
         /// <returns>the port of the device, or 0</returns>
-        public ushort GetPort()
+        public int GetPort()
         {
             if (discoveredDevice == null)
                 return 0;
@@ -482,7 +491,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's a group, false if it's not a group</returns>
         public bool IsGroup()
         {
-            return discoveredDevice?.Headers?.IndexOf("\"md=Google Cast Group\"") >= 0;
+            return discoveredDevice.IsGroup;
         }
 
         /// <summary>

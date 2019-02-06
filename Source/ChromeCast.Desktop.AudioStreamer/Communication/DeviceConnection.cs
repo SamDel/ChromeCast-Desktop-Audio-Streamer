@@ -15,6 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
     public class DeviceConnection : IDeviceConnection
     {
         private Func<string> getHost;
+        private Func<int> getPort;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
         private ILogger logger;
@@ -24,7 +25,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private SslStream sslStream;
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
-        private ushort Port = 8009;
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
 
@@ -48,10 +48,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             try
             {
                 var host = getHost();
+                var port = getPort();
 
                 tcpClient = new TcpClient();
                 tcpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
-                currentAynchResult = tcpClient.BeginConnect(host, Port, new AsyncCallback(ConnectCallback), tcpClient);
+                currentAynchResult = tcpClient.BeginConnect(host, port, new AsyncCallback(ConnectCallback), tcpClient);
                 WaitHandle wh = currentAynchResult.AsyncWaitHandle;
                 try
                 {
@@ -284,29 +285,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Set callbacks.
         /// </summary>
-        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
         {
             getHost = getHostIn;
+            getPort = getPortIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
-        }
-
-        /// <summary>
-        /// Set the port to use.
-        /// </summary>
-        /// <param name="portIn">the port</param>
-        public void SetPort(ushort portIn)
-        {
-            Port = portIn;
-        }
-
-        /// <summary>
-        /// Return the port that's used on the device.
-        /// </summary>
-        /// <returns>the port on the device</returns>
-        public ushort GetPort()
-        {
-            return Port;
         }
     }
 }

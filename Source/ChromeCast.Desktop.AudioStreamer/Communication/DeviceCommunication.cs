@@ -17,7 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<bool> isConnected;
         private Func<bool> isDeviceConnected;
         private Func<string> getHost;
-        private Func<ushort> getPort;
+        private Func<int> getPort;
         private Action sendSilence;
         private Func<bool> wasPlayingWhenStopped;
         private Func<DeviceState> getDeviceState;
@@ -452,7 +452,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             Func<bool> isConnectedIn, 
             Func<bool> isDeviceConnectedIn, 
             Func<string> getHostIn, 
-            Func<ushort> getPortIn,
+            Func<int> getPortIn,
             Action sendSilenceIn,
             Func<bool> wasPlayingWhenStoppedIn)
         {

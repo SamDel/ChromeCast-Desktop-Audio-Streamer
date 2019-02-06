@@ -29,21 +29,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null || discoveredDevice == null)
                 return;
 
-            var existingDevice = GetDevice(discoveredDevice.IPAddress, discoveredDevice.Port);
-            if (existingDevice == null)
-            {
-                var newDevice = DependencyFactory.Container.Resolve<Device>();
-                newDevice.Initialize(discoveredDevice, SetDeviceInformation);
-                deviceList.Add(newDevice);
-                onAddDeviceCallback?.Invoke(newDevice);
-                newDevice.OnGetStatus();
+            if (discoveredDevice.Port == 0 || discoveredDevice.Port == 10001)
+                return;
 
-                if (AutoStart && !newDevice.IsGroup())
-                    newDevice.OnClickPlayStop();
-            }
-            else
+            lock (deviceList)
             {
-                existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                var existingDevice = GetDevice(discoveredDevice);
+                Console.WriteLine($"{discoveredDevice.Name} {discoveredDevice.IPAddress}:{discoveredDevice.Port} {discoveredDevice.IsGroup} ={existingDevice?.GetFriendlyName()}                           {discoveredDevice.Headers}");
+                if (existingDevice == null)
+                {
+                    var newDevice = DependencyFactory.Container.Resolve<Device>();
+                    newDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                    deviceList.Add(newDevice);
+                    onAddDeviceCallback?.Invoke(newDevice);
+                    newDevice.OnGetStatus();
+
+                    if (AutoStart && !newDevice.IsGroup())
+                        newDevice.OnClickPlayStop();
+                }
+                else
+                {
+                    existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                }
             }
         }
 
@@ -51,9 +58,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Get the device with the IP and port.
         /// </summary>
         /// <returns></returns>
-        private IDevice GetDevice(string iPAddress, ushort port)
+        private IDevice GetDevice(DiscoveredDevice discoveredDevice)
         {
-            return deviceList.FirstOrDefault(d => d.GetHost().Equals(iPAddress) && d.GetPort().Equals(port));
+            if (discoveredDevice.IsGroup)
+                return deviceList.FirstOrDefault(d => d.GetFriendlyName().Equals(discoveredDevice.Name) && d.IsGroup());
+            else
+                return deviceList.FirstOrDefault(d => d.GetHost().Equals(discoveredDevice.IPAddress) && d.GetPort().Equals(discoveredDevice.Port));
         }
 
         /// <summary>
@@ -67,8 +77,40 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             foreach (var group in eurekaIn.Multizone.groups)
             {
-
+                if (group.elected_leader == "self")
+                {
+                    var discoveredDevice = new DiscoveredDevice
+                    {
+                        Headers = DiscoveredDevice.GroupIdentifier,
+                        IPAddress = GetIpOfLeader(group, eurekaIn),
+                        Name = group.name,
+                        Port = GetPortOfLeader(group, eurekaIn),
+                        Protocol = "",
+                        Usn = null
+                    };
+                    OnDeviceAvailable(discoveredDevice);
+                    Console.WriteLine($":{eurekaIn.Name} {eurekaIn.Net.ip_address} => ::::::::::::::::::{discoveredDevice.Name} {discoveredDevice.IPAddress}:{discoveredDevice.Port}");
+                }
             }
+        }
+
+        private string GetIpOfLeader(Group group, DeviceEureka eurekaIn)
+        {
+            if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
+                return eurekaIn.Net.ip_address;
+
+            return group.elected_leader.Substring(0, group.elected_leader.IndexOf(":"));
+        }
+
+        private int GetPortOfLeader(Group group, DeviceEureka eurekaIn)
+        {
+            if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
+                return group.cast_port;
+
+            if (int.TryParse(group.elected_leader.Substring(group.elected_leader.IndexOf(":") + 1), out int result))
+                return result;
+
+            return 0;
         }
 
         /// <summary>
