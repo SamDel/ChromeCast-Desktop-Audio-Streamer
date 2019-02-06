@@ -76,15 +76,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 GetPort,
                 SendSilence,
                 WasPlayingWhenStopped);
-            if (IsGroup())
-            {
-                if (discoveredDevice.Headers.Equals(DiscoveredDevice.GroupIdentifier))
-                    OnGetStatus();
-            }
-            else
-            {
+            if (!IsGroup() || (IsGroup() &&discoveredDevice.Headers.Equals(DiscoveredDevice.GroupIdentifier)))
                 OnGetStatus();
-            }
             deviceInformationCallback = deviceInformationCallbackIn;
             if (!IsGroup())
                 DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
