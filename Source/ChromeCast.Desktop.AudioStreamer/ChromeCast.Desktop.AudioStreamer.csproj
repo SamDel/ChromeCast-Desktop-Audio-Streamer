@@ -252,6 +252,7 @@
     <Content Include="libmp3lame.64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="UserControls\Group.png" />
     <EmbeddedResource Include="UserControls\Stop.png" />
   </ItemGroup>
   <ItemGroup>

@@ -31,13 +31,15 @@
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnDevice = new System.Windows.Forms.Button();
             this.trbVolume = new System.Windows.Forms.TrackBar();
-            this.pictureVolumeMute = new System.Windows.Forms.PictureBox();
-            this.picturePlayPause = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pictureGroup = new System.Windows.Forms.PictureBox();
+            this.picturePlayPause = new System.Windows.Forms.PictureBox();
+            this.pictureVolumeMute = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).BeginInit();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -84,18 +86,22 @@
             this.trbVolume.Scroll += new System.EventHandler(this.TrbVolume_Scroll);
             this.trbVolume.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
-            // pictureVolumeMute
+            // flowLayoutPanel1
             // 
-            this.pictureVolumeMute.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pictureVolumeMute.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Unmute;
-            this.pictureVolumeMute.Location = new System.Drawing.Point(8, 59);
-            this.pictureVolumeMute.Margin = new System.Windows.Forms.Padding(0);
-            this.pictureVolumeMute.Name = "pictureVolumeMute";
-            this.pictureVolumeMute.Size = new System.Drawing.Size(30, 30);
-            this.pictureVolumeMute.TabIndex = 8;
-            this.pictureVolumeMute.TabStop = false;
-            this.pictureVolumeMute.Click += new System.EventHandler(this.PictureVolumeMute_Click);
-            this.pictureVolumeMute.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
+            this.flowLayoutPanel1.Controls.Add(this.picturePlayPause);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(46, 47);
+            this.flowLayoutPanel1.TabIndex = 10;
+            // 
+            // pictureGroup
+            // 
+            this.pictureGroup.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Group;
+            this.pictureGroup.Location = new System.Drawing.Point(279, 116);
+            this.pictureGroup.Name = "pictureGroup";
+            this.pictureGroup.Size = new System.Drawing.Size(32, 21);
+            this.pictureGroup.TabIndex = 11;
+            this.pictureGroup.TabStop = false;
             // 
             // picturePlayPause
             // 
@@ -114,13 +120,18 @@
             this.picturePlayPause.Click += new System.EventHandler(this.BtnDevicePlay_Click);
             this.picturePlayPause.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
-            // flowLayoutPanel1
+            // pictureVolumeMute
             // 
-            this.flowLayoutPanel1.Controls.Add(this.picturePlayPause);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(46, 47);
-            this.flowLayoutPanel1.TabIndex = 10;
+            this.pictureVolumeMute.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pictureVolumeMute.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Unmute;
+            this.pictureVolumeMute.Location = new System.Drawing.Point(8, 59);
+            this.pictureVolumeMute.Margin = new System.Windows.Forms.Padding(0);
+            this.pictureVolumeMute.Name = "pictureVolumeMute";
+            this.pictureVolumeMute.Size = new System.Drawing.Size(30, 30);
+            this.pictureVolumeMute.TabIndex = 8;
+            this.pictureVolumeMute.TabStop = false;
+            this.pictureVolumeMute.Click += new System.EventHandler(this.PictureVolumeMute_Click);
+            this.pictureVolumeMute.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             // 
             // DeviceControl
             // 
@@ -129,20 +140,22 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Controls.Add(this.pictureGroup);
             this.Controls.Add(this.btnDevice);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.pictureVolumeMute);
             this.Controls.Add(this.trbVolume);
             this.Controls.Add(this.lblStatus);
             this.Name = "DeviceControl";
-            this.Size = new System.Drawing.Size(314, 137);
+            this.Size = new System.Drawing.Size(315, 140);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragDrop);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceControl_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -156,5 +169,6 @@
         private System.Windows.Forms.PictureBox picturePlayPause;
         private System.Windows.Forms.PictureBox pictureVolumeMute;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.PictureBox pictureGroup;
     }
 }
