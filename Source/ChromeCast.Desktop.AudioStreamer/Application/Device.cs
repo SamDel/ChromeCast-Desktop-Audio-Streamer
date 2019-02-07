@@ -66,6 +66,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
+            if (discoveredDeviceIn.Usn != null) discoveredDevice.Usn = discoveredDeviceIn.Usn;
+            discoveredDevice.AddedByDeviceInfo = discoveredDeviceIn.AddedByDeviceInfo;
+            if (discoveredDeviceIn.Eureka != null) discoveredDevice.Eureka = discoveredDeviceIn.Eureka;
+            if (discoveredDeviceIn.Group != null) discoveredDevice.Group = discoveredDeviceIn.Group;
+
             deviceCommunication.SetCallback(SetDeviceState,
                 OnVolumeUpdate,
                 deviceConnection.SendMessage,
@@ -79,7 +84,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsGroup() || (IsGroup() &&discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            GetDeviceInformation();
             volumeSetting = new Volume
             {
                 controlType = "attenuation",

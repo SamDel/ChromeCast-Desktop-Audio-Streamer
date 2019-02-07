@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using ChromeCast.Desktop.AudioStreamer.Application;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
@@ -13,6 +13,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public string Usn { get; set; }
         public string Headers { get; set; }
         public bool AddedByDeviceInfo { get; internal set; }
+        public DeviceEureka Eureka { get; internal set; }
+        public Group Group { get; internal set; }
         public bool IsGroup {
             get
             {
