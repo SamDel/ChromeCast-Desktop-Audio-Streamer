@@ -62,6 +62,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
+            var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
             if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
@@ -81,7 +82,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 GetPort,
                 SendSilence,
                 WasPlayingWhenStopped);
-            if (!IsGroup() || (IsGroup() &&discoveredDevice.AddedByDeviceInfo))
+            if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
             volumeSetting = new Volume
@@ -91,6 +92,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 muted = false,
                 stepInterval = 0.05f
             };
+            if (ipChanged && deviceState == DeviceState.Playing)
+            {
+                SetDeviceState(DeviceState.NotConnected);
+                OnClickPlayStop();
+            }
         }
 
         /// <summary>
