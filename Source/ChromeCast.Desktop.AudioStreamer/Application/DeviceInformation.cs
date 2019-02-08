@@ -21,9 +21,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             Task.Run(async () => {
                 var http = new HttpClient();
                 var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
-                var receiveStream = response.Content.ReadAsStreamAsync();
-                receiveStream.Wait();
-                var readStream = new StreamReader(receiveStream.Result, Encoding.UTF8);
+                var receiveStream = await response.Content.ReadAsStreamAsync();
+                var readStream = new StreamReader(receiveStream, Encoding.UTF8);
                 var eurekaInfo = readStream.ReadToEnd();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
