@@ -99,26 +99,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             foreach (var group in eurekaIn.Multizone.groups)
             {
+                discoveredDevice = new DiscoveredDevice
+                {
+                    IPAddress = GetIpOfGroup(group, eurekaIn),
+                    Name = group.name,
+                    Port = GetPortOfGroup(group, eurekaIn),
+                    Protocol = "",
+                    Usn = null,
+                    IsGroup = true,
+                    AddedByDeviceInfo = true,
+                    Eureka = eurekaIn,
+                    Group = group
+                };
+
+                // Add the group.
                 if (group.elected_leader == "self")
                 {
-                    discoveredDevice = new DiscoveredDevice
-                    {
-                        IPAddress = GetIpOfLeader(group, eurekaIn),
-                        Name = group.name,
-                        Port = GetPortOfLeader(group, eurekaIn),
-                        Protocol = "",
-                        Usn = null,
-                        IsGroup = true,
-                        AddedByDeviceInfo = true,
-                        Eureka = eurekaIn,
-                        Group = group
-                    };
                     OnDeviceAvailable(discoveredDevice);
+                }
+
+                // Get device information from unknown devices.
+                if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
+                {
+                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
                 }
             }
         }
 
-        private string GetIpOfLeader(Group group, DeviceEureka eurekaIn)
+        private string GetIpOfGroup(Group group, DeviceEureka eurekaIn)
         {
             if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
                 return eurekaIn.Net.ip_address;
@@ -126,7 +134,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return group.elected_leader.Substring(0, group.elected_leader.IndexOf(":"));
         }
 
-        private int GetPortOfLeader(Group group, DeviceEureka eurekaIn)
+        private int GetPortOfGroup(Group group, DeviceEureka eurekaIn)
         {
             if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
                 return group.cast_port;
