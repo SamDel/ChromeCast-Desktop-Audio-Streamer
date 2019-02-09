@@ -106,7 +106,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 Task.Run(() =>
                 {
+                    deviceCommunication.Stop();
                     SetDeviceState(DeviceState.NotConnected);
+                    deviceCommunication.Disconnect();
                     Task.Delay(10000).Wait();
                     OnClickPlayStop();
                 });

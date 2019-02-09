@@ -26,6 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         Func<int> getPort,
         Action sendSilence,
         Func<bool> wasPlayingWhenStopped);
+        void Disconnect();
         void Stop();
         void OnPlayStop_Click();
         void OnStop_Click();

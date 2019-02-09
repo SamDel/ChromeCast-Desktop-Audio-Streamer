@@ -415,7 +415,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             statusText = statusText?.Replace("Default Media Receiver", string.Empty);
             var state = getDeviceState();
             if (state == DeviceState.ConnectError)
+            {
                 setDeviceState(DeviceState.NotConnected, null);
+                Disconnect();
+            }
             setDeviceState(getDeviceState(), $" {statusText}");
 
             if (receiverStatusMessage != null && receiverStatusMessage.status != null && receiverStatusMessage.status.applications != null)
@@ -529,6 +532,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     Stop();
                     break;
             }
+        }
+
+        public void Disconnect()
+        {
+            Connected = false;
         }
     }
 }
