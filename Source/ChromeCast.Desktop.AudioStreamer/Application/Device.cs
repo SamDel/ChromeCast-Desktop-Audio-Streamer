@@ -104,8 +104,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
             if (ipChanged && deviceState == DeviceState.Playing)
             {
-                SetDeviceState(DeviceState.NotConnected);
-                OnClickPlayStop();
+                Task.Run(() =>
+                {
+                    SetDeviceState(DeviceState.NotConnected);
+                    Task.Delay(10000).Wait();
+                    OnClickPlayStop();
+                });
             }
         }
 
