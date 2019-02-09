@@ -60,9 +60,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
                 return;
 
-            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
-            if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
             var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
+
+            // Logging
+            if (ipChanged ||
+                discoveredDevice.Name != discoveredDeviceIn.Name ||
+                discoveredDevice.Port != discoveredDeviceIn.Port ||
+                JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.groups)
+                    != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.groups))
+            {
+                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.groups)}");
+            }
+
+            if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
             if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
