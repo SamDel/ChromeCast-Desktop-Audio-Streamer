@@ -46,8 +46,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
+
+            WaitDeviceConnected();
             if (isDeviceConnected())
                 Launch();
+        }
+
+        /// <summary>
+        /// Wait till the connection is established.
+        /// </summary>
+        private void WaitDeviceConnected()
+        {
+            var attempt = 0;
+            while (!isDeviceConnected() && attempt++ < 3)
+            {
+                Task.Delay(500).Wait();
+            }
         }
 
         /// <summary>
@@ -221,6 +235,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (!Connected)
             {
                 SendMessage(chromeCastMessages.GetConnectMessage(null, null));
+                WaitDeviceConnected();
                 if (isDeviceConnected())
                     Connected = true;
             }
