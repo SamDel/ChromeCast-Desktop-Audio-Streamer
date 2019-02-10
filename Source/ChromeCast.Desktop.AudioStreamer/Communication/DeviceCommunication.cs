@@ -26,6 +26,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
+        private bool pendingMediaStatusMessage = false;
+        private bool pendingReceiverStatusMessage = false;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -183,8 +185,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (deviceState == DeviceState.Playing ||
                 deviceState == DeviceState.Buffering ||
                 deviceState == DeviceState.Paused)
-                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
-            else
+                if (!pendingMediaStatusMessage)
+                {
+                    SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+                    pendingMediaStatusMessage = true;
+                }
+                else
                 GetReceiverStatus();
         }
 
@@ -196,8 +202,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (chromeCastMessages == null)
                 return;
 
+            if (pendingReceiverStatusMessage)
+                return;
+
             ConnectionConnect();
             SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
+            pendingReceiverStatusMessage = true;
         }
 
         /// <summary>
@@ -273,9 +283,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             switch (message.@type)
             {
                 case "RECEIVER_STATUS":
+                    pendingReceiverStatusMessage = false;
                     OnReceiveReceiverStatus(js.Deserialize<MessageReceiverStatus>(castMessage.PayloadUtf8));
                     break;
                 case "MEDIA_STATUS":
+                    pendingMediaStatusMessage = false;
                     OnReceiveMediaStatus(js.Deserialize<MessageMediaStatus>(castMessage.PayloadUtf8));
                     break;
                 case "PING":
