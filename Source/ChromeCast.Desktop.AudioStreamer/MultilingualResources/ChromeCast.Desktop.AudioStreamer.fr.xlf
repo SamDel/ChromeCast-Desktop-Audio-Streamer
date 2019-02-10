@@ -646,7 +646,7 @@
         </trans-unit>
         <trans-unit id="Connected" translate="yes" xml:space="preserve">
           <source>Connected</source>
-          <target state="new">Connected</target>
+          <target state="needs-review-translation">Connecté</target>
         </trans-unit>
         <trans-unit id="Tab_Main_Text" translate="yes" xml:space="preserve">
           <source>Devices</source>

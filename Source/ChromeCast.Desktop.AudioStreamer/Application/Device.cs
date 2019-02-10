@@ -82,16 +82,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Eureka != null) discoveredDevice.Eureka = discoveredDeviceIn.Eureka;
             if (discoveredDeviceIn.Group != null) discoveredDevice.Group = discoveredDeviceIn.Group;
 
-            deviceCommunication.SetCallback(SetDeviceState,
-                OnVolumeUpdate,
-                deviceConnection.SendMessage,
-                GetDeviceState,
-                IsConnected,
-                deviceConnection.IsConnected,
-                GetHost,
-                GetPort,
-                SendSilence,
-                WasPlayingWhenStopped);
+            deviceCommunication.SetCallback(this, deviceConnection.SendMessage, deviceConnection.IsConnected);
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
@@ -104,16 +95,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
             if (ipChanged && deviceState == DeviceState.Playing)
             {
-                Task.Run(() =>
-                {
-                    deviceCommunication.Stop();
-                    SetDeviceState(DeviceState.NotConnected);
-                    deviceCommunication.Disconnect();
-                    Task.Delay(2000).Wait();
-                    OnGetStatus();
-                    Task.Delay(8000).Wait();
-                    OnClickPlayStop();
-                });
+                deviceCommunication.ResumePlaying();
             }
         }
 
@@ -241,13 +223,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (state != DeviceState.ConnectError && wasPlayingWhenConnectError)
                 {
                     wasPlayingWhenConnectError = false;
-                    if (state != DeviceState.Playing)
-                    {
-                        Task.Run(() => {
-                            Task.Delay(5000).Wait();
-                            OnClickPlayStop();
-                        });
-                    }
+                    deviceCommunication.ResumePlaying();
                 }
                 else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
                 {
@@ -518,7 +494,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Determine if the device is in a connected state.
         /// </summary>
         /// <returns>true if it's connected, or false if not</returns>
-        private bool IsConnected()
+        public bool IsConnected()
         {
             return !(deviceState.Equals(DeviceState.NotConnected) ||
                 deviceState.Equals(DeviceState.ConnectError) ||
@@ -529,7 +505,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// A volume update from the device.
         /// </summary>
         /// <param name="volume">the volume on the device</param>
-        private void OnVolumeUpdate(Volume volume)
+        public void OnVolumeUpdate(Volume volume)
         {
             if (deviceControl == null)
                 return;
@@ -551,7 +527,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Return if the device was playing when stopped. Used for auto restart.
         /// </summary>
         /// <returns></returns>
-        private bool WasPlayingWhenStopped()
+        public bool WasPlayingWhenStopped()
         {
             var returnValue = devicePlayedWhenStopped;
             devicePlayedWhenStopped = false;

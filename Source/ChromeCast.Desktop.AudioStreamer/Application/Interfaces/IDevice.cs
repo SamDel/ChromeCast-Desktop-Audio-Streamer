@@ -38,5 +38,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         DiscoveredDevice GetDiscoveredDevice();
         void SendSilence();
         bool IsGroup();
+        bool WasPlayingWhenStopped();
+        bool IsConnected();
+        void OnVolumeUpdate(Volume volume);
     }
 }
