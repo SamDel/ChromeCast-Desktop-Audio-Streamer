@@ -131,11 +131,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         private void OnCheckForSilence(object sender, ElapsedEventArgs e)
         {
-            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 1)
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
             {
-                Task.Run(() => {
-                    dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
-                });
+                Console.WriteLine($"OnCheckForSilence: {DateTime.Now.ToLongTimeString()}");
+                latestDataAvailable = DateTime.Now;
+                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
             }
         }
     }
