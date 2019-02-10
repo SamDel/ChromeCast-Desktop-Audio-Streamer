@@ -26,8 +26,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
-        private bool pendingMediaStatusMessage = false;
-        private bool pendingReceiverStatusMessage = false;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -47,21 +45,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
 
-            WaitDeviceConnected();
-            if (isDeviceConnected())
-                Launch();
+            WaitDeviceConnected(Launch);
         }
 
         /// <summary>
         /// Wait till the connection is established.
         /// </summary>
-        private void WaitDeviceConnected()
+        private void WaitDeviceConnected(Action callback)
         {
             var attempt = 0;
-            while (!isDeviceConnected() && attempt++ < 3)
+            while (!isDeviceConnected() && attempt++ < 5)
             {
-                Task.Delay(500).Wait();
+                Task.Delay(100).Wait();
             }
+
+            if (isDeviceConnected())
+                callback();
         }
 
         /// <summary>
@@ -199,13 +198,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (deviceState == DeviceState.Playing ||
                 deviceState == DeviceState.Buffering ||
                 deviceState == DeviceState.Paused)
-                if (!pendingMediaStatusMessage)
-                {
-                    SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
-                    pendingMediaStatusMessage = true;
-                }
-                else
+            {
+                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+            }
+            else
+            {
                 GetReceiverStatus();
+            }
         }
 
         /// <summary>
@@ -216,12 +215,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (chromeCastMessages == null)
                 return;
 
-            if (pendingReceiverStatusMessage)
-                return;
-
             ConnectionConnect();
             SendMessage(chromeCastMessages.GetReceiverStatusMessage(GetNextRequestId()));
-            pendingReceiverStatusMessage = true;
         }
 
         /// <summary>
@@ -235,9 +230,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (!Connected)
             {
                 SendMessage(chromeCastMessages.GetConnectMessage(null, null));
-                WaitDeviceConnected();
-                if (isDeviceConnected())
-                    Connected = true;
+                WaitDeviceConnected(new Action(() => { Connected = true; }));
             }
         }
 
@@ -298,11 +291,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             switch (message.@type)
             {
                 case "RECEIVER_STATUS":
-                    pendingReceiverStatusMessage = false;
                     OnReceiveReceiverStatus(js.Deserialize<MessageReceiverStatus>(castMessage.PayloadUtf8));
                     break;
                 case "MEDIA_STATUS":
-                    pendingMediaStatusMessage = false;
                     OnReceiveMediaStatus(js.Deserialize<MessageMediaStatus>(castMessage.PayloadUtf8));
                     break;
                 case "PING":
