@@ -52,7 +52,7 @@
     <value>Montrer la fenêtre au démarrage</value>
   </data>
   <data name="ChromeCast_StreamTitle" xml:space="preserve">
-    <value>Desktop Stream</value>
+    <value>Desktop Audio Streamer</value>
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Fermé</value>

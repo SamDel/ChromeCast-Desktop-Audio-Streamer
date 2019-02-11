@@ -469,8 +469,9 @@
           <target state="translated">Montrer la fenêtre au démarrage</target>
         </trans-unit>
         <trans-unit id="ChromeCast_StreamTitle" translate="yes" xml:space="preserve">
-          <source>Desktop Stream</source>
-          <target state="translated">Desktop Stream</target>
+          <source>Desktop Audio Streamer</source>
+          <target state="needs-review-translation">Desktop Audio Streamer</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Closed" translate="yes" xml:space="preserve">
           <source>Closed</source>
