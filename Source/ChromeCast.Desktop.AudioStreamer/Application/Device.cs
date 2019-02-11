@@ -95,7 +95,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             };
             if (ipChanged && deviceState == DeviceState.Playing)
             {
-                deviceCommunication.ResumePlaying();
+                ResumePlaying();
             }
         }
 
@@ -223,7 +223,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (state != DeviceState.ConnectError && wasPlayingWhenConnectError)
                 {
                     wasPlayingWhenConnectError = false;
-                    deviceCommunication.ResumePlaying();
+                    ResumePlaying();
                 }
                 else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
                 {
@@ -541,6 +541,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             if (!IsGroup())
                 DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+        }
+
+        public void ResumePlaying()
+        {
+            deviceCommunication.ResumePlaying();
         }
 
         #endregion

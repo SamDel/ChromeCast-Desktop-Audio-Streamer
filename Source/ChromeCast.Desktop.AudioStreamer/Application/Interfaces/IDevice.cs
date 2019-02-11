@@ -41,5 +41,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         bool WasPlayingWhenStopped();
         bool IsConnected();
         void OnVolumeUpdate(Volume volume);
+        void ResumePlaying();
     }
 }
