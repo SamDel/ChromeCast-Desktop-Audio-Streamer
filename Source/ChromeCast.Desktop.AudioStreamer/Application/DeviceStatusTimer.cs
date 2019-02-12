@@ -6,7 +6,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class DeviceStatusTimer : IDeviceStatusTimer
     {
-        public const int Interval = 30000;
+        public const int Interval = 15000;
         private Action onGetStatus;
         private Timer timer;
 

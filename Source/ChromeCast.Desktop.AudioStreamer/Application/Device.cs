@@ -37,6 +37,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool devicePlayedWhenStopped;
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
+        private Action<DeviceEureka> setDeviceInformationCallback;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -45,7 +46,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger = loggerIn;
             deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
-            deviceConnection.SetCallback(GetHost, SetDeviceState, OnReceiveMessage);
+            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
             deviceState = DeviceState.NotConnected;
             discoveredDevice = new DiscoveredDevice();
         }
@@ -54,31 +55,37 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Initialize a device.
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
-        public void Initialize(DiscoveredDevice discoveredDeviceIn)
+        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn)
         {
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
                 return;
 
-            logger.Log($"Discovered device: {JsonConvert.SerializeObject(discoveredDeviceIn)}");
+            var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
+
+            // Logging
+            if (ipChanged ||
+                discoveredDevice.Name != discoveredDeviceIn.Name ||
+                discoveredDevice.Port != discoveredDeviceIn.Port ||
+                JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.groups)
+                    != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.groups))
+            {
+                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.groups)}");
+            }
+
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
             if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
-            deviceCommunication.SetCallback(SetDeviceState,
-                OnVolumeUpdate,
-                deviceConnection.SendMessage,
-                GetDeviceState,
-                IsConnected,
-                deviceConnection.IsConnected,
-                GetHost,
-                GetPort,
-                SendSilence,
-                WasPlayingWhenStopped);
-            deviceConnection.SetPort(discoveredDevice.Port);
-            OnGetStatus();
-            if (!IsGroup())
-                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+            if (discoveredDeviceIn.Usn != null) discoveredDevice.Usn = discoveredDeviceIn.Usn;
+            discoveredDevice.AddedByDeviceInfo = discoveredDeviceIn.AddedByDeviceInfo;
+            if (discoveredDeviceIn.Eureka != null) discoveredDevice.Eureka = discoveredDeviceIn.Eureka;
+            if (discoveredDeviceIn.Group != null) discoveredDevice.Group = discoveredDeviceIn.Group;
+
+            deviceCommunication.SetCallback(this, deviceConnection.SendMessage, deviceConnection.IsConnected);
+            if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
+                OnGetStatus();
+            setDeviceInformationCallback = setDeviceInformationCallbackIn;
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -86,6 +93,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 muted = false,
                 stepInterval = 0.05f
             };
+            if (ipChanged && deviceState == DeviceState.Playing)
+            {
+                ResumePlaying();
+            }
         }
 
         /// <summary>
@@ -96,6 +107,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             SetDeviceName(eurekaIn.Name);
             eureka = eurekaIn;
+            setDeviceInformationCallback?.Invoke(eureka);
         }
 
         /// <summary>
@@ -175,6 +187,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 2)
             {
                 deviceCommunication.GetStatus();
+                GetDeviceInformation();
                 lastGetStatus = DateTime.Now;
             }
         }
@@ -210,13 +223,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (state != DeviceState.ConnectError && wasPlayingWhenConnectError)
                 {
                     wasPlayingWhenConnectError = false;
-                    if (state != DeviceState.Playing)
-                    {
-                        Task.Run(() => {
-                            Task.Delay(5000).Wait();
-                            OnClickPlayStop();
-                        });
-                    }
+                    ResumePlaying();
                 }
                 else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
                 {
@@ -225,15 +232,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
                 if (state == DeviceState.ConnectError && IsGroup())
                 {
-                    deviceState = DeviceState.Disposed;
-                    deviceControl?.Dispose();
-                    menuItem?.Dispose();
+                    deviceState = state;
+                    deviceControl?.SetStatus(deviceState, statusText);
                 }
                 else
                 {
                     deviceState = state;
-                    deviceControl?.SetStatus(state, statusText);
-                    if (deviceControl != null) deviceControl.Visible = true;
+                    deviceControl?.SetStatus(deviceState, statusText);
                 }
             }
         }
@@ -417,7 +422,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             deviceControl = deviceControlIn;
             deviceControl.SetClickCallBack(OnClickPlayStop, OnClickStop);
-            deviceControl.Visible = !IsGroup();
         }
 
         /// <summary>
@@ -459,7 +463,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Get the port of the device.
         /// </summary>
         /// <returns>the port of the device, or 0</returns>
-        public ushort GetPort()
+        public int GetPort()
         {
             if (discoveredDevice == null)
                 return 0;
@@ -483,14 +487,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's a group, false if it's not a group</returns>
         public bool IsGroup()
         {
-            return discoveredDevice?.Headers?.IndexOf("\"md=Google Cast Group\"") >= 0;
+            return discoveredDevice.IsGroup;
         }
 
         /// <summary>
         /// Determine if the device is in a connected state.
         /// </summary>
         /// <returns>true if it's connected, or false if not</returns>
-        private bool IsConnected()
+        public bool IsConnected()
         {
             return !(deviceState.Equals(DeviceState.NotConnected) ||
                 deviceState.Equals(DeviceState.ConnectError) ||
@@ -501,7 +505,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// A volume update from the device.
         /// </summary>
         /// <param name="volume">the volume on the device</param>
-        private void OnVolumeUpdate(Volume volume)
+        public void OnVolumeUpdate(Volume volume)
         {
             if (deviceControl == null)
                 return;
@@ -523,11 +527,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Return if the device was playing when stopped. Used for auto restart.
         /// </summary>
         /// <returns></returns>
-        private bool WasPlayingWhenStopped()
+        public bool WasPlayingWhenStopped()
         {
             var returnValue = devicePlayedWhenStopped;
             devicePlayedWhenStopped = false;
             return returnValue;
+        }
+
+        /// <summary>
+        /// Get the information of the device.
+        /// </summary>
+        private void GetDeviceInformation()
+        {
+            if (!IsGroup())
+                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+        }
+
+        public void ResumePlaying()
+        {
+            deviceCommunication.ResumePlaying();
         }
 
         #endregion

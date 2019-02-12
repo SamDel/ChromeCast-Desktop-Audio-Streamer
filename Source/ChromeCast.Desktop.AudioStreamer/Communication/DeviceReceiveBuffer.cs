@@ -5,17 +5,36 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
+    /// <summary>
+    /// Receive buffer used by the socket connection used for control messages.
+    /// If a complete message is in the buffer then a call to the callback function is made.
+    /// </summary>
     public class DeviceReceiveBuffer : IDeviceReceiveBuffer
     {
         private Action<CastMessage> onReceiveMessage;
 
+        /// <summary>
+        /// Received data from a device.
+        /// </summary>
+        /// <param name="data">the received data</param>
         public void OnReceive(byte[] data)
         {
+            if (data == null)
+                return;
+
             ParseMessages(data);
         }
 
+        /// <summary>
+        /// Parse the receive buffer. 
+        /// If a message is complete call the method to process the message.
+        /// </summary>
+        /// <param name="serverMessage">data received from a device</param>
         private void ParseMessages(byte[] serverMessage)
         {
+            if (serverMessage == null)
+                return;
+
             int offset = 0;
 
             while (serverMessage.Length - offset >= 4)
@@ -34,12 +53,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
         }
 
+        /// <summary>
+        /// Process a message.
+        /// </summary>
+        /// <param name="message">the message</param>
         private void ProcessMessage(byte[] message)
         {
+            if (message == null)
+                return;
+
             var castMessage = CastMessage.ParseFrom(message);
             onReceiveMessage?.Invoke(castMessage);
         }
 
+        /// <summary>
+        /// Get a part of the buffer.
+        /// </summary>
         private T[] SubArray<T>(T[] data, int index, int length)
         {
             T[] result = new T[length];
@@ -47,6 +76,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return result;
         }
 
+        /// <summary>
+        /// Set the callback.
+        /// </summary>
         public void SetCallback(Action<CastMessage> onReceiveMessageIn)
         {
             onReceiveMessage = onReceiveMessageIn;

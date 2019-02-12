@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using NAudio.Lame;
 using NAudio.Wave;
@@ -46,7 +47,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
 
             try
             {
-                Writer.Write(buffer, 0, buffer.Length);
+                var writeBuffer = buffer.ToArray();
+                Writer.Write(writeBuffer, 0, writeBuffer.Length);
             }
             catch (Exception ex)
             {

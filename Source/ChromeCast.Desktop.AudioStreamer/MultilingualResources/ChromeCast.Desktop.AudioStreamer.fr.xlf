@@ -403,6 +403,10 @@
           <source>silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
           <target state="final">silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         </trans-unit>
+        <trans-unit id="Group" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
+          <source>..\UserControls\group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
+          <target state="final">..\UserControls\group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -465,8 +469,9 @@
           <target state="translated">Montrer la fenêtre au démarrage</target>
         </trans-unit>
         <trans-unit id="ChromeCast_StreamTitle" translate="yes" xml:space="preserve">
-          <source>Desktop Stream</source>
-          <target state="translated">Desktop Stream</target>
+          <source>Desktop Audio Streamer</source>
+          <target state="needs-review-translation">Desktop Audio Streamer</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Closed" translate="yes" xml:space="preserve">
           <source>Closed</source>
@@ -642,7 +647,7 @@
         </trans-unit>
         <trans-unit id="Connected" translate="yes" xml:space="preserve">
           <source>Connected</source>
-          <target state="new">Connected</target>
+          <target state="needs-review-translation">Connecté</target>
         </trans-unit>
         <trans-unit id="Tab_Main_Text" translate="yes" xml:space="preserve">
           <source>Devices</source>

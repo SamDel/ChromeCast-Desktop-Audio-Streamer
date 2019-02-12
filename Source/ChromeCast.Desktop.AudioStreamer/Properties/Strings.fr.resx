@@ -52,7 +52,7 @@
     <value>Montrer la fenêtre au démarrage</value>
   </data>
   <data name="ChromeCast_StreamTitle" xml:space="preserve">
-    <value>Desktop Stream</value>
+    <value>Desktop Audio Streamer</value>
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Fermé</value>
@@ -170,6 +170,9 @@
   </data>
   <data name="Label_NewVersionAvailable" xml:space="preserve">
     <value>A new version is available on Github</value>
+  </data>
+  <data name="Connected" xml:space="preserve">
+    <value>Connecté</value>
   </data>
   <data name="Tab_Main_Text" xml:space="preserve">
     <value>Appareils</value>

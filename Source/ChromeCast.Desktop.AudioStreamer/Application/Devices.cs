@@ -29,29 +29,120 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null || discoveredDevice == null)
                 return;
 
-            var existingDevice = deviceList.FirstOrDefault(
-                d => d.GetHost().Equals(discoveredDevice.IPAddress)
-                && d.GetPort().Equals(discoveredDevice.Port));
-            if (existingDevice == null)
-            {
-                if (!deviceList.Any(d => d.GetUsn() != null && 
-                    d.GetUsn().Equals(discoveredDevice.Usn) && 
-                    d.GetPort().Equals(discoveredDevice.Port)))
-                {
-                    var newDevice = DependencyFactory.Container.Resolve<Device>();
-                    newDevice.Initialize(discoveredDevice);
-                    deviceList.Add(newDevice);
-                    onAddDeviceCallback?.Invoke(newDevice);
-                    newDevice.OnGetStatus();
+            if (discoveredDevice.Port == 0 || discoveredDevice.Port == 10001)
+                return;
 
-                    if (AutoStart && !newDevice.IsGroup())
-                        newDevice.OnClickPlayStop();
-                }
+            if (!discoveredDevice.AddedByDeviceInfo)
+            {
+                if (!discoveredDevice.IsGroup)
+                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
             }
             else
             {
-                existingDevice.Initialize(discoveredDevice);
+                lock(deviceList)
+                {
+                    var existingDevice = GetDevice(discoveredDevice);
+                    if (existingDevice == null)
+                    {
+                        var newDevice = DependencyFactory.Container.Resolve<Device>();
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                        deviceList.Add(newDevice);
+                        onAddDeviceCallback?.Invoke(newDevice);
+
+                        if (AutoStart && !newDevice.IsGroup())
+                            newDevice.ResumePlaying();
+                    }
+                    else
+                    {
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                    }
+                }
             }
+        }
+
+        /// <summary>
+        /// Get the device with the IP and port.
+        /// </summary>
+        /// <returns></returns>
+        private IDevice GetDevice(DiscoveredDevice discoveredDevice)
+        {
+            if (discoveredDevice == null)
+                return null;
+
+            if (discoveredDevice.IsGroup)
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Group?.uuid == discoveredDevice.Group?.uuid);
+            else
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.DeviceInfo?.mac_address == discoveredDevice.Eureka?.DeviceInfo?.mac_address);
+        }
+
+        /// <summary>
+        /// Callback for when the device information is collected.
+        /// </summary>
+        /// <param name="eurekaIn"></param>
+        private void SetDeviceInformation(DeviceEureka eurekaIn)
+        {
+            if (eurekaIn?.Multizone?.groups == null)
+                return;
+
+            var discoveredDevice = new DiscoveredDevice
+            {
+                IPAddress = eurekaIn.Net.ip_address,
+                Name = eurekaIn.Name,
+                Port = 8009,
+                Protocol = "",
+                Usn = null,
+                IsGroup = false,
+                AddedByDeviceInfo = true,
+                Eureka = eurekaIn
+            };
+            OnDeviceAvailable(discoveredDevice);
+
+            foreach (var group in eurekaIn.Multizone.groups)
+            {
+                discoveredDevice = new DiscoveredDevice
+                {
+                    IPAddress = GetIpOfGroup(group, eurekaIn),
+                    Name = group.name,
+                    Port = GetPortOfGroup(group, eurekaIn),
+                    Protocol = "",
+                    Usn = null,
+                    IsGroup = true,
+                    AddedByDeviceInfo = true,
+                    Eureka = eurekaIn,
+                    Group = group
+                };
+
+                // Add the group.
+                if (group.elected_leader == "self")
+                {
+                    OnDeviceAvailable(discoveredDevice);
+                }
+
+                // Get device information from unknown devices.
+                if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
+                {
+                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                }
+            }
+        }
+
+        private string GetIpOfGroup(Group group, DeviceEureka eurekaIn)
+        {
+            if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
+                return eurekaIn.Net.ip_address;
+
+            return group.elected_leader.Substring(0, group.elected_leader.IndexOf(":"));
+        }
+
+        private int GetPortOfGroup(Group group, DeviceEureka eurekaIn)
+        {
+            if (group.elected_leader == null || group.elected_leader == "self" || group.elected_leader.IndexOf(":") < 0)
+                return group.cast_port;
+
+            if (int.TryParse(group.elected_leader.Substring(group.elected_leader.IndexOf(":") + 1), out int result))
+                return result;
+
+            return 0;
         }
 
         /// <summary>

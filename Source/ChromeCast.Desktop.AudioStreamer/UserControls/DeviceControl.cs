@@ -29,6 +29,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             }
 
             btnDevice.Text = name;
+            pictureGroup.Visible = device.IsGroup();
         }
 
         public string GetDeviceName()
@@ -49,6 +50,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             switch (state)
             {
                 case DeviceState.NotConnected:
+                case DeviceState.Connected:
                 case DeviceState.Idle:
                 case DeviceState.Disposed:
                 case DeviceState.LaunchingApplication:

@@ -63,10 +63,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
 
         private void OnServiceChanged(object sender, ServiceAnnouncementEventArgs e)
         {
+            //TODO
         }
 
         private void OnServiceRemoved(object sender, ServiceAnnouncementEventArgs e)
         {
+            //TODO
         }
 
         private void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
@@ -78,7 +80,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                 Port = e.Announcement.Port,
                 Name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", ""),
                 Headers = JsonConvert.SerializeObject(e.Announcement.Txt),
-                Usn = e.Announcement.Hostname
+                Usn = e.Announcement.Hostname,
             };
 
             if (discoveredDevice.Name != null 

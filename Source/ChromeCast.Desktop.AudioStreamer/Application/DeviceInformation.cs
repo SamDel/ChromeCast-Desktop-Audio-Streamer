@@ -21,9 +21,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             Task.Run(async () => {
                 var http = new HttpClient();
                 var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
-                var receiveStream = response.Content.ReadAsStreamAsync();
-                receiveStream.Wait();
-                var readStream = new StreamReader(receiveStream.Result, Encoding.UTF8);
+                var receiveStream = await response.Content.ReadAsStreamAsync();
+                var readStream = new StreamReader(receiveStream, Encoding.UTF8);
                 var eurekaInfo = readStream.ReadToEnd();
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
@@ -55,16 +54,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public class DeviceEureka
     {
         public Audio Audio { get; set; }
+        [JsonProperty("build_info")]
         public BuildInfo BuildInfo { get; set; }
         public Detail Detail { get; set; }
+        [JsonProperty("device_info")]
         public DeviceInfo DeviceInfo { get; set; }
         public Multizone Multizone { get; set; }
         public string Name { get; set; }
         public Net Net { get; set; }
+        [JsonProperty("opt_in")]
         public OptIn OptIn { get; set; }
         public Proxy Proxy { get; set; }
         public Settings Settings { get; set; }
         public Setup Setup { get; set; }
+        [JsonProperty("user_eq")]
         public UserEq UserEq { get; set; }
         public int Version { get; set; }
         public Wifi Wifi { get; set; }
@@ -133,6 +136,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class DeviceInfo
     {
+        [JsonProperty("4k_blocked")]
         public int __invalid_name__4k_blocked { get; set; }
         public Capabilities capabilities { get; set; }
         public string cloud_device_id { get; set; }
