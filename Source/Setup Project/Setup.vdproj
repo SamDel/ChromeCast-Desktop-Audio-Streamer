@@ -3409,6 +3409,17 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_972B2CC7F81D46C6AE3D1FDD7A457246"
+            {
+            "Name" = "8:#1921"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:StartMenuFolder"
+                "Folders"
+                {
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_A5EFEDCCDE52435FB3E89B025620621F"
             {
             "Name" = "8:#1916"
@@ -3449,7 +3460,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
         "ProductCode" = "8:{A1F854C1-53A3-45A1-8467-445C7ABB79F0}"
-        "PackageCode" = "8:{2122E90A-1725-4F4D-8485-062D9B56C0A1}"
+        "PackageCode" = "8:{07BC68CC-FC53-432C-A86C-4019C85B4401}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -3569,6 +3580,20 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_0B6FA0B9D48948E9B9533527981FA4C0"
+            {
+            "Name" = "8:Desktop Audio Streamer"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_1C1343AA50FC466A87CE9AE892D5E5AF"
+            "Folder" = "8:_972B2CC7F81D46C6AE3D1FDD7A457246"
+            "WorkingFolder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Icon" = "8:_D25094A991AB488B912EEC3298515DAB"
+            "Feature" = "8:"
+            }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F1EAE4E47E384F699811F574ADBBF40B"
             {
             "Name" = "8:Desktop Audio Streamer"
