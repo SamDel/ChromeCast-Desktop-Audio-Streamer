@@ -48,6 +48,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
             deviceState = DeviceState.NotConnected;
             discoveredDevice = new DiscoveredDevice();
+            volumeSetting = new Volume
+            {
+                controlType = "attenuation",
+                level = 0.0f,
+                muted = false,
+                stepInterval = 0.05f
+            };
         }
 
         /// <summary>
@@ -85,13 +92,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            volumeSetting = new Volume
-            {
-                controlType = "attenuation",
-                level = 0.0f,
-                muted = false,
-                stepInterval = 0.05f
-            };
             if (ipChanged && deviceState == DeviceState.Playing)
             {
                 ResumePlaying();
