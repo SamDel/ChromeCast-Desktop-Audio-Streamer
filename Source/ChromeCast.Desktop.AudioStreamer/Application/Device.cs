@@ -183,7 +183,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 2)
+            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
             {
                 deviceCommunication.GetStatus();
                 GetDeviceInformation();

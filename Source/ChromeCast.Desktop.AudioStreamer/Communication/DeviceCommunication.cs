@@ -390,7 +390,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         || device.GetDeviceState() == DeviceState.Idle)
                     && attempt++ < 6)
                 {
-                    GetStatus();
+                    device.OnGetStatus();
                     Task.Delay(5000).Wait();
                     if (device.GetDeviceState() == DeviceState.Connected
                         || device.GetDeviceState() == DeviceState.Idle)
