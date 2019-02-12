@@ -12,7 +12,7 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
-    public class DeviceConnection : IDeviceConnection
+    public class DeviceConnection : IDeviceConnection, IDisposable
     {
         private Func<string> getHost;
         private Func<int> getPort;
@@ -58,7 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                     if (!currentAynchResult.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5), false))
                     {
-                        Dispose();
+                        CloseConnection();
                         throw new TimeoutException();
                     }
                 }
@@ -75,7 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
                     var host = getHost?.Invoke();
                     logger.Log($"ex [{host}]: Connect {ex.Message}");
-                    Dispose();
+                    CloseConnection();
                 }
                 catch (Exception innerEx)
                 {
@@ -96,7 +96,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 if (state != DeviceConnectionState.Connecting)
                 {
-                    Dispose();
+                    CloseConnection();
                 }
             }
             catch (Exception ex)
@@ -135,7 +135,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     setDeviceState?.Invoke(DeviceState.ConnectError, null);
                     var host = getHost?.Invoke();
                     logger.Log($"ex [{host}]: ConnectCallback {ex.Message}");
-                    Dispose();
+                    CloseConnection();
                 }
                 catch (Exception innerEx)
                 {
@@ -218,7 +218,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             catch (Exception ex)
             {
                 Console.WriteLine($"StartReceive: {ex.Message}");
-                Dispose();
+                CloseConnection();
             }
         }
 
@@ -239,7 +239,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                Dispose();
+                CloseConnection();
             }
             if (byteCount > 0)
             {
@@ -260,12 +260,30 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Dispose the connection.
         /// </summary>
+        private void CloseConnection()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Dispose the connection.
+        /// </summary>
         public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        protected virtual void Dispose(bool cleanupAll)
         {
             try
             {
-                tcpClient?.Close();
-                sslStream?.Close();
+                if (tcpClient != null)
+                    tcpClient.Close();
+                if (sslStream != null)
+                    sslStream.Close();
             }
             catch (Exception ex)
             {

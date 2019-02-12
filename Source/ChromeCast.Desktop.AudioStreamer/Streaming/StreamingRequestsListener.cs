@@ -15,7 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         public StringBuilder receiveBuffer = new StringBuilder();
     }
 
-    public class StreamingRequestsListener : IStreamingRequestsListener
+    public class StreamingRequestsListener : IStreamingRequestsListener, IDisposable
     {
         public ManualResetEvent allDone = new ManualResetEvent(false);
         private Action<Socket, string> onConnectCallback;
@@ -107,6 +107,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                     handlerSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCallback), state);
                 }
             }
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        protected virtual void Dispose(bool cleanupAll)
+        {
+            if (allDone != null)
+                allDone.Dispose();
+            if (listener != null)
+                listener.Dispose();
         }
     }
 }

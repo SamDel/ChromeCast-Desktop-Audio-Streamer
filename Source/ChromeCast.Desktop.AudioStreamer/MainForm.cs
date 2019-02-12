@@ -297,9 +297,9 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             if (chkHook.Checked)
-                SetWindowsHook.Start(devices);
+                NativeMethods.StartSetWindowsHooks(devices);
             else
-                SetWindowsHook.Stop();
+                NativeMethods.StopSetWindowsHooks();
         }
 
         private void BtnVolumeUp_Click(object sender, EventArgs e)

@@ -14,11 +14,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
     {
         private MemoryStream Output { get; set; }
         private LameMP3FileWriter Writer { get; set; }
-        public ILogger logger { get; set; }
+        private ILogger Logger { get; set; }
 
         public Mp3Stream(ILogger loggerIn)
         {
-            logger = loggerIn;
+            Logger = loggerIn;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : {ex.Message}");
+                Logger.Log($"ex : {ex.Message}");
             }
         }
 

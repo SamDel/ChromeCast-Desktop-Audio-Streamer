@@ -75,131 +75,131 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class Audio
     {
-        public bool digital { get; set; }
+        public bool Digital { get; set; }
     }
 
     public class BuildInfo
     {
-        public int build_type { get; set; }
-        public string cast_build_revision { get; set; }
-        public int cast_control_version { get; set; }
-        public int preview_channel_state { get; set; }
-        public string release_track { get; set; }
-        public string system_build_number { get; set; }
+        public int Build_type { get; set; }
+        public string Cast_build_revision { get; set; }
+        public int Cast_control_version { get; set; }
+        public int Preview_channel_state { get; set; }
+        public string Release_track { get; set; }
+        public string System_build_number { get; set; }
     }
 
     public class IconList
     {
-        public int depth { get; set; }
-        public int height { get; set; }
-        public string mimetype { get; set; }
-        public string url { get; set; }
-        public int width { get; set; }
+        public int Depth { get; set; }
+        public int Height { get; set; }
+        public string Mimetype { get; set; }
+        public string Url { get; set; }
+        public int Width { get; set; }
     }
 
     public class Locale
     {
-        public string display_string { get; set; }
+        public string Display_string { get; set; }
     }
 
     public class Detail
     {
-        public List<IconList> icon_list { get; set; }
-        public Locale locale { get; set; }
+        public List<IconList> Icon_list { get; set; }
+        public Locale Locale { get; set; }
     }
 
     public class Capabilities
     {
-        public bool audio_hdr_supported { get; set; }
-        public bool audio_surround_mode_supported { get; set; }
-        public bool ble_supported { get; set; }
-        public bool cloudcast_supported { get; set; }
-        public bool display_supported { get; set; }
-        public bool fdr_supported { get; set; }
-        public bool hdmi_prefer_50hz_supported { get; set; }
-        public bool hdmi_prefer_high_fps_supported { get; set; }
-        public bool hi_res_audio_supported { get; set; }
-        public bool hotspot_supported { get; set; }
-        public bool https_setup_supported { get; set; }
-        public bool keep_hotspot_until_connected_supported { get; set; }
-        public bool multizone_supported { get; set; }
-        public bool opencast_supported { get; set; }
-        public bool preview_channel_supported { get; set; }
-        public bool reboot_supported { get; set; }
-        public bool setup_supported { get; set; }
-        public bool stats_supported { get; set; }
-        public bool system_sound_effects_supported { get; set; }
-        public bool user_eq_supported { get; set; }
-        public bool wifi_auto_save_supported { get; set; }
-        public bool wifi_supported { get; set; }
+        public bool Audio_hdr_supported { get; set; }
+        public bool Audio_surround_mode_supported { get; set; }
+        public bool Ble_supported { get; set; }
+        public bool Cloudcast_supported { get; set; }
+        public bool Display_supported { get; set; }
+        public bool Fdr_supported { get; set; }
+        public bool Hdmi_prefer_50hz_supported { get; set; }
+        public bool Hdmi_prefer_high_fps_supported { get; set; }
+        public bool Hi_res_audio_supported { get; set; }
+        public bool Hotspot_supported { get; set; }
+        public bool Https_setup_supported { get; set; }
+        public bool Keep_hotspot_until_connected_supported { get; set; }
+        public bool Multizone_supported { get; set; }
+        public bool Opencast_supported { get; set; }
+        public bool Preview_channel_supported { get; set; }
+        public bool Reboot_supported { get; set; }
+        public bool Setup_supported { get; set; }
+        public bool Stats_supported { get; set; }
+        public bool System_sound_effects_supported { get; set; }
+        public bool User_eq_supported { get; set; }
+        public bool Wifi_auto_save_supported { get; set; }
+        public bool Wifi_supported { get; set; }
     }
 
     public class DeviceInfo
     {
         [JsonProperty("4k_blocked")]
         public int __invalid_name__4k_blocked { get; set; }
-        public Capabilities capabilities { get; set; }
-        public string cloud_device_id { get; set; }
-        public string factory_country_code { get; set; }
-        public string hotspot_bssid { get; set; }
-        public string local_authorization_token_hash { get; set; }
-        public string mac_address { get; set; }
-        public string manufacturer { get; set; }
-        public string model_name { get; set; }
-        public string product_name { get; set; }
-        public string public_key { get; set; }
-        public string ssdp_udn { get; set; }
-        public double uptime { get; set; }
+        public Capabilities Capabilities { get; set; }
+        public string Cloud_device_id { get; set; }
+        public string Factory_country_code { get; set; }
+        public string Hotspot_bssid { get; set; }
+        public string Local_authorization_token_hash { get; set; }
+        public string Mac_address { get; set; }
+        public string Manufacturer { get; set; }
+        public string Model_name { get; set; }
+        public string Product_name { get; set; }
+        public string Public_key { get; set; }
+        public string Ssdp_udn { get; set; }
+        public double Uptime { get; set; }
     }
 
     public class Group
     {
-        public int cast_port { get; set; }
-        public string channel_selection { get; set; }
-        public string elected_leader { get; set; }
-        public string leader { get; set; }
-        public bool multichannel_group { get; set; }
-        public string name { get; set; }
-        public double stereo_balance { get; set; }
-        public string uuid { get; set; }
+        public int Cast_port { get; set; }
+        public string Channel_selection { get; set; }
+        public string Elected_leader { get; set; }
+        public string Leader { get; set; }
+        public bool Multichannel_group { get; set; }
+        public string Name { get; set; }
+        public double Stereo_balance { get; set; }
+        public string Uuid { get; set; }
     }
 
     public class Multizone
     {
-        public double audio_output_delay { get; set; }
-        public double audio_output_delay_hdmi { get; set; }
-        public double audio_output_delay_oem { get; set; }
-        public string aux_in_group { get; set; }
-        public List<Group> groups { get; set; }
-        public int multichannel_status { get; set; }
+        public double Audio_output_delay { get; set; }
+        public double Audio_output_delay_hdmi { get; set; }
+        public double Audio_output_delay_oem { get; set; }
+        public string Aux_in_group { get; set; }
+        public List<Group> Groups { get; set; }
+        public int Multichannel_status { get; set; }
     }
 
     public class Net
     {
-        public bool ethernet_connected { get; set; }
-        public string ip_address { get; set; }
-        public bool online { get; set; }
+        public bool Ethernet_connected { get; set; }
+        public string Ip_address { get; set; }
+        public bool Online { get; set; }
     }
 
     public class OptIn
     {
-        public bool audio_hdr { get; set; }
-        public int audio_surround_mode { get; set; }
-        public bool autoplay_on_signal { get; set; }
-        public bool cloud_ipc { get; set; }
-        public bool hdmi_prefer_50hz { get; set; }
-        public bool hdmi_prefer_high_fps { get; set; }
-        public bool managed_mode { get; set; }
-        public bool opencast { get; set; }
-        public bool preview_channel { get; set; }
-        public bool remote_ducking { get; set; }
-        public bool stats { get; set; }
-        public bool ui_flipped { get; set; }
+        public bool Audio_hdr { get; set; }
+        public int Audio_surround_mode { get; set; }
+        public bool Autoplay_on_signal { get; set; }
+        public bool Cloud_ipc { get; set; }
+        public bool Hdmi_prefer_50hz { get; set; }
+        public bool Hdmi_prefer_high_fps { get; set; }
+        public bool Managed_mode { get; set; }
+        public bool Opencast { get; set; }
+        public bool Preview_channel { get; set; }
+        public bool Remote_ducking { get; set; }
+        public bool Stats { get; set; }
+        public bool Ui_flipped { get; set; }
     }
 
     public class Proxy
     {
-        public string mode { get; set; }
+        public string Mode { get; set; }
     }
 
     public class ClosedCaption
@@ -208,82 +208,64 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class Settings
     {
-        public ClosedCaption closed_caption { get; set; }
-        public int control_notifications { get; set; }
-        public string country_code { get; set; }
-        public string locale { get; set; }
-        public int network_standby { get; set; }
-        public bool system_sound_effects { get; set; }
-        public int time_format { get; set; }
-        public int wake_on_cast { get; set; }
+        public ClosedCaption Closed_caption { get; set; }
+        public int Control_notifications { get; set; }
+        public string Country_code { get; set; }
+        public string Locale { get; set; }
+        public int Network_standby { get; set; }
+        public bool System_sound_effects { get; set; }
+        public int Time_format { get; set; }
+        public int Wake_on_cast { get; set; }
     }
 
     public class Stats
     {
-        public int num_check_connectivity { get; set; }
-        public int num_connect_wifi { get; set; }
-        public int num_connected_wifi_not_saved { get; set; }
-        public int num_initial_eureka_info { get; set; }
-        public int num_obtain_ip { get; set; }
+        public int Num_check_connectivity { get; set; }
+        public int Num_connect_wifi { get; set; }
+        public int Num_connected_wifi_not_saved { get; set; }
+        public int Num_initial_eureka_info { get; set; }
+        public int Num_obtain_ip { get; set; }
     }
 
     public class Setup
     {
-        public int setup_state { get; set; }
-        public string ssid_suffix { get; set; }
-        public Stats stats { get; set; }
-        public bool tos_accepted { get; set; }
+        public int Setup_state { get; set; }
+        public string Ssid_suffix { get; set; }
+        public Stats Stats { get; set; }
+        public bool Tos_accepted { get; set; }
     }
 
     public class HighShelf
     {
-        public double frequency { get; set; }
-        public double gain_db { get; set; }
-        public double quality { get; set; }
+        public double Frequency { get; set; }
+        public double Gain_db { get; set; }
+        public double Quality { get; set; }
     }
 
     public class LowShelf
     {
-        public double frequency { get; set; }
-        public double gain_db { get; set; }
-        public double quality { get; set; }
+        public double Frequency { get; set; }
+        public double Gain_db { get; set; }
+        public double Quality { get; set; }
     }
 
     public class UserEq
     {
-        public HighShelf high_shelf { get; set; }
-        public LowShelf low_shelf { get; set; }
-        public int max_peaking_eqs { get; set; }
-        public List<object> peaking_eqs { get; set; }
+        public HighShelf High_shelf { get; set; }
+        public LowShelf Low_shelf { get; set; }
+        public int Max_peaking_eqs { get; set; }
+        public List<object> Peaking_eqs { get; set; }
     }
 
     public class Wifi
     {
-        public string bssid { get; set; }
-        public bool has_changes { get; set; }
-        public int noise_level { get; set; }
-        public int signal_level { get; set; }
-        public string ssid { get; set; }
-        public bool wpa_configured { get; set; }
-        public int wpa_id { get; set; }
-        public int wpa_state { get; set; }
-    }
-
-    public class RootObject
-    {
-        public Audio audio { get; set; }
-        public BuildInfo build_info { get; set; }
-        public Detail detail { get; set; }
-        public DeviceInfo device_info { get; set; }
-        public Multizone multizone { get; set; }
-        public string name { get; set; }
-        public Net net { get; set; }
-        public OptIn opt_in { get; set; }
-        public Proxy proxy { get; set; }
-        public Settings settings { get; set; }
-        public Setup setup { get; set; }
-        public UserEq user_eq { get; set; }
-        public int version { get; set; }
-        public Wifi wifi { get; set; }
+        public string Bssid { get; set; }
+        public bool Has_changes { get; set; }
+        public int Noise_level { get; set; }
+        public int Signal_level { get; set; }
+        public string Ssid { get; set; }
+        public bool Wpa_configured { get; set; }
+        public int Wpa_id { get; set; }
+        public int Wpa_state { get; set; }
     }
 }

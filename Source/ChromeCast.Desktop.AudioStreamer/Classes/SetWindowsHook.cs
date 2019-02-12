@@ -6,7 +6,7 @@ using ChromeCast.Desktop.AudioStreamer.Application;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
-    public class SetWindowsHook
+    public class NativeMethods
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
@@ -25,7 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// Start using hte hook.
         /// </summary>
         /// <param name="devicesIn">devices object that's used to trigger the events</param>
-        public static void Start(IDevices devicesIn)
+        public static void StartSetWindowsHooks(IDevices devicesIn)
         {
             devices = devicesIn;
 
@@ -41,7 +41,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// <summary>
         /// Stop using the hooks.
         /// </summary>
-        public static void Stop()
+        public static void StopSetWindowsHooks()
         {
             try
             {
@@ -121,7 +121,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
     }
 }

@@ -14,7 +14,6 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -66,10 +65,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (ipChanged ||
                 discoveredDevice.Name != discoveredDeviceIn.Name ||
                 discoveredDevice.Port != discoveredDeviceIn.Port ||
-                JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.groups)
-                    != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.groups))
+                JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.Groups)
+                    != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.Groups))
             {
-                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.groups)}");
+                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.Groups)}");
             }
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;

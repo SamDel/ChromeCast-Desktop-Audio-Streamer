@@ -16,7 +16,7 @@ using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
-    public class ApplicationLogic : IApplicationLogic
+    public class ApplicationLogic : IApplicationLogic, IDisposable
     {
         private IDevices devices;
         private IMainForm mainForm;
@@ -346,7 +346,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void CloseApplication()
         {
             SaveSettings();
-            SetWindowsHook.Stop();
+            NativeMethods.StopSetWindowsHooks();
             loopbackRecorder?.StopRecording();
             devices?.Dispose();
             streamingRequestListener?.StopListening();
@@ -359,7 +359,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             reduceLagThreshold = lagThresholdIn;
         }
 
-        
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        protected virtual void Dispose(bool cleanupAll)
+        {
+            notifyIcon.Dispose();
+        }
+
+
         #region private helpers
 
         /// <summary>

@@ -54,11 +54,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             // Add a device
             var devices = new Devices();
             devices.SetCallback(OnAddDeviceCallback);
-            var discoveredDevice = new DiscoveredDevice();
-            discoveredDevice.IPAddress = "192.168.111.111";
-            discoveredDevice.Usn = "usn";
-            discoveredDevice.Name = "Device_Name";
-            discoveredDevice.Port = 8009;
+            var discoveredDevice = new DiscoveredDevice
+            {
+                IPAddress = "192.168.111.111",
+                Usn = "usn",
+                Name = "Device_Name",
+                Port = 8009
+            };
             devices.OnDeviceAvailable(discoveredDevice);
 
             asyncEvent.WaitOne(100);
