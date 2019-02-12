@@ -135,6 +135,9 @@
   <data name="Log_Out" xml:space="preserve">
     <value>sortie</value>
   </data>
+  <data name="MainForm_Text" xml:space="preserve">
+    <value>Desktop Audio Streamer</value>
+  </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
     <value>Aucun appareil d'enregistrement trouvé.</value>
   </data>

@@ -475,7 +475,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ChromeCast Desktop Audio Streamer.
+        ///   Looks up a localized string similar to Desktop Audio Streamer.
         /// </summary>
         internal static string MainForm_Text {
             get {

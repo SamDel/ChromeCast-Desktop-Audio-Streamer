@@ -581,8 +581,8 @@
           <target state="translated">sortie</target>
         </trans-unit>
         <trans-unit id="MainForm_Text" translate="yes" xml:space="preserve">
-          <source>ChromeCast Desktop Audio Streamer</source>
-          <target state="new">ChromeCast Desktop Audio Streamer</target>
+          <source>Desktop Audio Streamer</source>
+          <target state="translated">Desktop Audio Streamer</target>
         </trans-unit>
         <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
           <source>No recording devices found.</source>
