@@ -42,9 +42,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 else
                 {
                     Send(audioHeader.GetMp3Header(format, streamFormat));
-
-                    // Hack to start mp3 streams faster: Send a 7.8 seconds buffer of 320 kbps silence.
-                    Send(Properties.Resources.silence);
                 }
             }
 

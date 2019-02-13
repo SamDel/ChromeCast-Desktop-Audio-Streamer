@@ -72,6 +72,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             loopbackRecorder.GetDevices(mainForm);
+            loopbackRecorder?.StartRecording(OnRecordingDataAvailable);
         }
 
         /// <summary>
@@ -83,7 +84,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             Console.WriteLine(string.Format("Connection added from {0}", socketIn.RemoteEndPoint));
 
-            loopbackRecorder?.StartRecording(OnRecordingDataAvailable);
             devices?.AddStreamingConnection(socketIn, httpRequestIn);
         }
 

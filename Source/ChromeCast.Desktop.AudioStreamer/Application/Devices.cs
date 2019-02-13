@@ -19,6 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool AutoStart;
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
+        private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -200,6 +201,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 device.Stop();
             }
+            applicationBuffer.ClearBuffer();
         }
 
         /// <summary>
@@ -230,7 +232,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             foreach (var device in deviceList)
             {
                 if (device.AddStreamingConnection(remoteAddress, socket))
+                {
+                    applicationBuffer.SendStartupBuffer(device);
                     break;
+                }
             }
         }
 
@@ -250,6 +255,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
             }
+
+            // Keep a buffer
+            applicationBuffer.AddToBuffer(dataToSend, format, reduceLagThreshold, streamFormat);
         }
 
         /// <summary>
