@@ -17,6 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private List<IDevice> deviceList = new List<IDevice>();
         private Action<Device> onAddDeviceCallback;
         private bool AutoStart;
+        private bool StartLastUsedDevices;
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
         private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
@@ -50,7 +51,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
-                        if (AutoStart && !newDevice.IsGroup())
+                        var wasPlaying = applicationLogic.WasPlaying(discoveredDevice);
+                        if ((AutoStart && !newDevice.IsGroup()) || (StartLastUsedDevices && wasPlaying))
                             newDevice.ResumePlaying();
                     }
                     else
@@ -293,9 +295,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Set the value to auto start a device right after it has been added.
         /// </summary>
         /// <param name="autoStartIn"></param>
-        public void SetAutoStart(bool autoStartIn)
+        public void SetSettings(UserSettings settingsIn)
         {
-            AutoStart = autoStartIn;
+            AutoStart = settingsIn.AutoStartDevices ?? false;
+            StartLastUsedDevices = settingsIn.StartLastUsedDevices ?? false;
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeMute();
         void Start();
         void Stop();
-        void SetAutoStart(bool autoStart);
+        void SetSettings(UserSettings settings);
         void SetCallback(Action<Device> onAddDeviceCallbackIn);
         void Dispose();
         void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn);

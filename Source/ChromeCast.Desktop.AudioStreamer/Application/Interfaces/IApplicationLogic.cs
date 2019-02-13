@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using ChromeCast.Desktop.AudioStreamer.Classes;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 using NAudio.Wave;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
@@ -24,5 +25,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void SetCulture(string culture);
         string GetStreamingUrl();
         void SetFilterDevices(FilterDevicesEnum value);
+        bool WasPlaying(DiscoveredDevice discoveredDevice);
     }
 }

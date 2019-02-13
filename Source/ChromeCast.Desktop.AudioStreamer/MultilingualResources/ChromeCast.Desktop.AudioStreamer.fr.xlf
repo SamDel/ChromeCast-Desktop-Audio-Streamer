@@ -672,6 +672,10 @@
           <source>All</source>
           <target state="needs-review-translation">All</target>
         </trans-unit>
+        <trans-unit id="Check_AutonaticallyStartLastUsed_Text" translate="yes" xml:space="preserve">
+          <source>Automatically start last used devices and groups at startup</source>
+          <target state="needs-review-translation">Automatically start last used devices and groups at startup</target>
+        </trans-unit>
       </group>
     </body>
   </file>

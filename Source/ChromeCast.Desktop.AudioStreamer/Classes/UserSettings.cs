@@ -177,5 +177,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["ChromecastDiscoveredDevices"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public bool? StartLastUsedDevices
+        {
+            get
+            {
+                return (bool?)this["StartLastUsedDevices"];
+            }
+            set
+            {
+                this["StartLastUsedDevices"] = value;
+            }
+        }
+
     }
 }

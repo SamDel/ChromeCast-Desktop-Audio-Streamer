@@ -242,9 +242,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 settings.Upgraded = true;
             }
 
-            devices.SetAutoStart(settings.AutoStartDevices ?? false);
+            devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
+            mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
@@ -289,8 +290,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ChromecastDiscoveredDevices = discoveredDevices;
             settings.UseKeyboardShortCuts = mainForm.GetUseKeyboardShortCuts();
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
-            settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.AutoRestart = mainForm.GetAutoRestart();
+            settings.StartLastUsedDevices = mainForm.GetStartLastUsedDevices();
+            settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.StreamFormat = StreamFormatSelected;
             settings.Culture = Culture;
             settings.LogDeviceCommunication = mainForm.GetLogDeviceCommunication();
@@ -316,6 +318,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ChromecastDiscoveredDevices = new List<DiscoveredDevice>();
             settings.UseKeyboardShortCuts = false;
             settings.AutoStartDevices = false;
+            settings.StartLastUsedDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
             settings.StreamFormat = SupportedStreamFormat.Mp3_320;
@@ -325,8 +328,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LagControlValue = 1000;
             settings.StartApplicationWhenWindowsStarts = false;
             settings.FilterDevices = FilterDevicesEnum.ShowAll;
-            devices.SetAutoStart(settings.AutoStartDevices.Value);
+            devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
+            mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
@@ -395,6 +399,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetFilterDevices(FilterDevicesEnum value)
         {
             devices.SetFilterDevices(value);
+        }
+
+        /// <summary>
+        /// Was the device playing when the application was closed for the last time?
+        /// </summary>
+        /// <returns>true if the device was playing, or false</returns>
+        public bool WasPlaying(DiscoveredDevice discoveredDevice)
+        {
+            for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
+            {
+                if (settings.ChromecastDiscoveredDevices[i].Port == discoveredDevice.Port &&
+                    settings.ChromecastDiscoveredDevices[i].Name == discoveredDevice.Name)
+                {
+                    return settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Playing;
+                }
+            }
+
+            return false;
         }
 
 

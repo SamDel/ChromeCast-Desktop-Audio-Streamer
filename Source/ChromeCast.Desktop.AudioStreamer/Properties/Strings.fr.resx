@@ -195,4 +195,7 @@
   <data name="ShowAll" xml:space="preserve">
     <value>All</value>
   </data>
+  <data name="Check_AutonaticallyStartLastUsed_Text" xml:space="preserve">
+    <value>Automatically start last used devices and groups at startup</value>
+  </data>
 </root>

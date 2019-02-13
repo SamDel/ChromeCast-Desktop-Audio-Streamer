@@ -84,6 +84,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkHook.Text = Properties.Strings.Check_KeyboardShortcuts_Text;
             chkShowWindowOnStart.Text = Properties.Strings.Check_ShowWindowOnStart_Text;
             chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
+            chkAutoStartLastUsed.Text = Properties.Strings.Check_AutonaticallyStartLastUsed_Text;
             chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
             chkStartApplicationWhenWindowsStarts.Text = Properties.Strings.Check_StartApplicationWhenWindowsStarts_Text;
@@ -807,6 +808,22 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void CmbFilterDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
             applicationLogic.SetFilterDevices((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value);
+        }
+
+        public void SetStartLastUsedDevices(bool value)
+        {
+            if (chkAutoStartLastUsed == null)
+                return;
+
+            chkAutoStartLastUsed.Checked = value;
+        }
+
+        public bool? GetStartLastUsedDevices()
+        {
+            if (chkAutoStartLastUsed == null)
+                return false;
+
+            return chkAutoStartLastUsed.Checked;
         }
     }
 }
