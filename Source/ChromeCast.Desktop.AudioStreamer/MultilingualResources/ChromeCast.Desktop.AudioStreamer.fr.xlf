@@ -454,7 +454,7 @@
         </trans-unit>
         <trans-unit id="Check_AutomaticallyStart_Text" translate="yes" xml:space="preserve">
           <source>Automatically start devices at startup</source>
-          <target state="translated">Démarrage automatique des appareils au démarrage</target>
+          <target state="translated">Démarrage automatique des périphériques au démarrage</target>
         </trans-unit>
         <trans-unit id="Check_KeyboardShortcuts_Text" translate="yes" xml:space="preserve">
           <source>Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M</source>
@@ -486,7 +486,7 @@
         </trans-unit>
         <trans-unit id="Group_Devices_Text" translate="yes" xml:space="preserve">
           <source>Devices (click name to start streaming)</source>
-          <target state="translated">Appareils (cliquez sur le nom pour commencer le streaming)</target>
+          <target state="translated">Périphériques (cliquez sur le nom pour commencer le streaming)</target>
         </trans-unit>
         <trans-unit id="Group_Lag_Text" translate="yes" xml:space="preserve">
           <source>Lag Control</source>
@@ -498,7 +498,7 @@
         </trans-unit>
         <trans-unit id="Group_VolumeAllDevices_Text" translate="yes" xml:space="preserve">
           <source>Volume all devices:</source>
-          <target state="translated">Volume de tous les appareils :</target>
+          <target state="translated">Volume de tous les périphériques :</target>
         </trans-unit>
         <trans-unit id="Idle" translate="yes" xml:space="preserve">
           <source>Idle</source>
@@ -518,11 +518,11 @@
         </trans-unit>
         <trans-unit id="Label_LagExperimental_Text" translate="yes" xml:space="preserve">
           <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</source>
-          <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'appareil, sans temps-mort.</target>
+          <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
         </trans-unit>
         <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
           <source>Language</source>
-          <target state="needs-review-translation">La langue</target>
+          <target state="translated">Langue</target>
         </trans-unit>
         <trans-unit id="Label_MaximumLag_Text" translate="yes" xml:space="preserve">
           <source>maximum lag / best quality</source>
@@ -534,7 +534,7 @@
         </trans-unit>
         <trans-unit id="Label_RecordingDevice_Text" translate="yes" xml:space="preserve">
           <source>Recording device:</source>
-          <target state="translated">Appareil d'enregistrement :</target>
+          <target state="translated">Périphérique d'enregistrement :</target>
         </trans-unit>
         <trans-unit id="Label_StreamFormatExtra_Text" translate="yes" xml:space="preserve">
           <source>The mp3 formats have a long lag and buffering time.</source>
@@ -546,11 +546,11 @@
         </trans-unit>
         <trans-unit id="Language_English" translate="yes" xml:space="preserve">
           <source>English</source>
-          <target state="needs-review-translation">Anglais</target>
+          <target state="translated">Anglais</target>
         </trans-unit>
         <trans-unit id="Language_French" translate="yes" xml:space="preserve">
           <source>French</source>
-          <target state="needs-review-translation">Français</target>
+          <target state="translated">Français</target>
         </trans-unit>
         <trans-unit id="LaunchedApplication" translate="yes" xml:space="preserve">
           <source>Launched Application</source>
@@ -586,7 +586,7 @@
         </trans-unit>
         <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
           <source>No recording devices found.</source>
-          <target state="translated">Aucun appareil d'enregistrement trouvé.</target>
+          <target state="translated">Aucun périphérique d'enregistrement trouvé.</target>
         </trans-unit>
         <trans-unit id="NotConnected" translate="yes" xml:space="preserve">
           <source>Not Connected</source>
@@ -618,11 +618,11 @@
         </trans-unit>
         <trans-unit id="Button_ClearLog_Text" translate="yes" xml:space="preserve">
           <source>Clear Log</source>
-          <target state="needs-review-translation">Clear Log</target>
+          <target state="translated">Nettoyer le journal</target>
         </trans-unit>
         <trans-unit id="Check_LogDeviceCommunication_Text" translate="yes" xml:space="preserve">
           <source>Log device communication</source>
-          <target state="needs-review-translation">Log device communication</target>
+          <target state="translated">Journaliser la communication du périphérique</target>
         </trans-unit>
         <trans-unit id="Mp3_128" translate="yes" xml:space="preserve">
           <source>Mp3 (128 kbps)</source>
@@ -638,19 +638,19 @@
         </trans-unit>
         <trans-unit id="MessageBox_NoIPAddress" translate="yes" xml:space="preserve">
           <source>No IP addresses found on your device.</source>
-          <target state="needs-review-translation">No IP addresses found on your device.</target>
+          <target state="translated">Aucune adresse IP trouvée sur votre périphérique.</target>
         </trans-unit>
         <trans-unit id="Label_NewVersionAvailable" translate="yes" xml:space="preserve">
           <source>A new version is available on Github</source>
-          <target state="needs-review-translation">A new version is available on Github</target>
+          <target state="translated">Une nouvelle version est disponible sur Github</target>
         </trans-unit>
         <trans-unit id="Connected" translate="yes" xml:space="preserve">
           <source>Connected</source>
-          <target state="needs-review-translation">Connecté</target>
+          <target state="translated">Connecté</target>
         </trans-unit>
         <trans-unit id="Tab_Main_Text" translate="yes" xml:space="preserve">
           <source>Devices</source>
-          <target state="needs-review-translation">Appareils</target>
+          <target state="translated">Périphériques</target>
         </trans-unit>
         <trans-unit id="Language" translate="yes" xml:space="preserve">
           <source>English</source>
