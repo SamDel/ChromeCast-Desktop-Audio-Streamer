@@ -40,7 +40,7 @@
     <value>Redémarrage automatique lorsque le flux est fermé</value>
   </data>
   <data name="Check_AutomaticallyStart_Text" xml:space="preserve">
-    <value>Démarrage automatique des appareils au démarrage</value>
+    <value>Démarrage automatique des périphériques au démarrage</value>
   </data>
   <data name="Check_KeyboardShortcuts_Text" xml:space="preserve">
     <value>Utiliser les raccourcis clavier : Augmenter = Ctrl+Alt+U; Baisser = Ctrl+Alt+D; Sourdine = Ctrl+Alt+M</value>
@@ -64,7 +64,7 @@
     <value>Retiré</value>
   </data>
   <data name="Group_Devices_Text" xml:space="preserve">
-    <value>Appareils (cliquez sur le nom pour commencer le streaming)</value>
+    <value>Périphériques (cliquez sur le nom pour commencer le streaming)</value>
   </data>
   <data name="Group_Lag_Text" xml:space="preserve">
     <value>Contrôle du décalage</value>
@@ -73,7 +73,7 @@
     <value>Options</value>
   </data>
   <data name="Group_VolumeAllDevices_Text" xml:space="preserve">
-    <value>Volume de tous les appareils :</value>
+    <value>Volume de tous les périphériques :</value>
   </data>
   <data name="Idle" xml:space="preserve">
     <value>Inactif</value>
@@ -88,10 +88,10 @@
     <value>Dernier message en direct :</value>
   </data>
   <data name="Label_LagExperimental_Text" xml:space="preserve">
-    <value>Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'appareil, sans temps-mort.</value>
+    <value>Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</value>
   </data>
   <data name="Label_Language_Text" xml:space="preserve">
-    <value>La langue</value>
+    <value>Langue</value>
   </data>
   <data name="Label_MaximumLag_Text" xml:space="preserve">
     <value>décalage maximum / meilleure quality</value>
@@ -100,7 +100,7 @@
     <value>décalage minimum / faible qualité</value>
   </data>
   <data name="Label_RecordingDevice_Text" xml:space="preserve">
-    <value>Appareil d'enregistrement :</value>
+    <value>Périphérique d'enregistrement :</value>
   </data>
   <data name="Label_StreamFormatExtra_Text" xml:space="preserve">
     <value>Les formats mp3 ont un décalage et un temps de mise en mémoire tampon important.</value>
@@ -139,7 +139,7 @@
     <value>Desktop Audio Streamer</value>
   </data>
   <data name="MessageBox_NoRecordingDevices" xml:space="preserve">
-    <value>Aucun appareil d'enregistrement trouvé.</value>
+    <value>Aucun périphérique d'enregistrement trouvé.</value>
   </data>
   <data name="NotConnected" xml:space="preserve">
     <value>Non connecté</value>
@@ -163,22 +163,22 @@
     <value>Version</value>
   </data>
   <data name="Button_ClearLog_Text" xml:space="preserve">
-    <value>Clear Log</value>
+    <value>Nettoyer le journal</value>
   </data>
   <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
-    <value>Log device communication</value>
+    <value>Journaliser la communication du périphérique</value>
   </data>
   <data name="MessageBox_NoIPAddress" xml:space="preserve">
-    <value>No IP addresses found on your device.</value>
+    <value>Aucune adresse IP trouvée sur votre périphérique.</value>
   </data>
   <data name="Label_NewVersionAvailable" xml:space="preserve">
-    <value>A new version is available on Github</value>
+    <value>Une nouvelle version est disponible sur Github</value>
   </data>
   <data name="Connected" xml:space="preserve">
     <value>Connecté</value>
   </data>
   <data name="Tab_Main_Text" xml:space="preserve">
-    <value>Appareils</value>
+    <value>Périphériques</value>
   </data>
   <data name="Language" xml:space="preserve">
     <value>Français</value>
