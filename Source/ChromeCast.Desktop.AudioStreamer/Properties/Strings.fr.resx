@@ -183,4 +183,7 @@
   <data name="Language" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="Check_StartApplicationWhenWindowsStarts_Text" xml:space="preserve">
+    <value>Start application when Windows starts</value>
+  </data>
 </root>

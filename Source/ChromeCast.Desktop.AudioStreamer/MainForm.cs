@@ -85,6 +85,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
             chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
+            chkStartApplicationWhenWindowsStarts.Text = Properties.Strings.Check_StartApplicationWhenWindowsStarts_Text;
             btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
@@ -681,6 +682,16 @@ namespace ChromeCast.Desktop.AudioStreamer
             return chkLogDeviceCommunication.Checked;
         }
 
+        public void SetStartApplicationWhenWindowsStarts(bool value)
+        {
+            chkStartApplicationWhenWindowsStarts.Checked = value;
+        }
+
+        public bool GetStartApplicationWhenWindowsStarts()
+        {
+            return chkStartApplicationWhenWindowsStarts.Checked;
+        }
+
         private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
         {
             if (chkLogDeviceCommunication == null)
@@ -746,6 +757,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             Process.Start(e.Link.LinkData as string);
+        }
+
+        private void ChkStartApplicationWhenWindowsStarts_CheckedChanged(object sender, EventArgs e)
+        {
+            WindowsStartup.StartApplicationWhenWindowsStarts(chkStartApplicationWhenWindowsStarts.Checked);
         }
     }
 }

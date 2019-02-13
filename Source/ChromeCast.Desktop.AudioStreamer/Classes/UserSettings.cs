@@ -139,6 +139,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+
+        [UserScopedSetting()]
+        public bool? StartApplicationWhenWindowsStarts
+        {
+            get
+            {
+                return (bool?)this["StartApplicationWhenWindowsStarts"];
+            }
+            set
+            {
+                this["StartApplicationWhenWindowsStarts"] = value;
+            }
+        }
+
         [UserScopedSetting()]
         public List<DiscoveredDevice> ChromecastDiscoveredDevices
         {

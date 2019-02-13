@@ -73,6 +73,7 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -272,6 +273,7 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.chkStartApplicationWhenWindowsStarts);
             this.grpOptions.Controls.Add(this.lblNewReleaseAvailable);
             this.grpOptions.Controls.Add(this.chkLogDeviceCommunication);
             this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
@@ -306,7 +308,7 @@
             this.chkLogDeviceCommunication.AutoSize = true;
             this.chkLogDeviceCommunication.Checked = true;
             this.chkLogDeviceCommunication.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 292);
+            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 318);
             this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
             this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
             this.chkLogDeviceCommunication.TabIndex = 35;
@@ -446,7 +448,7 @@
             // chkShowLagControl
             // 
             this.chkShowLagControl.AutoSize = true;
-            this.chkShowLagControl.Location = new System.Drawing.Point(15, 266);
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 292);
             this.chkShowLagControl.Name = "chkShowLagControl";
             this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
             this.chkShowLagControl.TabIndex = 27;
@@ -466,7 +468,7 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(15, 214);
+            this.chkAutoStart.Location = new System.Drawing.Point(15, 240);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(261, 21);
             this.chkAutoStart.TabIndex = 24;
@@ -488,7 +490,7 @@
             // chkAutoRestart
             // 
             this.chkAutoRestart.AutoSize = true;
-            this.chkAutoRestart.Location = new System.Drawing.Point(15, 240);
+            this.chkAutoRestart.Location = new System.Drawing.Point(15, 266);
             this.chkAutoRestart.Name = "chkAutoRestart";
             this.chkAutoRestart.Size = new System.Drawing.Size(325, 21);
             this.chkAutoRestart.TabIndex = 18;
@@ -574,6 +576,17 @@
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
+            // 
+            // chkStartApplicationWhenWindowsStarts
+            // 
+            this.chkStartApplicationWhenWindowsStarts.AutoSize = true;
+            this.chkStartApplicationWhenWindowsStarts.Location = new System.Drawing.Point(15, 214);
+            this.chkStartApplicationWhenWindowsStarts.Name = "chkStartApplicationWhenWindowsStarts";
+            this.chkStartApplicationWhenWindowsStarts.Size = new System.Drawing.Size(268, 21);
+            this.chkStartApplicationWhenWindowsStarts.TabIndex = 37;
+            this.chkStartApplicationWhenWindowsStarts.Text = "Start application when Windows starts";
+            this.chkStartApplicationWhenWindowsStarts.UseVisualStyleBackColor = true;
+            this.chkStartApplicationWhenWindowsStarts.CheckedChanged += new System.EventHandler(this.ChkStartApplicationWhenWindowsStarts_CheckedChanged);
             // 
             // MainForm
             // 
@@ -661,6 +674,7 @@
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
         private System.Windows.Forms.LinkLabel lblNewReleaseAvailable;
+        private System.Windows.Forms.CheckBox chkStartApplicationWhenWindowsStarts;
     }
 }
 

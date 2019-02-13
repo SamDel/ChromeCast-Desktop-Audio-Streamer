@@ -656,6 +656,10 @@
           <source>English</source>
           <target state="translated">Français</target>
         </trans-unit>
+        <trans-unit id="Check_StartApplicationWhenWindowsStarts_Text" translate="yes" xml:space="preserve">
+          <source>Start application when Windows starts</source>
+          <target state="needs-review-translation">Start application when Windows starts</target>
+        </trans-unit>
       </group>
     </body>
   </file>

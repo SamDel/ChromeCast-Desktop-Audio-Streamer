@@ -196,6 +196,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start application when Windows starts.
+        /// </summary>
+        internal static string Check_StartApplicationWhenWindowsStarts_Text {
+            get {
+                return ResourceManager.GetString("Check_StartApplicationWhenWindowsStarts_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Desktop Audio Streamer.
         /// </summary>
         internal static string ChromeCast_StreamTitle {

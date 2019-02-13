@@ -32,5 +32,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetCulture(string culture);
         void SetLogDeviceCommunication(bool logDeviceCommunication);
         bool GetLogDeviceCommunication();
+        void SetStartApplicationWhenWindowsStarts(bool value);
+        bool GetStartApplicationWhenWindowsStarts();
     }
 }

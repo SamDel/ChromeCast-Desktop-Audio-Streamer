@@ -252,6 +252,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
             mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
+            mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
             if (settings.ChromecastDiscoveredDevices != null)
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
@@ -289,6 +290,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LogDeviceCommunication = mainForm.GetLogDeviceCommunication();
             settings.ShowLagControl = mainForm.GetShowLagControl();
             settings.LagControlValue = mainForm.GetLagValue();
+            settings.StartApplicationWhenWindowsStarts = mainForm.GetStartApplicationWhenWindowsStarts();
 
             settings.Save();
         }
@@ -314,6 +316,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LogDeviceCommunication = false;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
+            settings.StartApplicationWhenWindowsStarts = false;
             devices.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
@@ -324,6 +327,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication.Value);
             mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
+            mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts.Value);
             settings.Save();
         }
 
