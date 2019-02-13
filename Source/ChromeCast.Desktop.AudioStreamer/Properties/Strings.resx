@@ -300,4 +300,13 @@
   <data name="Check_StartApplicationWhenWindowsStarts_Text" xml:space="preserve">
     <value>Start application when Windows starts</value>
   </data>
+  <data name="DevicesOnly" xml:space="preserve">
+    <value>Devices only</value>
+  </data>
+  <data name="GroupsOnly" xml:space="preserve">
+    <value>Groups only</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

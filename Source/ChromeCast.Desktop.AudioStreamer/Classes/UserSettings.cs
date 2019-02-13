@@ -139,7 +139,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
-
         [UserScopedSetting()]
         public bool? StartApplicationWhenWindowsStarts
         {
@@ -150,6 +149,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             set
             {
                 this["StartApplicationWhenWindowsStarts"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public FilterDevicesEnum? FilterDevices
+        {
+            get
+            {
+                return (FilterDevicesEnum?)this["FilterDevices"];
+            }
+            set
+            {
+                this["FilterDevices"] = value;
             }
         }
 

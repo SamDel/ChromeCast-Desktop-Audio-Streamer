@@ -46,6 +46,7 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
             this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
@@ -73,7 +74,8 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
+            this.lblFilterDevices = new System.Windows.Forms.Label();
+            this.cmbFilterDevices = new System.Windows.Forms.ComboBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -291,6 +293,17 @@
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
             // 
+            // chkStartApplicationWhenWindowsStarts
+            // 
+            this.chkStartApplicationWhenWindowsStarts.AutoSize = true;
+            this.chkStartApplicationWhenWindowsStarts.Location = new System.Drawing.Point(15, 240);
+            this.chkStartApplicationWhenWindowsStarts.Name = "chkStartApplicationWhenWindowsStarts";
+            this.chkStartApplicationWhenWindowsStarts.Size = new System.Drawing.Size(268, 21);
+            this.chkStartApplicationWhenWindowsStarts.TabIndex = 37;
+            this.chkStartApplicationWhenWindowsStarts.Text = "Start application when Windows starts";
+            this.chkStartApplicationWhenWindowsStarts.UseVisualStyleBackColor = true;
+            this.chkStartApplicationWhenWindowsStarts.CheckedChanged += new System.EventHandler(this.ChkStartApplicationWhenWindowsStarts_CheckedChanged);
+            // 
             // lblNewReleaseAvailable
             // 
             this.lblNewReleaseAvailable.AutoSize = true;
@@ -308,7 +321,7 @@
             this.chkLogDeviceCommunication.AutoSize = true;
             this.chkLogDeviceCommunication.Checked = true;
             this.chkLogDeviceCommunication.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 318);
+            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 344);
             this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
             this.chkLogDeviceCommunication.Size = new System.Drawing.Size(197, 21);
             this.chkLogDeviceCommunication.TabIndex = 35;
@@ -343,12 +356,13 @@
             this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
             this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 29);
             this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
-            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 123);
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 153);
             this.pnlOptionsComboBoxes.TabIndex = 33;
             // 
             // pnlOptionsComboBoxesLabels
             // 
             this.pnlOptionsComboBoxesLabels.AutoSize = true;
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblFilterDevices);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblStreamFormat);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
@@ -356,7 +370,7 @@
             this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
             this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
             this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 108);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 137);
             this.pnlOptionsComboBoxesLabels.TabIndex = 0;
             // 
             // lblStreamFormat
@@ -398,13 +412,14 @@
             // pnlOptionsComboBoxesRight
             // 
             this.pnlOptionsComboBoxesRight.AutoSize = true;
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbFilterDevices);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
             this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
             this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
-            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 115);
+            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 145);
             this.pnlOptionsComboBoxesRight.TabIndex = 1;
             // 
             // cmbLanguage
@@ -448,7 +463,7 @@
             // chkShowLagControl
             // 
             this.chkShowLagControl.AutoSize = true;
-            this.chkShowLagControl.Location = new System.Drawing.Point(15, 292);
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 318);
             this.chkShowLagControl.Name = "chkShowLagControl";
             this.chkShowLagControl.Size = new System.Drawing.Size(228, 21);
             this.chkShowLagControl.TabIndex = 27;
@@ -468,7 +483,7 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(15, 240);
+            this.chkAutoStart.Location = new System.Drawing.Point(15, 266);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(261, 21);
             this.chkAutoStart.TabIndex = 24;
@@ -480,7 +495,7 @@
             this.chkShowWindowOnStart.AutoSize = true;
             this.chkShowWindowOnStart.Checked = true;
             this.chkShowWindowOnStart.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 188);
+            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 214);
             this.chkShowWindowOnStart.Name = "chkShowWindowOnStart";
             this.chkShowWindowOnStart.Size = new System.Drawing.Size(177, 21);
             this.chkShowWindowOnStart.TabIndex = 23;
@@ -490,7 +505,7 @@
             // chkAutoRestart
             // 
             this.chkAutoRestart.AutoSize = true;
-            this.chkAutoRestart.Location = new System.Drawing.Point(15, 266);
+            this.chkAutoRestart.Location = new System.Drawing.Point(15, 292);
             this.chkAutoRestart.Name = "chkAutoRestart";
             this.chkAutoRestart.Size = new System.Drawing.Size(325, 21);
             this.chkAutoRestart.TabIndex = 18;
@@ -501,7 +516,7 @@
             // chkHook
             // 
             this.chkHook.AutoSize = true;
-            this.chkHook.Location = new System.Drawing.Point(15, 162);
+            this.chkHook.Location = new System.Drawing.Point(15, 188);
             this.chkHook.Name = "chkHook";
             this.chkHook.Size = new System.Drawing.Size(556, 21);
             this.chkHook.TabIndex = 14;
@@ -577,16 +592,24 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
-            // chkStartApplicationWhenWindowsStarts
+            // lblFilterDevices
             // 
-            this.chkStartApplicationWhenWindowsStarts.AutoSize = true;
-            this.chkStartApplicationWhenWindowsStarts.Location = new System.Drawing.Point(15, 214);
-            this.chkStartApplicationWhenWindowsStarts.Name = "chkStartApplicationWhenWindowsStarts";
-            this.chkStartApplicationWhenWindowsStarts.Size = new System.Drawing.Size(268, 21);
-            this.chkStartApplicationWhenWindowsStarts.TabIndex = 37;
-            this.chkStartApplicationWhenWindowsStarts.Text = "Start application when Windows starts";
-            this.chkStartApplicationWhenWindowsStarts.UseVisualStyleBackColor = true;
-            this.chkStartApplicationWhenWindowsStarts.CheckedChanged += new System.EventHandler(this.ChkStartApplicationWhenWindowsStarts_CheckedChanged);
+            this.lblFilterDevices.AutoSize = true;
+            this.lblFilterDevices.Location = new System.Drawing.Point(9, 120);
+            this.lblFilterDevices.Name = "lblFilterDevices";
+            this.lblFilterDevices.Size = new System.Drawing.Size(91, 17);
+            this.lblFilterDevices.TabIndex = 32;
+            this.lblFilterDevices.Text = "Filter devices";
+            // 
+            // cmbFilterDevices
+            // 
+            this.cmbFilterDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbFilterDevices.FormattingEnabled = true;
+            this.cmbFilterDevices.Location = new System.Drawing.Point(3, 118);
+            this.cmbFilterDevices.Name = "cmbFilterDevices";
+            this.cmbFilterDevices.Size = new System.Drawing.Size(442, 24);
+            this.cmbFilterDevices.TabIndex = 33;
+            this.cmbFilterDevices.SelectedIndexChanged += new System.EventHandler(this.CmbFilterDevices_SelectedIndexChanged);
             // 
             // MainForm
             // 
@@ -675,6 +698,8 @@
         private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
         private System.Windows.Forms.LinkLabel lblNewReleaseAvailable;
         private System.Windows.Forms.CheckBox chkStartApplicationWhenWindowsStarts;
+        private System.Windows.Forms.Label lblFilterDevices;
+        private System.Windows.Forms.ComboBox cmbFilterDevices;
     }
 }
 

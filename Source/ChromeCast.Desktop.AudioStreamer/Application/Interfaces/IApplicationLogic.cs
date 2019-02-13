@@ -23,5 +23,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void SetStreamFormat(SupportedStreamFormat format);
         void SetCulture(string culture);
         string GetStreamingUrl();
+        void SetFilterDevices(FilterDevicesEnum value);
     }
 }

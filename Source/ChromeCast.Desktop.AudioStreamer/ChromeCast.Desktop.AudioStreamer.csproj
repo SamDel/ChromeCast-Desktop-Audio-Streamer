@@ -123,6 +123,7 @@
     <Compile Include="Classes\ApplicationBuffer.cs" />
     <Compile Include="Classes\ApplicationBufferItem.cs" />
     <Compile Include="Classes\ComboboxItem.cs" />
+    <Compile Include="Classes\FilterDevices.cs" />
     <Compile Include="Classes\Resource.cs" />
     <Compile Include="Classes\SupportedStreamFormat.cs" />
     <Compile Include="Classes\Mp3Stream.cs" />

@@ -348,5 +348,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             return hosts;
         }
+
+        /// <summary>
+        /// The devices filter has changed.
+        /// </summary>
+        /// <param name="value">new filter value</param>
+        public void SetFilterDevices(FilterDevicesEnum value)
+        {
+            foreach (var device in deviceList)
+            {
+                device.GetDeviceControl().Visible = FilterDevices.ShowFilterDevices(device, value);
+            }
+        }
     }
 }

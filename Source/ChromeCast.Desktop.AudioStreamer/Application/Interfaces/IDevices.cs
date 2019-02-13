@@ -24,5 +24,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void Dispose();
         void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn);
         List<DiscoveredDevice> GetHosts();
+        void SetFilterDevices(FilterDevicesEnum value);
     }
 }

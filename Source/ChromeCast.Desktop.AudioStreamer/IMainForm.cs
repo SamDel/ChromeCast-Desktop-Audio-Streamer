@@ -34,5 +34,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool GetLogDeviceCommunication();
         void SetStartApplicationWhenWindowsStarts(bool value);
         bool GetStartApplicationWhenWindowsStarts();
+        void SetFilterDevices(FilterDevicesEnum filterDevicesEnum);
+        FilterDevicesEnum? GetFilterDevices();
     }
 }

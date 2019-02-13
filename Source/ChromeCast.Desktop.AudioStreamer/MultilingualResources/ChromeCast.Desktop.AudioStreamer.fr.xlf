@@ -660,6 +660,18 @@
           <source>Start application when Windows starts</source>
           <target state="needs-review-translation">Start application when Windows starts</target>
         </trans-unit>
+        <trans-unit id="DevicesOnly" translate="yes" xml:space="preserve">
+          <source>Devices only</source>
+          <target state="needs-review-translation">Devices only</target>
+        </trans-unit>
+        <trans-unit id="GroupsOnly" translate="yes" xml:space="preserve">
+          <source>Groups only</source>
+          <target state="needs-review-translation">Groups only</target>
+        </trans-unit>
+        <trans-unit id="ShowAll" translate="yes" xml:space="preserve">
+          <source>All</source>
+          <target state="needs-review-translation">All</target>
+        </trans-unit>
       </group>
     </body>
   </file>

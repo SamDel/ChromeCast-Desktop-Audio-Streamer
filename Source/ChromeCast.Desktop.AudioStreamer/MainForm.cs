@@ -54,6 +54,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             FillStreamFormats();
+            FillFilterDevices();
             lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
             Task.Run(() =>
             {
@@ -162,6 +163,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             deviceControl.SetStatus(device.GetDeviceState(), null);
             pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);
+            var filter = GetFilterDevices();
+            if (filter != null)
+                deviceControl.Visible = FilterDevices.ShowFilterDevices(device, filter.Value);
 
             // Sort alphabetically.
             var deviceName = device.GetFriendlyName();
@@ -762,6 +766,47 @@ namespace ChromeCast.Desktop.AudioStreamer
         private void ChkStartApplicationWhenWindowsStarts_CheckedChanged(object sender, EventArgs e)
         {
             WindowsStartup.StartApplicationWhenWindowsStarts(chkStartApplicationWhenWindowsStarts.Checked);
+        }
+
+        private void FillFilterDevices()
+        {
+            if (cmbFilterDevices == null)
+                return;
+
+            if (cmbFilterDevices.Items.Count == 0)
+            {
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.ShowAll));
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.DevicesOnly));
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.GroupsOnly));
+                cmbFilterDevices.SelectedIndex = 0;
+            }
+        }
+
+        public void SetFilterDevices(FilterDevicesEnum value)
+        {
+            if (cmbFilterDevices == null || applicationLogic == null)
+                return;
+
+            FillFilterDevices();
+            for (int i = 0; i < cmbFilterDevices.Items.Count; i++)
+            {
+                if ((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.Items[i]).Value == value)
+                    cmbFilterDevices.SelectedIndex = i;
+            }
+            applicationLogic.SetFilterDevices(value);
+        }
+
+        public FilterDevicesEnum? GetFilterDevices()
+        {
+            if (cmbFilterDevices == null)
+                return null;
+
+            return (FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value;
+        }
+
+        private void CmbFilterDevices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            applicationLogic.SetFilterDevices((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value);
         }
     }
 }

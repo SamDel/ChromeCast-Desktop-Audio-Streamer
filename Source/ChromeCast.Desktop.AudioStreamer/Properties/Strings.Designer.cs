@@ -241,6 +241,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Devices only.
+        /// </summary>
+        internal static string DevicesOnly {
+            get {
+                return ResourceManager.GetString("DevicesOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disposed.
         /// </summary>
         internal static string Disposed {
@@ -282,6 +291,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Group_VolumeAllDevices_Text {
             get {
                 return ResourceManager.GetString("Group_VolumeAllDevices_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups only.
+        /// </summary>
+        internal static string GroupsOnly {
+            get {
+                return ResourceManager.GetString("GroupsOnly", resourceCulture);
             }
         }
         
@@ -552,6 +570,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Playing {
             get {
                 return ResourceManager.GetString("Playing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string ShowAll {
+            get {
+                return ResourceManager.GetString("ShowAll", resourceCulture);
             }
         }
         
