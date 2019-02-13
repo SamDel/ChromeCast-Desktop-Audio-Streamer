@@ -26,7 +26,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IStreamingConnection streamingConnection;
         private IDeviceConnection deviceConnection;
         private DiscoveredDevice discoveredDevice;
-        private DeviceState deviceState;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
@@ -46,8 +45,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
             deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
-            deviceState = DeviceState.NotConnected;
-            discoveredDevice = new DiscoveredDevice();
+            discoveredDevice = new DiscoveredDevice
+            {
+                DeviceState = DeviceState.NotConnected
+            };
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -92,7 +93,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            if (ipChanged && deviceState == DeviceState.Playing)
+            if (ipChanged && GetDeviceState() == DeviceState.Playing)
             {
                 ResumePlaying();
             }
@@ -162,8 +163,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (streamingConnection.IsConnected())
             {
-                if (deviceState != DeviceState.NotConnected &&
-                    deviceState != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
+                if (GetDeviceState() != DeviceState.NotConnected &&
+                    GetDeviceState() != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
                 {
                     streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                 }
@@ -183,7 +184,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
+            if (GetDeviceState() != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
             {
                 deviceCommunication.GetStatus();
                 GetDeviceInformation();
@@ -224,21 +225,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     wasPlayingWhenConnectError = false;
                     ResumePlaying();
                 }
-                else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
+                else if (state == DeviceState.ConnectError && GetDeviceState() == DeviceState.Playing)
                 {
                     wasPlayingWhenConnectError = true;
                 }
 
-                if (state == DeviceState.ConnectError && IsGroup())
-                {
-                    deviceState = state;
-                    deviceControl?.SetStatus(deviceState, statusText);
-                }
-                else
-                {
-                    deviceState = state;
-                    deviceControl?.SetStatus(deviceState, statusText);
-                }
+                discoveredDevice.DeviceState = state;
+                deviceControl?.SetStatus(discoveredDevice.DeviceState, statusText);
             }
         }
 
@@ -308,13 +301,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            switch (deviceState)
+            switch (GetDeviceState())
             {
                 case DeviceState.Playing:
                 case DeviceState.LoadingMedia:
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
-                    devicePlayedWhenStopped = deviceState == DeviceState.Playing;
+                    devicePlayedWhenStopped = GetDeviceState() == DeviceState.Playing;
                     deviceCommunication.Stop();
                     SetDeviceState(DeviceState.Closed);
                     break;
@@ -335,9 +328,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return false;
 
             //TODO: Is this right for device groups?
-            if ((deviceState == DeviceState.LoadingMedia || 
-                deviceState == DeviceState.Buffering || 
-                deviceState == DeviceState.Idle) &&
+            if ((GetDeviceState() == DeviceState.LoadingMedia ||
+                GetDeviceState() == DeviceState.Buffering ||
+                GetDeviceState() == DeviceState.Idle) &&
                 discoveredDevice.IPAddress == remoteAddress)
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
@@ -400,7 +393,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public DeviceState GetDeviceState()
         {
-            return deviceState;
+            return discoveredDevice.DeviceState;
         }
 
         /// <summary>
@@ -495,9 +488,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's connected, or false if not</returns>
         public bool IsConnected()
         {
-            return !(deviceState.Equals(DeviceState.NotConnected) ||
-                deviceState.Equals(DeviceState.ConnectError) ||
-                deviceState.Equals(DeviceState.Closed));
+            return !(GetDeviceState().Equals(DeviceState.NotConnected) ||
+                GetDeviceState().Equals(DeviceState.ConnectError) ||
+                GetDeviceState().Equals(DeviceState.Closed));
         }
 
         /// <summary>

@@ -276,9 +276,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 discoveredDevices = new List<DiscoveredDevice>();
             foreach (var host in devices.GetHosts())
             {
-                if (!discoveredDevices.Any(x => x.IPAddress == host.IPAddress && x.Port == host.Port))
+                var discoveredDevice = discoveredDevices.Where(x => x.IPAddress == host.IPAddress && x.Port == host.Port);
+                if (!discoveredDevice.Any())
                 {
                     discoveredDevices.Add(host);
+                }
+                else
+                {
+                    discoveredDevice.First().DeviceState = host.DeviceState;
                 }
             }
             settings.ChromecastDiscoveredDevices = discoveredDevices;
