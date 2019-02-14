@@ -32,12 +32,9 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
             this.grpLag = new System.Windows.Forms.GroupBox();
-            this.lblLagExperimental = new System.Windows.Forms.Label();
             this.lblLagMin = new System.Windows.Forms.Label();
             this.lblLagMax = new System.Windows.Forms.Label();
             this.trbLag = new System.Windows.Forms.TrackBar();
-            this.grpDevices = new System.Windows.Forms.GroupBox();
-            this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.grpVolume = new System.Windows.Forms.GroupBox();
             this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnVolumeUp = new System.Windows.Forms.Button();
@@ -77,11 +74,13 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.grpDevices = new System.Windows.Forms.GroupBox();
+            this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
+            this.lblLagExperimental = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).BeginInit();
-            this.grpDevices.SuspendLayout();
             this.grpVolume.SuspendLayout();
             this.pnlVolumeAllButtons.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
@@ -92,6 +91,7 @@
             this.pnlOptionsComboBoxesRight.SuspendLayout();
             this.tabPageLog.SuspendLayout();
             this.pnlLogCopyToClipboard.SuspendLayout();
+            this.grpDevices.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -108,12 +108,12 @@
             // 
             // tabPageMain
             // 
-            this.tabPageMain.Controls.Add(this.grpLag);
             this.tabPageMain.Controls.Add(this.grpDevices);
+            this.tabPageMain.Controls.Add(this.grpLag);
             this.tabPageMain.Controls.Add(this.grpVolume);
             this.tabPageMain.Location = new System.Drawing.Point(4, 25);
             this.tabPageMain.Name = "tabPageMain";
-            this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageMain.Padding = new System.Windows.Forms.Padding(10);
             this.tabPageMain.Size = new System.Drawing.Size(1111, 596);
             this.tabPageMain.TabIndex = 1;
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -124,28 +124,20 @@
             this.grpLag.Controls.Add(this.lblLagMin);
             this.grpLag.Controls.Add(this.lblLagMax);
             this.grpLag.Controls.Add(this.trbLag);
-            this.grpLag.Location = new System.Drawing.Point(44, 477);
+            this.grpLag.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpLag.Location = new System.Drawing.Point(10, 81);
             this.grpLag.Name = "grpLag";
-            this.grpLag.Size = new System.Drawing.Size(1010, 113);
+            this.grpLag.Padding = new System.Windows.Forms.Padding(10);
+            this.grpLag.Size = new System.Drawing.Size(1091, 113);
             this.grpLag.TabIndex = 12;
             this.grpLag.TabStop = false;
             this.grpLag.Text = "Lag Control";
             // 
-            // lblLagExperimental
-            // 
-            this.lblLagExperimental.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLagExperimental.Location = new System.Drawing.Point(22, 86);
-            this.lblLagExperimental.Name = "lblLagExperimental";
-            this.lblLagExperimental.Size = new System.Drawing.Size(965, 17);
-            this.lblLagExperimental.TabIndex = 3;
-            this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
-    "ithout hearing gaps.";
-            this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // lblLagMin
             // 
             this.lblLagMin.AutoSize = true;
-            this.lblLagMin.Location = new System.Drawing.Point(19, 27);
+            this.lblLagMin.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lblLagMin.Location = new System.Drawing.Point(10, 25);
             this.lblLagMin.Name = "lblLagMin";
             this.lblLagMin.Size = new System.Drawing.Size(172, 17);
             this.lblLagMin.TabIndex = 2;
@@ -153,64 +145,52 @@
             // 
             // lblLagMax
             // 
-            this.lblLagMax.Location = new System.Drawing.Point(487, 27);
+            this.lblLagMax.AutoSize = true;
+            this.lblLagMax.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lblLagMax.Location = new System.Drawing.Point(908, 25);
             this.lblLagMax.Name = "lblLagMax";
-            this.lblLagMax.Size = new System.Drawing.Size(500, 17);
+            this.lblLagMax.Size = new System.Drawing.Size(173, 17);
             this.lblLagMax.TabIndex = 1;
             this.lblLagMax.Text = "maximum lag / best quality";
             this.lblLagMax.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // trbLag
             // 
+            this.trbLag.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.trbLag.LargeChange = 10;
-            this.trbLag.Location = new System.Drawing.Point(22, 47);
+            this.trbLag.Location = new System.Drawing.Point(10, 47);
             this.trbLag.Maximum = 1000;
             this.trbLag.Minimum = 1;
             this.trbLag.Name = "trbLag";
-            this.trbLag.Size = new System.Drawing.Size(969, 56);
+            this.trbLag.Size = new System.Drawing.Size(1071, 56);
             this.trbLag.SmallChange = 5;
             this.trbLag.TabIndex = 0;
             this.trbLag.TickFrequency = 100;
             this.trbLag.Value = 1000;
             this.trbLag.Scroll += new System.EventHandler(this.TrbLag_Scroll);
             // 
-            // grpDevices
-            // 
-            this.grpDevices.Controls.Add(this.pnlDevices);
-            this.grpDevices.Location = new System.Drawing.Point(44, 124);
-            this.grpDevices.Name = "grpDevices";
-            this.grpDevices.Size = new System.Drawing.Size(1010, 347);
-            this.grpDevices.TabIndex = 11;
-            this.grpDevices.TabStop = false;
-            this.grpDevices.Text = "Devices (click name to start streaming)";
-            // 
-            // pnlDevices
-            // 
-            this.pnlDevices.AutoScroll = true;
-            this.pnlDevices.Location = new System.Drawing.Point(11, 34);
-            this.pnlDevices.Name = "pnlDevices";
-            this.pnlDevices.Size = new System.Drawing.Size(988, 290);
-            this.pnlDevices.TabIndex = 10;
-            // 
             // grpVolume
             // 
             this.grpVolume.Controls.Add(this.pnlVolumeAllButtons);
-            this.grpVolume.Location = new System.Drawing.Point(44, 10);
+            this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
+            this.grpVolume.Location = new System.Drawing.Point(10, 10);
             this.grpVolume.Name = "grpVolume";
-            this.grpVolume.Size = new System.Drawing.Size(1010, 108);
+            this.grpVolume.Size = new System.Drawing.Size(1091, 71);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
             // 
             // pnlVolumeAllButtons
             // 
+            this.pnlVolumeAllButtons.AutoSize = true;
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeUp);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
             this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
-            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(11, 31);
+            this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(3, 18);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(988, 71);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1085, 33);
             this.pnlVolumeAllButtons.TabIndex = 17;
             // 
             // btnVolumeUp
@@ -270,7 +250,7 @@
             this.tabPageOptions.Location = new System.Drawing.Point(4, 25);
             this.tabPageOptions.Name = "tabPageOptions";
             this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageOptions.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageOptions.Size = new System.Drawing.Size(1111, 596);
             this.tabPageOptions.TabIndex = 2;
             this.tabPageOptions.Text = "Options";
             this.tabPageOptions.UseVisualStyleBackColor = true;
@@ -565,7 +545,7 @@
             this.tabPageLog.Location = new System.Drawing.Point(4, 25);
             this.tabPageLog.Name = "tabPageLog";
             this.tabPageLog.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageLog.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageLog.Size = new System.Drawing.Size(1111, 596);
             this.tabPageLog.TabIndex = 0;
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
@@ -624,6 +604,38 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
+            // grpDevices
+            // 
+            this.grpDevices.Controls.Add(this.pnlDevices);
+            this.grpDevices.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpDevices.Location = new System.Drawing.Point(10, 194);
+            this.grpDevices.Name = "grpDevices";
+            this.grpDevices.Padding = new System.Windows.Forms.Padding(10);
+            this.grpDevices.Size = new System.Drawing.Size(1091, 392);
+            this.grpDevices.TabIndex = 13;
+            this.grpDevices.TabStop = false;
+            this.grpDevices.Text = "Devices (click name to start streaming)";
+            // 
+            // pnlDevices
+            // 
+            this.pnlDevices.AutoScroll = true;
+            this.pnlDevices.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlDevices.Location = new System.Drawing.Point(10, 25);
+            this.pnlDevices.Name = "pnlDevices";
+            this.pnlDevices.Size = new System.Drawing.Size(1071, 357);
+            this.pnlDevices.TabIndex = 10;
+            // 
+            // lblLagExperimental
+            // 
+            this.lblLagExperimental.BackColor = System.Drawing.SystemColors.Control;
+            this.lblLagExperimental.Location = new System.Drawing.Point(120, 86);
+            this.lblLagExperimental.Name = "lblLagExperimental";
+            this.lblLagExperimental.Size = new System.Drawing.Size(726, 17);
+            this.lblLagExperimental.TabIndex = 4;
+            this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
+    "ithout hearing gaps.";
+            this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -637,14 +649,13 @@
             this.Text = "Chromecast Desktop Audio Streamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabControl.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
             this.grpLag.ResumeLayout(false);
             this.grpLag.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).EndInit();
-            this.grpDevices.ResumeLayout(false);
             this.grpVolume.ResumeLayout(false);
+            this.grpVolume.PerformLayout();
             this.pnlVolumeAllButtons.ResumeLayout(false);
             this.pnlVolumeAllButtons.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
@@ -661,6 +672,7 @@
             this.tabPageLog.PerformLayout();
             this.pnlLogCopyToClipboard.ResumeLayout(false);
             this.pnlLogCopyToClipboard.PerformLayout();
+            this.grpDevices.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -671,8 +683,6 @@
         private System.Windows.Forms.TabPage tabPageMain;
         private System.Windows.Forms.GroupBox grpLag;
         private System.Windows.Forms.TrackBar trbLag;
-        private System.Windows.Forms.GroupBox grpDevices;
-        private System.Windows.Forms.FlowLayoutPanel pnlDevices;
         private System.Windows.Forms.GroupBox grpVolume;
         private System.Windows.Forms.Button btnVolumeMute;
         private System.Windows.Forms.TabPage tabPageLog;
@@ -680,7 +690,6 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label lblLagMin;
         private System.Windows.Forms.Label lblLagMax;
-        private System.Windows.Forms.Label lblLagExperimental;
         private System.Windows.Forms.Button btnVolumeUp;
         private System.Windows.Forms.Button btnVolumeDown;
         private System.Windows.Forms.Button btnClipboardCopy;
@@ -715,6 +724,9 @@
         private System.Windows.Forms.Label lblFilterDevices;
         private System.Windows.Forms.ComboBox cmbFilterDevices;
         private System.Windows.Forms.CheckBox chkAutoStartLastUsed;
+        private System.Windows.Forms.GroupBox grpDevices;
+        private System.Windows.Forms.FlowLayoutPanel pnlDevices;
+        private System.Windows.Forms.Label lblLagExperimental;
     }
 }
 
