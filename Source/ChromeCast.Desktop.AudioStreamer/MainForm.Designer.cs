@@ -45,7 +45,6 @@
             this.grpOptions = new System.Windows.Forms.GroupBox();
             this.chkAutoStartLastUsed = new System.Windows.Forms.CheckBox();
             this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
-            this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResetSettings = new System.Windows.Forms.Button();
@@ -63,7 +62,6 @@
             this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
             this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
             this.chkShowLagControl = new System.Windows.Forms.CheckBox();
-            this.lblVersion = new System.Windows.Forms.Label();
             this.chkAutoStart = new System.Windows.Forms.CheckBox();
             this.chkShowWindowOnStart = new System.Windows.Forms.CheckBox();
             this.chkAutoRestart = new System.Windows.Forms.CheckBox();
@@ -79,6 +77,8 @@
             this.pnlLog = new System.Windows.Forms.Panel();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
+            this.lblVersion = new System.Windows.Forms.Label();
+            this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -117,7 +117,7 @@
             this.tabPageMain.Controls.Add(this.grpVolume);
             this.tabPageMain.Location = new System.Drawing.Point(4, 25);
             this.tabPageMain.Name = "tabPageMain";
-            this.tabPageMain.Padding = new System.Windows.Forms.Padding(10);
+            this.tabPageMain.Padding = new System.Windows.Forms.Padding(20);
             this.tabPageMain.Size = new System.Drawing.Size(1111, 596);
             this.tabPageMain.TabIndex = 1;
             this.tabPageMain.UseVisualStyleBackColor = true;
@@ -129,10 +129,10 @@
             this.grpLag.Controls.Add(this.lblLagMax);
             this.grpLag.Controls.Add(this.trbLag);
             this.grpLag.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpLag.Location = new System.Drawing.Point(10, 81);
+            this.grpLag.Location = new System.Drawing.Point(20, 107);
             this.grpLag.Name = "grpLag";
-            this.grpLag.Padding = new System.Windows.Forms.Padding(10);
-            this.grpLag.Size = new System.Drawing.Size(1091, 113);
+            this.grpLag.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.grpLag.Size = new System.Drawing.Size(1071, 113);
             this.grpLag.TabIndex = 12;
             this.grpLag.TabStop = false;
             this.grpLag.Text = "Lag Control";
@@ -141,7 +141,7 @@
             // 
             this.lblLagMin.AutoSize = true;
             this.lblLagMin.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblLagMin.Location = new System.Drawing.Point(10, 25);
+            this.lblLagMin.Location = new System.Drawing.Point(20, 25);
             this.lblLagMin.Name = "lblLagMin";
             this.lblLagMin.Size = new System.Drawing.Size(172, 17);
             this.lblLagMin.TabIndex = 2;
@@ -151,7 +151,7 @@
             // 
             this.lblLagMax.AutoSize = true;
             this.lblLagMax.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblLagMax.Location = new System.Drawing.Point(908, 25);
+            this.lblLagMax.Location = new System.Drawing.Point(878, 25);
             this.lblLagMax.Name = "lblLagMax";
             this.lblLagMax.Size = new System.Drawing.Size(173, 17);
             this.lblLagMax.TabIndex = 1;
@@ -162,11 +162,11 @@
             // 
             this.trbLag.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.trbLag.LargeChange = 10;
-            this.trbLag.Location = new System.Drawing.Point(10, 47);
+            this.trbLag.Location = new System.Drawing.Point(20, 47);
             this.trbLag.Maximum = 1000;
             this.trbLag.Minimum = 1;
             this.trbLag.Name = "trbLag";
-            this.trbLag.Size = new System.Drawing.Size(1071, 56);
+            this.trbLag.Size = new System.Drawing.Size(1031, 56);
             this.trbLag.SmallChange = 5;
             this.trbLag.TabIndex = 0;
             this.trbLag.TickFrequency = 100;
@@ -177,10 +177,10 @@
             // 
             this.grpVolume.Controls.Add(this.pnlVolumeAllButtons);
             this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpVolume.Location = new System.Drawing.Point(10, 10);
+            this.grpVolume.Location = new System.Drawing.Point(20, 20);
             this.grpVolume.Name = "grpVolume";
             this.grpVolume.Padding = new System.Windows.Forms.Padding(10);
-            this.grpVolume.Size = new System.Drawing.Size(1091, 71);
+            this.grpVolume.Size = new System.Drawing.Size(1071, 87);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
@@ -195,7 +195,7 @@
             this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlVolumeAllButtons.Location = new System.Drawing.Point(10, 25);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1071, 33);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1051, 33);
             this.pnlVolumeAllButtons.TabIndex = 17;
             // 
             // btnVolumeUp
@@ -254,7 +254,7 @@
             this.tabPageOptions.Controls.Add(this.grpOptions);
             this.tabPageOptions.Location = new System.Drawing.Point(4, 25);
             this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(20);
             this.tabPageOptions.Size = new System.Drawing.Size(1111, 596);
             this.tabPageOptions.TabIndex = 2;
             this.tabPageOptions.Text = "Options";
@@ -262,21 +262,23 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.lblNewReleaseAvailable);
+            this.grpOptions.Controls.Add(this.lblVersion);
             this.grpOptions.Controls.Add(this.chkAutoStartLastUsed);
             this.grpOptions.Controls.Add(this.chkStartApplicationWhenWindowsStarts);
-            this.grpOptions.Controls.Add(this.lblNewReleaseAvailable);
             this.grpOptions.Controls.Add(this.chkLogDeviceCommunication);
             this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
             this.grpOptions.Controls.Add(this.pnlOptionsComboBoxes);
             this.grpOptions.Controls.Add(this.chkShowLagControl);
-            this.grpOptions.Controls.Add(this.lblVersion);
             this.grpOptions.Controls.Add(this.chkAutoStart);
             this.grpOptions.Controls.Add(this.chkShowWindowOnStart);
             this.grpOptions.Controls.Add(this.chkAutoRestart);
             this.grpOptions.Controls.Add(this.chkHook);
-            this.grpOptions.Location = new System.Drawing.Point(27, 22);
+            this.grpOptions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpOptions.Location = new System.Drawing.Point(20, 20);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Size = new System.Drawing.Size(1038, 553);
+            this.grpOptions.Padding = new System.Windows.Forms.Padding(10);
+            this.grpOptions.Size = new System.Drawing.Size(1071, 556);
             this.grpOptions.TabIndex = 14;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
@@ -302,18 +304,6 @@
             this.chkStartApplicationWhenWindowsStarts.UseVisualStyleBackColor = true;
             this.chkStartApplicationWhenWindowsStarts.CheckedChanged += new System.EventHandler(this.ChkStartApplicationWhenWindowsStarts_CheckedChanged);
             // 
-            // lblNewReleaseAvailable
-            // 
-            this.lblNewReleaseAvailable.AutoSize = true;
-            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(12, 485);
-            this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
-            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(206, 17);
-            this.lblNewReleaseAvailable.TabIndex = 36;
-            this.lblNewReleaseAvailable.TabStop = true;
-            this.lblNewReleaseAvailable.Text = "Version x is available on Github";
-            this.lblNewReleaseAvailable.Visible = false;
-            this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
-            // 
             // chkLogDeviceCommunication
             // 
             this.chkLogDeviceCommunication.AutoSize = true;
@@ -329,18 +319,21 @@
             // 
             // pnlOptionsResetSettings
             // 
+            this.pnlOptionsResetSettings.AutoSize = true;
             this.pnlOptionsResetSettings.Controls.Add(this.btnResetSettings);
+            this.pnlOptionsResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlOptionsResetSettings.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(248, 508);
+            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(10, 503);
             this.pnlOptionsResetSettings.Name = "pnlOptionsResetSettings";
-            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(754, 33);
+            this.pnlOptionsResetSettings.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(1051, 43);
             this.pnlOptionsResetSettings.TabIndex = 34;
             // 
             // btnResetSettings
             // 
             this.btnResetSettings.AutoSize = true;
             this.btnResetSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnResetSettings.Location = new System.Drawing.Point(641, 3);
+            this.btnResetSettings.Location = new System.Drawing.Point(928, 8);
             this.btnResetSettings.Name = "btnResetSettings";
             this.btnResetSettings.Size = new System.Drawing.Size(110, 27);
             this.btnResetSettings.TabIndex = 26;
@@ -352,10 +345,12 @@
             // 
             this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesLabels);
             this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
-            this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 29);
+            this.pnlOptionsComboBoxes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(10, 25);
             this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
-            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(965, 153);
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(1051, 153);
             this.pnlOptionsComboBoxes.TabIndex = 33;
+            this.pnlOptionsComboBoxes.WrapContents = false;
             // 
             // pnlOptionsComboBoxesLabels
             // 
@@ -365,10 +360,11 @@
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblDevice);
+            this.pnlOptionsComboBoxesLabels.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
             this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
             this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 137);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(159, 145);
             this.pnlOptionsComboBoxesLabels.TabIndex = 0;
             // 
             // lblFilterDevices
@@ -424,6 +420,7 @@
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
+            this.pnlOptionsComboBoxesRight.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(168, 3);
             this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
             this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 145);
@@ -487,15 +484,6 @@
             this.chkShowLagControl.Text = "Show lag control (experimental)";
             this.chkShowLagControl.UseVisualStyleBackColor = true;
             this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.ChkShowLagControl_CheckedChanged);
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(12, 516);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(56, 17);
-            this.lblVersion.TabIndex = 25;
-            this.lblVersion.Text = "Version";
             // 
             // chkAutoStart
             // 
@@ -595,10 +583,10 @@
             // 
             this.grpDevices.Controls.Add(this.pnlDevices);
             this.grpDevices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpDevices.Location = new System.Drawing.Point(10, 194);
+            this.grpDevices.Location = new System.Drawing.Point(20, 220);
             this.grpDevices.Name = "grpDevices";
             this.grpDevices.Padding = new System.Windows.Forms.Padding(10);
-            this.grpDevices.Size = new System.Drawing.Size(1091, 392);
+            this.grpDevices.Size = new System.Drawing.Size(1071, 356);
             this.grpDevices.TabIndex = 13;
             this.grpDevices.TabStop = false;
             this.grpDevices.Text = "Devices (click name to start streaming)";
@@ -609,29 +597,29 @@
             this.pnlDevices.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlDevices.Location = new System.Drawing.Point(10, 25);
             this.pnlDevices.Name = "pnlDevices";
-            this.pnlDevices.Size = new System.Drawing.Size(1071, 357);
+            this.pnlDevices.Size = new System.Drawing.Size(1051, 321);
             this.pnlDevices.TabIndex = 10;
             // 
             // lblLagExperimental
             // 
             this.lblLagExperimental.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLagExperimental.Location = new System.Drawing.Point(120, 86);
+            this.lblLagExperimental.Location = new System.Drawing.Point(23, 83);
             this.lblLagExperimental.Name = "lblLagExperimental";
             this.lblLagExperimental.Size = new System.Drawing.Size(726, 17);
             this.lblLagExperimental.TabIndex = 4;
             this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
     "ithout hearing gaps.";
-            this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pnlPingPong
             // 
             this.pnlPingPong.AutoSize = true;
             this.pnlPingPong.Controls.Add(this.lblPingPong);
             this.pnlPingPong.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPingPong.Location = new System.Drawing.Point(20, 520);
+            this.pnlPingPong.Location = new System.Drawing.Point(20, 516);
             this.pnlPingPong.Name = "pnlPingPong";
-            this.pnlPingPong.Padding = new System.Windows.Forms.Padding(3);
-            this.pnlPingPong.Size = new System.Drawing.Size(1071, 23);
+            this.pnlPingPong.Padding = new System.Windows.Forms.Padding(5);
+            this.pnlPingPong.Size = new System.Drawing.Size(1071, 27);
             this.pnlPingPong.TabIndex = 5;
             // 
             // pnlLog
@@ -640,14 +628,14 @@
             this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlLog.Location = new System.Drawing.Point(20, 20);
             this.pnlLog.Name = "pnlLog";
-            this.pnlLog.Size = new System.Drawing.Size(1071, 500);
+            this.pnlLog.Size = new System.Drawing.Size(1071, 496);
             this.pnlLog.TabIndex = 6;
             // 
             // lblPingPong
             // 
             this.lblPingPong.AutoSize = true;
             this.lblPingPong.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPingPong.Location = new System.Drawing.Point(3, 3);
+            this.lblPingPong.Location = new System.Drawing.Point(5, 5);
             this.lblPingPong.Name = "lblPingPong";
             this.lblPingPong.Size = new System.Drawing.Size(148, 17);
             this.lblPingPong.TabIndex = 3;
@@ -662,8 +650,33 @@
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1071, 500);
+            this.txtLog.Size = new System.Drawing.Size(1071, 496);
             this.txtLog.TabIndex = 2;
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblVersion.Location = new System.Drawing.Point(10, 480);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Padding = new System.Windows.Forms.Padding(3);
+            this.lblVersion.Size = new System.Drawing.Size(62, 23);
+            this.lblVersion.TabIndex = 39;
+            this.lblVersion.Text = "Version";
+            // 
+            // lblNewReleaseAvailable
+            // 
+            this.lblNewReleaseAvailable.AutoSize = true;
+            this.lblNewReleaseAvailable.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(10, 457);
+            this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
+            this.lblNewReleaseAvailable.Padding = new System.Windows.Forms.Padding(3);
+            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(212, 23);
+            this.lblNewReleaseAvailable.TabIndex = 40;
+            this.lblNewReleaseAvailable.TabStop = true;
+            this.lblNewReleaseAvailable.Text = "Version x is available on Github";
+            this.lblNewReleaseAvailable.Visible = false;
+            this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
             // 
             // MainForm
             // 
@@ -734,7 +747,6 @@
         private System.Windows.Forms.Label lblIpAddressUsed;
         private System.Windows.Forms.CheckBox chkAutoRestart;
         private System.Windows.Forms.CheckBox chkHook;
-        private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Button btnResetSettings;
         private System.Windows.Forms.CheckBox chkShowLagControl;
         private System.Windows.Forms.ComboBox cmbStreamFormat;
@@ -749,7 +761,6 @@
         private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
-        private System.Windows.Forms.LinkLabel lblNewReleaseAvailable;
         private System.Windows.Forms.CheckBox chkStartApplicationWhenWindowsStarts;
         private System.Windows.Forms.Label lblFilterDevices;
         private System.Windows.Forms.ComboBox cmbFilterDevices;
@@ -761,6 +772,8 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Panel pnlPingPong;
         private System.Windows.Forms.Label lblPingPong;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.LinkLabel lblNewReleaseAvailable;
     }
 }
 
