@@ -46,7 +46,6 @@
             this.chkAutoStartLastUsed = new System.Windows.Forms.CheckBox();
             this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
-            this.pnlOptionsResetSettings = new System.Windows.Forms.FlowLayoutPanel();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlOptionsComboBoxesLabels = new System.Windows.Forms.Panel();
@@ -87,7 +86,6 @@
             this.pnlVolumeAllButtons.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
             this.grpOptions.SuspendLayout();
-            this.pnlOptionsResetSettings.SuspendLayout();
             this.pnlOptionsComboBoxes.SuspendLayout();
             this.pnlOptionsComboBoxesLabels.SuspendLayout();
             this.pnlOptionsComboBoxesRight.SuspendLayout();
@@ -197,6 +195,7 @@
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
             this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1051, 33);
             this.pnlVolumeAllButtons.TabIndex = 17;
+            this.pnlVolumeAllButtons.WrapContents = false;
             // 
             // btnVolumeUp
             // 
@@ -262,12 +261,12 @@
             // 
             // grpOptions
             // 
+            this.grpOptions.Controls.Add(this.btnResetSettings);
             this.grpOptions.Controls.Add(this.lblNewReleaseAvailable);
             this.grpOptions.Controls.Add(this.lblVersion);
             this.grpOptions.Controls.Add(this.chkAutoStartLastUsed);
             this.grpOptions.Controls.Add(this.chkStartApplicationWhenWindowsStarts);
             this.grpOptions.Controls.Add(this.chkLogDeviceCommunication);
-            this.grpOptions.Controls.Add(this.pnlOptionsResetSettings);
             this.grpOptions.Controls.Add(this.pnlOptionsComboBoxes);
             this.grpOptions.Controls.Add(this.chkShowLagControl);
             this.grpOptions.Controls.Add(this.chkAutoStart);
@@ -317,23 +316,11 @@
             this.chkLogDeviceCommunication.UseVisualStyleBackColor = true;
             this.chkLogDeviceCommunication.CheckedChanged += new System.EventHandler(this.ChkLogDeviceCommunication_CheckedChanged);
             // 
-            // pnlOptionsResetSettings
-            // 
-            this.pnlOptionsResetSettings.AutoSize = true;
-            this.pnlOptionsResetSettings.Controls.Add(this.btnResetSettings);
-            this.pnlOptionsResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlOptionsResetSettings.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlOptionsResetSettings.Location = new System.Drawing.Point(10, 503);
-            this.pnlOptionsResetSettings.Name = "pnlOptionsResetSettings";
-            this.pnlOptionsResetSettings.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlOptionsResetSettings.Size = new System.Drawing.Size(1051, 43);
-            this.pnlOptionsResetSettings.TabIndex = 34;
-            // 
             // btnResetSettings
             // 
             this.btnResetSettings.AutoSize = true;
             this.btnResetSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnResetSettings.Location = new System.Drawing.Point(928, 8);
+            this.btnResetSettings.Location = new System.Drawing.Point(10, 410);
             this.btnResetSettings.Name = "btnResetSettings";
             this.btnResetSettings.Size = new System.Drawing.Size(110, 27);
             this.btnResetSettings.TabIndex = 26;
@@ -657,7 +644,7 @@
             // 
             this.lblVersion.AutoSize = true;
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblVersion.Location = new System.Drawing.Point(10, 480);
+            this.lblVersion.Location = new System.Drawing.Point(10, 523);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Padding = new System.Windows.Forms.Padding(3);
             this.lblVersion.Size = new System.Drawing.Size(62, 23);
@@ -668,7 +655,7 @@
             // 
             this.lblNewReleaseAvailable.AutoSize = true;
             this.lblNewReleaseAvailable.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(10, 457);
+            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(10, 500);
             this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
             this.lblNewReleaseAvailable.Padding = new System.Windows.Forms.Padding(3);
             this.lblNewReleaseAvailable.Size = new System.Drawing.Size(212, 23);
@@ -702,8 +689,6 @@
             this.tabPageOptions.ResumeLayout(false);
             this.grpOptions.ResumeLayout(false);
             this.grpOptions.PerformLayout();
-            this.pnlOptionsResetSettings.ResumeLayout(false);
-            this.pnlOptionsResetSettings.PerformLayout();
             this.pnlOptionsComboBoxes.ResumeLayout(false);
             this.pnlOptionsComboBoxes.PerformLayout();
             this.pnlOptionsComboBoxesLabels.ResumeLayout(false);
@@ -758,7 +743,6 @@
         private System.Windows.Forms.Panel pnlOptionsComboBoxesLabels;
         private System.Windows.Forms.Panel pnlOptionsComboBoxesRight;
         private System.Windows.Forms.FlowLayoutPanel pnlLogCopyToClipboard;
-        private System.Windows.Forms.FlowLayoutPanel pnlOptionsResetSettings;
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.CheckBox chkLogDeviceCommunication;
         private System.Windows.Forms.CheckBox chkStartApplicationWhenWindowsStarts;
