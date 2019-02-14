@@ -46,6 +46,7 @@
             this.btnScan = new System.Windows.Forms.Button();
             this.tabPageOptions = new System.Windows.Forms.TabPage();
             this.grpOptions = new System.Windows.Forms.GroupBox();
+            this.chkAutoStartLastUsed = new System.Windows.Forms.CheckBox();
             this.chkStartApplicationWhenWindowsStarts = new System.Windows.Forms.CheckBox();
             this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
@@ -76,7 +77,6 @@
             this.btnClearLog = new System.Windows.Forms.Button();
             this.lblPingPong = new System.Windows.Forms.Label();
             this.txtLog = new System.Windows.Forms.TextBox();
-            this.chkAutoStartLastUsed = new System.Windows.Forms.CheckBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -99,10 +99,11 @@
             this.tabControl.Controls.Add(this.tabPageMain);
             this.tabControl.Controls.Add(this.tabPageOptions);
             this.tabControl.Controls.Add(this.tabPageLog);
-            this.tabControl.Location = new System.Drawing.Point(25, 13);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(16, 16);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1100, 632);
+            this.tabControl.Size = new System.Drawing.Size(1119, 625);
             this.tabControl.TabIndex = 3;
             // 
             // tabPageMain
@@ -113,7 +114,7 @@
             this.tabPageMain.Location = new System.Drawing.Point(4, 25);
             this.tabPageMain.Name = "tabPageMain";
             this.tabPageMain.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageMain.Size = new System.Drawing.Size(1092, 603);
+            this.tabPageMain.Size = new System.Drawing.Size(1111, 596);
             this.tabPageMain.TabIndex = 1;
             this.tabPageMain.UseVisualStyleBackColor = true;
             // 
@@ -294,6 +295,16 @@
             this.grpOptions.TabIndex = 14;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
+            // 
+            // chkAutoStartLastUsed
+            // 
+            this.chkAutoStartLastUsed.AutoSize = true;
+            this.chkAutoStartLastUsed.Location = new System.Drawing.Point(15, 292);
+            this.chkAutoStartLastUsed.Name = "chkAutoStartLastUsed";
+            this.chkAutoStartLastUsed.Size = new System.Drawing.Size(398, 21);
+            this.chkAutoStartLastUsed.TabIndex = 38;
+            this.chkAutoStartLastUsed.Text = "Automatically start last used devices and groups at startup";
+            this.chkAutoStartLastUsed.UseVisualStyleBackColor = true;
             // 
             // chkStartApplicationWhenWindowsStarts
             // 
@@ -613,29 +624,20 @@
             this.txtLog.Size = new System.Drawing.Size(1063, 515);
             this.txtLog.TabIndex = 1;
             // 
-            // chkAutoStartLastUsed
-            // 
-            this.chkAutoStartLastUsed.AutoSize = true;
-            this.chkAutoStartLastUsed.Location = new System.Drawing.Point(15, 292);
-            this.chkAutoStartLastUsed.Name = "chkAutoStartLastUsed";
-            this.chkAutoStartLastUsed.Size = new System.Drawing.Size(398, 21);
-            this.chkAutoStartLastUsed.TabIndex = 38;
-            this.chkAutoStartLastUsed.Text = "Automatically start last used devices and groups at startup";
-            this.chkAutoStartLastUsed.UseVisualStyleBackColor = true;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1151, 657);
             this.Controls.Add(this.tabControl);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
+            this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "Chromecast Desktop Audio Streamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabControl.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
             this.grpLag.ResumeLayout(false);

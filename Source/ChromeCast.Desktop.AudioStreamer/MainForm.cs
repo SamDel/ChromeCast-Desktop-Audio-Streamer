@@ -117,6 +117,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 if (cmbLanguage.SelectedIndex != 0)
                     cmbLanguage.SelectedIndex = 0;
             }
+            MainForm_Resize(null, null);
         }
 
         private void FillStreamFormats()
@@ -824,6 +825,13 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return false;
 
             return chkAutoStartLastUsed.Checked;
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            //tabControl.Width = Width - 2 * tabControl.Location.X - 10;
+            //tabControl.Height = Height - 2 * tabControl.Location.Y - 50;
+            //grpVolume.Width = tabControl.Width - 2 * grpVolume.Location.X;
         }
     }
 }
