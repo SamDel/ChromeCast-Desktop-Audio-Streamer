@@ -72,11 +72,13 @@
             this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
-            this.lblPingPong = new System.Windows.Forms.Label();
-            this.txtLog = new System.Windows.Forms.TextBox();
             this.grpDevices = new System.Windows.Forms.GroupBox();
             this.pnlDevices = new System.Windows.Forms.FlowLayoutPanel();
             this.lblLagExperimental = new System.Windows.Forms.Label();
+            this.pnlPingPong = new System.Windows.Forms.Panel();
+            this.pnlLog = new System.Windows.Forms.Panel();
+            this.lblPingPong = new System.Windows.Forms.Label();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpLag.SuspendLayout();
@@ -92,6 +94,8 @@
             this.tabPageLog.SuspendLayout();
             this.pnlLogCopyToClipboard.SuspendLayout();
             this.grpDevices.SuspendLayout();
+            this.pnlPingPong.SuspendLayout();
+            this.pnlLog.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -175,6 +179,7 @@
             this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpVolume.Location = new System.Drawing.Point(10, 10);
             this.grpVolume.Name = "grpVolume";
+            this.grpVolume.Padding = new System.Windows.Forms.Padding(10);
             this.grpVolume.Size = new System.Drawing.Size(1091, 71);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
@@ -188,9 +193,9 @@
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
             this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
             this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(3, 18);
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(10, 25);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1085, 33);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1071, 33);
             this.pnlVolumeAllButtons.TabIndex = 17;
             // 
             // btnVolumeUp
@@ -539,12 +544,12 @@
             // 
             // tabPageLog
             // 
+            this.tabPageLog.Controls.Add(this.pnlLog);
+            this.tabPageLog.Controls.Add(this.pnlPingPong);
             this.tabPageLog.Controls.Add(this.pnlLogCopyToClipboard);
-            this.tabPageLog.Controls.Add(this.lblPingPong);
-            this.tabPageLog.Controls.Add(this.txtLog);
             this.tabPageLog.Location = new System.Drawing.Point(4, 25);
             this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageLog.Padding = new System.Windows.Forms.Padding(20);
             this.tabPageLog.Size = new System.Drawing.Size(1111, 596);
             this.tabPageLog.TabIndex = 0;
             this.tabPageLog.Text = "Log";
@@ -552,19 +557,21 @@
             // 
             // pnlLogCopyToClipboard
             // 
+            this.pnlLogCopyToClipboard.AutoSize = true;
             this.pnlLogCopyToClipboard.Controls.Add(this.btnClipboardCopy);
             this.pnlLogCopyToClipboard.Controls.Add(this.btnClearLog);
+            this.pnlLogCopyToClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlLogCopyToClipboard.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(300, 554);
+            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(20, 543);
             this.pnlLogCopyToClipboard.Name = "pnlLogCopyToClipboard";
-            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(782, 39);
+            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(1071, 33);
             this.pnlLogCopyToClipboard.TabIndex = 4;
             // 
             // btnClipboardCopy
             // 
             this.btnClipboardCopy.AutoSize = true;
             this.btnClipboardCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClipboardCopy.Location = new System.Drawing.Point(651, 3);
+            this.btnClipboardCopy.Location = new System.Drawing.Point(940, 3);
             this.btnClipboardCopy.Name = "btnClipboardCopy";
             this.btnClipboardCopy.Size = new System.Drawing.Size(128, 27);
             this.btnClipboardCopy.TabIndex = 3;
@@ -576,33 +583,13 @@
             // 
             this.btnClearLog.AutoSize = true;
             this.btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClearLog.Location = new System.Drawing.Point(566, 3);
+            this.btnClearLog.Location = new System.Drawing.Point(855, 3);
             this.btnClearLog.Name = "btnClearLog";
             this.btnClearLog.Size = new System.Drawing.Size(79, 27);
             this.btnClearLog.TabIndex = 4;
             this.btnClearLog.Text = "Clear Log";
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
-            // 
-            // lblPingPong
-            // 
-            this.lblPingPong.AutoSize = true;
-            this.lblPingPong.Location = new System.Drawing.Point(12, 559);
-            this.lblPingPong.Name = "lblPingPong";
-            this.lblPingPong.Size = new System.Drawing.Size(148, 17);
-            this.lblPingPong.TabIndex = 2;
-            this.lblPingPong.Text = "                                   ";
-            // 
-            // txtLog
-            // 
-            this.txtLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLog.Location = new System.Drawing.Point(15, 19);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ReadOnly = true;
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1063, 515);
-            this.txtLog.TabIndex = 1;
             // 
             // grpDevices
             // 
@@ -636,6 +623,48 @@
     "ithout hearing gaps.";
             this.lblLagExperimental.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // pnlPingPong
+            // 
+            this.pnlPingPong.AutoSize = true;
+            this.pnlPingPong.Controls.Add(this.lblPingPong);
+            this.pnlPingPong.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlPingPong.Location = new System.Drawing.Point(20, 520);
+            this.pnlPingPong.Name = "pnlPingPong";
+            this.pnlPingPong.Padding = new System.Windows.Forms.Padding(3);
+            this.pnlPingPong.Size = new System.Drawing.Size(1071, 23);
+            this.pnlPingPong.TabIndex = 5;
+            // 
+            // pnlLog
+            // 
+            this.pnlLog.Controls.Add(this.txtLog);
+            this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlLog.Location = new System.Drawing.Point(20, 20);
+            this.pnlLog.Name = "pnlLog";
+            this.pnlLog.Size = new System.Drawing.Size(1071, 500);
+            this.pnlLog.TabIndex = 6;
+            // 
+            // lblPingPong
+            // 
+            this.lblPingPong.AutoSize = true;
+            this.lblPingPong.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblPingPong.Location = new System.Drawing.Point(3, 3);
+            this.lblPingPong.Name = "lblPingPong";
+            this.lblPingPong.Size = new System.Drawing.Size(148, 17);
+            this.lblPingPong.TabIndex = 3;
+            this.lblPingPong.Text = "                                   ";
+            // 
+            // txtLog
+            // 
+            this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLog.Location = new System.Drawing.Point(0, 0);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtLog.Size = new System.Drawing.Size(1071, 500);
+            this.txtLog.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -643,7 +672,6 @@
             this.ClientSize = new System.Drawing.Size(1151, 657);
             this.Controls.Add(this.tabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "Chromecast Desktop Audio Streamer";
@@ -673,6 +701,10 @@
             this.pnlLogCopyToClipboard.ResumeLayout(false);
             this.pnlLogCopyToClipboard.PerformLayout();
             this.grpDevices.ResumeLayout(false);
+            this.pnlPingPong.ResumeLayout(false);
+            this.pnlPingPong.PerformLayout();
+            this.pnlLog.ResumeLayout(false);
+            this.pnlLog.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -686,8 +718,6 @@
         private System.Windows.Forms.GroupBox grpVolume;
         private System.Windows.Forms.Button btnVolumeMute;
         private System.Windows.Forms.TabPage tabPageLog;
-        private System.Windows.Forms.Label lblPingPong;
-        private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.Label lblLagMin;
         private System.Windows.Forms.Label lblLagMax;
         private System.Windows.Forms.Button btnVolumeUp;
@@ -727,6 +757,10 @@
         private System.Windows.Forms.GroupBox grpDevices;
         private System.Windows.Forms.FlowLayoutPanel pnlDevices;
         private System.Windows.Forms.Label lblLagExperimental;
+        private System.Windows.Forms.Panel pnlLog;
+        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Panel pnlPingPong;
+        private System.Windows.Forms.Label lblPingPong;
     }
 }
 
