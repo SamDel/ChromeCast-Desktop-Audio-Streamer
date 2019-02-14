@@ -1,6 +1,7 @@
 ﻿using ChromeCast.Desktop.AudioStreamer.Discover;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
@@ -191,5 +192,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+        [UserScopedSetting()]
+        public Size? Size
+        {
+            get
+            {
+                return (Size?)this["Size"];
+            }
+            set
+            {
+                this["Size"] = value;
+            }
+        }
     }
 }

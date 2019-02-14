@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Classes;
@@ -38,5 +39,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         FilterDevicesEnum? GetFilterDevices();
         void SetStartLastUsedDevices(bool value);
         bool? GetStartLastUsedDevices();
+        void SetSize(Size size);
+        Size GetSize();
     }
 }

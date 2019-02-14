@@ -16,6 +16,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Drawing;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -824,6 +825,17 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return false;
 
             return chkAutoStartLastUsed.Checked;
+        }
+
+        public void SetSize(Size size)
+        {
+            Height = size.Height;
+            Width = size.Width;
+        }
+
+        public Size GetSize()
+        {
+            return Size;
         }
     }
 }
