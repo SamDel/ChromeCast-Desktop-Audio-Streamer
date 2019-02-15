@@ -255,7 +255,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
             mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
-            mainForm.SetSize(settings.Size ?? new Size(1169, 704));
+            mainForm.SetSize(settings.Size ?? new Size(850, 550));
             if (settings.ChromecastDiscoveredDevices != null)
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
@@ -330,7 +330,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LagControlValue = 1000;
             settings.StartApplicationWhenWindowsStarts = false;
             settings.FilterDevices = FilterDevicesEnum.ShowAll;
-            settings.Size = new Size(1169, 704);
+            settings.Size = new Size(850, 550);
             devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
