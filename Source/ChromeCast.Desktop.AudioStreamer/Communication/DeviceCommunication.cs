@@ -26,6 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
+        private int retryLoadAttempt = 0;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -96,6 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 return;
 
             device.SetDeviceState(DeviceState.LoadingMedia, null);
+            retryLoadAttempt = 0;
             SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
 
@@ -310,6 +312,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case "LOAD_FAILED":
                     var loadFailedMessage = js.Deserialize<MessageLoadFailed>(castMessage.PayloadUtf8);
                     device.SetDeviceState(DeviceState.LoadFailed, null);
+                    if (retryLoadAttempt <= 1)
+                    {
+                        retryLoadAttempt++;
+                        ResumePlaying();
+                    }
+                    else
+                    {
+                        retryLoadAttempt = 0;
+                    }
                     break;
                 case "LOAD_CANCELLED":
                     var loadCancelledMessage = js.Deserialize<MessageLoadCancelled>(castMessage.PayloadUtf8);
