@@ -412,7 +412,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (settings.ChromecastDiscoveredDevices[i].Port == discoveredDevice.Port &&
                     settings.ChromecastDiscoveredDevices[i].Name == discoveredDevice.Name)
                 {
-                    return settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Playing;
+                    return settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Playing ||
+                        settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Buffering ||
+                        settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.LoadingMedia;
                 }
             }
 
