@@ -10,6 +10,7 @@ using CSCore;
 using System.Windows.Forms;
 using System.Timers;
 using System.Threading.Tasks;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -24,6 +25,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         IMainForm mainForm;
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
+        ILogger logger;
+
+        public LoopbackRecorder(ILogger loggerIn)
+        {
+            logger = loggerIn;
+        }
 
         public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
@@ -123,7 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"ex : {ex.Message}");
+                    logger?.Log($"ex : {ex.Message}");
                     Task.Delay(10000).Wait();
                 }
             }
