@@ -114,9 +114,9 @@
             // pictureGroup
             // 
             this.pictureGroup.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Group;
-            this.pictureGroup.Location = new System.Drawing.Point(279, 116);
+            this.pictureGroup.Location = new System.Drawing.Point(279, 114);
             this.pictureGroup.Name = "pictureGroup";
-            this.pictureGroup.Size = new System.Drawing.Size(32, 21);
+            this.pictureGroup.Size = new System.Drawing.Size(32, 18);
             this.pictureGroup.TabIndex = 11;
             this.pictureGroup.TabStop = false;
             // 
