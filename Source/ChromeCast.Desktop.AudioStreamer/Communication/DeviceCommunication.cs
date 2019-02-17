@@ -207,6 +207,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 GetReceiverStatus();
             }
 
+            // Keep trying to play when in playing mode.
             if (userMode == UserMode.Playing)
             {
                 switch (deviceState)

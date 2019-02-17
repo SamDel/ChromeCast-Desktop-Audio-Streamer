@@ -82,8 +82,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
         }
 
+        /// <summary>
+        /// Stop all groups a device is in.
+        /// </summary>
         private void StopGroups(IDevice deviceIn)
         {
+            if (deviceList == null || deviceIn == null)
+                return;
+
             var eurekaIn = deviceIn.GetEureka();
             if (eurekaIn == null)
                 return;
@@ -96,14 +102,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (group.Name == device.GetFriendlyName())
                     {
                         device.Stop(true);
-                        Console.WriteLine($"StopGroup: {device.GetFriendlyName()}");
                     }
                 }
             }
         }
 
+        /// <summary>
+        /// Stop all devices in a group.
+        /// </summary>
         private void StopGroupDevices(IDevice deviceIn)
         {
+            if (deviceList == null || deviceIn == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 // Check if this device is in the device-group that has to stop.
@@ -117,7 +128,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     {
                         device.Stop(true);
                         StopGroups(device);
-                        Console.WriteLine($"StopGroup: {device.GetFriendlyName()}");
                     }
                 }
             }
