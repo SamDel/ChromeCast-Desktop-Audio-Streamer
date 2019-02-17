@@ -25,7 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         IMainForm mainForm;
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
-        ILogger logger;
+        readonly ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)
         {

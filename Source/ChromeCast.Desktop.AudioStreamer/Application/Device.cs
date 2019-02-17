@@ -36,6 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
         private Action<DeviceEureka> setDeviceInformationCallback;
+        private Action<IDevice> stopGroup;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -62,9 +63,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Initialize a device.
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
-        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn)
+        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn
+            , Action<IDevice> stopGroupIn)
         {
-            if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
+            if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
+                discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
                 return;
 
             var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
@@ -93,6 +96,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
+            stopGroup = stopGroupIn;
             if (ipChanged && GetDeviceState() == DeviceState.Playing)
             {
                 ResumePlaying();
@@ -118,6 +122,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
+            stopGroup(this);
             deviceCommunication.OnPlayStop_Click();
         }
 
@@ -146,7 +151,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             if (devicePlayedWhenStopped)
-                deviceCommunication.LoadMedia();
+                ResumePlaying();
         }
 
         /// <summary>
@@ -296,7 +301,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Stop playing on the device.
         /// </summary>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
             if (deviceCommunication == null)
                 return;
@@ -308,7 +313,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
                     devicePlayedWhenStopped = GetDeviceState() == DeviceState.Playing;
-                    deviceCommunication.Stop();
+                    deviceCommunication.Stop(changeUserMode);
                     SetDeviceState(DeviceState.Closed);
                     break;
                 default:
@@ -471,8 +476,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return discoveredDevice;
         }
 
-        #region private helpers
-
         /// <summary>
         /// Determine if this is a Chromecast group.
         /// </summary>
@@ -516,17 +519,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         }
 
         /// <summary>
-        /// Return if the device was playing when stopped. Used for auto restart.
-        /// </summary>
-        /// <returns></returns>
-        public bool WasPlayingWhenStopped()
-        {
-            var returnValue = devicePlayedWhenStopped;
-            devicePlayedWhenStopped = false;
-            return returnValue;
-        }
-
-        /// <summary>
         /// Get the information of the device.
         /// </summary>
         private void GetDeviceInformation()
@@ -535,11 +527,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
         }
 
+        /// <summary>
+        /// Resume playing.
+        /// </summary>
         public void ResumePlaying()
         {
+            if (deviceCommunication == null)
+                return;
+
             deviceCommunication.ResumePlaying();
         }
 
-        #endregion
+        /// <summary>
+        /// Return device eureka information.
+        /// </summary>
+        public DeviceEureka GetEureka()
+        {
+            return eureka;
+        }
     }
 }

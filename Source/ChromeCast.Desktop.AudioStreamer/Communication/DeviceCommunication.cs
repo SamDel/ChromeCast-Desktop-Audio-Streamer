@@ -52,10 +52,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Wait till the connection is established.
         /// </summary>
-        private void WaitDeviceConnected(Action callback)
+        private void WaitDeviceConnected(Action callback, int nrWaitMsec = 5)
         {
             var attempt = 0;
-            while (!isDeviceConnected() && attempt++ < 5)
+            while (!isDeviceConnected() && attempt++ < nrWaitMsec)
             {
                 Task.Delay(100).Wait();
             }
@@ -264,10 +264,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Send a stop message.
         /// </summary>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
             if (chromeCastMessages == null)
                 return;
+
+            if (changeUserMode)
+                userMode = UserMode.Stopped;
 
             var deviceState = device.GetDeviceState();
 
@@ -363,7 +366,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (applicationLogic == null)
                 return;
 
-            if (!(applicationLogic.GetAutoRestart() || device.WasPlayingWhenStopped()))
+            if (!(applicationLogic.GetAutoRestart()))
                 userMode = UserMode.Stopped;
 
             var deviceState = device.GetDeviceState();
@@ -388,6 +391,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void ResumePlaying()
         {
             logger.Log("ResumePlaying");
+            userMode = UserMode.Playing;
 
             Task.Run(() =>
             {
@@ -403,21 +407,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 device.SetDeviceState(DeviceState.NotConnected, null);
                 Disconnect();
                 Task.Delay(2000).Wait();
-                var attempt = 0;
-                while ((device.GetDeviceState() == DeviceState.NotConnected
+                if (device.GetDeviceState() == DeviceState.NotConnected
                         || device.GetDeviceState() == DeviceState.Connected
                         || device.GetDeviceState() == DeviceState.Closed
                         || device.GetDeviceState() == DeviceState.Idle)
-                    && attempt++ < 6)
                 {
                     device.OnGetStatus();
-                    Task.Delay(5000).Wait();
-                    if (device.GetDeviceState() == DeviceState.Connected
-                        || device.GetDeviceState() == DeviceState.Idle)
-                    {
-                        PlayStop();
-                        return;
-                    }
+                    WaitDeviceConnected(PlayStop, 50);
                 }
             });
         }

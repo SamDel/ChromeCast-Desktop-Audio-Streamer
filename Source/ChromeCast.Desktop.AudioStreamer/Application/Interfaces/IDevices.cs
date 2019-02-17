@@ -18,7 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeDown();
         void VolumeMute();
         void Start();
-        void Stop();
+        void Stop(bool changeUserMode = false);
         void SetSettings(UserSettings settings);
         void SetCallback(Action<Device> onAddDeviceCallbackIn);
         void Dispose();
