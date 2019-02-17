@@ -25,7 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         IMainForm mainForm;
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
-        ILogger logger;
+        private ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)
         {
@@ -130,7 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
                 catch (Exception ex)
                 {
-                    logger?.Log($"ex : {ex.Message}");
+                    logger.Log($"ex : {ex.Message}");
                     Task.Delay(10000).Wait();
                 }
             }

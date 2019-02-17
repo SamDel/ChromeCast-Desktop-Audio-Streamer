@@ -26,6 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
+        private UserMode userMode = UserMode.Stopped;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -51,10 +52,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Wait till the connection is established.
         /// </summary>
-        private void WaitDeviceConnected(Action callback)
+        private void WaitDeviceConnected(Action callback, int nrWaitMsec = 5)
         {
             var attempt = 0;
-            while (!isDeviceConnected() && attempt++ < 5)
+            while (!isDeviceConnected() && attempt++ < nrWaitMsec)
             {
                 Task.Delay(100).Wait();
             }
@@ -205,6 +206,33 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 GetReceiverStatus();
             }
+
+            // Keep trying to play when in playing mode.
+            if (userMode == UserMode.Playing)
+            {
+                switch (deviceState)
+                {
+                    case DeviceState.NotConnected:
+                    case DeviceState.Disposed:
+                    case DeviceState.ConnectError:
+                    case DeviceState.LoadFailed:
+                    case DeviceState.LoadCancelled:
+                    case DeviceState.InvalidRequest:
+                    case DeviceState.Closed:
+                    case DeviceState.Connected:
+                    case DeviceState.LaunchingApplication:
+                    case DeviceState.LaunchedApplication:
+                    case DeviceState.Idle:
+                        ResumePlaying();
+                        break;
+                    case DeviceState.LoadingMedia:
+                    case DeviceState.Buffering:
+                    case DeviceState.Playing:
+                    case DeviceState.Paused:
+                    default:
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -237,10 +265,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Send a stop message.
         /// </summary>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
             if (chromeCastMessages == null)
                 return;
+
+            if (changeUserMode)
+                userMode = UserMode.Stopped;
 
             var deviceState = device.GetDeviceState();
 
@@ -336,30 +367,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (applicationLogic == null)
                 return;
 
-            var deviceState = device.GetDeviceState();
-            var previousState = deviceState;
+            if (!(applicationLogic.GetAutoRestart()))
+                userMode = UserMode.Stopped;
 
-            // Restart?
-            if (device.WasPlayingWhenStopped() || (applicationLogic.GetAutoRestart() && (previousState == DeviceState.Playing)))
+            var deviceState = device.GetDeviceState();
+            if (deviceState == DeviceState.Playing ||
+                deviceState == DeviceState.Buffering ||
+                deviceState == DeviceState.Paused ||
+                deviceState == DeviceState.LoadingMedia)
             {
-                ResumePlaying();
+                Stop();
             }
-            else
-            {
-                if (deviceState == DeviceState.Playing ||
-                    deviceState == DeviceState.Buffering ||
-                    deviceState == DeviceState.Paused ||
-                    deviceState == DeviceState.LoadingMedia)
-                {
-                    Stop();
-                }
-                device.SetDeviceState(DeviceState.Closed, null);
-                Connected = false;
-                Task.Run(() => {
-                    Task.Delay(2000).Wait();
-                    GetReceiverStatus();
-                });
-            }
+            device.SetDeviceState(DeviceState.Closed, null);
+            Connected = false;
+            Task.Run(() => {
+                Task.Delay(2000).Wait();
+                GetReceiverStatus();
+            });
         }
 
         /// <summary>
@@ -368,6 +392,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void ResumePlaying()
         {
             logger.Log("ResumePlaying");
+            userMode = UserMode.Playing;
 
             Task.Run(() =>
             {
@@ -383,21 +408,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 device.SetDeviceState(DeviceState.NotConnected, null);
                 Disconnect();
                 Task.Delay(2000).Wait();
-                var attempt = 0;
-                while ((device.GetDeviceState() == DeviceState.NotConnected
+                if (device.GetDeviceState() == DeviceState.NotConnected
                         || device.GetDeviceState() == DeviceState.Connected
                         || device.GetDeviceState() == DeviceState.Closed
                         || device.GetDeviceState() == DeviceState.Idle)
-                    && attempt++ < 6)
                 {
                     device.OnGetStatus();
-                    Task.Delay(5000).Wait();
-                    if (device.GetDeviceState() == DeviceState.Connected
-                        || device.GetDeviceState() == DeviceState.Idle)
-                    {
-                        OnPlayStop_Click();
-                        return;
-                    }
+                    WaitDeviceConnected(PlayStop, 50);
                 }
             });
         }
@@ -516,6 +533,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// Handle a clcik on the play button.
         /// </summary>
         public void OnPlayStop_Click()
+        {
+            if (userMode == UserMode.Stopped)
+                userMode = UserMode.Playing;
+            else
+                userMode = UserMode.Stopped;
+
+            PlayStop();
+        }
+
+        /// <summary>
+        /// Play or stop.
+        /// </summary>
+        private void PlayStop()
         {
             switch (device.GetDeviceState())
             {

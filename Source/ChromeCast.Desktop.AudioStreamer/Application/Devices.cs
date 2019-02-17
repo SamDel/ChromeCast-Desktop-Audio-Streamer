@@ -47,7 +47,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (existingDevice == null)
                     {
                         var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
@@ -57,7 +57,77 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     else
                     {
-                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// If device is a group, stop devices in the group.
+        /// If device is a device, stop the groups the device is in.
+        /// </summary>
+        private void StopGroup(IDevice deviceIn)
+        {
+            if (deviceIn == null)
+                return;
+
+            if (deviceIn.IsGroup())
+            {
+                StopGroupDevices(deviceIn);
+            }
+            else
+            {
+                StopGroups(deviceIn);
+            }
+        }
+
+        /// <summary>
+        /// Stop all groups a device is in.
+        /// </summary>
+        private void StopGroups(IDevice deviceIn)
+        {
+            if (deviceList == null || deviceIn == null)
+                return;
+
+            var eurekaIn = deviceIn.GetEureka();
+            if (eurekaIn == null)
+                return;
+
+            foreach (var group in eurekaIn.Multizone.Groups)
+            {
+                // Stop all devices in the group.
+                foreach (var device in deviceList)
+                {
+                    if (group.Name == device.GetFriendlyName())
+                    {
+                        device.Stop(true);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop all devices in a group.
+        /// </summary>
+        private void StopGroupDevices(IDevice deviceIn)
+        {
+            if (deviceList == null || deviceIn == null)
+                return;
+
+            foreach (var device in deviceList)
+            {
+                // Check if this device is in the device-group that has to stop.
+                var deviceEureka = device.GetEureka();
+                if (deviceEureka == null)
+                    continue;
+
+                foreach (var group in deviceEureka.Multizone.Groups)
+                {
+                    if (group.Name == deviceIn.GetFriendlyName())
+                    {
+                        device.Stop(true);
+                        StopGroups(device);
                     }
                 }
             }
@@ -194,14 +264,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Stop for all devices. 
         /// </summary>
         /// <returns>true if one of the devices was playing, or false</returns>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
             if (deviceList == null)
                 return;
 
             foreach (var device in deviceList)
             {
-                device.Stop();
+                device.Stop(changeUserMode);
             }
             applicationBuffer.ClearBuffer();
         }
