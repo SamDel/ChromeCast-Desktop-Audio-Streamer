@@ -407,6 +407,10 @@ namespace ChromeCast.Desktop.AudioStreamer
                     }
 
                 }
+                else
+                {
+                    return;
+                }
             }
 
             startRecordingSetDevice(null);
