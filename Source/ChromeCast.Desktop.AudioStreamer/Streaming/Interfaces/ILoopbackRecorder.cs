@@ -8,7 +8,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces
     {
         void StartRecording(Action<byte[], WaveFormat> dataAvailableCallback);
         void StartRecordingDevice();
-        void StartRecordingSetDevice(MMDevice device);
+        bool StartRecordingSetDevice(MMDevice device);
         void StopRecording();
         void GetDevices(IMainForm mainForm);
     }

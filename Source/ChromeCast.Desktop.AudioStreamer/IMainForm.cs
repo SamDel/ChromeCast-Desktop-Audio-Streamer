@@ -17,7 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void AddDevice(IDevice device);
         void Dispose();
         void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
-        void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice);
+        void GetRecordingDevice(Func<MMDevice, bool> startRecordingSetDevice);
         void SetAutoRestart(bool autoRestart);
         bool GetUseKeyboardShortCuts();
         bool GetAutoStartDevices();

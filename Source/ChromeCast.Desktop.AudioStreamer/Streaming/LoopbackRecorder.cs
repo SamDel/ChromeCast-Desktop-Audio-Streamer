@@ -99,41 +99,39 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             mainForm.AddRecordingDevices(devices, defaultDevice);
         }
 
-        public void StartRecordingSetDevice(MMDevice recordingDevice)
+        public bool StartRecordingSetDevice(MMDevice recordingDevice)
         {
             if (recordingDevice == null)
             {
                 MessageBox.Show(Properties.Strings.MessageBox_NoRecordingDevices);
                 Console.WriteLine("No devices found.");
-                return;
+                return false;
             }
 
-            for (int attempt = 0; attempt < 6; attempt++)
+            try
             {
-                try
+                soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
                 {
-                    soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
-                    {
-                        Device = recordingDevice
-                    };
+                    Device = recordingDevice
+                };
 
-                    soundIn.Initialize();
-                    soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-                    convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
-                    convertedSource = convertedSource.ToStereo();
-                    soundInSource.DataAvailable += OnDataAvailable;
-                    soundIn.Start();
+                soundIn.Initialize();
+                soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
+                convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+                convertedSource = convertedSource.ToStereo();
+                soundInSource.DataAvailable += OnDataAvailable;
+                soundIn.Start();
 
-                    var format = convertedSource.WaveFormat;
-                    waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    logger?.Log($"ex : {ex.Message}");
-                    Task.Delay(10000).Wait();
-                }
+                var format = convertedSource.WaveFormat;
+                waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                return true;
             }
+            catch (Exception ex)
+            {
+                logger?.Log($"ex : {ex.Message}");
+            }
+
+            return false;
         }
 
         private void StartSilenceCheckTimer()
