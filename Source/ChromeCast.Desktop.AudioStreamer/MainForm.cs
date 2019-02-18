@@ -377,11 +377,11 @@ namespace ChromeCast.Desktop.AudioStreamer
             cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
         }
 
-        public void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice)
+        public void GetRecordingDevice(Func<MMDevice, bool> startRecordingSetDevice)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
+                Invoke(new Action<Func<MMDevice, bool>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
                 return;
             }
             if (IsDisposed) return;
@@ -389,15 +389,29 @@ namespace ChromeCast.Desktop.AudioStreamer
             SetDevice(startRecordingSetDevice);
         }
 
-        private void SetDevice(Action<MMDevice> startRecordingSetDevice)
+        private void SetDevice(Func<MMDevice, bool> startRecordingSetDevice)
         {
             if (cmbRecordingDevice == null)
                 return;
 
             if (cmbRecordingDevice.Items.Count > 0)
-                startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
-            else
-                startRecordingSetDevice(null);
+            {
+                // Start the first device that has no error, wait for ~ 1 minute till the devices are up and running.
+                for (int attempt = 0; attempt < 6; attempt++)
+                {
+                    for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                    {
+                        if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
+                        {
+                            cmbRecordingDevice.SelectedIndex = i;
+                            return;
+                        }
+                    }
+                    Task.Delay(10000).Wait();
+                }
+            }
+
+            startRecordingSetDevice(null);
         }
 
         private void CmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
