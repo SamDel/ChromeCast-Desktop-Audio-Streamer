@@ -396,18 +396,22 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             if (cmbRecordingDevice.Items.Count > 0)
             {
-                // Start the first device that has no error, wait for ~ 1 minute till the devices are up and running.
-                for (int attempt = 0; attempt < 6; attempt++)
+                if (!startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
                 {
-                    for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                    // Start the first device that has no error, wait for ~ 1 minute till the devices are up and running.
+                    for (int attempt = 0; attempt < 6; attempt++)
                     {
-                        if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
+                        for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                         {
-                            cmbRecordingDevice.SelectedIndex = i;
-                            return;
+                            if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
+                            {
+                                cmbRecordingDevice.SelectedIndex = i;
+                                return;
+                            }
                         }
+                        Task.Delay(10000).Wait();
                     }
-                    Task.Delay(10000).Wait();
+
                 }
             }
 
