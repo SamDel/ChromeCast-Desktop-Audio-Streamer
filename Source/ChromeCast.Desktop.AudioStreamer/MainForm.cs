@@ -859,5 +859,13 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             return Size;
         }
+
+        private void LinkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (e == null)
+                return;
+
+            Process.Start("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+        }
     }
 }
