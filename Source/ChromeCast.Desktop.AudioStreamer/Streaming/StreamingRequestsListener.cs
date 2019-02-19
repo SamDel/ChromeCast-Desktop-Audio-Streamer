@@ -28,8 +28,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return string.Format($"http://{ip}:{port}/");
         }
 
+        /// <summary>
+        /// Start listening for new streaming connections.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <param name="onConnectCallbackIn"></param>
         public void StartListening(IPAddress ipAddress, Action<Socket, string> onConnectCallbackIn)
         {
+            if (ipAddress == null || onConnectCallbackIn == null)
+                return;
+
             onConnectCallback = onConnectCallbackIn;
             var localEndPoint = new IPEndPoint(ipAddress, 0);
             listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -59,6 +67,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        /// <summary>
+        /// Stop listening.
+        /// </summary>
         public void StopListening()
         {
             try
@@ -70,8 +81,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        /// <summary>
+        /// Accept the connection.
+        /// </summary>
+        /// <param name="asyncResult"></param>
         private void AcceptCallback(IAsyncResult asyncResult)
         {
+            if (asyncResult == null || asyncResult.AsyncState == null)
+                return;
+
             allDone.Set();
 
             var listener = (Socket)asyncResult.AsyncState;
@@ -88,8 +106,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        /// <summary>
+        /// Read incoming bytes.
+        /// </summary>
         private void ReadCallback(IAsyncResult asyncResult)
         {
+            if (asyncResult == null || asyncResult.AsyncState == null || onConnectCallback == null)
+                return;
+
             var state = (StateObject)asyncResult.AsyncState;
             var handlerSocket = state.workSocket;
 

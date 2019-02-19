@@ -20,8 +20,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             isAudioHeaderSent = false;
         }
 
+        /// <summary>
+        /// Send audio data to the device.
+        /// </summary>
+        /// <param name="dataToSend">the audio data</param>
+        /// <param name="format">the audio format</param>
+        /// <param name="reduceLagThreshold">lag control value</param>
+        /// <param name="streamFormat">the stream format selected</param>
         public void SendData(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
+            if (dataToSend == null || dataToSend.Length == 0 || format == null)
+                return;
+
+            // Lag control functionality.
             if (reduceLagThreshold < 1000)
             {
                 reduceLagCounter++;
@@ -32,6 +43,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
             }
 
+            // Send audio header before the fitrst data.
             if (!isAudioHeaderSent)
             {
                 isAudioHeaderSent = true;
@@ -48,26 +60,35 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             Send(dataToSend);
         }
 
+        /// <summary>
+        /// Send data.
+        /// </summary>
         public void Send(byte[] data)
         {
-            if (Socket != null && Socket.Connected)
+            if (!IsConnected())
+                return;
+
+            try
             {
-                try
-                {
-                    Socket.Send(data);
-                }
-                catch (Exception)
-                {
-                }
+                Socket.Send(data);
+            }
+            catch (Exception)
+            {
             }
         }
 
+        /// <summary>
+        /// Send the HTTP header.
+        /// </summary>
         public void SendStartStreamingResponse()
         {
             var startStreamingResponse = Encoding.ASCII.GetBytes(GetStartStreamingResponse());
             Send(startStreamingResponse);
         }
 
+        /// <summary>
+        /// Return the HTTP header.
+        /// </summary>
         private string GetStartStreamingResponse()
         {
             var httpStartStreamingReply = new StringBuilder();
@@ -81,6 +102,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return httpStartStreamingReply.ToString();
         }
 
+        /// <summary>
+        /// Is the socket connected?
+        /// </summary>
+        /// <returns>true if connected, or false</returns>
         public bool IsConnected()
         {
             return Socket != null && Socket.Connected;
@@ -92,6 +117,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return !(Socket.Poll(1, SelectMode.SelectRead) && Socket.Available == 0);
         }
 
+        /// <summary>
+        /// Get the remote endpoint of the socket.
+        /// </summary>
+        /// <returns>the remote endpoint</returns>
         public string GetRemoteEndPoint()
         {
             if (Socket == null)
@@ -100,6 +129,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return Socket.RemoteEndPoint.ToString();
         }
 
+        /// <summary>
+        /// Set the socket to use for streaming.
+        /// </summary>
+        /// <param name="socketIn"></param>
         public void SetSocket(Socket socketIn)
         {
             Socket = socketIn;

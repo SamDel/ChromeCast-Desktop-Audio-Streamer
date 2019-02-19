@@ -39,6 +39,9 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         public void SetStatus(DeviceState state, string text)
         {
+            if (device == null)
+                return;
+
             if (InvokeRequired)
             {
                 Invoke(new Action<DeviceState, string>(SetStatus), new object[] { state, text });
@@ -125,11 +128,17 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void TrbVolume_Scroll(object sender, EventArgs e)
         {
+            if (device == null)
+                return;
+
             device.VolumeSet(trbVolume.Value / 100f);
         }
 
         private void PictureVolumeMute_Click(object sender, EventArgs e)
         {
+            if (device == null)
+                return;
+
             device.VolumeMute();
         }
 
@@ -147,11 +156,17 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void DeviceControl_DragOver(object sender, DragEventArgs e)
         {
+            if (e == null)
+                return;
+
             e.Effect = DragDropEffects.All;
         }
 
         private void DeviceControl_DragDrop(object sender, DragEventArgs e)
         {
+            if (sender == null || !(sender is DeviceControl))
+                return;
+
             ((IMainForm)((DeviceControl)sender).ParentForm).DoDragDrop(sender, e);
         }
 

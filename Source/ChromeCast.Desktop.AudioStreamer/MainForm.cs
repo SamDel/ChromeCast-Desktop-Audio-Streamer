@@ -46,6 +46,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             Update();
             AddIP4Addresses();
             applicationLogic.Initialize();
@@ -830,6 +833,9 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void CmbFilterDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             applicationLogic.SetFilterDevices((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value);
         }
 

@@ -32,6 +32,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             logger = loggerIn;
         }
 
+        /// <summary>
+        /// Start recording.
+        /// </summary>
         public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
             if (isRecording)
@@ -44,13 +47,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             isRecording = true;
         }
 
+        /// <summary>
+        /// Get the recording device, the callback should be called when the recording device is there.
+        /// </summary>
         public void StartRecordingDevice()
         {
+            if (mainForm == null)
+                return;
+
             mainForm.GetRecordingDevice(StartRecordingSetDevice);
         }
 
+        /// <summary>
+        /// New recording data is available, distribute the data.
+        /// </summary>
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
         {
+            if (convertedSource == null || convertedSource.WaveFormat == null)
+                return;
+
             latestDataAvailable = DateTime.Now;
 
             if (dataAvailableCallback != null)
@@ -67,38 +82,37 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        /// <summary>
+        /// Stop recording.
+        /// </summary>
         public void StopRecording()
         {
+            if (soundIn == null)
+                return;
+
             isRecording = false;
-            if (soundIn != null)
-            {
-                soundIn.Stop();
-            }
+            soundIn.Stop();
         }
 
-        private void OnRecordingStopped(object sender, CSCore.StoppedEventArgs eventArgs)
-        {
-            if (soundIn != null)
-            {
-                soundIn.Dispose();
-                soundIn = null;
-            }
-            isRecording = false;
-
-            if (eventArgs.Exception != null)
-            {
-                throw eventArgs.Exception;
-            }
-        }
-
+        /// <summary>
+        /// Get the recording device.
+        /// </summary>
         public void GetDevices(IMainForm mainFormIn)
         {
+            if (mainFormIn == null)
+                return;
+
             mainForm = mainFormIn;
             var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
             mainForm.AddRecordingDevices(devices, defaultDevice);
         }
 
+        /// <summary>
+        /// Start recording on the device in the parameter.
+        /// </summary>
+        /// <param name="recordingDevice">the device to start recording</param>
+        /// <returns>true if the recording is started, or false</returns>
         public bool StartRecordingSetDevice(MMDevice recordingDevice)
         {
             if (recordingDevice == null)
@@ -135,6 +149,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             return false;
         }
 
+        /// <summary>
+        /// Start a timer that checks for silence (nothing recorded).
+        /// </summary>
         private void StartSilenceCheckTimer()
         {
             latestDataAvailable = DateTime.Now;
@@ -147,11 +164,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             dataAvailableTimer.Start();
         }
 
+        /// <summary>
+        /// If there's nothing recorded for a while, stream silence to keep the connection alive.
+        /// </summary>
         private void OnCheckForSilence(object sender, ElapsedEventArgs e)
         {
+            if (dataAvailableCallback == null)
+                return;
+
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
             {
-                Console.WriteLine($"OnCheckForSilence: {DateTime.Now.ToLongTimeString()}");
                 latestDataAvailable = DateTime.Now;
                 dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
             }
