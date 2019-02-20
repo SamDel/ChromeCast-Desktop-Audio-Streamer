@@ -312,4 +312,7 @@
   <data name="Check_AutonaticallyStartLastUsed_Text" xml:space="preserve">
     <value>Automatically start last used devices and groups at startup</value>
   </data>
+  <data name="Label_LinkHelp_Text" xml:space="preserve">
+    <value>Information about options on Github</value>
+  </data>
 </root>

@@ -72,8 +72,8 @@
             this.cmbIP4AddressUsed = new System.Windows.Forms.ComboBox();
             this.cmbRecordingDevice = new System.Windows.Forms.ComboBox();
             this.cmbStreamFormat = new System.Windows.Forms.ComboBox();
-            this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.lblNewReleaseAvailable = new System.Windows.Forms.LinkLabel();
+            this.linkHelp = new System.Windows.Forms.LinkLabel();
             this.lblVersion = new System.Windows.Forms.Label();
             this.tabPageLog = new System.Windows.Forms.TabPage();
             this.pnlLog = new System.Windows.Forms.Panel();
@@ -611,20 +611,6 @@
             this.cmbStreamFormat.TabIndex = 29;
             this.cmbStreamFormat.SelectedIndexChanged += new System.EventHandler(this.CmbStreamFormat_SelectedIndexChanged);
             // 
-            // linkHelp
-            // 
-            this.linkHelp.AutoSize = true;
-            this.linkHelp.BackColor = System.Drawing.Color.White;
-            this.linkHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkHelp.Location = new System.Drawing.Point(22, 22);
-            this.linkHelp.Name = "linkHelp";
-            this.linkHelp.Size = new System.Drawing.Size(244, 18);
-            this.linkHelp.TabIndex = 43;
-            this.linkHelp.TabStop = true;
-            this.linkHelp.Text = "Information about options on Github";
-            this.linkHelp.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkHelp_LinkClicked);
-            // 
             // lblNewReleaseAvailable
             // 
             this.lblNewReleaseAvailable.AutoSize = true;
@@ -638,6 +624,20 @@
             this.lblNewReleaseAvailable.Text = "Version x is available on Github";
             this.lblNewReleaseAvailable.Visible = false;
             this.lblNewReleaseAvailable.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LblNewReleaseAvailable_LinkClicked);
+            // 
+            // linkHelp
+            // 
+            this.linkHelp.AutoSize = true;
+            this.linkHelp.BackColor = System.Drawing.Color.White;
+            this.linkHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkHelp.Location = new System.Drawing.Point(22, 22);
+            this.linkHelp.Name = "linkHelp";
+            this.linkHelp.Size = new System.Drawing.Size(244, 18);
+            this.linkHelp.TabIndex = 43;
+            this.linkHelp.TabStop = true;
+            this.linkHelp.Text = "Information about options on Github";
+            this.linkHelp.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkHelp_LinkClicked);
             // 
             // lblVersion
             // 

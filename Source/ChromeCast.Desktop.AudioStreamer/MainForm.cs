@@ -98,6 +98,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             lblLanguage.Text = Properties.Strings.Label_Language_Text;
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
+            linkHelp.Text = Properties.Strings.Label_LinkHelp_Text;
 
             if (cmbLanguage.Items.Count == 0)
             {

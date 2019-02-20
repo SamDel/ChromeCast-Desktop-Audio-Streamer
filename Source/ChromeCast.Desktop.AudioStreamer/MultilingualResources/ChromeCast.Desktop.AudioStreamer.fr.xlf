@@ -676,6 +676,10 @@
           <source>Automatically start last used devices and groups at startup</source>
           <target state="needs-review-translation">Automatically start last used devices and groups at startup</target>
         </trans-unit>
+        <trans-unit id="Label_LinkHelp_Text" translate="yes" xml:space="preserve">
+          <source>Information about options on Github</source>
+          <target state="needs-review-translation">Information about options on Github</target>
+        </trans-unit>
       </group>
     </body>
   </file>

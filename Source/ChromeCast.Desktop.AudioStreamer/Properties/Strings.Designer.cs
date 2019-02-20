@@ -367,6 +367,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Information about options on Github.
+        /// </summary>
+        internal static string Label_LinkHelp_Text {
+            get {
+                return ResourceManager.GetString("Label_LinkHelp_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maximum lag / best quality.
         /// </summary>
         internal static string Label_MaximumLag_Text {
