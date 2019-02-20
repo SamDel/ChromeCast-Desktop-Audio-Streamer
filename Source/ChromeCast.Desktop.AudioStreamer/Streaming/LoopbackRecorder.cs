@@ -25,6 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         IMainForm mainForm;
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
+        System.Timers.Timer getDevicesTimer;
         private ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)
@@ -33,18 +34,48 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         }
 
         /// <summary>
+        /// Start
+        /// </summary>
+        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
+        {
+            if (mainFormIn == null || dataAvailableCallbackIn == null)
+                return;
+
+            getDevicesTimer = new System.Timers.Timer
+            {
+                Interval = 15000,
+                Enabled = true
+            };
+            getDevicesTimer.Elapsed += new ElapsedEventHandler(DoStart);
+            getDevicesTimer.Start();
+
+            dataAvailableCallback = dataAvailableCallbackIn;
+            mainForm = mainFormIn;
+            DoStart(null, null);
+        }
+
+        /// <summary>
+        /// Do start.
+        /// </summary>
+        private void DoStart(object sender, ElapsedEventArgs e)
+        {
+            GetDevices();
+            if (!isRecording)
+            {
+                StartRecording();
+            }
+        }
+
+        /// <summary>
         /// Start recording.
         /// </summary>
-        public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
+        public void StartRecording()
         {
             if (isRecording)
                 return;
 
-            dataAvailableCallback = dataAvailableCallbackIn;
-
             StartSilenceCheckTimer();
             StartRecordingDevice();
-            isRecording = true;
         }
 
         /// <summary>
@@ -97,15 +128,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Get the recording device.
         /// </summary>
-        public void GetDevices(IMainForm mainFormIn)
+        public void GetDevices()
         {
-            if (mainFormIn == null)
+            if (mainForm == null)
                 return;
 
-            mainForm = mainFormIn;
-            var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
-            mainForm.AddRecordingDevices(devices, defaultDevice);
+            if (devices.Count > 0)
+            {
+                var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                mainForm.AddRecordingDevices(devices, defaultDevice);
+            }
         }
 
         /// <summary>
@@ -117,7 +150,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         {
             if (recordingDevice == null)
             {
-                MessageBox.Show(Properties.Strings.MessageBox_NoRecordingDevices);
+                //MessageBox.Show(Properties.Strings.MessageBox_NoRecordingDevices);
                 Console.WriteLine("No devices found.");
                 return false;
             }
@@ -134,19 +167,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
                 convertedSource = convertedSource.ToStereo();
                 soundInSource.DataAvailable += OnDataAvailable;
+                soundIn.Stopped += OnRecordingStopped;
                 soundIn.Start();
 
                 var format = convertedSource.WaveFormat;
                 waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                isRecording = true;
                 return true;
             }
             catch (Exception ex)
             {
                 logger.Log($"ex : {ex.Message}");
-                Task.Delay(10000).Wait();
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Recording has stopped.
+        /// </summary>
+        private void OnRecordingStopped(object sender, RecordingStoppedEventArgs e)
+        {
+            isRecording = false;
         }
 
         /// <summary>
@@ -154,14 +196,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         private void StartSilenceCheckTimer()
         {
-            latestDataAvailable = DateTime.Now;
-            dataAvailableTimer = new System.Timers.Timer
+            if (dataAvailableTimer == null)
             {
-                Interval = 1000,
-                Enabled = true
-            };
-            dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
-            dataAvailableTimer.Start();
+                latestDataAvailable = DateTime.Now;
+                dataAvailableTimer = new System.Timers.Timer
+                {
+                    Interval = 1000,
+                    Enabled = true
+                };
+                dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
+                dataAvailableTimer.Start();
+            }
         }
 
         /// <summary>

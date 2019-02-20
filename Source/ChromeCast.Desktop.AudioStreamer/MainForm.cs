@@ -370,7 +370,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             foreach (var device in devices)
             {
-                if (!cmbRecordingDevice.Items.Contains(device))
+                var exists = false;
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
+                    {
+                        exists = true;
+                        if (device.DeviceID == defaultdevice.DeviceID)
+                            cmbRecordingDevice.SelectedIndex = i;
+                    }
+                }
+                if (!exists)
                 {
                     var index = cmbRecordingDevice.Items.Add(device);
                     if (device.DeviceID == defaultdevice.DeviceID)
@@ -401,20 +411,15 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 if (!startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
                 {
-                    // Start the first device that has no error, wait for ~ 1 minute till the devices are up and running.
-                    for (int attempt = 0; attempt < 6; attempt++)
+                    // Start the first device that has no error.
+                    for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                     {
-                        for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                        if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
                         {
-                            if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
-                            {
-                                cmbRecordingDevice.SelectedIndex = i;
-                                return;
-                            }
+                            cmbRecordingDevice.SelectedIndex = i;
+                            return;
                         }
-                        Task.Delay(10000).Wait();
                     }
-
                 }
                 else
                 {

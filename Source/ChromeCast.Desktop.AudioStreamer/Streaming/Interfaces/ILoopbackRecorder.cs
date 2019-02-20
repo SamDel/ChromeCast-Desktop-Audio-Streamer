@@ -6,10 +6,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces
 {
     public interface ILoopbackRecorder
     {
-        void StartRecording(Action<byte[], WaveFormat> dataAvailableCallback);
+        void Start(IMainForm mainForm, Action<byte[], WaveFormat> dataAvailableCallback);
         void StartRecordingDevice();
         bool StartRecordingSetDevice(MMDevice device);
         void StopRecording();
-        void GetDevices(IMainForm mainForm);
     }
 }

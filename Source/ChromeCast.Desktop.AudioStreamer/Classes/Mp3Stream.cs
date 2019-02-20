@@ -16,18 +16,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private LameMP3FileWriter Writer { get; set; }
         private ILogger Logger { get; set; }
 
-        public Mp3Stream(ILogger loggerIn)
-        {
-            Logger = loggerIn;
-        }
-
         /// <summary>
         /// Setup MP3 encoding with the selected WAV and stream formats.
         /// </summary>
         /// <param name="format">the WAV input format</param>
         /// <param name="formatSelected">the mp3 output format</param>
-        public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected)
+        public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected, ILogger loggerIn)
         {
+            Logger = loggerIn;
             Output = new MemoryStream();
             var bitRate = 128;
             if (formatSelected.Equals(SupportedStreamFormat.Mp3_320))

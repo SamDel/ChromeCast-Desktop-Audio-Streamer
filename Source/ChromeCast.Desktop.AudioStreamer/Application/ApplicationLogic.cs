@@ -71,8 +71,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             configuration.Load(ApplyConfiguration);
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
-            loopbackRecorder.GetDevices(mainForm);
-            loopbackRecorder?.StartRecording(OnRecordingDataAvailable);
+            loopbackRecorder.Start(mainForm, OnRecordingDataAvailable);
         }
 
         /// <summary>
@@ -98,7 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 if (Mp3Stream == null)
                 {
-                    Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected);
+                    Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected, logger);
                 }
                 Mp3Stream.Encode(dataToSendIn.ToArray());
                 dataToSendIn = Mp3Stream.Read();
