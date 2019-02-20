@@ -428,6 +428,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (mediaStatusMessage == null)
                 return;
 
+            var state = device.GetDeviceState();
+            if (state == DeviceState.ConnectError || state == DeviceState.NotConnected || state == DeviceState.Closed)
+            {
+                Connected = true;
+            }
+
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
             if (device.IsConnected() && mediaStatusMessage.status.Any())
