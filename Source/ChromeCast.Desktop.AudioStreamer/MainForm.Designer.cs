@@ -163,6 +163,7 @@
             this.grpLag.TabIndex = 12;
             this.grpLag.TabStop = false;
             this.grpLag.Text = "Lag Control";
+            this.grpLag.Visible = false;
             // 
             // lblLagExperimental
             // 
