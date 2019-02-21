@@ -382,8 +382,8 @@ namespace ChromeCast.Desktop.AudioStreamer
                     if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
                     {
                         exists = true;
-                        if (device.DeviceID == defaultdevice.DeviceID)
-                            cmbRecordingDevice.SelectedIndex = i;
+                        //if (device.DeviceID == defaultdevice.DeviceID)
+                        //    cmbRecordingDevice.SelectedIndex = i;
                     }
                 }
                 if (!exists)
@@ -396,44 +396,45 @@ namespace ChromeCast.Desktop.AudioStreamer
             cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
         }
 
-        public void GetRecordingDevice(Func<MMDevice, bool> startRecordingSetDevice)
+        public void GetRecordingDevice()
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<Func<MMDevice, bool>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
+                Invoke(new Action(GetRecordingDevice));
                 return;
             }
             if (IsDisposed) return;
 
-            SetDevice(startRecordingSetDevice);
-        }
-
-        private void SetDevice(Func<MMDevice, bool> startRecordingSetDevice)
-        {
             if (cmbRecordingDevice == null)
                 return;
 
-            if (cmbRecordingDevice.Items.Count > 0)
+            if (!StartRecordingDevice())
+                loopbackRecorder.StartRecordingSetDevice(null);
+        }
+
+        private bool StartRecordingDevice()
+        {
+            if (cmbRecordingDevice == null || cmbRecordingDevice.Items.Count == 0)
+                return false;
+
+            if (!loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
             {
-                if (!startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
+                // Start the first device that has no error.
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
-                    // Start the first device that has no error.
-                    for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                    if (loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
                     {
-                        if (startRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
-                        {
-                            cmbRecordingDevice.SelectedIndex = i;
-                            return;
-                        }
+                        cmbRecordingDevice.SelectedIndex = i;
+                        return true;
                     }
                 }
-                else
-                {
-                    return;
-                }
+            }
+            else
+            {
+                return true;
             }
 
-            startRecordingSetDevice(null);
+            return false;
         }
 
         private void CmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
@@ -442,7 +443,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             loopbackRecorder.StopRecording();
-            loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
+            StartRecordingDevice();
         }
 
         private void ChkAutoRestart_CheckedChanged(object sender, EventArgs e)

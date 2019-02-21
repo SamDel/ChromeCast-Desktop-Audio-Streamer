@@ -84,7 +84,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (mainForm == null)
                 return;
 
-            mainForm.GetRecordingDevice(StartRecordingSetDevice);
+            mainForm.GetRecordingDevice();
         }
 
         /// <summary>
