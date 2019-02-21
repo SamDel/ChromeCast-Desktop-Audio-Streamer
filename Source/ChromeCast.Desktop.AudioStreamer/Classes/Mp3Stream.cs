@@ -44,7 +44,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             try
             {
                 var writeBuffer = buffer.ToArray();
-                Writer.Write(writeBuffer, 0, writeBuffer.Length);
+                lock(Writer)
+                {
+                    Writer.Write(writeBuffer, 0, writeBuffer.Length);
+                }
             }
             catch (Exception ex)
             {

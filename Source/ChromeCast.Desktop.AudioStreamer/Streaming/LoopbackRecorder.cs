@@ -7,9 +7,7 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore;
-using System.Windows.Forms;
 using System.Timers;
-using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
@@ -24,8 +22,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        System.Timers.Timer dataAvailableTimer;
-        System.Timers.Timer getDevicesTimer;
+        Timer dataAvailableTimer;
+        Timer getDevicesTimer;
         private ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)

@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -26,12 +27,14 @@ namespace ChromeCast.Desktop.AudioStreamer
         private IDevices devices;
         private ILogger logger;
         private IPAddress previousIpAddress;
+        private ILoopbackRecorder loopbackRecorder;
 
-        public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILogger loggerIn)
+        public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
             InitializeComponent();
 
             ApplyLocalization();
+            loopbackRecorder = loopbackRecorderIn;
             applicationLogic = applicationLogicIn;
             devices = devicesIn;
             logger = loggerIn;
@@ -64,6 +67,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 CheckForNewVersion(fvi.FileVersion);
             });
+            loopbackRecorder.Start(this, applicationLogic.OnRecordingDataAvailable);
         }
 
         private void ApplyLocalization()
@@ -149,6 +153,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (applicationLogic == null)
                 return;
 
+            loopbackRecorder?.StopRecording();
             applicationLogic.CloseApplication();
         }
 
@@ -436,7 +441,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (applicationLogic == null)
                 return;
 
-            applicationLogic.RecordingDeviceChanged();
+            loopbackRecorder.StopRecording();
+            loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
         }
 
         private void ChkAutoRestart_CheckedChanged(object sender, EventArgs e)

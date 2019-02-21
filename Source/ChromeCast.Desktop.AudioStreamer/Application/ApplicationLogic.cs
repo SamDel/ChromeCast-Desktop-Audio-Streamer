@@ -21,7 +21,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IDevices devices;
         private IMainForm mainForm;
         private IConfiguration configuration;
-        private ILoopbackRecorder loopbackRecorder;
         private IStreamingRequestsListener streamingRequestListener;
         private IDiscoverDevices discoverDevices;
         private IDeviceStatusTimer deviceStatusTimer;
@@ -37,14 +36,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool AutoRestart { get; set; } = false;
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
-            , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
+            , IConfiguration configurationIn
             , IStreamingRequestsListener streamingRequestListenerIn, IDeviceStatusTimer deviceStatusTimerIn
             , ILogger loggerIn)
         {
             devices = devicesIn;
             devices.SetCallback(OnAddDevice);
             discoverDevices = discoverDevicesIn;
-            loopbackRecorder = loopbackRecorderIn;
             configuration = configurationIn;
             streamingRequestListener = streamingRequestListenerIn;
             deviceStatusTimer = deviceStatusTimerIn;
@@ -71,7 +69,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             configuration.Load(ApplyConfiguration);
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
-            loopbackRecorder.Start(mainForm, OnRecordingDataAvailable);
         }
 
         /// <summary>
@@ -134,17 +131,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDependencies(MainForm mainFormIn)
         {
             mainForm = mainFormIn;
-        }
-
-        /// <summary>
-        /// The user changed the recording device in the user interface.
-        /// </summary>
-        public void RecordingDeviceChanged()
-        {
-            if (loopbackRecorder == null)
-                return;
-
-            loopbackRecorder.StartRecordingDevice();
         }
 
         /// <summary>
@@ -367,7 +353,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             SaveSettings();
             NativeMethods.StopSetWindowsHooks();
-            loopbackRecorder?.StopRecording();
             devices?.Dispose();
             streamingRequestListener?.StopListening();
             if (notifyIcon != null) notifyIcon.Visible = false;
