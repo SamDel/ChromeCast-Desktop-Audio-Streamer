@@ -60,7 +60,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             ScanForDevices();
             deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             var ipAddress = Network.GetIp4Address();
-            ipAddress = null;
             if (ipAddress == null)
             {
                 logger.Log(Properties.Strings.MessageBox_NoIPAddress);
