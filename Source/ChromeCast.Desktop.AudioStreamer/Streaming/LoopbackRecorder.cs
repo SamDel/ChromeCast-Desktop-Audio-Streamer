@@ -148,8 +148,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         {
             if (recordingDevice == null)
             {
-                //MessageBox.Show(Properties.Strings.MessageBox_NoRecordingDevices);
-                Console.WriteLine("No devices found.");
+                logger.Log(Properties.Strings.MessageBox_NoRecordingDevices);
                 return false;
             }
 

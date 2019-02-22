@@ -54,21 +54,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Initialize()
         {
+            AddNotifyIcon();
+            LoadSettings();
+            configuration.Load(ApplyConfiguration);
+            ScanForDevices();
+            deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             var ipAddress = Network.GetIp4Address();
+            ipAddress = null;
             if (ipAddress == null)
             {
-                MessageBox.Show(Properties.Strings.MessageBox_NoIPAddress);
+                logger.Log(Properties.Strings.MessageBox_NoIPAddress);
                 return;
             }
 
             Task.Run(() => {
                 streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect);
             });
-            AddNotifyIcon();
-            LoadSettings();
-            configuration.Load(ApplyConfiguration);
-            ScanForDevices();
-            deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
         }
 
         /// <summary>
@@ -162,6 +163,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger.Log($"Change IP4 address: {ipAddressIn.ToString()}");
             devices.Stop();
             streamingRequestListener.StopListening();
+            ScanForDevices();
             Task.Run(() => {
                 streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect);
             });
