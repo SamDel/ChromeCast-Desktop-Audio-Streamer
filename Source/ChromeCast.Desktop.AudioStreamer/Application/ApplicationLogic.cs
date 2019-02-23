@@ -32,6 +32,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Mp3_320;
         private string Culture;
         private ILogger logger;
+        private Size defaultSize = new Size(850, 550);
 
         private bool AutoRestart { get; set; } = false;
 
@@ -241,7 +242,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
             mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
-            mainForm.SetSize(settings.Size ?? new Size(850, 550));
+            if (settings.Size.Value.Width < 25 || settings.Size.Value.Height < 25)
+                settings.Size = defaultSize;
+            mainForm.SetSize(settings.Size ?? defaultSize);
             if (settings.ChromecastDiscoveredDevices != null)
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
@@ -316,7 +319,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LagControlValue = 1000;
             settings.StartApplicationWhenWindowsStarts = false;
             settings.FilterDevices = FilterDevicesEnum.ShowAll;
-            settings.Size = new Size(850, 550);
+            settings.Size = defaultSize;
             devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
