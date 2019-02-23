@@ -68,7 +68,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
 
             Task.Run(() => {
-                streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect);
+                streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect, logger);
             });
         }
 
@@ -165,7 +165,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             streamingRequestListener.StopListening();
             ScanForDevices();
             Task.Run(() => {
-                streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect);
+                streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect, logger);
             });
             Task.Run(() =>
             {

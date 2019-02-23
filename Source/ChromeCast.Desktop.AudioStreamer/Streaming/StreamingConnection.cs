@@ -126,7 +126,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (Socket == null)
                 return string.Empty;
 
-            return Socket.RemoteEndPoint.ToString();
+            return Socket.RemoteEndPoint?.ToString();
         }
 
         /// <summary>
