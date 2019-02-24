@@ -28,6 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private bool Connected = false;
         private UserMode userMode = UserMode.Stopped;
         private bool pendingStatusMessage = false;
+        private DateTime lastReceivedMessage;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -211,6 +212,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     GetReceiverStatus();
                 }
             }
+            else
+            {
+                logger.Log($"Last received message: {lastReceivedMessage}");
+            }
 
             // Keep trying to play when in playing mode.
             if (userMode == UserMode.Playing)
@@ -321,6 +326,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 return;
 
             pendingStatusMessage = false;
+            lastReceivedMessage = DateTime.Now;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
