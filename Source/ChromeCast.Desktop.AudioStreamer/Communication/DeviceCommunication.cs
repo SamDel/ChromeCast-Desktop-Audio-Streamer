@@ -27,6 +27,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
         private UserMode userMode = UserMode.Stopped;
+        private bool pendingStatusMessage = false;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -196,15 +197,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 return;
 
             var deviceState = device.GetDeviceState();
-            if (deviceState == DeviceState.Playing ||
-                deviceState == DeviceState.Buffering ||
-                deviceState == DeviceState.Paused)
+            if (!pendingStatusMessage)
             {
-                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
-            }
-            else
-            {
-                GetReceiverStatus();
+                pendingStatusMessage = true;
+                if (deviceState == DeviceState.Playing ||
+                    deviceState == DeviceState.Buffering ||
+                    deviceState == DeviceState.Paused)
+                {
+                    SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+                }
+                else
+                {
+                    GetReceiverStatus();
+                }
             }
 
             // Keep trying to play when in playing mode.
@@ -315,6 +320,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (castMessage == null)
                 return;
 
+            pendingStatusMessage = false;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
