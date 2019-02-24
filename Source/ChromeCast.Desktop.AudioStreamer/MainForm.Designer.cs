@@ -755,6 +755,7 @@
             this.Text = "Chromecast Desktop Audio Streamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.tabControl.ResumeLayout(false);
             this.tabPageMain.ResumeLayout(false);
             this.grpDevices.ResumeLayout(false);

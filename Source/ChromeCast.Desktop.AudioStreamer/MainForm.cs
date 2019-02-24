@@ -28,6 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private ILogger logger;
         private IPAddress previousIpAddress;
         private ILoopbackRecorder loopbackRecorder;
+        private Size windowSize;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -876,7 +877,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public Size GetSize()
         {
-            return Size;
+            return windowSize;
         }
 
         private void LinkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -885,6 +886,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             Process.Start("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            windowSize = Size;
         }
     }
 }
