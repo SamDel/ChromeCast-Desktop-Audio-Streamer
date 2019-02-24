@@ -214,7 +214,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             else
             {
-                logger.Log($"Last received message: {lastReceivedMessage}");
+                logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
             }
 
             // Keep trying to play when in playing mode.
