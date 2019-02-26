@@ -147,9 +147,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Start()
         {
-            if (deviceCommunication == null)
-                return;
-
             if (devicePlayedWhenStopped)
                 ResumePlaying();
         }
@@ -176,7 +173,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             else
             {
-                Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
+                logger.Log($"Connection closed from {streamingConnection.GetRemoteEndPoint()}");
                 streamingConnection = null;
             }
         }
@@ -204,7 +201,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="statusText">status text</param>
         public void SetDeviceState(DeviceState state, string statusText = null)
         {
-            if (deviceControl == null || deviceControl.IsDisposed)
+            if (deviceControl == null || deviceControl.IsDisposed || discoveredDevice == null)
                 return;
 
             if (deviceControl.InvokeRequired)
@@ -218,7 +215,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"SetDeviceState: {ex.Message}");
+                        logger.Log(ex, "Device.SetDeviceState");
                     }
                 }
             }
@@ -398,6 +395,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public DeviceState GetDeviceState()
         {
+            if (discoveredDevice == null)
+                return DeviceState.Disposed;
+
             return discoveredDevice.DeviceState;
         }
 
@@ -482,6 +482,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's a group, false if it's not a group</returns>
         public bool IsGroup()
         {
+            if (discoveredDevice == null)
+                return false;
+
             return discoveredDevice.IsGroup;
         }
 
@@ -524,7 +527,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void GetDeviceInformation()
         {
             if (!IsGroup())
-                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
         }
 
         /// <summary>

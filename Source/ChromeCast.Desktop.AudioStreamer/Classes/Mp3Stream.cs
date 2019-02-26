@@ -51,7 +51,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
             catch (Exception ex)
             {
-                Logger.Log($"ex : {ex.Message}");
+                Logger.Log(ex, "Mp3Stream.Encode");
             }
         }
 

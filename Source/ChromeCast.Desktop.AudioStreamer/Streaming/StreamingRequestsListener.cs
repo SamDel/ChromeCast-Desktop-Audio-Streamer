@@ -67,7 +67,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                logger.Log(ex.ToString());
+                logger.Log(ex, "StreamingRequestsListener.StartListening");
             }
         }
 
@@ -107,7 +107,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : {ex.Message}");
+                logger.Log(ex, "StreamingRequestsListener.AcceptCallback");
             }
         }
 
@@ -141,7 +141,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : {ex.Message}");
+                logger.Log(ex, "StreamingRequestsListener.ReadCallback");
             }
         }
 

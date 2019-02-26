@@ -21,6 +21,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
         private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
+        private ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -37,7 +38,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!discoveredDevice.AddedByDeviceInfo)
             {
                 if (!discoveredDevice.IsGroup)
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
             }
             else
             {
@@ -194,7 +195,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 // Get device information from unknown devices.
                 if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
                 {
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
                 }
             }
         }
@@ -266,7 +267,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if one of the devices was playing, or false</returns>
         public void Stop(bool changeUserMode = false)
         {
-            if (deviceList == null)
+            if (deviceList == null || applicationBuffer == null)
                 return;
 
             foreach (var device in deviceList)
@@ -297,7 +298,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="httpRequest">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
         public void AddStreamingConnection(Socket socket, string httpRequest)
         {
-            if (deviceList == null || socket == null)
+            if (deviceList == null || socket == null || applicationBuffer == null)
                 return;
 
             var remoteAddress = ((IPEndPoint)socket.RemoteEndPoint).Address.ToString();
@@ -320,7 +321,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="streamFormat">the stream format</param>
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
-            if (deviceList == null || dataToSend == null)
+            if (deviceList == null || dataToSend == null || applicationBuffer == null)
                 return;
 
             foreach (var device in deviceList)
@@ -352,7 +353,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Devices.OnGetStatus: {ex.Message}");
+                logger.Log(ex, "Devices.OnGetStatus");
             }
 
             foreach (var device in deviceList)
@@ -367,6 +368,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="autoStartIn"></param>
         public void SetSettings(UserSettings settingsIn)
         {
+            if (settingsIn == null)
+                return;
+
             AutoStart = settingsIn.AutoStartDevices ?? false;
             StartLastUsedDevices = settingsIn.StartLastUsedDevices ?? false;
         }
@@ -428,6 +432,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="value">new filter value</param>
         public void SetFilterDevices(FilterDevicesEnum value)
         {
+            if (deviceList == null)
+                return;
+
             foreach (var device in deviceList)
             {
                 device.GetDeviceControl().Visible = FilterDevices.ShowFilterDevices(device, value);

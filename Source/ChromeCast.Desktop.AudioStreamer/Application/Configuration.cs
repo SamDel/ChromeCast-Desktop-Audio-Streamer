@@ -10,14 +10,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Load the configuration from app.config.
         /// </summary>
         /// <param name="configurationCallback">callback to process the configuration</param>
-        public void Load(Action<string> configurationCallback)
+        public void Load(Action<string> configurationCallback, ILogger loggerIn)
         {
             try
             {
                 configurationCallback(ConfigurationManager.AppSettings["IpAddressesDevices"]);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                loggerIn.Log(ex, "Configuration.Load");
             }
         }
     }

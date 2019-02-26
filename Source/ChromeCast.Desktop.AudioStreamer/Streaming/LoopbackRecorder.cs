@@ -174,7 +174,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : {ex.Message}");
+                logger.Log(ex, "StartRecordingSetDevice");
             }
 
             return false;
