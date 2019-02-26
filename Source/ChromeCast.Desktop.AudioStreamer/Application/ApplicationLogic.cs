@@ -254,7 +254,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
             mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
-            if (settings.Size == null || settings.Size.Value.Width < 25 || settings.Size.Value.Height < 25)
+            if (settings.Size == null || settings.Size.Value.Width < 50|| settings.Size.Value.Height < 50)
                 settings.Size = defaultSize;
             mainForm.SetSize(settings.Size.Value);
             if (settings.ChromecastDiscoveredDevices != null)
