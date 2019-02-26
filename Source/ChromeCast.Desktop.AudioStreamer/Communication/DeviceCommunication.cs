@@ -45,6 +45,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void LaunchAndLoadMedia()
         {
+            pendingStatusMessage = false;
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
 
@@ -403,7 +404,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void ResumePlaying()
         {
-            logger.Log("ResumePlaying");
+            logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] ResumePlaying");
             userMode = UserMode.Playing;
 
             Task.Run(() =>

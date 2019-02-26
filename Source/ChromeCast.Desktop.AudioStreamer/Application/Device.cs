@@ -79,7 +79,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.Groups)
                     != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.Groups))
             {
-                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.Groups)}");
+                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonConvert.SerializeObject(discoveredDeviceIn?.Eureka?.Multizone?.Groups)}");
             }
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
@@ -336,7 +336,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 discoveredDevice.IPAddress == remoteAddress)
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
-                streamingConnection.SetSocket(socket);
+                streamingConnection.SetDependencies(socket, this, logger);
                 streamingConnection.SendStartStreamingResponse();
                 return true;
             }

@@ -55,6 +55,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
+                        discoveredDevice.AddedByDeviceInfo = false;
                         callback?.Invoke(discoveredDevice);
                     }
                 }

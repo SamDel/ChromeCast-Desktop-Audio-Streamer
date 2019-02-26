@@ -16,7 +16,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             asyncEvent = new AutoResetEvent(false);
 
             var configuration = new Configuration();
-            configuration.Load(ConfigurationCallback);
+            configuration.Load(ConfigurationCallback, null);
 
             asyncEvent.WaitOne(100);
 
