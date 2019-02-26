@@ -406,6 +406,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] ResumePlaying");
             userMode = UserMode.Playing;
+            pendingStatusMessage = false;
 
             Task.Run(() =>
             {
@@ -418,7 +419,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                     Stop();
                 }
-                device.SetDeviceState(DeviceState.NotConnected, null);
+                if (deviceState != DeviceState.ConnectError)
+                    device.SetDeviceState(DeviceState.NotConnected, null);
                 Disconnect();
                 Task.Delay(2000).Wait();
                 if (device.GetDeviceState() == DeviceState.NotConnected
@@ -542,6 +544,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             device = deviceIn;
             sendMessage = sendMessageIn;
             isDeviceConnected = isDeviceConnectedIn;
+            pendingStatusMessage = false;
         }
 
         /// <summary>
