@@ -54,7 +54,6 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             Update();
-            Show();
             AddIP4Addresses();
             applicationLogic.Initialize();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
@@ -892,7 +891,8 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            windowSize = Size;
+            if (Size.Width >= 50 && Size.Height >= 50)
+                windowSize = Size;
         }
     }
 }
