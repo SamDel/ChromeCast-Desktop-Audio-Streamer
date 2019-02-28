@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageMain = new System.Windows.Forms.TabPage();
@@ -39,6 +40,8 @@
             this.lblLagMax = new System.Windows.Forms.Label();
             this.trbLag = new System.Windows.Forms.TrackBar();
             this.grpVolume = new System.Windows.Forms.GroupBox();
+            this.pnlVolumeMeter = new System.Windows.Forms.FlowLayoutPanel();
+            this.volumeMeter = new NAudio.Gui.VolumeMeter();
             this.pnlVolumeAllButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnVolumeUp = new System.Windows.Forms.Button();
             this.btnVolumeDown = new System.Windows.Forms.Button();
@@ -83,12 +86,14 @@
             this.pnlLogCopyToClipboard = new System.Windows.Forms.FlowLayoutPanel();
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
+            this.volumeMeterTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpDevices.SuspendLayout();
             this.grpLag.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).BeginInit();
             this.grpVolume.SuspendLayout();
+            this.pnlVolumeMeter.SuspendLayout();
             this.pnlVolumeAllButtons.SuspendLayout();
             this.tabPageOptions.SuspendLayout();
             this.grpOptions.SuspendLayout();
@@ -214,6 +219,7 @@
             // 
             // grpVolume
             // 
+            this.grpVolume.Controls.Add(this.pnlVolumeMeter);
             this.grpVolume.Controls.Add(this.pnlVolumeAllButtons);
             this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpVolume.Location = new System.Drawing.Point(20, 20);
@@ -224,6 +230,30 @@
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
             // 
+            // pnlVolumeMeter
+            // 
+            this.pnlVolumeMeter.AutoSize = true;
+            this.pnlVolumeMeter.Controls.Add(this.volumeMeter);
+            this.pnlVolumeMeter.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlVolumeMeter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.pnlVolumeMeter.Location = new System.Drawing.Point(1046, 25);
+            this.pnlVolumeMeter.Name = "pnlVolumeMeter";
+            this.pnlVolumeMeter.Size = new System.Drawing.Size(15, 52);
+            this.pnlVolumeMeter.TabIndex = 18;
+            // 
+            // volumeMeter
+            // 
+            this.volumeMeter.Amplitude = 0F;
+            this.volumeMeter.BackColor = System.Drawing.SystemColors.Window;
+            this.volumeMeter.ForeColor = System.Drawing.SystemColors.ActiveCaption;
+            this.volumeMeter.Location = new System.Drawing.Point(3, 5);
+            this.volumeMeter.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.volumeMeter.MaxDb = 18F;
+            this.volumeMeter.MinDb = -60F;
+            this.volumeMeter.Name = "volumeMeter";
+            this.volumeMeter.Size = new System.Drawing.Size(9, 40);
+            this.volumeMeter.TabIndex = 19;
+            // 
             // pnlVolumeAllButtons
             // 
             this.pnlVolumeAllButtons.AutoSize = true;
@@ -231,10 +261,10 @@
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeDown);
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
             this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
-            this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlVolumeAllButtons.Location = new System.Drawing.Point(10, 25);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(1051, 33);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(546, 52);
             this.pnlVolumeAllButtons.TabIndex = 17;
             this.pnlVolumeAllButtons.WrapContents = false;
             // 
@@ -764,6 +794,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trbLag)).EndInit();
             this.grpVolume.ResumeLayout(false);
             this.grpVolume.PerformLayout();
+            this.pnlVolumeMeter.ResumeLayout(false);
             this.pnlVolumeAllButtons.ResumeLayout(false);
             this.pnlVolumeAllButtons.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
@@ -848,6 +879,9 @@
         private System.Windows.Forms.ComboBox cmbRecordingDevice;
         private System.Windows.Forms.ComboBox cmbStreamFormat;
         private System.Windows.Forms.LinkLabel linkHelp;
+        private System.Windows.Forms.FlowLayoutPanel pnlVolumeMeter;
+        private NAudio.Gui.VolumeMeter volumeMeter;
+        private System.Windows.Forms.ToolTip volumeMeterTooltip;
     }
 }
 

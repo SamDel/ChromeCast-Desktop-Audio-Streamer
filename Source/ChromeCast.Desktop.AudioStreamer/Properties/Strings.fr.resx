@@ -184,21 +184,24 @@
     <value>Français</value>
   </data>
   <data name="Check_StartApplicationWhenWindowsStarts_Text" xml:space="preserve">
-    <value>Start application when Windows starts</value>
+    <value>Démarrer l'application au démarrage de Windows</value>
   </data>
   <data name="DevicesOnly" xml:space="preserve">
-    <value>Devices only</value>
+    <value>Appareils seulement</value>
   </data>
   <data name="GroupsOnly" xml:space="preserve">
-    <value>Groups only</value>
+    <value>Groupes seulement</value>
   </data>
   <data name="ShowAll" xml:space="preserve">
-    <value>All</value>
+    <value>Tous</value>
   </data>
   <data name="Check_AutonaticallyStartLastUsed_Text" xml:space="preserve">
-    <value>Automatically start last used devices and groups at startup</value>
+    <value>Démarrage automatique des derniers appareils et groupes utilisés au démarrage</value>
   </data>
   <data name="Label_LinkHelp_Text" xml:space="preserve">
-    <value>Information about options on Github</value>
+    <value>Informations sur les options sur Github</value>
+  </data>
+  <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
+    <value>Niveau d'enregistrement</value>
   </data>
 </root>

@@ -366,6 +366,10 @@
         /////////////////////////////////////////////////////////////w==
 </target>
         </trans-unit>
+        <trans-unit id="volumeMeterTooltip.TrayLocation" translate="yes" xml:space="preserve" extype="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" extradata="metadata">
+          <source>17, 17</source>
+          <target state="needs-review-translation">17, 17</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -658,27 +662,31 @@
         </trans-unit>
         <trans-unit id="Check_StartApplicationWhenWindowsStarts_Text" translate="yes" xml:space="preserve">
           <source>Start application when Windows starts</source>
-          <target state="needs-review-translation">Start application when Windows starts</target>
+          <target state="needs-review-translation">Démarrer l'application au démarrage de Windows</target>
         </trans-unit>
         <trans-unit id="DevicesOnly" translate="yes" xml:space="preserve">
           <source>Devices only</source>
-          <target state="needs-review-translation">Devices only</target>
+          <target state="needs-review-translation">Appareils seulement</target>
         </trans-unit>
         <trans-unit id="GroupsOnly" translate="yes" xml:space="preserve">
           <source>Groups only</source>
-          <target state="needs-review-translation">Groups only</target>
+          <target state="needs-review-translation">Groupes seulement</target>
         </trans-unit>
         <trans-unit id="ShowAll" translate="yes" xml:space="preserve">
           <source>All</source>
-          <target state="needs-review-translation">All</target>
+          <target state="needs-review-translation">Tous</target>
         </trans-unit>
         <trans-unit id="Check_AutonaticallyStartLastUsed_Text" translate="yes" xml:space="preserve">
           <source>Automatically start last used devices and groups at startup</source>
-          <target state="needs-review-translation">Automatically start last used devices and groups at startup</target>
+          <target state="needs-review-translation">Démarrage automatique des derniers appareils et groupes utilisés au démarrage</target>
         </trans-unit>
         <trans-unit id="Label_LinkHelp_Text" translate="yes" xml:space="preserve">
           <source>Information about options on Github</source>
-          <target state="needs-review-translation">Information about options on Github</target>
+          <target state="needs-review-translation">Informations sur les options sur Github</target>
+        </trans-unit>
+        <trans-unit id="Tooltip_RecordingLevel_Text" translate="yes" xml:space="preserve">
+          <source>Recording level</source>
+          <target state="needs-review-translation">Niveau d'enregistrement</target>
         </trans-unit>
       </group>
     </body>

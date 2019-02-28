@@ -107,6 +107,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                     var dataToSend = new List<byte>();
                     dataToSend.AddRange(buffer.Take(read).ToArray());
                     dataAvailableCallback(dataToSend.ToArray(), waveFormat);
+                    mainForm.ShowWavMeterValue(dataToSend.ToArray());
                 }
             }
         }

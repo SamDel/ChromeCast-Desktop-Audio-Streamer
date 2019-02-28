@@ -628,6 +628,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Recording level.
+        /// </summary>
+        internal static string Tooltip_RecordingLevel_Text {
+            get {
+                return ResourceManager.GetString("Tooltip_RecordingLevel_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         internal static string TrayIcon_Close {

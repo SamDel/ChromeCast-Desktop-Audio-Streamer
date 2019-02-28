@@ -104,6 +104,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
             linkHelp.Text = Properties.Strings.Label_LinkHelp_Text;
+            volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
 
             if (cmbLanguage.Items.Count == 0)
             {
@@ -893,6 +894,26 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (Size.Width >= 50 && Size.Height >= 50)
                 windowSize = Size;
+        }
+
+        public void ShowWavMeterValue(byte[] data)
+        {
+            try
+            {
+                var maximum = 0f;
+                for (int index = 0; index < data.Length; index += 2)
+                {
+                    var sample = (short)((data[index + 1] << 8) | data[index + 0]);
+                    var sample32 = sample / 32768f;
+                    if (sample32 > maximum)
+                        maximum = sample32;
+                }
+                volumeMeter.Amplitude = maximum;
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex, "MainFrom.ViewWav");
+            }
         }
     }
 }

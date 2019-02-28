@@ -41,5 +41,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool? GetStartLastUsedDevices();
         void SetSize(Size size);
         Size GetSize();
+        void ShowWavMeterValue(byte[] data);
     }
 }

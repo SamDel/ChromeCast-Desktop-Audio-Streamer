@@ -315,4 +315,7 @@
   <data name="Label_LinkHelp_Text" xml:space="preserve">
     <value>Information about options on Github</value>
   </data>
+  <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
+    <value>Recording level</value>
+  </data>
 </root>
