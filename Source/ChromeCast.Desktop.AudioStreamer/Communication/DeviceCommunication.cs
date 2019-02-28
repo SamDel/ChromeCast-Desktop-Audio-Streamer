@@ -45,6 +45,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void LaunchAndLoadMedia()
         {
+            if (device == null)
+                return;
+
             pendingStatusMessage = false;
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
@@ -96,7 +99,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void LoadMedia()
         {
-            if (applicationLogic == null || chromeCastMessages == null)
+            if (applicationLogic == null || chromeCastMessages == null || device == null)
                 return;
 
             device.SetDeviceState(DeviceState.LoadingMedia, null);
@@ -108,7 +111,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void PauseMedia()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null)
                 return;
 
             device.SetDeviceState(DeviceState.Paused, null);
@@ -195,7 +198,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void GetStatus()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null)
                 return;
 
             var deviceState = device.GetDeviceState();
@@ -278,7 +281,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void Stop(bool changeUserMode = false)
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null)
                 return;
 
             if (changeUserMode)
@@ -323,7 +326,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="castMessage">the received message</param>
         public void OnReceiveMessage(CastMessage castMessage)
         {
-            if (castMessage == null)
+            if (castMessage == null || device == null)
                 return;
 
             pendingStatusMessage = false;
@@ -377,7 +380,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="closeMessage">the close message</param>
         private void OnReceiveCloseMessage(PayloadMessageBase closeMessage)
         {
-            if (applicationLogic == null)
+            if (applicationLogic == null || device == null)
                 return;
 
             if (!(applicationLogic.GetAutoRestart()))
@@ -404,6 +407,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void ResumePlaying()
         {
+            if (device == null)
+                return;
+
             logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] ResumePlaying");
             userMode = UserMode.Playing;
             pendingStatusMessage = false;
@@ -440,7 +446,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="mediaStatusMessage">the media status message</param>
         private void OnReceiveMediaStatus(MessageMediaStatus mediaStatusMessage)
         {
-            if (mediaStatusMessage == null)
+            if (mediaStatusMessage == null || device == null)
                 return;
 
             Connected = true;
@@ -496,7 +502,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="receiverStatusMessage">a receiver status message</param>
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage == null)
+            if (receiverStatusMessage == null || device == null)
                 return;
 
             if (receiverStatusMessage?.status?.volume != null)

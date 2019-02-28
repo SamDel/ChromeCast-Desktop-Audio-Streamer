@@ -70,7 +70,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         public void Send(byte[] data)
         {
-            if (!IsConnected())
+            if (!IsConnected() || device == null || logger == null)
                 return;
 
             try

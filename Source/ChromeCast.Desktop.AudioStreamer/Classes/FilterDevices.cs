@@ -9,6 +9,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// </summary>
         public static bool ShowFilterDevices(IDevice device, FilterDevicesEnum value)
         {
+            if (device == null)
+                return false;
+
             switch (value)
             {
                 case FilterDevicesEnum.ShowAll:

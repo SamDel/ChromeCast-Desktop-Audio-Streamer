@@ -13,8 +13,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private SupportedStreamFormat streamFormatSelected;
         private const int BufferSizeInBytes = 310000;
 
+        /// <summary>
+        /// Send the startup buffer, a buffer containing the past x seconds.
+        /// </summary>
+        /// <param name="device"></param>
         public void SendStartupBuffer(IDevice device)
         {
+            if (device == null)
+                return;
+
             var bufferAlreadySent = GetBufferAlreadySent();
             device.OnRecordingDataAvailable(bufferAlreadySent, waveFormat, reduceLagThreshold, streamFormatSelected);
         }
@@ -35,6 +42,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// </summary>
         public void ClearBuffer()
         {
+            if (applicationBuffer == null)
+                return;
+
             lock (applicationBuffer)
             {
                 applicationBuffer.Clear();

@@ -39,7 +39,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (mainFormIn == null || dataAvailableCallbackIn == null)
                 return;
 
-            getDevicesTimer = new System.Timers.Timer
+            getDevicesTimer = new Timer
             {
                 Interval = 15000,
                 Enabled = true
@@ -196,7 +196,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (dataAvailableTimer == null)
             {
                 latestDataAvailable = DateTime.Now;
-                dataAvailableTimer = new System.Timers.Timer
+                dataAvailableTimer = new Timer
                 {
                     Interval = 1000,
                     Enabled = true
