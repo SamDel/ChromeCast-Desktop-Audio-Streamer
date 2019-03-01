@@ -87,6 +87,7 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
             this.volumeMeterTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.lblDb = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpDevices.SuspendLayout();
@@ -233,13 +234,16 @@
             // pnlVolumeMeter
             // 
             this.pnlVolumeMeter.AutoSize = true;
+            this.pnlVolumeMeter.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlVolumeMeter.Controls.Add(this.lblDb);
             this.pnlVolumeMeter.Controls.Add(this.volumeMeter);
             this.pnlVolumeMeter.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlVolumeMeter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlVolumeMeter.Location = new System.Drawing.Point(1046, 25);
+            this.pnlVolumeMeter.Location = new System.Drawing.Point(1015, 25);
             this.pnlVolumeMeter.Name = "pnlVolumeMeter";
-            this.pnlVolumeMeter.Size = new System.Drawing.Size(15, 52);
+            this.pnlVolumeMeter.Size = new System.Drawing.Size(46, 52);
             this.pnlVolumeMeter.TabIndex = 18;
+            this.pnlVolumeMeter.WrapContents = false;
             // 
             // volumeMeter
             // 
@@ -772,6 +776,15 @@
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
             // 
+            // lblDb
+            // 
+            this.lblDb.AutoSize = true;
+            this.lblDb.Location = new System.Drawing.Point(18, 0);
+            this.lblDb.Name = "lblDb";
+            this.lblDb.Size = new System.Drawing.Size(25, 17);
+            this.lblDb.TabIndex = 20;
+            this.lblDb.Text = "dB";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -795,6 +808,7 @@
             this.grpVolume.ResumeLayout(false);
             this.grpVolume.PerformLayout();
             this.pnlVolumeMeter.ResumeLayout(false);
+            this.pnlVolumeMeter.PerformLayout();
             this.pnlVolumeAllButtons.ResumeLayout(false);
             this.pnlVolumeAllButtons.PerformLayout();
             this.tabPageOptions.ResumeLayout(false);
@@ -882,6 +896,7 @@
         private System.Windows.Forms.FlowLayoutPanel pnlVolumeMeter;
         private NAudio.Gui.VolumeMeter volumeMeter;
         private System.Windows.Forms.ToolTip volumeMeterTooltip;
+        private System.Windows.Forms.Label lblDb;
     }
 }
 

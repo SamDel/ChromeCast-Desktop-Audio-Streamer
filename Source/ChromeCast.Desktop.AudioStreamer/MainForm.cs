@@ -104,7 +104,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
             linkHelp.Text = Properties.Strings.Label_LinkHelp_Text;
-            volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
+            volumeMeterTooltip.SetToolTip(pnlVolumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
 
             if (cmbLanguage.Items.Count == 0)
             {
