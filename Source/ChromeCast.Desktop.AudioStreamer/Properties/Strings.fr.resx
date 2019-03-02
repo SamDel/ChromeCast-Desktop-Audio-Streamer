@@ -204,4 +204,7 @@
   <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
     <value>Niveau d'enregistrement</value>
   </data>
+  <data name="Label_FilterDevices_Text" xml:space="preserve">
+    <value>Filtrer périphériques</value>
+  </data>
 </root>

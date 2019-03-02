@@ -331,6 +331,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter devices.
+        /// </summary>
+        internal static string Label_FilterDevices_Text {
+            get {
+                return ResourceManager.GetString("Label_FilterDevices_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IP4 address used:.
         /// </summary>
         internal static string Label_IPAddressUsed_Text {

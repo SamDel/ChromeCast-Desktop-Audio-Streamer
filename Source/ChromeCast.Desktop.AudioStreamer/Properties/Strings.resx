@@ -318,4 +318,7 @@
   <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
     <value>Recording level</value>
   </data>
+  <data name="Label_FilterDevices_Text" xml:space="preserve">
+    <value>Filter devices</value>
+  </data>
 </root>

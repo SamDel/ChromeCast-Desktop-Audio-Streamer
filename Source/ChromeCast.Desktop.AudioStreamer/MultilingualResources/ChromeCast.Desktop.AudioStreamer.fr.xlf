@@ -688,6 +688,10 @@
           <source>Recording level</source>
           <target state="needs-review-translation">Niveau d'enregistrement</target>
         </trans-unit>
+        <trans-unit id="Label_FilterDevices_Text" translate="yes" xml:space="preserve">
+          <source>Filter devices</source>
+          <target state="needs-review-translation">Filtrer périphériques</target>
+        </trans-unit>
       </group>
     </body>
   </file>
