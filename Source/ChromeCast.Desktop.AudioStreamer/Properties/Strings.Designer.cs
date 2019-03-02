@@ -637,6 +637,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string Tooltip_Group_Text {
+            get {
+                return ResourceManager.GetString("Tooltip_Group_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recording level.
         /// </summary>
         internal static string Tooltip_RecordingLevel_Text {

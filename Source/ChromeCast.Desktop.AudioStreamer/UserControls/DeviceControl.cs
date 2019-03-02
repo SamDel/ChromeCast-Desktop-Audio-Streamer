@@ -30,6 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
             btnDevice.Text = name;
             pictureGroup.Visible = device.IsGroup();
+            toolTipGroup.SetToolTip(pictureGroup, Properties.Strings.Tooltip_Group_Text);
         }
 
         public string GetDeviceName()

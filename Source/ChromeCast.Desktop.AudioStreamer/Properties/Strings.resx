@@ -321,4 +321,7 @@
   <data name="Label_FilterDevices_Text" xml:space="preserve">
     <value>Filter devices</value>
   </data>
+  <data name="Tooltip_Group_Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
 </root>

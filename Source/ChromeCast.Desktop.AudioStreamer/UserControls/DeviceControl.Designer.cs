@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnDevice = new System.Windows.Forms.Button();
             this.trbVolume = new System.Windows.Forms.TrackBar();
@@ -35,6 +36,7 @@
             this.picturePlayPause = new System.Windows.Forms.PictureBox();
             this.pictureGroup = new System.Windows.Forms.PictureBox();
             this.pictureVolumeMute = new System.Windows.Forms.PictureBox();
+            this.toolTipGroup = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
@@ -171,5 +173,6 @@
         private System.Windows.Forms.PictureBox pictureVolumeMute;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.PictureBox pictureGroup;
+        private System.Windows.Forms.ToolTip toolTipGroup;
     }
 }

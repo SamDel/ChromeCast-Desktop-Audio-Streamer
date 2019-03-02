@@ -5,7 +5,12 @@
       <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
     </header>
     <body>
-      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" datatype="resx" />
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" datatype="resx">
+        <trans-unit id="toolTipGroup.TrayLocation" translate="yes" xml:space="preserve" extype="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" extradata="metadata">
+          <source>17, 17</source>
+          <target state="translated">17, 17</target>
+        </trans-unit>
+      </group>
     </body>
   </file>
   <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/MAINFORM.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
@@ -368,7 +373,7 @@
         </trans-unit>
         <trans-unit id="volumeMeterTooltip.TrayLocation" translate="yes" xml:space="preserve" extype="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" extradata="metadata">
           <source>17, 17</source>
-          <target state="needs-review-translation">17, 17</target>
+          <target state="translated">17, 17</target>
         </trans-unit>
       </group>
     </body>
@@ -691,6 +696,10 @@
         <trans-unit id="Label_FilterDevices_Text" translate="yes" xml:space="preserve">
           <source>Filter devices</source>
           <target state="needs-review-translation">Filtrer périphériques</target>
+        </trans-unit>
+        <trans-unit id="Tooltip_Group_Text" translate="yes" xml:space="preserve">
+          <source>Group</source>
+          <target state="needs-review-translation">Groupe</target>
         </trans-unit>
       </group>
     </body>
