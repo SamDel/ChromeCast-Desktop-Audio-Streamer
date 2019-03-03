@@ -1,7 +1,9 @@
 ﻿using ChromeCast.Desktop.AudioStreamer.Application;
 using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
@@ -11,19 +13,50 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private WaveFormat waveFormat = new WaveFormat();
         private int reduceLagThreshold;
         private SupportedStreamFormat streamFormatSelected;
-        private const int BufferSizeInBytes = 310000;
+        private bool startBufferSend;
+        private const double BufferSizeInBytesDefault = 310000;
+        private double BufferSizeInBytes = BufferSizeInBytesDefault;
+        private int ExtraBufferInSeconds = 0;
 
         /// <summary>
         /// Send the startup buffer, a buffer containing the past x seconds.
         /// </summary>
         /// <param name="device"></param>
-        public void SendStartupBuffer(IDevice device)
+        public void SendStartupBuffer(IDevice device, SupportedStreamFormat streamFormatIn)
         {
             if (device == null)
                 return;
 
-            var bufferAlreadySent = GetBufferAlreadySent();
+            streamFormatSelected = streamFormatIn;
+            SetBufferSize();
+
+            byte[] bufferAlreadySent;
+            do
+            {
+                bufferAlreadySent = GetBufferAlreadySent();
+                if (bufferAlreadySent.Length < BufferSizeInBytes)
+                    Task.Delay(1000).Wait();
+            } while (bufferAlreadySent.Length < BufferSizeInBytes);
+            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] SendStartupBuffer: {bufferAlreadySent.Length}");
             device.OnRecordingDataAvailable(bufferAlreadySent, waveFormat, reduceLagThreshold, streamFormatSelected);
+            startBufferSend = true;
+        }
+
+        /// <summary>
+        /// Return if the satrt buffer is send.
+        /// </summary>
+        public bool IsStartBufferSend()
+        {
+            return startBufferSend;
+        }
+
+        /// <summary>
+        /// Set the extra buffer value.
+        /// </summary>
+        /// <param name="extraBufferInSecondsIn"></param>
+        public void SetExtraBufferInSeconds(int extraBufferInSecondsIn)
+        {
+            ExtraBufferInSeconds = extraBufferInSecondsIn;
         }
 
         /// <summary>
@@ -35,6 +68,25 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             reduceLagThreshold = reduceLagThresholdIn;
             streamFormatSelected = streamFormatIn;
             KeepABuffer(dataToSend);
+            SetBufferSize();
+        }
+
+        private void SetBufferSize()
+        {
+            switch (streamFormatSelected)
+            {
+                case SupportedStreamFormat.Wav:
+                    BufferSizeInBytes = ExtraBufferInSeconds * 5513000 + BufferSizeInBytesDefault;
+                    break;
+                case SupportedStreamFormat.Mp3_320:
+                    BufferSizeInBytes = ExtraBufferInSeconds * 40000 + BufferSizeInBytesDefault;
+                    break;
+                case SupportedStreamFormat.Mp3_128:
+                    BufferSizeInBytes = ExtraBufferInSeconds * 16000 + BufferSizeInBytesDefault;
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -49,6 +101,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             {
                 applicationBuffer.Clear();
             }
+            startBufferSend = false;
         }
 
         /// <summary>
@@ -74,7 +127,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// <summary>
         /// Get the data in the application buffer that's already send to the devices.
         /// </summary>
-        public byte[] GetBufferAlreadySent()
+        private byte[] GetBufferAlreadySent()
         {
             if (applicationBuffer == null)
                 return new byte[0];
@@ -87,10 +140,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                     buffer = buffer.Concat(applicationBuffer[i].Data);
                 }
             }
-
-            // Hack to start mp3 streams faster: Send a 7.8 seconds buffer of 320 kbps silence.
-            if (streamFormatSelected != SupportedStreamFormat.Wav && buffer.ToArray().Length < BufferSizeInBytes)
-                buffer = Properties.Resources.silence.Concat(buffer);
 
             return buffer.ToArray();
         }

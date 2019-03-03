@@ -296,7 +296,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="socket">the socket</param>
         /// <param name="httpRequest">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
-        public void AddStreamingConnection(Socket socket, string httpRequest)
+        public void AddStreamingConnection(Socket socket, string httpRequest, SupportedStreamFormat streamFormatIn)
         {
             if (deviceList == null || socket == null || applicationBuffer == null)
                 return;
@@ -306,7 +306,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 if (device.AddStreamingConnection(remoteAddress, socket))
                 {
-                    applicationBuffer.SendStartupBuffer(device);
+                    applicationBuffer.SendStartupBuffer(device, streamFormatIn);
                     break;
                 }
             }
@@ -324,9 +324,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null || dataToSend == null || applicationBuffer == null)
                 return;
 
-            foreach (var device in deviceList)
+            if (applicationBuffer.IsStartBufferSend())
             {
-                device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
+                foreach (var device in deviceList)
+                {
+                    device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
+                }
             }
 
             // Keep a buffer

@@ -83,7 +83,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             logger.Log(string.Format("Connection added from {0}", socketIn.RemoteEndPoint));
-            devices.AddStreamingConnection(socketIn, httpRequestIn);
+            devices.AddStreamingConnection(socketIn, httpRequestIn, StreamFormatSelected);
         }
 
         /// <summary>

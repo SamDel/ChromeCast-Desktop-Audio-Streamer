@@ -10,7 +10,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public interface IDevices
     {
-        void AddStreamingConnection(Socket socket, string httpRequest);
+        void AddStreamingConnection(Socket socket, string httpRequest, SupportedStreamFormat streamFormat);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
         void OnDeviceAvailable(DiscoveredDevice discoveredDevice);
