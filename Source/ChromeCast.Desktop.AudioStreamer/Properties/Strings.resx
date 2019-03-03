@@ -324,4 +324,7 @@
   <data name="Tooltip_Group_Text" xml:space="preserve">
     <value>Group</value>
   </data>
+  <data name="Label_BufferInSeconds_Text" xml:space="preserve">
+    <value>Device buffer (in seconds)</value>
+  </data>
 </root>

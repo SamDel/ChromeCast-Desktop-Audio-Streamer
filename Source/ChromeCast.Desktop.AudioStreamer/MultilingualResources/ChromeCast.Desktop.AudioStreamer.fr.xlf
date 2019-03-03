@@ -701,6 +701,10 @@
           <source>Group</source>
           <target state="needs-review-translation">Groupe</target>
         </trans-unit>
+        <trans-unit id="Label_BufferInSeconds_Text" translate="yes" xml:space="preserve">
+          <source>Device buffer (in seconds)</source>
+          <target state="needs-review-translation">Mémoire tampon de l'appareil (en secondes)</target>
+        </trans-unit>
       </group>
     </body>
   </file>

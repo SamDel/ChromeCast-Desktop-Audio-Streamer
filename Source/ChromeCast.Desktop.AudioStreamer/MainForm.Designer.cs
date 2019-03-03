@@ -65,12 +65,14 @@
             this.chkHook = new System.Windows.Forms.CheckBox();
             this.pnlOptionsComboBoxes = new System.Windows.Forms.FlowLayoutPanel();
             this.pnlOptionsComboBoxesLabels = new System.Windows.Forms.Panel();
+            this.lblBufferInSeconds = new System.Windows.Forms.Label();
             this.lblFilterDevices = new System.Windows.Forms.Label();
             this.lblStreamFormat = new System.Windows.Forms.Label();
             this.lblIpAddressUsed = new System.Windows.Forms.Label();
             this.lblLanguage = new System.Windows.Forms.Label();
             this.lblDevice = new System.Windows.Forms.Label();
             this.pnlOptionsComboBoxesRight = new System.Windows.Forms.Panel();
+            this.cmbBufferInSeconds = new System.Windows.Forms.ComboBox();
             this.cmbFilterDevices = new System.Windows.Forms.ComboBox();
             this.cmbLanguage = new System.Windows.Forms.ComboBox();
             this.cmbIP4AddressUsed = new System.Windows.Forms.ComboBox();
@@ -88,8 +90,6 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
             this.volumeMeterTooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.lblBufferInSeconds = new System.Windows.Forms.Label();
-            this.cmbBufferInSeconds = new System.Windows.Forms.ComboBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpDevices.SuspendLayout();
@@ -551,6 +551,15 @@
             this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(217, 185);
             this.pnlOptionsComboBoxesLabels.TabIndex = 0;
             // 
+            // lblBufferInSeconds
+            // 
+            this.lblBufferInSeconds.AutoSize = true;
+            this.lblBufferInSeconds.Location = new System.Drawing.Point(9, 159);
+            this.lblBufferInSeconds.Name = "lblBufferInSeconds";
+            this.lblBufferInSeconds.Size = new System.Drawing.Size(180, 18);
+            this.lblBufferInSeconds.TabIndex = 34;
+            this.lblBufferInSeconds.Text = "Device buffer (in seconds)";
+            // 
             // lblFilterDevices
             // 
             this.lblFilterDevices.AutoSize = true;
@@ -610,6 +619,20 @@
             this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
             this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 185);
             this.pnlOptionsComboBoxesRight.TabIndex = 1;
+            // 
+            // cmbBufferInSeconds
+            // 
+            this.cmbBufferInSeconds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBufferInSeconds.FormattingEnabled = true;
+            this.cmbBufferInSeconds.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15"});
+            this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 156);
+            this.cmbBufferInSeconds.Name = "cmbBufferInSeconds";
+            this.cmbBufferInSeconds.Size = new System.Drawing.Size(442, 26);
+            this.cmbBufferInSeconds.TabIndex = 34;
             // 
             // cmbFilterDevices
             // 
@@ -788,29 +811,6 @@
             this.btnClearLog.Text = "Clear Log";
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
-            // 
-            // lblBufferInSeconds
-            // 
-            this.lblBufferInSeconds.AutoSize = true;
-            this.lblBufferInSeconds.Location = new System.Drawing.Point(9, 159);
-            this.lblBufferInSeconds.Name = "lblBufferInSeconds";
-            this.lblBufferInSeconds.Size = new System.Drawing.Size(180, 18);
-            this.lblBufferInSeconds.TabIndex = 34;
-            this.lblBufferInSeconds.Text = "Device buffer (in seconds)";
-            // 
-            // cmbBufferInSeconds
-            // 
-            this.cmbBufferInSeconds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBufferInSeconds.FormattingEnabled = true;
-            this.cmbBufferInSeconds.Items.AddRange(new object[] {
-            "0",
-            "5",
-            "10",
-            "15"});
-            this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 156);
-            this.cmbBufferInSeconds.Name = "cmbBufferInSeconds";
-            this.cmbBufferInSeconds.Size = new System.Drawing.Size(442, 26);
-            this.cmbBufferInSeconds.TabIndex = 34;
             // 
             // MainForm
             // 

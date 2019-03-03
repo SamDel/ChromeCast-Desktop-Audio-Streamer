@@ -109,6 +109,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             volumeMeterTooltip.SetToolTip(lblDb, Properties.Strings.Tooltip_RecordingLevel_Text);
             volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
             lblFilterDevices.Text = Properties.Strings.Label_FilterDevices_Text;
+            lblBufferInSeconds.Text = Properties.Strings.Label_BufferInSeconds_Text;
 
             if (cmbLanguage.Items.Count == 0)
             {

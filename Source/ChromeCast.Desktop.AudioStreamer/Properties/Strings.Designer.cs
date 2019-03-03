@@ -331,6 +331,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device buffer (in seconds).
+        /// </summary>
+        internal static string Label_BufferInSeconds_Text {
+            get {
+                return ResourceManager.GetString("Label_BufferInSeconds_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter devices.
         /// </summary>
         internal static string Label_FilterDevices_Text {
