@@ -58,6 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             applicationLogic.Initialize();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
             cmbIP4AddressUsed.SelectedIndexChanged += CmbIP4AddressUsed_SelectedIndexChanged;
+            cmbBufferInSeconds.SelectedIndexChanged += CmbBufferInSeconds_SelectedIndexChanged;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -917,6 +918,46 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 logger.Log(ex, "MainFrom.ViewWav");
             }
+        }
+
+        /// <summary>
+        /// Set the device buffer value.
+        /// </summary>
+        /// <param name="extraBufferInSecondsIn">buffer in seconds</param>
+        public void SetExtraBufferInSeconds(int extraBufferInSecondsIn)
+        {
+            if (devices == null)
+                return;
+
+            for (int i = 0; i < cmbBufferInSeconds.Items.Count; i++)
+            {
+                if (int.Parse((string)cmbBufferInSeconds.Items[i]) == extraBufferInSecondsIn)
+                    cmbBufferInSeconds.SelectedIndex = i;
+            }
+        }
+
+        /// <summary>
+        /// Get the device buffer value (in seconds).
+        /// </summary>
+        /// <returns>buffer in seconds</returns>
+        public int? GetExtraBufferInSeconds()
+        {
+            if (devices == null)
+                return 0;
+
+            return int.Parse((string)cmbBufferInSeconds.SelectedItem);
+        }
+
+        /// <summary>
+        /// Change the buffer on the devices.
+        /// </summary>
+        private void CmbBufferInSeconds_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbBufferInSeconds == null || devices == null)
+                return;
+
+            var bufferInSeconds = int.Parse((string)cmbBufferInSeconds.SelectedItem);
+            devices.SetExtraBufferInSeconds(bufferInSeconds);
         }
     }
 }

@@ -376,6 +376,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             AutoStart = settingsIn.AutoStartDevices ?? false;
             StartLastUsedDevices = settingsIn.StartLastUsedDevices ?? false;
+            applicationBuffer.SetExtraBufferInSeconds(settingsIn.ExtraBufferInSeconds ?? 0);
         }
 
         /// <summary>
@@ -442,6 +443,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 device.GetDeviceControl().Visible = FilterDevices.ShowFilterDevices(device, value);
             }
+        }
+
+        /// <summary>
+        /// Set the device buffer in seconds.
+        /// </summary>
+        /// <param name="bufferInSeconds">the buffer in seconds</param>
+        public void SetExtraBufferInSeconds(int bufferInSeconds)
+        {
+            applicationBuffer.SetExtraBufferInSeconds(bufferInSeconds);
         }
     }
 }

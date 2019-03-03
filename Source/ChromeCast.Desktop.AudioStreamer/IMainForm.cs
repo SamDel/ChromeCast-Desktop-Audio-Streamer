@@ -42,5 +42,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetSize(Size size);
         Size GetSize();
         void ShowWavMeterValue(byte[] data);
+        void SetExtraBufferInSeconds(int extraBufferInSeconds);
+        int? GetExtraBufferInSeconds();
     }
 }

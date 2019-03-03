@@ -88,6 +88,8 @@
             this.btnClipboardCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
             this.volumeMeterTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.lblBufferInSeconds = new System.Windows.Forms.Label();
+            this.cmbBufferInSeconds = new System.Windows.Forms.ComboBox();
             this.tabControl.SuspendLayout();
             this.tabPageMain.SuspendLayout();
             this.grpDevices.SuspendLayout();
@@ -376,7 +378,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 374);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 407);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 100);
             this.flowLayoutPanel1.TabIndex = 43;
@@ -385,7 +387,7 @@
             // 
             this.pnlResetSettings.Controls.Add(this.btnResetSettings);
             this.pnlResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlResetSettings.Location = new System.Drawing.Point(0, 474);
+            this.pnlResetSettings.Location = new System.Drawing.Point(0, 507);
             this.pnlResetSettings.Name = "pnlResetSettings";
             this.pnlResetSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.pnlResetSettings.Size = new System.Drawing.Size(1030, 57);
@@ -415,7 +417,7 @@
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkShowWindowOnStart);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkHook);
             this.pnlOptionsCheckBoxes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 158);
+            this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 191);
             this.pnlOptionsCheckBoxes.Name = "pnlOptionsCheckBoxes";
             this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 20, 20, 20);
             this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 216);
@@ -529,13 +531,14 @@
             this.pnlOptionsComboBoxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 0);
             this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
-            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(1030, 158);
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(1030, 191);
             this.pnlOptionsComboBoxes.TabIndex = 42;
             this.pnlOptionsComboBoxes.WrapContents = false;
             // 
             // pnlOptionsComboBoxesLabels
             // 
             this.pnlOptionsComboBoxesLabels.AutoSize = true;
+            this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblBufferInSeconds);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblFilterDevices);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblStreamFormat);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblIpAddressUsed);
@@ -545,13 +548,13 @@
             this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
             this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
             this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(163, 152);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(217, 185);
             this.pnlOptionsComboBoxesLabels.TabIndex = 0;
             // 
             // lblFilterDevices
             // 
             this.lblFilterDevices.AutoSize = true;
-            this.lblFilterDevices.Location = new System.Drawing.Point(9, 124);
+            this.lblFilterDevices.Location = new System.Drawing.Point(9, 127);
             this.lblFilterDevices.Name = "lblFilterDevices";
             this.lblFilterDevices.Size = new System.Drawing.Size(94, 18);
             this.lblFilterDevices.TabIndex = 32;
@@ -560,7 +563,7 @@
             // lblStreamFormat
             // 
             this.lblStreamFormat.AutoSize = true;
-            this.lblStreamFormat.Location = new System.Drawing.Point(9, 64);
+            this.lblStreamFormat.Location = new System.Drawing.Point(9, 65);
             this.lblStreamFormat.Name = "lblStreamFormat";
             this.lblStreamFormat.Size = new System.Drawing.Size(103, 18);
             this.lblStreamFormat.TabIndex = 28;
@@ -578,7 +581,7 @@
             // lblLanguage
             // 
             this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(9, 94);
+            this.lblLanguage.Location = new System.Drawing.Point(9, 96);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(72, 18);
             this.lblLanguage.TabIndex = 31;
@@ -596,22 +599,23 @@
             // pnlOptionsComboBoxesRight
             // 
             this.pnlOptionsComboBoxesRight.AutoSize = true;
+            this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbBufferInSeconds);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbFilterDevices);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbLanguage);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbIP4AddressUsed);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
             this.pnlOptionsComboBoxesRight.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(172, 3);
+            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(226, 3);
             this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
-            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 152);
+            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 185);
             this.pnlOptionsComboBoxesRight.TabIndex = 1;
             // 
             // cmbFilterDevices
             // 
             this.cmbFilterDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFilterDevices.FormattingEnabled = true;
-            this.cmbFilterDevices.Location = new System.Drawing.Point(3, 123);
+            this.cmbFilterDevices.Location = new System.Drawing.Point(3, 124);
             this.cmbFilterDevices.Name = "cmbFilterDevices";
             this.cmbFilterDevices.Size = new System.Drawing.Size(442, 26);
             this.cmbFilterDevices.TabIndex = 33;
@@ -621,7 +625,7 @@
             // 
             this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLanguage.FormattingEnabled = true;
-            this.cmbLanguage.Location = new System.Drawing.Point(3, 92);
+            this.cmbLanguage.Location = new System.Drawing.Point(3, 93);
             this.cmbLanguage.Name = "cmbLanguage";
             this.cmbLanguage.Size = new System.Drawing.Size(442, 26);
             this.cmbLanguage.TabIndex = 32;
@@ -649,7 +653,7 @@
             // 
             this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStreamFormat.FormattingEnabled = true;
-            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 61);
+            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 62);
             this.cmbStreamFormat.Name = "cmbStreamFormat";
             this.cmbStreamFormat.Size = new System.Drawing.Size(442, 26);
             this.cmbStreamFormat.TabIndex = 29;
@@ -785,6 +789,29 @@
             this.btnClearLog.UseVisualStyleBackColor = true;
             this.btnClearLog.Click += new System.EventHandler(this.BtnClearLog_Click);
             // 
+            // lblBufferInSeconds
+            // 
+            this.lblBufferInSeconds.AutoSize = true;
+            this.lblBufferInSeconds.Location = new System.Drawing.Point(9, 159);
+            this.lblBufferInSeconds.Name = "lblBufferInSeconds";
+            this.lblBufferInSeconds.Size = new System.Drawing.Size(180, 18);
+            this.lblBufferInSeconds.TabIndex = 34;
+            this.lblBufferInSeconds.Text = "Device buffer (in seconds)";
+            // 
+            // cmbBufferInSeconds
+            // 
+            this.cmbBufferInSeconds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbBufferInSeconds.FormattingEnabled = true;
+            this.cmbBufferInSeconds.Items.AddRange(new object[] {
+            "0",
+            "5",
+            "10",
+            "15"});
+            this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 156);
+            this.cmbBufferInSeconds.Name = "cmbBufferInSeconds";
+            this.cmbBufferInSeconds.Size = new System.Drawing.Size(442, 26);
+            this.cmbBufferInSeconds.TabIndex = 34;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -897,6 +924,8 @@
         private NAudio.Gui.VolumeMeter volumeMeter;
         private System.Windows.Forms.ToolTip volumeMeterTooltip;
         private System.Windows.Forms.Label lblDb;
+        private System.Windows.Forms.Label lblBufferInSeconds;
+        private System.Windows.Forms.ComboBox cmbBufferInSeconds;
     }
 }
 

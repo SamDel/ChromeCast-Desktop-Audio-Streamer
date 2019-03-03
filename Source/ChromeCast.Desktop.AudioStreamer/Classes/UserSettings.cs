@@ -204,5 +204,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["Size"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public int? ExtraBufferInSeconds
+        {
+            get
+            {
+                return (int?)this["ExtraBufferInSeconds"];
+            }
+            set
+            {
+                this["ExtraBufferInSeconds"] = value;
+            }
+        }
     }
 }

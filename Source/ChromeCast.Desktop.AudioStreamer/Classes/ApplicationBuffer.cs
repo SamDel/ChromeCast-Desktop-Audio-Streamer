@@ -37,7 +37,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 if (bufferAlreadySent.Length < BufferSizeInBytes)
                     Task.Delay(1000).Wait();
             } while (bufferAlreadySent.Length < BufferSizeInBytes);
-            Console.WriteLine($"[{DateTime.Now.ToLongTimeString()}] SendStartupBuffer: {bufferAlreadySent.Length}");
             device.OnRecordingDataAvailable(bufferAlreadySent, waveFormat, reduceLagThreshold, streamFormatSelected);
             startBufferSend = true;
         }
@@ -76,7 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             switch (streamFormatSelected)
             {
                 case SupportedStreamFormat.Wav:
-                    BufferSizeInBytes = ExtraBufferInSeconds * 5513000 + BufferSizeInBytesDefault;
+                    BufferSizeInBytes = ExtraBufferInSeconds * 40000 + BufferSizeInBytesDefault;
                     break;
                 case SupportedStreamFormat.Mp3_320:
                     BufferSizeInBytes = ExtraBufferInSeconds * 40000 + BufferSizeInBytesDefault;
