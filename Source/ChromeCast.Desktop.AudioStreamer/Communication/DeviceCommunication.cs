@@ -334,7 +334,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
-            if (message.type != "PING")
+            if (message.type != "PING" && message.type != "PONG")
                 pendingStatusMessage = false;
 
             switch (message.@type)
@@ -552,7 +552,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             device = deviceIn;
             sendMessage = sendMessageIn;
             isDeviceConnected = isDeviceConnectedIn;
-            pendingStatusMessage = false;
         }
 
         /// <summary>
