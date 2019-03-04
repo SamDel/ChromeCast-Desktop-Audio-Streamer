@@ -152,7 +152,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             device = deviceIn;
             logger = loggerIn;
             Socket = socketIn;
-            Socket.SendTimeout = 1000;
+            Socket.SendTimeout = 10000;
         }
     }
 }

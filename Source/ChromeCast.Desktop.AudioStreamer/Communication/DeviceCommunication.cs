@@ -329,12 +329,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (castMessage == null || device == null)
                 return;
 
-            pendingStatusMessage = false;
             lastReceivedMessage = DateTime.Now;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
+            if (message.type != "PING")
+                pendingStatusMessage = false;
+
             switch (message.@type)
             {
                 case "RECEIVER_STATUS":
