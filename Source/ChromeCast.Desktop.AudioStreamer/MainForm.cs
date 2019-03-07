@@ -298,7 +298,12 @@ namespace ChromeCast.Desktop.AudioStreamer
                 else
                 {
                     if (chkLogDeviceCommunication.Checked)
+                    {
                         txtLog.AppendText(message + "\r\n\r\n");
+
+                        if (txtLog.Text.Length > 20000000)
+                            txtLog.Clear();
+                    }
                 }
             }
             catch (Exception)
