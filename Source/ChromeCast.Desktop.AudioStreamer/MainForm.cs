@@ -31,6 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private ILoopbackRecorder loopbackRecorder;
         private Size windowSize;
         private StringBuilder log = new StringBuilder();
+        private string recordingDeviceID;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -412,6 +413,20 @@ namespace ChromeCast.Desktop.AudioStreamer
                         cmbRecordingDevice.SelectedIndex = index;
                 }
             }
+
+            // Restore recording device from previous session.
+            if (recordingDeviceID != null)
+            {
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == recordingDeviceID)
+                    {
+                        cmbRecordingDevice.SelectedIndex = i;
+                    }
+                }
+                recordingDeviceID = null;
+            }
+
             cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
         }
 
@@ -972,6 +987,19 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             var bufferInSeconds = int.Parse((string)cmbBufferInSeconds.SelectedItem);
             devices.SetExtraBufferInSeconds(bufferInSeconds);
+        }
+
+        public void SetRecordingDeviceID(string recordingDeviceIDIn)
+        {
+            recordingDeviceID = recordingDeviceIDIn;
+        }
+
+        public string GetRecordingDeviceID()
+        {
+            if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
+                return null;
+
+            return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
         }
     }
 }

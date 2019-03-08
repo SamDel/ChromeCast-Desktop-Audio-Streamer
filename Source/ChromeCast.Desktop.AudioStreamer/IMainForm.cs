@@ -44,5 +44,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void ShowWavMeterValue(byte[] data);
         void SetExtraBufferInSeconds(int extraBufferInSeconds);
         int? GetExtraBufferInSeconds();
+        void SetRecordingDeviceID(string recordingDeviceID);
+        string GetRecordingDeviceID();
     }
 }

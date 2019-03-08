@@ -217,5 +217,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["ExtraBufferInSeconds"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public string RecordingDeviceID
+        {
+            get
+            {
+                return (string)this["RecordingDeviceID"];
+            }
+            set
+            {
+                this["RecordingDeviceID"] = value;
+            }
+        }
     }
 }
