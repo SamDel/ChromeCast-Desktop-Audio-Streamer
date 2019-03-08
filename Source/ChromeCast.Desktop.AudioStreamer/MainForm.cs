@@ -18,6 +18,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using System.Text;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -29,6 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private IPAddress previousIpAddress;
         private ILoopbackRecorder loopbackRecorder;
         private Size windowSize;
+        private StringBuilder log = new StringBuilder();
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -278,7 +280,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void Log(string message)
         {
-            if (txtLog == null)
+            if (txtLog == null || log == null)
                 return;
 
             try
@@ -299,10 +301,15 @@ namespace ChromeCast.Desktop.AudioStreamer
                 {
                     if (chkLogDeviceCommunication.Checked)
                     {
-                        txtLog.AppendText(message + "\r\n\r\n");
+                        message += "\r\n\r\n";
+                        txtLog.AppendText(message);
+                        log.Append(message);
 
-                        if (txtLog.Text.Length > 20000000)
+                        if (txtLog.Text.Length > 2000000)
                             txtLog.Clear();
+
+                        if (log.Length > 100000000)
+                            log.Clear();
                     }
                 }
             }
@@ -530,11 +537,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
         {
-            if (txtLog == null)
+            if (log == null)
                 return;
 
-            if (!string.IsNullOrEmpty(txtLog.Text))
-                Clipboard.SetText(txtLog.Text);
+            if (!string.IsNullOrEmpty(log.ToString()))
+                Clipboard.SetText(log.ToString());
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
@@ -706,10 +713,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClearLog_Click(object sender, EventArgs e)
         {
-            if (txtLog == null)
+            if (txtLog == null || log == null)
                 return;
 
             txtLog.Clear();
+            log.Clear();
         }
 
         public void SetLogDeviceCommunication(bool logDeviceCommunication)
