@@ -32,6 +32,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private Size windowSize;
         private StringBuilder log = new StringBuilder();
         private string recordingDeviceID;
+        private bool eventHandlerAdded;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -427,7 +428,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                 recordingDeviceID = null;
             }
 
-            cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
+            if (!eventHandlerAdded)
+            {
+                cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
+                eventHandlerAdded = true;
+            }
         }
 
         public void GetRecordingDevice()
