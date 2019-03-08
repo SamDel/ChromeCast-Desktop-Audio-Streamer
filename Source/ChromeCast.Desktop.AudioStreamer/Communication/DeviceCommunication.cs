@@ -552,6 +552,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             device = deviceIn;
             sendMessage = sendMessageIn;
             isDeviceConnected = isDeviceConnectedIn;
+            pendingStatusMessage = false;
         }
 
         /// <summary>
