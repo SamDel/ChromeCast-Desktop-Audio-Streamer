@@ -29,6 +29,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private UserMode userMode = UserMode.Stopped;
         private bool pendingStatusMessage = false;
         private DateTime lastReceivedMessage;
+        private string statusText;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -437,7 +438,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         || device.GetDeviceState() == DeviceState.Idle)
                 {
                     device.OnGetStatus();
-                    WaitDeviceConnected(PlayStop, 50);
+                    if (string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0)
+                        WaitDeviceConnected(PlayStop, 50);
                 }
             });
         }
@@ -510,7 +512,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (receiverStatusMessage?.status?.volume != null)
                 device.OnVolumeUpdate(receiverStatusMessage.status.volume);
 
-            var statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
+            statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
             statusText = statusText?.Replace("Default Media Receiver", string.Empty);
             var state = device.GetDeviceState();
             if (state == DeviceState.ConnectError || state == DeviceState.NotConnected || state == DeviceState.Closed)
