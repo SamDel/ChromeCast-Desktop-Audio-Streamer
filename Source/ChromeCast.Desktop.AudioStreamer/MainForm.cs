@@ -31,8 +31,9 @@ namespace ChromeCast.Desktop.AudioStreamer
         private ILoopbackRecorder loopbackRecorder;
         private Size windowSize;
         private StringBuilder log = new StringBuilder();
-        private string recordingDeviceID;
+        private string previousRecordingDeviceID;
         private bool eventHandlerAdded;
+        private bool isRecordingDeviceSelected;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -403,29 +404,37 @@ namespace ChromeCast.Desktop.AudioStreamer
                     if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
                     {
                         exists = true;
-                        //if (device.DeviceID == defaultdevice.DeviceID)
-                        //    cmbRecordingDevice.SelectedIndex = i;
                     }
                 }
                 if (!exists)
                 {
                     var index = cmbRecordingDevice.Items.Add(device);
-                    if (device.DeviceID == defaultdevice.DeviceID)
-                        cmbRecordingDevice.SelectedIndex = index;
                 }
             }
 
-            // Restore recording device from previous session.
-            if (recordingDeviceID != null)
+            // Select the right device.
+            if (!isRecordingDeviceSelected)
             {
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
-                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == recordingDeviceID)
+                    var device = (MMDevice)cmbRecordingDevice.Items[i];
+                    if (previousRecordingDeviceID == null && device.DeviceID == defaultdevice.DeviceID)
                     {
+                        // Nothing previously selected, select the default device.
+                        if (cmbRecordingDevice.SelectedIndex != i)
+                        {
+                            cmbRecordingDevice.SelectedIndex = i;
+                            isRecordingDeviceSelected = true;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.DeviceID == previousRecordingDeviceID)
+                    {
+                        // Select the previously selected device (only once).
                         cmbRecordingDevice.SelectedIndex = i;
+                        previousRecordingDeviceID = string.Empty;
+                        isRecordingDeviceSelected = true;
                     }
                 }
-                recordingDeviceID = null;
             }
 
             if (!eventHandlerAdded)
@@ -481,6 +490,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (applicationLogic == null)
                 return;
 
+            isRecordingDeviceSelected = true;
             loopbackRecorder.StopRecording();
             StartRecordingDevice();
         }
@@ -996,7 +1006,8 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void SetRecordingDeviceID(string recordingDeviceIDIn)
         {
-            recordingDeviceID = recordingDeviceIDIn;
+            previousRecordingDeviceID = recordingDeviceIDIn;
+            isRecordingDeviceSelected = false;
         }
 
         public string GetRecordingDeviceID()
