@@ -15,9 +15,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                     ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (value)
-                    rk.SetValue(Properties.Strings.MainForm_Text, Assembly.GetExecutingAssembly().Location);
+                    rk.SetValue("Desktop Audio Streamer", Assembly.GetExecutingAssembly().Location);
                 else
-                    rk.DeleteValue(Properties.Strings.MainForm_Text, false);
+                    rk.DeleteValue("Desktop Audio Streamer", false);
             }
             catch (Exception ex)
             {
