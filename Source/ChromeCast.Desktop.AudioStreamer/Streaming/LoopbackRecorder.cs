@@ -9,6 +9,7 @@ using CSCore.Streams;
 using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using System.Windows.Forms;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -175,6 +176,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
+                MessageBox.Show($"Error initializing the recording device: {ex.Message}");
                 logger.Log(ex, "StartRecordingSetDevice");
             }
 
