@@ -186,6 +186,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         private void OnRecordingStopped(object sender, RecordingStoppedEventArgs e)
         {
+            logger.Log("Recording Stopped");
             isRecording = false;
         }
 
@@ -219,6 +220,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 latestDataAvailable = DateTime.Now;
                 dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
+            }
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
+            {
+                logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
             }
         }
     }
