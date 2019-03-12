@@ -23,8 +23,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        Timer dataAvailableTimer;
-        Timer getDevicesTimer;
+        System.Timers.Timer dataAvailableTimer;
+        System.Timers.Timer getDevicesTimer;
         private ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)
@@ -40,7 +40,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (mainFormIn == null || dataAvailableCallbackIn == null)
                 return;
 
-            getDevicesTimer = new Timer
+            getDevicesTimer = new System.Timers.Timer
             {
                 Interval = 15000,
                 Enabled = true
@@ -203,7 +203,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (dataAvailableTimer == null)
             {
                 latestDataAvailable = DateTime.Now;
-                dataAvailableTimer = new Timer
+                dataAvailableTimer = new System.Timers.Timer
                 {
                     Interval = 1000,
                     Enabled = true
