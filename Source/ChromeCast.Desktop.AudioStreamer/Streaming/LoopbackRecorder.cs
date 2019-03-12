@@ -186,8 +186,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         private void OnRecordingStopped(object sender, RecordingStoppedEventArgs e)
         {
-            logger.Log("Recording Stopped");
-            isRecording = false;
+            if (isRecording)
+            {
+                logger.Log("Recording Stopped");
+                isRecording = false;
+            }
         }
 
         /// <summary>
