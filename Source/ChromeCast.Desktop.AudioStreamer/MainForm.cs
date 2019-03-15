@@ -74,7 +74,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 CheckForNewVersion(fvi.FileVersion);
             });
-            loopbackRecorder.Start(this, applicationLogic.OnRecordingDataAvailable, applicationLogic.ClearMp3Buffer);
+            loopbackRecorder.Start(this, applicationLogic.OnRecordingDataAvailable);
         }
 
         private void ApplyLocalization()

@@ -118,14 +118,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         }
 
         /// <summary>
-        /// Clear the audio data in the mp3 encoder.
-        /// </summary>
-        public void ClearMp3Buffer()
-        {
-            Mp3Stream = null;
-        }
-
-        /// <summary>
         /// Callback for Devices, a new device is added.
         /// </summary>
         /// <param name="deviceIn">the new device</param>

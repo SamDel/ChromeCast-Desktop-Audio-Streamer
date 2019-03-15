@@ -25,6 +25,5 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         string GetStreamingUrl();
         void SetFilterDevices(FilterDevicesEnum value);
         bool WasPlaying(DiscoveredDevice discoveredDevice);
-        void ClearMp3Buffer();
     }
 }

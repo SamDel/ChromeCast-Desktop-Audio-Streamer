@@ -10,6 +10,8 @@ using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Windows.Forms;
+using System.Reflection;
+using System.IO;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -17,14 +19,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     {
         WasapiCapture soundIn;
         private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
-        private Action clearMp3Buffer;
         private bool isRecording = false;
         IWaveSource convertedSource;
         SoundInSource soundInSource;
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        System.Timers.Timer dataAvailableTimer;
         System.Timers.Timer getDevicesTimer;
         private ILogger logger;
 
@@ -36,7 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Start
         /// </summary>
-        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn, Action clearMp3BufferIn)
+        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
         {
             if (mainFormIn == null || dataAvailableCallbackIn == null)
                 return;
@@ -50,9 +50,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             getDevicesTimer.Start();
 
             dataAvailableCallback = dataAvailableCallbackIn;
-            clearMp3Buffer = clearMp3BufferIn;
             mainForm = mainFormIn;
             DoStart(null, null);
+
+            // Play (looping) silence, to make sure there always something captured.
+            var uri = new UriBuilder(Assembly.GetExecutingAssembly().Location);
+            var path = Uri.UnescapeDataString(uri.Path);
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer($"{Path.GetDirectoryName(path)}\\Properties\\silence.wav");
+            player.PlayLooping();
         }
 
         /// <summary>
@@ -75,7 +80,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (isRecording)
                 return;
 
-            StartSilenceCheckTimer();
             StartRecordingDevice();
         }
 
@@ -194,46 +198,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 logger.Log("Recording Stopped");
                 isRecording = false;
-            }
-        }
-
-        /// <summary>
-        /// Start a timer that checks for silence (nothing recorded).
-        /// </summary>
-        private void StartSilenceCheckTimer()
-        {
-            if (dataAvailableTimer == null)
-            {
-                latestDataAvailable = DateTime.Now;
-                dataAvailableTimer = new System.Timers.Timer
-                {
-                    Interval = 1000,
-                    Enabled = true
-                };
-                dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
-                dataAvailableTimer.Start();
-            }
-        }
-
-        /// <summary>
-        /// If there's nothing recorded for a while, stream silence to keep the connection alive.
-        /// </summary>
-        private void OnCheckForSilence(object sender, ElapsedEventArgs e)
-        {
-            if (dataAvailableCallback == null)
-                return;
-
-            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
-            {
-                logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
-                latestDataAvailable = DateTime.Now;
-                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
-                clearMp3Buffer();
-            }
-            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
-            {
-                logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
-                clearMp3Buffer();
             }
         }
     }
