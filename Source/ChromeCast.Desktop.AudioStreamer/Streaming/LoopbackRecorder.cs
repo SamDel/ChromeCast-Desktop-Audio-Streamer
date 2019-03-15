@@ -10,8 +10,6 @@ using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Windows.Forms;
-using System.Reflection;
-using System.IO;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -19,6 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     {
         WasapiCapture soundIn;
         private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
+        private Action clearMp3Buffer;
         private bool isRecording = false;
         IWaveSource convertedSource;
         SoundInSource soundInSource;
@@ -37,7 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Start
         /// </summary>
-        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
+        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn, Action clearMp3BufferIn)
         {
             if (mainFormIn == null || dataAvailableCallbackIn == null)
                 return;
@@ -51,6 +50,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             getDevicesTimer.Start();
 
             dataAvailableCallback = dataAvailableCallbackIn;
+            clearMp3Buffer = clearMp3BufferIn;
             mainForm = mainFormIn;
             DoStart(null, null);
         }
@@ -228,10 +228,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 latestDataAvailable = DateTime.Now;
                 dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
                 logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
+                clearMp3Buffer();
             }
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
             {
                 logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
+                clearMp3Buffer();
             }
         }
     }
