@@ -21,7 +21,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Streaming
 
             var loopbackRecorder = new LoopbackRecorder(new Logger());
             dataRecorded = null;
-            loopbackRecorder.Start(null, DataAvailable);
+            loopbackRecorder.Start(null, DataAvailable, null);
             asyncEvent.WaitOne(100);
 
             Assert.IsTrue(dataRecorded != null && dataRecorded.Length > 0);
