@@ -25,6 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
+        System.Timers.Timer dataAvailableTimer;
         System.Timers.Timer getDevicesTimer;
         private ILogger logger;
 
@@ -52,12 +53,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             dataAvailableCallback = dataAvailableCallbackIn;
             mainForm = mainFormIn;
             DoStart(null, null);
-
-            // Play (looping) silence, to make sure there always something captured.
-            var uri = new UriBuilder(Assembly.GetExecutingAssembly().Location);
-            var path = Uri.UnescapeDataString(uri.Path);
-            System.Media.SoundPlayer player = new System.Media.SoundPlayer($"{Path.GetDirectoryName(path)}\\Properties\\silence.wav");
-            player.PlayLooping();
         }
 
         /// <summary>
@@ -80,6 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (isRecording)
                 return;
 
+            StartSilenceCheckTimer();
             StartRecordingDevice();
         }
 
@@ -198,6 +194,44 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 logger.Log("Recording Stopped");
                 isRecording = false;
+            }
+        }
+        
+        /// <summary>
+        /// Start a timer that checks for silence (nothing recorded).
+        /// </summary>
+        private void StartSilenceCheckTimer()
+        {
+            if (dataAvailableTimer == null)
+            {
+                latestDataAvailable = DateTime.Now;
+                dataAvailableTimer = new System.Timers.Timer
+                {
+                    Interval = 1000,
+                    Enabled = true
+                };
+                dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
+                dataAvailableTimer.Start();
+            }
+        }
+
+        /// <summary>
+        /// If there's nothing recorded for a while, stream silence to keep the connection alive.
+        /// </summary>
+        private void OnCheckForSilence(object sender, ElapsedEventArgs e)
+        {
+            if (dataAvailableCallback == null)
+                return;
+
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
+            {
+                latestDataAvailable = DateTime.Now;
+                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
+            }
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
+            {
+                logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
             }
         }
     }
