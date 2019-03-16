@@ -178,8 +178,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error initializing the recording device: {ex.Message}");
-                logger.Log(ex, "StartRecordingSetDevice");
+                logger.Log(ex, "Error initializing the recording device:");
             }
 
             return false;
