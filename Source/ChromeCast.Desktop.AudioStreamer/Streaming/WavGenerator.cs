@@ -15,17 +15,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Play (looping) silence, to make sure there always something captured.
         /// </summary>
-        public void PlaySilenceLoop()
+        public void PlaySilenceLoop(string deviceName)
         {
-            Play(GenerateSilence(60));
+            Play(GenerateSilence(60), deviceName);
         }
 
         /// <summary>
         /// Play a 440Hz sinewave loop.
         /// </summary>
-        public void PlaySineWaveLoop()
+        public void PlaySineWaveLoop(string deviceName)
         {
-            Play(GenerateSineWave(60));
+            Play(GenerateSineWave(60), deviceName);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// Play a loop stream.
         /// </summary>
         /// <param name="stream">the stream to play.</param>
-        private void Play(LoopStream stream)
+        private void Play(LoopStream stream, string deviceName)
         {
             if (stream == null)
                 return;
@@ -51,6 +51,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             try
             {
                 player = new WaveOutEvent();
+                if (!string.IsNullOrEmpty(deviceName))
+                {
+                    for (int i = -1; i < WaveOut.DeviceCount; i++)
+                    {
+                        var capabilities = WaveOut.GetCapabilities(i);
+                        if (deviceName.StartsWith(capabilities.ProductName))
+                            player.DeviceNumber = i;
+                    }
+                }
                 player.Init(new WaveChannel32(stream, 0.0f, 0));
                 player.Play();
             }

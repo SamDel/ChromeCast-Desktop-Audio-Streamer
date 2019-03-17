@@ -50,7 +50,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             devices.SetDependencies(this, applicationLogic);
             applicationLogic.SetDependencies(this);
             wavGenerator = new WavGenerator();
-            wavGenerator.PlaySilenceLoop();
         }
 
         public MainForm()
@@ -428,6 +427,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                         if (cmbRecordingDevice.SelectedIndex != i)
                         {
                             cmbRecordingDevice.SelectedIndex = i;
+                            PlaySilence();
                             isRecordingDeviceSelected = true;
                         }
                     }
@@ -435,6 +435,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                     {
                         // Select the previously selected device (only once).
                         cmbRecordingDevice.SelectedIndex = i;
+                        PlaySilence();
                         previousRecordingDeviceID = string.Empty;
                         isRecordingDeviceSelected = true;
                     }
@@ -477,6 +478,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                     if (loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
                     {
                         cmbRecordingDevice.SelectedIndex = i;
+                        PlaySilence();
                         return true;
                     }
                 }
@@ -497,6 +499,16 @@ namespace ChromeCast.Desktop.AudioStreamer
             isRecordingDeviceSelected = true;
             loopbackRecorder.StopRecording();
             StartRecordingDevice();
+            PlaySilence();
+        }
+
+        private void PlaySilence()
+        {
+            if (cmbRecordingDevice.SelectedItem != null)
+            {
+                wavGenerator.Stop();
+                wavGenerator.PlaySilenceLoop(((MMDevice)cmbRecordingDevice.SelectedItem).FriendlyName);
+            }
         }
 
         private void ChkAutoRestart_CheckedChanged(object sender, EventArgs e)
