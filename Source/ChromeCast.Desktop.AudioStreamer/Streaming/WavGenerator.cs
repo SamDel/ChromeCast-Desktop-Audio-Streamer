@@ -76,6 +76,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <returns>a loop stream containing 'nrSeconds' of wav silence</returns>
         private LoopStream GenerateSilence(uint nrSeconds)
         {
+            return CreateStream(GetSilence(nrSeconds));
+        }
+
+        /// <summary>
+        /// Create a byte array with silence wav data.
+        /// </summary>
+        /// <param name="seconds">number of seconds of the wav data</param>
+        /// <returns>'seconds' of wav data in a byte array</returns>
+        public byte[] GetSilenceBytes(uint seconds)
+        {
+            var silence = GetSilence(seconds);
+            var result = new byte[silence.AudioSamples.Length * sizeof(short)];
+            Buffer.BlockCopy(silence.AudioSamples, 0, result, 0, result.Length);
+            return result;
+        }
+
+        /// <summary>
+        /// Get silence data.
+        /// </summary>
+        public WaveDataChunk GetSilence(uint nrSeconds)
+        {
             // Fill the data array with silence samples.
             var data = new WaveDataChunk();
             var numSamples = waveFormat.SampleRate * waveFormat.Channels * nrSeconds;
@@ -88,8 +109,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
             }
             data.Length = (uint)(data.AudioSamples.Length * (waveFormat.BitsPerSample / 8));
-
-            return CreateStream(data);
+            return data;
         }
 
         /// <summary>

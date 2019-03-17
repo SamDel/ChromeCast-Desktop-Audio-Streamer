@@ -225,7 +225,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
             {
                 latestDataAvailable = DateTime.Now;
-                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                var silence = new WavGenerator().GetSilenceBytes(1);
+                dataAvailableCallback(silence, waveFormat);
                 logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
             }
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)

@@ -517,8 +517,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void SendSilence()
         {
-            OnRecordingDataAvailable(Properties.Resources.silence,
-                new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
+            var silence = new WavGenerator().GetSilenceBytes(5);
+            OnRecordingDataAvailable(silence, new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
         }
 
         /// <summary>
