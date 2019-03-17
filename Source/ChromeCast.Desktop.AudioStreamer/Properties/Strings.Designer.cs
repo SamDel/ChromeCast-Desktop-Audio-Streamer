@@ -214,7 +214,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Desktop Audio Streamer.
+        ///   Looks up a localized string similar to Sandpiper.
         /// </summary>
         internal static string ChromeCast_StreamTitle {
             get {
@@ -367,7 +367,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps..
+        ///   Looks up a localized string similar to Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts..
         /// </summary>
         internal static string Label_LagExperimental_Text {
             get {
@@ -538,7 +538,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Desktop Audio Streamer.
+        ///   Looks up a localized string similar to Sandpiper - Desktop Audio Streamer.
         /// </summary>
         internal static string MainForm_Text {
             get {

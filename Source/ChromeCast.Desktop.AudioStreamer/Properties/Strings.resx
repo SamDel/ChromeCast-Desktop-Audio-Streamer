@@ -163,7 +163,7 @@
     <value>Show window at startup</value>
   </data>
   <data name="ChromeCast_StreamTitle" xml:space="preserve">
-    <value>Desktop Audio Streamer</value>
+    <value>Sandpiper</value>
   </data>
   <data name="Closed" xml:space="preserve">
     <value>Closed</value>
@@ -202,7 +202,7 @@
     <value>Latest keep-alive message:</value>
   </data>
   <data name="Label_LagExperimental_Text" xml:space="preserve">
-    <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</value>
+    <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts.</value>
   </data>
   <data name="Label_Language_Text" xml:space="preserve">
     <value>Language</value>
@@ -253,7 +253,7 @@
     <value>out</value>
   </data>
   <data name="MainForm_Text" xml:space="preserve">
-    <value>Desktop Audio Streamer</value>
+    <value>Sandpiper - Desktop Audio Streamer</value>
   </data>
   <data name="MessageBox_NoIPAddress" xml:space="preserve">
     <value>No IP addresses found on your device.</value>

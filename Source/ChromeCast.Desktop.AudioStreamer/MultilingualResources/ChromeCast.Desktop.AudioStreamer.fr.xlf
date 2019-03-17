@@ -408,13 +408,13 @@
           <source>..\UserControls\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
           <target state="new">..\UserControls\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
-        <trans-unit id="silenceWav" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
-          <source>silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-          <target state="final">silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        </trans-unit>
         <trans-unit id="Group" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
           <source>..\UserControls\group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
           <target state="final">..\UserControls\group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
+        </trans-unit>
+        <trans-unit id="silenceWav" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
+          <source>silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
+          <target state="final">silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         </trans-unit>
       </group>
     </body>
@@ -478,8 +478,8 @@
           <target state="translated">Montrer la fenêtre au démarrage</target>
         </trans-unit>
         <trans-unit id="ChromeCast_StreamTitle" translate="yes" xml:space="preserve">
-          <source>Desktop Audio Streamer</source>
-          <target state="translated">Desktop Audio Streamer</target>
+          <source>Sandpiper</source>
+          <target state="translated">Sandpiper</target>
         </trans-unit>
         <trans-unit id="Closed" translate="yes" xml:space="preserve">
           <source>Closed</source>
@@ -526,8 +526,9 @@
           <target state="translated">Dernier message en direct :</target>
         </trans-unit>
         <trans-unit id="Label_LagExperimental_Text" translate="yes" xml:space="preserve">
-          <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</source>
-          <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
+          <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts.</source>
+          <target state="needs-review-translation">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
+          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
         </trans-unit>
         <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
           <source>Language</source>
@@ -590,8 +591,8 @@
           <target state="translated">sortie</target>
         </trans-unit>
         <trans-unit id="MainForm_Text" translate="yes" xml:space="preserve">
-          <source>Desktop Audio Streamer</source>
-          <target state="translated">Desktop Audio Streamer</target>
+          <source>Sandpiper - Desktop Audio Streamer</source>
+          <target state="translated">Sandpiper - Desktop Audio Streamer</target>
         </trans-unit>
         <trans-unit id="MessageBox_NoRecordingDevices" translate="yes" xml:space="preserve">
           <source>No recording devices found.</source>
