@@ -19,6 +19,7 @@ using Newtonsoft.Json.Linq;
 using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using System.Text;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -34,6 +35,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private string previousRecordingDeviceID;
         private bool eventHandlerAdded;
         private bool isRecordingDeviceSelected;
+        private WavGenerator wavGenerator;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -47,6 +49,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             logger.SetCallback(Log);
             devices.SetDependencies(this, applicationLogic);
             applicationLogic.SetDependencies(this);
+            wavGenerator = new WavGenerator();
+            wavGenerator.PlaySilenceLoop();
         }
 
         public MainForm()

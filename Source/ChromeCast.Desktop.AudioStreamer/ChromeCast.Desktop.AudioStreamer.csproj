@@ -181,6 +181,7 @@
     <Compile Include="Streaming\LoopbackRecorder.cs" />
     <Compile Include="Streaming\AudioHeader.cs" />
     <Compile Include="Streaming\StreamingConnection.cs" />
+    <Compile Include="Streaming\WavGenerator.cs" />
     <Compile Include="UserControls\DeviceControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

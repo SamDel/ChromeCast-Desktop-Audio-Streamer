@@ -11,12 +11,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Generate a header for a maximum length WAV stream.
         /// </summary>
-        public byte[] GetRiffHeader(WaveFormat format)
+        public byte[] GetRiffHeader(WaveFormat format, uint dataSize = 0)
         {
             if (format == null)
                 return new byte[0];
 
-            var dataSize = (uint)0;
             uint chunkSize = dataSize;
             uint factChunkSize = 4;
             uint numberOfSamples = (uint)(dataSize * 8 / format.BitsPerSample / format.Channels);
