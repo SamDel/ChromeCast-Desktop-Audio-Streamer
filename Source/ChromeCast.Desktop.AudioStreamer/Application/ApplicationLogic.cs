@@ -101,15 +101,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 if (Mp3Stream == null)
                 {
                     Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected, logger);
-                    logger.Log("new Mp3Stream");
-                    Mp3Stream.Encode(dataToSendIn.ToArray());
-                    return;
                 }
-                else
-                {
-                    Mp3Stream.Encode(dataToSendIn.ToArray());
-                    dataToSendIn = Mp3Stream.Read();
-                }
+                Mp3Stream.Encode(dataToSendIn.ToArray());
+                dataToSendIn = Mp3Stream.Read();
             }
             if (dataToSendIn.Length > 0)
             {
