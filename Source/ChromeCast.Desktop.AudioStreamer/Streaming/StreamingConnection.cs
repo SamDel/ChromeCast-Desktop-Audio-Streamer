@@ -7,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Communication;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -73,22 +74,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (!IsConnected() || device == null || logger == null)
                 return;
 
-            try
-            {
-                Socket.Send(data);
-            }
-            catch (Exception ex)
-            {
-                var deviceState = device.GetDeviceState();
-                if (deviceState == DeviceState.Playing ||
-                    deviceState == DeviceState.Buffering ||
-                    deviceState == DeviceState.Paused)
+            Task.Run(() => {
+                try
                 {
-                    Dispose();
-                    logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Disconnected Send");
-                    device.SetDeviceState(DeviceState.ConnectError);
+                    Socket.Send(data);
                 }
-            }
+                catch (Exception ex)
+                {
+                    var deviceState = device.GetDeviceState();
+                    if (deviceState == DeviceState.Playing ||
+                        deviceState == DeviceState.Buffering ||
+                        deviceState == DeviceState.Paused)
+                    {
+                        Dispose();
+                        logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Disconnected Send");
+                        device.SetDeviceState(DeviceState.ConnectError);
+                    }
+                }
+            });
         }
 
         /// <summary>
