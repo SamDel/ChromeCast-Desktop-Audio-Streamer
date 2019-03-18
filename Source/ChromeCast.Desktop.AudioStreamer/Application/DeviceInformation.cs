@@ -22,7 +22,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             Task.Run(async () => {
                 try
                 {
-                    var http = new HttpClient();
+                    var http = new HttpClient
+                    {
+                        Timeout = new TimeSpan(0, 0, 5)
+                    };
                     var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
                     var receiveStream = await response.Content.ReadAsStreamAsync();
                     var readStream = new StreamReader(receiveStream, Encoding.UTF8);
@@ -51,7 +54,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 try
                 {
                     // Check if the device is on.
-                    var http = new HttpClient();
+                    var http = new HttpClient
+                    {
+                        Timeout = new TimeSpan(0, 0, 5)
+                    };
                     var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {

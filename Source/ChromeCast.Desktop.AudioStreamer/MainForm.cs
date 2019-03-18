@@ -817,6 +817,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
+                request.Timeout = 5000;
                 ((HttpWebRequest)request).KeepAlive = false;
                 ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
                 var response = request.GetResponse();
