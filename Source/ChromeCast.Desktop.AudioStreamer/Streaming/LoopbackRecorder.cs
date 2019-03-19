@@ -240,7 +240,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             convertedSource?.Dispose();
             soundInSource?.Dispose();
             dataAvailableTimer?.Close();
-            dataAvailableTimer.Dispose();
+            dataAvailableTimer?.Dispose();
             getDevicesTimer?.Close();
             getDevicesTimer?.Dispose();
         }

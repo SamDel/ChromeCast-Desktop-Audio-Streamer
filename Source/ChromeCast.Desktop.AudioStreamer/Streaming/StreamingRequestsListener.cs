@@ -158,10 +158,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         protected virtual void Dispose(bool cleanupAll)
         {
-            if (allDone != null)
-                allDone.Dispose();
-            if (listener != null)
-                listener.Dispose();
+            allDone?.Dispose();
+            listener?.Dispose();
         }
     }
 }

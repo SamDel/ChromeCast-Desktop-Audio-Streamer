@@ -409,7 +409,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             streamingRequestListener?.StopListening();
             streamingRequestListener?.Dispose();
             Mp3Stream?.Dispose();
-            if (mainForm != null) mainForm.Dispose();
+            mainForm?.Dispose();
             NativeMethods.StopSetWindowsHooks();
             if (notifyIcon != null) notifyIcon.Visible = false;
             notifyIcon?.Dispose();

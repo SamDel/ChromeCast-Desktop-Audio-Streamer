@@ -554,10 +554,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Dispose()
         {
-            deviceCommunication.Dispose();
-            streamingConnection.Dispose();
-            deviceConnection.Dispose();
-            deviceControl.Dispose();
+            deviceCommunication?.Dispose();
+            streamingConnection?.Dispose();
+            deviceConnection?.Dispose();
+            deviceControl?.Dispose();
         }
     }
 }
