@@ -492,11 +492,8 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void CmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (applicationLogic == null)
-                return;
-
             isRecordingDeviceSelected = true;
-            loopbackRecorder.StopRecording();
+            loopbackRecorder?.StopRecording();
             StartRecordingDevice();
             PlaySilence();
         }

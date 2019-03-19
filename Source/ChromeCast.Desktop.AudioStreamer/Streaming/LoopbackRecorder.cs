@@ -123,7 +123,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 return;
 
             isRecording = false;
-            soundIn.Stop();
+            soundIn?.Stop();
         }
 
         /// <summary>
@@ -237,8 +237,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         public void Dispose()
         {
             soundIn?.Dispose();
+            soundIn = null;
             convertedSource?.Dispose();
+            convertedSource = null;
             soundInSource?.Dispose();
+            soundInSource = null;
             dataAvailableTimer?.Close();
             dataAvailableTimer?.Dispose();
             getDevicesTimer?.Close();

@@ -74,10 +74,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// </summary>
         public void Dispose()
         {
-            Output?.Close();
-            Output?.Dispose();
             Writer?.Close();
             Writer?.Dispose();
+            Writer = null;
+            Output?.Close();
+            Output?.Dispose();
+            Output = null;
     }
 }
 }
