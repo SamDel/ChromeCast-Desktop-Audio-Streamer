@@ -23,5 +23,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         void OnPlayStop_Click();
         void OnStop_Click();
         void ResumePlaying();
+        void Dispose();
     }
 }

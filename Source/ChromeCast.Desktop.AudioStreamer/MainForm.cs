@@ -168,7 +168,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (applicationLogic == null)
                 return;
 
-            loopbackRecorder?.StopRecording();
             applicationLogic.CloseApplication();
         }
 
@@ -1033,6 +1032,26 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return null;
 
             return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                loopbackRecorder?.StopRecording();
+                loopbackRecorder?.Dispose();
+                wavGenerator?.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -42,5 +42,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void OnVolumeUpdate(Volume volume);
         void ResumePlaying();
         DeviceEureka GetEureka();
+        void Dispose();
     }
 }

@@ -9,7 +9,6 @@ using CSCore.Streams;
 using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
-using System.Windows.Forms;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -24,8 +23,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        System.Timers.Timer dataAvailableTimer;
-        System.Timers.Timer getDevicesTimer;
+        Timer dataAvailableTimer;
+        Timer getDevicesTimer;
         private ILogger logger;
 
         public LoopbackRecorder(ILogger loggerIn)
@@ -233,6 +232,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             {
                 logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
             }
+        }
+
+        public void Dispose()
+        {
+            soundIn?.Dispose();
+            convertedSource?.Dispose();
+            soundInSource?.Dispose();
+            dataAvailableTimer?.Close();
+            dataAvailableTimer.Dispose();
+            getDevicesTimer?.Close();
+            getDevicesTimer?.Dispose();
         }
     }
 }

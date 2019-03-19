@@ -639,5 +639,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             Connected = false;
         }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            userMode = UserMode.Stopped;
+        }
     }
 }

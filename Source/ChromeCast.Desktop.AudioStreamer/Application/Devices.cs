@@ -387,10 +387,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null)
                 return;
 
-            Stop();
+            Stop(true);
             foreach (var device in deviceList)
             {
                 device.SetDeviceState(DeviceState.Disposed);
+                device.Dispose();
             }
         }
 

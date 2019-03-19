@@ -384,11 +384,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void CloseApplication()
         {
             SaveSettings();
-            NativeMethods.StopSetWindowsHooks();
-            devices?.Dispose();
-            streamingRequestListener?.StopListening();
-            if (notifyIcon != null) notifyIcon.Visible = false;
-            if (mainForm != null) mainForm.Dispose();
+            Dispose(true);
         }
 
         public void SetLagThreshold(int lagThresholdIn)
@@ -407,16 +403,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Dispose.
         /// </summary>
-        protected virtual void Dispose(bool cleanupAll)
+        protected virtual void Dispose(bool disposing)
         {
+            devices?.Dispose();
+            streamingRequestListener?.StopListening();
+            streamingRequestListener?.Dispose();
+            Mp3Stream?.Dispose();
+            if (mainForm != null) mainForm.Dispose();
+            NativeMethods.StopSetWindowsHooks();
+            if (notifyIcon != null) notifyIcon.Visible = false;
             notifyIcon?.Dispose();
-        }
+    }
 
-        /// <summary>
-        /// The devices filter has changed.
-        /// </summary>
-        /// <param name="value">new filter value</param>
-        public void SetFilterDevices(FilterDevicesEnum value)
+    /// <summary>
+    /// The devices filter has changed.
+    /// </summary>
+    /// <param name="value">new filter value</param>
+    public void SetFilterDevices(FilterDevicesEnum value)
         {
             if (devices == null)
                 return;

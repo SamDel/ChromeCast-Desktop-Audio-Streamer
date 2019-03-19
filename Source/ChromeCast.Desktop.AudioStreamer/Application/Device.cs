@@ -548,5 +548,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             return eureka;
         }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            deviceCommunication.Dispose();
+            streamingConnection.Dispose();
+            deviceConnection.Dispose();
+            deviceControl.Dispose();
+        }
     }
 }

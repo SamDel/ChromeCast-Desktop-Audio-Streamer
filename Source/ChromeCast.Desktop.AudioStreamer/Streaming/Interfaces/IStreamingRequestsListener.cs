@@ -10,5 +10,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces
         void StartListening(IPAddress ipAddress, Action<Socket, string> onConnectCallbackIn, ILogger logger);
         void StopListening();
         string GetStreamimgUrl();
+        void Dispose();
     }
 }

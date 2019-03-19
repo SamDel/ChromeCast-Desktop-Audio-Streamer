@@ -126,5 +126,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                 }
             }
         }
+
+        public void Dispose()
+        {
+            timer?.Close();
+            timer?.Dispose();
+        }
     }
 }

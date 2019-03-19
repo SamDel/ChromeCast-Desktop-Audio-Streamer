@@ -68,5 +68,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             Output.SetLength(0);
             return byteArray;
         }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Output?.Close();
+            Output?.Dispose();
+            Writer?.Close();
+            Writer?.Dispose();
     }
+}
 }

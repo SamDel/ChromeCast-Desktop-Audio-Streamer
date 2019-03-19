@@ -130,6 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public void Dispose()
         {
+            Socket?.Close();
             Socket?.Dispose();
             Socket = null;
         }

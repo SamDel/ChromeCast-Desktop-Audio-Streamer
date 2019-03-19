@@ -282,8 +282,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 if (tcpClient != null)
                     tcpClient.Close();
+
                 if (sslStream != null)
+                {
                     sslStream.Close();
+                    sslStream.Dispose();
+                }
             }
             catch (Exception ex)
             {

@@ -10,5 +10,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces
         void StartRecordingDevice();
         bool StartRecordingSetDevice(MMDevice device);
         void StopRecording();
+        void Dispose();
     }
 }

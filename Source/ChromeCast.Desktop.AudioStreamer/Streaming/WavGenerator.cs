@@ -174,6 +174,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             return new LoopStream(stream, waveFormat);
         }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            player?.Stop();
+            player?.Dispose();
+        }
     }
 
     /// <summary>
