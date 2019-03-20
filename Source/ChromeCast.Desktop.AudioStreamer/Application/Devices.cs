@@ -348,10 +348,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             // Cleanup disposed devices first.
             try
             {
-                for (int i = deviceList.Count - 1; i >= 0; i--)
+                lock(deviceList)
                 {
-                    if (deviceList[i].GetDeviceState() == DeviceState.Disposed)
-                        deviceList.RemoveAt(i);
+                    for (int i = deviceList.Count - 1; i >= 0; i--)
+                    {
+                        if (deviceList[i].GetDeviceState() == DeviceState.Disposed)
+                            deviceList.RemoveAt(i);
+                    }
                 }
             }
             catch (Exception ex)
@@ -388,10 +391,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             Stop(true);
-            foreach (var device in deviceList)
+            lock(deviceList)
             {
-                device?.SetDeviceState(DeviceState.Disposed);
-                device?.Dispose();
+                foreach (var device in deviceList)
+                {
+                    device?.SetDeviceState(DeviceState.Disposed);
+                    device?.Dispose();
+                }
             }
         }
 
