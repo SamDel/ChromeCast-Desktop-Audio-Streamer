@@ -14,6 +14,7 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -36,6 +37,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
         private Action<DeviceEureka> setDeviceInformationCallback;
+        private Action<Action> startTask;
         private Action<IDevice> stopGroup;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
@@ -45,7 +47,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger = loggerIn;
             deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
-            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
+            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage, StartTask);
             discoveredDevice = new DiscoveredDevice
             {
                 DeviceState = DeviceState.NotConnected
@@ -64,8 +66,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
         public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn
-            , Action<IDevice> stopGroupIn)
+            , Action<IDevice> stopGroupIn, Action<Action> startTaskIn)
         {
+            setDeviceInformationCallback = setDeviceInformationCallbackIn;
+            stopGroup = stopGroupIn;
+            startTask = startTaskIn;
+
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
                 discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
                 return;
@@ -95,8 +101,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.SetCallback(this, deviceConnection.SendMessage, deviceConnection.IsConnected);
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
-            setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            stopGroup = stopGroupIn;
             if (ipChanged && GetDeviceState() == DeviceState.Playing)
             {
                 ResumePlaying();
@@ -527,7 +531,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void GetDeviceInformation()
         {
             if (!IsGroup())
-                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
+            {
+                startTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
+            }
         }
 
         /// <summary>
@@ -547,6 +553,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public DeviceEureka GetEureka()
         {
             return eureka;
+        }
+
+        /// <summary>
+        /// Start a task
+        /// </summary>
+        public void StartTask(Action action)
+        {
+            if (startTask == null)
+                Task.Run(action);
+            else
+                startTask(action);
         }
 
         /// <summary>

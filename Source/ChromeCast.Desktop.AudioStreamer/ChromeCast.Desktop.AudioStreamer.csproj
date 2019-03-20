@@ -120,6 +120,7 @@
     <Compile Include="Application\Device.cs" />
     <Compile Include="Application\DeviceInformation.cs" />
     <Compile Include="Application\Devices.cs" />
+    <Compile Include="Application\TaskToCancel.cs" />
     <Compile Include="Application\UserMode.cs" />
     <Compile Include="Classes\ApplicationBuffer.cs" />
     <Compile Include="Classes\ApplicationBufferItem.cs" />

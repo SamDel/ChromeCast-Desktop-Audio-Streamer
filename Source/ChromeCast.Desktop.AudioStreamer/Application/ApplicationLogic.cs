@@ -33,6 +33,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private string Culture;
         private ILogger logger;
         private Size defaultSize = new Size(850, 550);
+        private TasksToCancel taskList;
 
         private bool AutoRestart { get; set; } = false;
 
@@ -55,6 +56,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Initialize()
         {
+            taskList = new TasksToCancel();
             AddNotifyIcon();
             LoadSettings();
             configuration.Load(ApplyConfiguration, logger);
@@ -67,7 +69,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
             }
 
-            Task.Run(() => {
+            StartTask(() => {
                 streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect, logger);
             });
         }
@@ -184,10 +186,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             devices.Stop();
             streamingRequestListener.StopListening();
             ScanForDevices();
-            Task.Run(() => {
+            StartTask(() => {
                 streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect, logger);
             });
-            Task.Run(() =>
+            StartTask(() =>
             {
                 Task.Delay(2500).Wait();
                 devices.Start();
@@ -271,7 +273,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
-                    DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger);
+                    StartTask(DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger));
                 }
             }
         }
@@ -405,6 +407,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
+            taskList?.Dispose();
             devices?.Dispose();
             streamingRequestListener?.StopListening();
             streamingRequestListener?.Dispose();
@@ -519,6 +522,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void CloseApplication(object sender, EventArgs e)
         {
             CloseApplication();
+        }
+
+        /// <summary>
+        /// Start an action in a new task.
+        /// </summary>
+        public void StartTask(Action action)
+        {
+            taskList.Add(action);
         }
 
         #endregion

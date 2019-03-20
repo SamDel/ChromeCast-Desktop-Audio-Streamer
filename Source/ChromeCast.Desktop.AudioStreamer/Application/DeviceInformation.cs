@@ -17,9 +17,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     /// </summary>
     public static class DeviceInformation
     {
-        public static void GetDeviceInformation(DiscoveredDevice discoveredDevice, Action<DeviceEureka> callback, ILogger logger)
+        public static Action GetDeviceInformation(DiscoveredDevice discoveredDevice, Action<DeviceEureka> callback, ILogger logger)
         {
-            Task.Run(async () => {
+            return (async () => {
                 try
                 {
                     var http = new HttpClient
@@ -48,9 +48,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="discoveredDevice"></param>
         /// <param name="callback"></param>
-        public static void CheckDeviceIsOn(DiscoveredDevice discoveredDevice, Action<DiscoveredDevice> callback, ILogger logger)
+        public static Action CheckDeviceIsOn(DiscoveredDevice discoveredDevice, Action<DiscoveredDevice> callback, ILogger logger)
         {
-            Task.Run(async () => {
+            return (async () => {
+                var ipAddress = discoveredDevice.IPAddress;
                 try
                 {
                     // Check if the device is on.
@@ -58,7 +59,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     {
                         Timeout = new TimeSpan(0, 0, 5)
                     };
-                    var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
+                    var response = await http.GetAsync($"http://{ipAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         discoveredDevice.AddedByDeviceInfo = false;
@@ -67,7 +68,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 }
                 catch (Exception ex)
                 {
-                    logger?.Log(ex, "DeviceInformation.CheckDeviceIsOn");
+                    logger?.Log(ex, $"DeviceInformation.CheckDeviceIsOn [{ipAddress}]");
                 }
             });
         }

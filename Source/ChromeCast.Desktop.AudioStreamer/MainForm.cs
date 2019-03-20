@@ -73,7 +73,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             FillStreamFormats();
             FillFilterDevices();
             lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
-            Task.Run(() =>
+            applicationLogic.StartTask(() =>
             {
                 CheckForNewVersion(fvi.FileVersion);
             });

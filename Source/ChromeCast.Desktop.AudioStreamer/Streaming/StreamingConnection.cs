@@ -74,7 +74,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (!IsConnected() || device == null || logger == null)
                 return;
 
-            Task.Run(() => {
+            device.StartTask(() => {
                 try
                 {
                     Socket.Send(data);

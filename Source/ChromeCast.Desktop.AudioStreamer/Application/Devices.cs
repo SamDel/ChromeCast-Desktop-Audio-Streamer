@@ -38,7 +38,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!discoveredDevice.AddedByDeviceInfo)
             {
                 if (!discoveredDevice.IsGroup)
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
+                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
             }
             else
             {
@@ -48,7 +48,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (existingDevice == null)
                     {
                         var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup);
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
@@ -58,7 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     else
                     {
-                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup);
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
                     }
                 }
             }
@@ -195,7 +195,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 // Get device information from unknown devices.
                 if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
                 {
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger);
+                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
                 }
             }
         }

@@ -18,6 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<int> getPort;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
+        private Action<Action> startTask;
         private ILogger logger;
         private IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
@@ -159,7 +160,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="send">the message</param>
         public void SendMessage(byte[] send)
         {
-            Task.Run(() => {
+            startTask(() => {
                 sendBuffer = send;
                 if (tcpClient != null &&
                     tcpClient.Client != null &&
@@ -302,12 +303,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Set callbacks.
         /// </summary>
-        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn, Action<Action> startTaskIn)
         {
             getHost = getHostIn;
             getPort = getPortIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
+            startTask = startTaskIn;
         }
     }
 }

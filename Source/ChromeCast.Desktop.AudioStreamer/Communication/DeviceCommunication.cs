@@ -399,7 +399,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             device.SetDeviceState(DeviceState.Closed, null);
             Connected = false;
-            Task.Run(() => {
+            applicationLogic.StartTask(() => {
                 Task.Delay(2000).Wait();
                 GetReceiverStatus();
             });
@@ -417,7 +417,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             userMode = UserMode.Playing;
             pendingStatusMessage = false;
 
-            Task.Run(() =>
+            applicationLogic.StartTask(() =>
             {
                 Task.Delay(2000).Wait();
                 var deviceState = device.GetDeviceState();
