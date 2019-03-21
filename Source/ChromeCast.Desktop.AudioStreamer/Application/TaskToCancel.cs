@@ -15,16 +15,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     {
         private List<TaskToCancel> taskList = new List<TaskToCancel>();
 
-        public void Add(Action action)
+        public void Add(Action action, CancellationTokenSource cancellationTokenSource = null)
         {
             if (action == null || taskList == null)
                 return;
 
             lock(taskList)
             {
-                var ctsListener = new CancellationTokenSource();
-                var task = Task.Factory.StartNew(action, ctsListener.Token);
-                taskList.Add(new TaskToCancel { Task = task, TokenSource = ctsListener });
+                if (cancellationTokenSource == null)
+                {
+                    cancellationTokenSource = new CancellationTokenSource();
+                }
+                var task = Task.Factory.StartNew(action, cancellationTokenSource.Token);
+                taskList.Add(new TaskToCancel { Task = task, TokenSource = cancellationTokenSource });
 
                 taskList.RemoveAll(x => x?.Task == null || x.Task.IsCompleted);
             }

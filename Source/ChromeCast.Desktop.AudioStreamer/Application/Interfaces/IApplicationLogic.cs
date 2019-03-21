@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using NAudio.Wave;
@@ -27,6 +28,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void SetFilterDevices(FilterDevicesEnum value);
         bool WasPlaying(DiscoveredDevice discoveredDevice);
         void ClearMp3Buffer();
-        void StartTask(Action action);
+        void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null);
     }
 }

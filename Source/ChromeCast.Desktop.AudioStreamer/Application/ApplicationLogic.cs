@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using ChromeCast.Desktop.AudioStreamer.Discover;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -189,11 +190,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             StartTask(() => {
                 streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect, logger);
             });
+            var cancellationTokenSource = new CancellationTokenSource();
             StartTask(() =>
             {
                 Task.Delay(2500).Wait();
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 devices.Start();
-            });
+            }, cancellationTokenSource);
         }
 
         /// <summary>
@@ -527,9 +533,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Start an action in a new task.
         /// </summary>
-        public void StartTask(Action action)
+        public void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null)
         {
-            taskList.Add(action);
+            taskList.Add(action, cancellationTokenSource);
         }
 
         #endregion

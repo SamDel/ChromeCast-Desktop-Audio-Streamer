@@ -7,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
@@ -399,10 +400,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             device.SetDeviceState(DeviceState.Closed, null);
             Connected = false;
+            var cancellationTokeSource = new CancellationTokenSource();
             applicationLogic.StartTask(() => {
                 Task.Delay(2000).Wait();
+
+                if (cancellationTokeSource.IsCancellationRequested)
+                    return;
+
                 GetReceiverStatus();
-            });
+            }, cancellationTokeSource);
         }
 
         /// <summary>
@@ -417,6 +423,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             userMode = UserMode.Playing;
             pendingStatusMessage = false;
 
+            var cancellationTokenSource = new CancellationTokenSource();
             applicationLogic.StartTask(() =>
             {
                 Task.Delay(2000).Wait();
@@ -428,10 +435,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                     Stop();
                 }
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 if (deviceState != DeviceState.ConnectError)
                     device.SetDeviceState(DeviceState.NotConnected, null);
                 Disconnect();
                 Task.Delay(2000).Wait();
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 if (device.GetDeviceState() == DeviceState.NotConnected
                         || device.GetDeviceState() == DeviceState.Connected
                         || device.GetDeviceState() == DeviceState.Closed
@@ -441,7 +456,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     if (string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0)
                         WaitDeviceConnected(PlayStop, 50);
                 }
-            });
+            }, cancellationTokenSource);
         }
 
         /// <summary>
