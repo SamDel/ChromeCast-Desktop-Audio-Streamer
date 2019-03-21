@@ -391,13 +391,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             Stop(true);
-            lock(deviceList)
+            foreach (var device in deviceList)
             {
-                foreach (var device in deviceList)
-                {
-                    device?.SetDeviceState(DeviceState.Disposed);
-                    device?.Dispose();
-                }
+                device?.SetDeviceState(DeviceState.Disposed);
+                device?.Dispose();
             }
         }
 
