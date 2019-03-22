@@ -1044,7 +1044,6 @@ namespace ChromeCast.Desktop.AudioStreamer
                     components.Dispose();
                 }
 
-                loopbackRecorder?.StopRecording();
                 loopbackRecorder?.Dispose();
                 wavGenerator?.Dispose();
             }

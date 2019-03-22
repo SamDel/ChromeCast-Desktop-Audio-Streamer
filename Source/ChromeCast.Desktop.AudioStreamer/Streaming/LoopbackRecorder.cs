@@ -236,7 +236,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public void Dispose()
         {
-            soundIn?.Dispose();
             soundIn = null;
             convertedSource?.Dispose();
             convertedSource = null;
