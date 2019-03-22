@@ -60,6 +60,7 @@
             // btnDevice
             // 
             this.btnDevice.AutoSize = true;
+            this.btnDevice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevice.FlatAppearance.BorderSize = 0;
             this.btnDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -91,10 +92,13 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.picturePlayPause);
+            this.flowLayoutPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(46, 47);
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(309, 50);
             this.flowLayoutPanel1.TabIndex = 10;
+            this.flowLayoutPanel1.Click += new System.EventHandler(this.BtnDevicePlay_Click);
             // 
             // picturePlayPause
             // 
@@ -103,7 +107,7 @@
             this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
             this.picturePlayPause.Location = new System.Drawing.Point(5, 5);
-            this.picturePlayPause.Margin = new System.Windows.Forms.Padding(5);
+            this.picturePlayPause.Margin = new System.Windows.Forms.Padding(0);
             this.picturePlayPause.Name = "picturePlayPause";
             this.picturePlayPause.Padding = new System.Windows.Forms.Padding(3);
             this.picturePlayPause.Size = new System.Drawing.Size(30, 30);

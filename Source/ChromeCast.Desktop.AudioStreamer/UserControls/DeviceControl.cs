@@ -18,6 +18,11 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
         {
             InitializeComponent();
             device = deviceIn;
+            btnDevice.FlatAppearance.MouseOverBackColor = btnDevice.BackColor;
+            btnDevice.BackColorChanged += (s, e) =>
+            {
+                btnDevice.FlatAppearance.MouseOverBackColor = btnDevice.BackColor;
+            };
         }
 
         public void SetDeviceName(string name)
