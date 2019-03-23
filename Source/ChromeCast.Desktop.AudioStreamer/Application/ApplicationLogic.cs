@@ -413,22 +413,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
-            taskList?.Dispose();
             devices?.Dispose();
             streamingRequestListener?.StopListening();
             streamingRequestListener?.Dispose();
             Mp3Stream?.Dispose();
-            mainForm?.Dispose();
             NativeMethods.StopSetWindowsHooks();
             if (notifyIcon != null) notifyIcon.Visible = false;
             notifyIcon?.Dispose();
-    }
+            mainForm?.Dispose();
+            taskList?.Dispose();
+        }
 
-    /// <summary>
-    /// The devices filter has changed.
-    /// </summary>
-    /// <param name="value">new filter value</param>
-    public void SetFilterDevices(FilterDevicesEnum value)
+        /// <summary>
+        /// The devices filter has changed.
+        /// </summary>
+        /// <param name="value">new filter value</param>
+        public void SetFilterDevices(FilterDevicesEnum value)
         {
             if (devices == null)
                 return;

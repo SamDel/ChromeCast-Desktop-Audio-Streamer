@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,10 +15,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public class TasksToCancel
     {
         private List<TaskToCancel> taskList = new List<TaskToCancel>();
+        private bool IsDisposed = false;
 
         public void Add(Action action, CancellationTokenSource cancellationTokenSource = null)
         {
-            if (action == null || taskList == null)
+            if (action == null || taskList == null || IsDisposed)
                 return;
 
             lock(taskList)
@@ -38,6 +40,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (taskList == null)
                 return;
 
+            IsDisposed = true;
             lock(taskList)
             {
                 foreach (var item in taskList)
@@ -57,7 +60,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                         }
                     }
                 }
+                taskList.RemoveAll(x => x?.Task == null || x.Task.IsCompleted);
             }
+            Task.WaitAll(taskList.Select(x => x.Task).ToArray(), 10000);
+            taskList.RemoveAll(x => x?.Task == null || x.Task.IsCompleted);
             taskList = null;
         }
     }
