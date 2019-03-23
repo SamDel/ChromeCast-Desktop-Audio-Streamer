@@ -29,6 +29,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
 
+        public bool IsDisposed { get; private set; }
+
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
             logger = loggerIn;
@@ -160,6 +162,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="send">the message</param>
         public void SendMessage(byte[] send)
         {
+            if (IsDisposed)
+                return;
+
             startTask(() => {
                 sendBuffer = send;
                 if (tcpClient != null &&
@@ -211,6 +216,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void StartReceive()
         {
+            if (IsDisposed)
+                return;
+
             try
             {
                 receiveBuffer = new byte[bufferSize];
@@ -228,7 +236,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void DataReceived(IAsyncResult ar)
         {
-            if (ar == null || deviceReceiveBuffer == null || receiveBuffer == null)
+            if (ar == null || deviceReceiveBuffer == null || receiveBuffer == null || IsDisposed)
                 return;
 
             SslStream stream = (SslStream)ar.AsyncState;
@@ -255,6 +263,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="castMessage">the message that's received</param>
         private void OnReceiveMessage(CastMessage castMessage)
         {
+            if (IsDisposed)
+                return;
+
             onReceiveMessage?.Invoke(castMessage);
         }
 
@@ -279,6 +290,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         protected virtual void Dispose(bool cleanupAll)
         {
+            IsDisposed = true;
             try
             {
                 tcpClient?.Close();
