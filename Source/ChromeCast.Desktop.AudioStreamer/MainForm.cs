@@ -528,15 +528,6 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbIP4AddressUsed == null)
                 return;
 
-            if (InvokeRequired)
-            {
-                Invoke(new Action(AddIP4Addresses));
-                return;
-            }
-
-            if (cmbIP4AddressUsed == null)
-                return;
-
             var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
             var ip4Adresses = Network.GetIp4ddresses();
 
