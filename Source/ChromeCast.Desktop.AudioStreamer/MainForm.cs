@@ -528,30 +528,33 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbIP4AddressUsed == null)
                 return;
 
-            var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
-            var ip4Adresses = Network.GetIp4ddresses();
-
-            logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
-            cmbIP4AddressUsed.Items.Clear();
-            if (ip4Adresses.Count > 0)
+            if (!InvokeRequired)
             {
-                foreach (var adapter in ip4Adresses)
-                {
-                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
-                }
+                var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
+                var ip4Adresses = Network.GetIp4ddresses();
 
-                if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
+                logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
+                cmbIP4AddressUsed.Items.Clear();
+                if (ip4Adresses.Count > 0)
                 {
-                    cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
-                    previousIpAddress = oldAddressUsed;
-                }
-                else
-                {
-                    var addressUsed = Network.GetIp4Address();
-                    if (addressUsed != null)
+                    foreach (var adapter in ip4Adresses)
                     {
-                        cmbIP4AddressUsed.SelectedItem = addressUsed;
-                        previousIpAddress = addressUsed;
+                        cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
+                    }
+
+                    if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
+                    {
+                        cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
+                        previousIpAddress = oldAddressUsed;
+                    }
+                    else
+                    {
+                        var addressUsed = Network.GetIp4Address();
+                        if (addressUsed != null)
+                        {
+                            cmbIP4AddressUsed.SelectedItem = addressUsed;
+                            previousIpAddress = addressUsed;
+                        }
                     }
                 }
             }
