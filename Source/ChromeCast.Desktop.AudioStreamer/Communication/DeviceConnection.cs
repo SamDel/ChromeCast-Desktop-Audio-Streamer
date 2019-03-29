@@ -28,8 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private DeviceConnectionState state;
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
-
-        public bool IsDisposed { get; private set; }
+        private bool IsDisposed = false;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -50,6 +49,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             try
             {
+                IsDisposed = false;
                 var host = getHost();
                 var port = getPort();
 
@@ -162,9 +162,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="send">the message</param>
         public void SendMessage(byte[] send)
         {
-            if (IsDisposed)
-                return;
-
             startTask(() => {
                 sendBuffer = send;
                 if (tcpClient != null &&
