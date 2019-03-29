@@ -74,16 +74,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         /// </summary>
         public void Dispose()
         {
-            try
-            {
-                Writer?.Dispose();
-                Writer = null;
-                Output?.Dispose();
-                Output = null;
-            }
-            catch (Exception)
-            {
-            }
+            // Sometimes you get a AccessViolationException when disposing Writer.
+            //try
+            //{
+            //    Writer?.Dispose();
+            //    Writer = null;
+            //    Output?.Dispose();
+            //    Output = null;
+            //}
+            //catch (Exception)
+            //{
+            //}
     }
 }
 }
