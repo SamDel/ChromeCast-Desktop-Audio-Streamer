@@ -266,7 +266,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
-            mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
             mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
             mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
@@ -363,7 +362,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetStreamFormat(settings.StreamFormat.Value);
             mainForm.SetCulture(settings.Culture);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication.Value);
-            mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
             mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts.Value);
             mainForm.SetFilterDevices(settings.FilterDevices.Value);
