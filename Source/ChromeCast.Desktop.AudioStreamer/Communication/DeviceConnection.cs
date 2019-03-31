@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;

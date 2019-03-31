@@ -434,6 +434,7 @@
             this.chkShowLagControl.TabIndex = 42;
             this.chkShowLagControl.Text = "Show lag control (experimental)";
             this.chkShowLagControl.UseVisualStyleBackColor = true;
+            this.chkShowLagControl.Visible = false;
             this.chkShowLagControl.CheckedChanged += new System.EventHandler(this.ChkShowLagControl_CheckedChanged);
             // 
             // chkAutoRestart

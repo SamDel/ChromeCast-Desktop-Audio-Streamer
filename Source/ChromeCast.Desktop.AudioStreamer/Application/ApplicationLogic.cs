@@ -496,10 +496,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// ip addresses & device names
         /// format: 192.168.0.1,DeviceName1;192.168.0.2,DeviceName2
         /// </param>
-        private void ApplyConfiguration(string ipAddressesDevicesIn)
+        private void ApplyConfiguration(string ipAddressesDevicesIn, bool showLagControl)
         {
             try
             {
+                mainForm.ShowLagControl(showLagControl);
                 if (!string.IsNullOrWhiteSpace(ipAddressesDevicesIn))
                 {
                     var ipDevices = ipAddressesDevicesIn.Split(';');
