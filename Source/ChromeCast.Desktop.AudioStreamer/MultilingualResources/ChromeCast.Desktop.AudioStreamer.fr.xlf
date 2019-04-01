@@ -519,8 +519,7 @@
         </trans-unit>
         <trans-unit id="Label_LagExperimental_Text" translate="yes" xml:space="preserve">
           <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts.</source>
-          <target state="needs-review-translation">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
         </trans-unit>
         <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
           <source>Language</source>
