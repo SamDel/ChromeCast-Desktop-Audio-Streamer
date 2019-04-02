@@ -183,4 +183,34 @@
   <data name="Language" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="Check_StartApplicationWhenWindowsStarts_Text" xml:space="preserve">
+    <value>Démarrer l'application au démarrage de Windows</value>
+  </data>
+  <data name="DevicesOnly" xml:space="preserve">
+    <value>Périphériques seulement</value>
+  </data>
+  <data name="GroupsOnly" xml:space="preserve">
+    <value>Groupes seulement</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="Check_AutonaticallyStartLastUsed_Text" xml:space="preserve">
+    <value>Démarrage automatique des derniers périphériques et groupes utilisés au démarrage</value>
+  </data>
+  <data name="Label_LinkHelp_Text" xml:space="preserve">
+    <value>Informations sur les options de Github</value>
+  </data>
+  <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
+    <value>Volume d'enregistrement</value>
+  </data>
+  <data name="Label_FilterDevices_Text" xml:space="preserve">
+    <value>Filtrer périphériques</value>
+  </data>
+  <data name="Tooltip_Group_Text" xml:space="preserve">
+    <value>Groupe</value>
+  </data>
+  <data name="Label_BufferInSeconds_Text" xml:space="preserve">
+    <value>Mémoire tampon du périphérique (en secondes)</value>
+  </data>
 </root>

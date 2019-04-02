@@ -1,4 +1,4 @@
-# ChromeCast Desktop Audio Streamer
+# Desktop Audio Streamer
 
 This tool captures the audio from your desktop and streams it to a ChromeCast Audio device.
 

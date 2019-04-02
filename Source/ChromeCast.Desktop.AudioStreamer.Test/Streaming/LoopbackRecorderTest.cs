@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
 using NAudio.Wave;
+using ChromeCast.Desktop.AudioStreamer.Application;
 
 namespace ChromeCast.Desktop.AudioStreamer.Test.Streaming
 {
@@ -18,9 +19,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Streaming
         {
             asyncEvent = new AutoResetEvent(false);
 
-            var loopbackRecorder = new LoopbackRecorder();
+            var loopbackRecorder = new LoopbackRecorder(new Logger());
             dataRecorded = null;
-            loopbackRecorder.StartRecording(DataAvailable);
+            loopbackRecorder.Start(null, DataAvailable, null);
             asyncEvent.WaitOne(100);
 
             Assert.IsTrue(dataRecorded != null && dataRecorded.Length > 0);

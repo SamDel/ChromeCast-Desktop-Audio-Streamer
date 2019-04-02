@@ -7,9 +7,8 @@ using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using CSCore;
-using System.Windows.Forms;
 using System.Timers;
-using System.Threading.Tasks;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -17,33 +16,87 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     {
         WasapiCapture soundIn;
         private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
+        private Action clearMp3Buffer;
         private bool isRecording = false;
         IWaveSource convertedSource;
         SoundInSource soundInSource;
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        System.Timers.Timer dataAvailableTimer;
+        Timer dataAvailableTimer;
+        Timer getDevicesTimer;
+        private ILogger logger;
 
-        public void StartRecording(Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn)
+        public LoopbackRecorder(ILogger loggerIn)
+        {
+            logger = loggerIn;
+        }
+
+        /// <summary>
+        /// Start
+        /// </summary>
+        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn, Action clearMp3BufferIn)
+        {
+            if (mainFormIn == null || dataAvailableCallbackIn == null)
+                return;
+
+            getDevicesTimer = new System.Timers.Timer
+            {
+                Interval = 15000,
+                Enabled = true
+            };
+            getDevicesTimer.Elapsed += new ElapsedEventHandler(DoStart);
+            getDevicesTimer.Start();
+
+            dataAvailableCallback = dataAvailableCallbackIn;
+            clearMp3Buffer = clearMp3BufferIn;
+            mainForm = mainFormIn;
+            DoStart(null, null);
+        }
+
+        /// <summary>
+        /// Do start.
+        /// </summary>
+        private void DoStart(object sender, ElapsedEventArgs e)
+        {
+            GetDevices();
+            if (!isRecording)
+            {
+                StartRecording();
+            }
+        }
+
+        /// <summary>
+        /// Start recording.
+        /// </summary>
+        public void StartRecording()
         {
             if (isRecording)
                 return;
 
-            dataAvailableCallback = dataAvailableCallbackIn;
-
             StartSilenceCheckTimer();
             StartRecordingDevice();
-            isRecording = true;
         }
 
+        /// <summary>
+        /// Get the recording device, the callback should be called when the recording device is there.
+        /// </summary>
         public void StartRecordingDevice()
         {
-            mainForm.GetRecordingDevice(StartRecordingSetDevice);
+            if (mainForm == null)
+                return;
+
+            mainForm.GetRecordingDevice();
         }
 
+        /// <summary>
+        /// New recording data is available, distribute the data.
+        /// </summary>
         private void OnDataAvailable(object sender, DataAvailableEventArgs e)
         {
+            if (convertedSource == null || convertedSource.WaveFormat == null)
+                return;
+
             latestDataAvailable = DateTime.Now;
 
             if (dataAvailableCallback != null)
@@ -56,87 +109,144 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                     var dataToSend = new List<byte>();
                     dataToSend.AddRange(buffer.Take(read).ToArray());
                     dataAvailableCallback(dataToSend.ToArray(), waveFormat);
+                    mainForm.ShowWavMeterValue(dataToSend.ToArray());
                 }
             }
         }
 
+        /// <summary>
+        /// Stop recording.
+        /// </summary>
         public void StopRecording()
         {
+            if (soundIn == null)
+                return;
+
             isRecording = false;
-            if (soundIn != null)
-            {
-                soundIn.Stop();
-            }
+            soundIn?.Stop();
         }
 
-        private void OnRecordingStopped(object sender, CSCore.StoppedEventArgs eventArgs)
+        /// <summary>
+        /// Get the recording device.
+        /// </summary>
+        public void GetDevices()
         {
-            if (soundIn != null)
-            {
-                soundIn.Dispose();
-                soundIn = null;
-            }
-            isRecording = false;
+            if (mainForm == null)
+                return;
 
-            if (eventArgs.Exception != null)
-            {
-                throw eventArgs.Exception;
-            }
-        }
-
-        public void GetDevices(IMainForm mainFormIn)
-        {
-            mainForm = mainFormIn;
-            var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
-            mainForm.AddRecordingDevices(devices, defaultDevice);
+            if (devices.Count > 0)
+            {
+                var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                mainForm.AddRecordingDevices(devices, defaultDevice);
+            }
         }
 
-        public void StartRecordingSetDevice(MMDevice recordingDevice)
+        /// <summary>
+        /// Start recording on the device in the parameter.
+        /// </summary>
+        /// <param name="recordingDevice">the device to start recording</param>
+        /// <returns>true if the recording is started, or false</returns>
+        public bool StartRecordingSetDevice(MMDevice recordingDevice)
         {
             if (recordingDevice == null)
             {
-                MessageBox.Show(Properties.Strings.MessageBox_NoRecordingDevices);
-                Console.WriteLine("No devices found.");
-                return;
+                logger.Log(Properties.Strings.MessageBox_NoRecordingDevices);
+                return false;
             }
 
-            soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+            try
             {
-                Device = recordingDevice
-            };
+                soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+                {
+                    Device = recordingDevice
+                };
 
-            soundIn.Initialize();
-            soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-            convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
-            convertedSource = convertedSource.ToStereo();
-            soundInSource.DataAvailable += OnDataAvailable;
-            soundIn.Start();
+                soundIn.Initialize();
+                soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
+                convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+                convertedSource = convertedSource.ToStereo();
+                soundInSource.DataAvailable += OnDataAvailable;
+                soundIn.Stopped += OnRecordingStopped;
+                soundIn.Start();
 
-            var format = convertedSource.WaveFormat;
-            waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                var format = convertedSource.WaveFormat;
+                waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                isRecording = true;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex, "Error initializing the recording device:");
+            }
+
+            return false;
         }
 
+        /// <summary>
+        /// Recording has stopped.
+        /// </summary>
+        private void OnRecordingStopped(object sender, RecordingStoppedEventArgs e)
+        {
+            if (isRecording)
+            {
+                logger.Log("Recording Stopped");
+                isRecording = false;
+            }
+        }
+        
+        /// <summary>
+        /// Start a timer that checks for silence (nothing recorded).
+        /// </summary>
         private void StartSilenceCheckTimer()
         {
-            latestDataAvailable = DateTime.Now;
-            dataAvailableTimer = new System.Timers.Timer
+            if (dataAvailableTimer == null)
             {
-                Interval = 1000,
-                Enabled = true
-            };
-            dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
-            dataAvailableTimer.Start();
+                latestDataAvailable = DateTime.Now;
+                dataAvailableTimer = new System.Timers.Timer
+                {
+                    Interval = 1000,
+                    Enabled = true
+                };
+                dataAvailableTimer.Elapsed += new ElapsedEventHandler(OnCheckForSilence);
+                dataAvailableTimer.Start();
+            }
         }
 
+        /// <summary>
+        /// If there's nothing recorded for a while, stream silence to keep the connection alive.
+        /// </summary>
         private void OnCheckForSilence(object sender, ElapsedEventArgs e)
         {
+            if (dataAvailableCallback == null)
+                return;
+
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 5)
             {
-                Console.WriteLine($"OnCheckForSilence: {DateTime.Now.ToLongTimeString()}");
                 latestDataAvailable = DateTime.Now;
-                dataAvailableCallback(Properties.Resources.silenceWav, waveFormat);
+                var silence = new WavGenerator().GetSilenceBytes(1);
+                dataAvailableCallback(silence, waveFormat);
+                logger.Log($"Check For Silence: Send Silence ({(DateTime.Now - latestDataAvailable).TotalSeconds})");
             }
+            if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
+            {
+                logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
+            }
+        }
+
+        public void Dispose()
+        {
+            soundIn?.Stop();
+            soundIn?.Dispose();
+            soundIn = null;
+            convertedSource?.Dispose();
+            convertedSource = null;
+            soundInSource?.Dispose();
+            soundInSource = null;
+            dataAvailableTimer?.Close();
+            dataAvailableTimer?.Dispose();
+            getDevicesTimer?.Close();
+            getDevicesTimer?.Dispose();
         }
     }
 }

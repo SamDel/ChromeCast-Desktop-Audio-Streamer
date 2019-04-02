@@ -1,6 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
+using System.Threading;
 using ChromeCast.Desktop.AudioStreamer.Classes;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 using NAudio.Wave;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
@@ -14,7 +17,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void OnStreamingRequestConnect(Socket handlerSocket, string httpRequest);
         void SetDependencies(MainForm mainForm);
         void CloseApplication();
-        void RecordingDeviceChanged();
         void OnSetAutoRestart(bool autoRestart);
         bool GetAutoRestart();
         void ChangeIPAddressUsed(IPAddress ipAddress);
@@ -23,5 +25,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void SetStreamFormat(SupportedStreamFormat format);
         void SetCulture(string culture);
         string GetStreamingUrl();
+        void SetFilterDevices(FilterDevicesEnum value);
+        bool WasPlaying(DiscoveredDevice discoveredDevice);
+        void ClearMp3Buffer();
+        void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null);
     }
 }

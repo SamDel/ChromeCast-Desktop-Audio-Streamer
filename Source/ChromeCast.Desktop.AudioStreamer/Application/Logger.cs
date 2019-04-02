@@ -17,6 +17,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         }
 
         /// <summary>
+        /// Log an exception.
+        /// </summary>
+        /// <param name="ex">the exception to log</param>
+        public void Log(Exception ex, string message = null)
+        {
+            logCallback?.Invoke($"ex : [{message}] {ex.Message}");
+        }
+
+        /// <summary>
         /// Set the callback that does the actual logging.
         /// </summary>
         public void SetCallback(Action<string> logCallbackIn)

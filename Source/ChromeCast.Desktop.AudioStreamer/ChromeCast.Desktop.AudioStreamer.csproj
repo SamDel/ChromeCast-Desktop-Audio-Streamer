@@ -120,13 +120,19 @@
     <Compile Include="Application\Device.cs" />
     <Compile Include="Application\DeviceInformation.cs" />
     <Compile Include="Application\Devices.cs" />
+    <Compile Include="Application\TaskToCancel.cs" />
+    <Compile Include="Application\UserMode.cs" />
+    <Compile Include="Classes\ApplicationBuffer.cs" />
+    <Compile Include="Classes\ApplicationBufferItem.cs" />
     <Compile Include="Classes\ComboboxItem.cs" />
+    <Compile Include="Classes\FilterDevices.cs" />
     <Compile Include="Classes\Resource.cs" />
     <Compile Include="Classes\SupportedStreamFormat.cs" />
     <Compile Include="Classes\Mp3Stream.cs" />
     <Compile Include="Classes\Network.cs" />
     <Compile Include="Classes\NetworkAdapter.cs" />
     <Compile Include="Classes\UserSettings.cs" />
+    <Compile Include="Classes\WindowsStartup.cs" />
     <Compile Include="Communication\Classes\VolumeSetItem.cs" />
     <Compile Include="Discover\DiscoverDevices.cs" />
     <Compile Include="Application\DeviceStatusTimer.cs" />
@@ -176,6 +182,7 @@
     <Compile Include="Streaming\LoopbackRecorder.cs" />
     <Compile Include="Streaming\AudioHeader.cs" />
     <Compile Include="Streaming\StreamingConnection.cs" />
+    <Compile Include="Streaming\WavGenerator.cs" />
     <Compile Include="UserControls\DeviceControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

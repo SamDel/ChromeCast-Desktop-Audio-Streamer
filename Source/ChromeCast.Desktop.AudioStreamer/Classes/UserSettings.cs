@@ -1,6 +1,7 @@
 ﻿using ChromeCast.Desktop.AudioStreamer.Discover;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
@@ -140,6 +141,32 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public bool? StartApplicationWhenWindowsStarts
+        {
+            get
+            {
+                return (bool?)this["StartApplicationWhenWindowsStarts"];
+            }
+            set
+            {
+                this["StartApplicationWhenWindowsStarts"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public FilterDevicesEnum? FilterDevices
+        {
+            get
+            {
+                return (FilterDevicesEnum?)this["FilterDevices"];
+            }
+            set
+            {
+                this["FilterDevices"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public List<DiscoveredDevice> ChromecastDiscoveredDevices
         {
             get
@@ -149,6 +176,58 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             set
             {
                 this["ChromecastDiscoveredDevices"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public bool? StartLastUsedDevices
+        {
+            get
+            {
+                return (bool?)this["StartLastUsedDevices"];
+            }
+            set
+            {
+                this["StartLastUsedDevices"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public Size? Size
+        {
+            get
+            {
+                return (Size?)this["Size"];
+            }
+            set
+            {
+                this["Size"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public int? ExtraBufferInSeconds
+        {
+            get
+            {
+                return (int?)this["ExtraBufferInSeconds"];
+            }
+            set
+            {
+                this["ExtraBufferInSeconds"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public string RecordingDeviceID
+        {
+            get
+            {
+                return (string)this["RecordingDeviceID"];
+            }
+            set
+            {
+                this["RecordingDeviceID"] = value;
             }
         }
     }

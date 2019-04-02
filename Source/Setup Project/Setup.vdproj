@@ -249,12 +249,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_70B8FC819C4E4058BE190ED66FF40208"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_77842EE959AE5A3FC5C13B1BB4C00294"
         "OwnerKey" = "8:_1C1343AA50FC466A87CE9AE892D5E5AF"
         "MsmSig" = "8:_UNDEFINED"
@@ -341,12 +335,6 @@
         {
         "MsmKey" = "8:_954DBD9262DD7568176E54EAE1B2D41C"
         "OwnerKey" = "8:_E19AFF4A7F9F605B37B14CB8547308EE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9803B6CE45BE4CFAB4EDB72A2ED034B3"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -605,12 +593,6 @@
         {
         "MsmKey" = "8:_FFA9E1995E931D466AE96CF2803AF187"
         "OwnerKey" = "8:_1C1343AA50FC466A87CE9AE892D5E5AF"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E39F8A2A8E265CC15F93B80E39F29908"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1025,6 +1007,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_F49E9F6CDC05D9D13BAE84BC5296314B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E39F8A2A8E265CC15F93B80E39F29908"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -1823,26 +1811,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_70B8FC819C4E4058BE190ED66FF40208"
-            {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\Properties\\silence.mp3"
-            "TargetName" = "8:silence.mp3"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77842EE959AE5A3FC5C13B1BB4C00294"
             {
             "AssemblyRegister" = "3:1"
@@ -2153,26 +2121,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9803B6CE45BE4CFAB4EDB72A2ED034B3"
-            {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\Properties\\silence.dat"
-            "TargetName" = "8:silence.dat"
-            "Tag" = "8:"
-            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A2075D601DBF63576365F5A279518DFC"
@@ -3096,6 +3044,17 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_CCB5336C1BBE45DBB7365DE2C8BE9AAD"
+                    {
+                    "Name" = "8:Properties"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_4CD7A011850944A68DAD22588D3CBDFC"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
         }
@@ -3114,15 +3073,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{9FAE4923-63B1-4479-9D78-9ABFBDB87404}"
-        "PackageCode" = "8:{7D48FA69-03A1-4C90-A9C1-DDA066E9802A}"
+        "ProductCode" = "8:{1487ACAC-0A75-489F-B88D-A11E49980CD5}"
+        "PackageCode" = "8:{B55125E9-565F-448A-9E58-CF9679D2290E}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.0.0"
+        "ProductVersion" = "8:2.1"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

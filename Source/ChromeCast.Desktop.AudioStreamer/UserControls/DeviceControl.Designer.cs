@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblStatus = new System.Windows.Forms.Label();
             this.btnDevice = new System.Windows.Forms.Button();
             this.trbVolume = new System.Windows.Forms.TrackBar();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pictureGroup = new System.Windows.Forms.PictureBox();
             this.picturePlayPause = new System.Windows.Forms.PictureBox();
+            this.pictureGroup = new System.Windows.Forms.PictureBox();
             this.pictureVolumeMute = new System.Windows.Forms.PictureBox();
+            this.toolTipGroup = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,6 +60,7 @@
             // btnDevice
             // 
             this.btnDevice.AutoSize = true;
+            this.btnDevice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevice.FlatAppearance.BorderSize = 0;
             this.btnDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -89,19 +92,13 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.picturePlayPause);
+            this.flowLayoutPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(46, 47);
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(309, 50);
             this.flowLayoutPanel1.TabIndex = 10;
-            // 
-            // pictureGroup
-            // 
-            this.pictureGroup.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Group;
-            this.pictureGroup.Location = new System.Drawing.Point(279, 116);
-            this.pictureGroup.Name = "pictureGroup";
-            this.pictureGroup.Size = new System.Drawing.Size(32, 21);
-            this.pictureGroup.TabIndex = 11;
-            this.pictureGroup.TabStop = false;
+            this.flowLayoutPanel1.Click += new System.EventHandler(this.BtnDevicePlay_Click);
             // 
             // picturePlayPause
             // 
@@ -110,7 +107,7 @@
             this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
             this.picturePlayPause.Location = new System.Drawing.Point(5, 5);
-            this.picturePlayPause.Margin = new System.Windows.Forms.Padding(5);
+            this.picturePlayPause.Margin = new System.Windows.Forms.Padding(0);
             this.picturePlayPause.Name = "picturePlayPause";
             this.picturePlayPause.Padding = new System.Windows.Forms.Padding(3);
             this.picturePlayPause.Size = new System.Drawing.Size(30, 30);
@@ -119,6 +116,15 @@
             this.picturePlayPause.TabStop = false;
             this.picturePlayPause.Click += new System.EventHandler(this.BtnDevicePlay_Click);
             this.picturePlayPause.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
+            // 
+            // pictureGroup
+            // 
+            this.pictureGroup.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Group;
+            this.pictureGroup.Location = new System.Drawing.Point(279, 114);
+            this.pictureGroup.Name = "pictureGroup";
+            this.pictureGroup.Size = new System.Drawing.Size(32, 18);
+            this.pictureGroup.TabIndex = 11;
+            this.pictureGroup.TabStop = false;
             // 
             // pictureVolumeMute
             // 
@@ -146,6 +152,7 @@
             this.Controls.Add(this.pictureVolumeMute);
             this.Controls.Add(this.trbVolume);
             this.Controls.Add(this.lblStatus);
+            this.MaximumSize = new System.Drawing.Size(315, 140);
             this.Name = "DeviceControl";
             this.Size = new System.Drawing.Size(315, 140);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragDrop);
@@ -153,8 +160,8 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceControl_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.trbVolume)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picturePlayPause)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureVolumeMute)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -170,5 +177,6 @@
         private System.Windows.Forms.PictureBox pictureVolumeMute;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.PictureBox pictureGroup;
+        private System.Windows.Forms.ToolTip toolTipGroup;
     }
 }

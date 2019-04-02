@@ -11,6 +11,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
         private Func<string> getHost;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
+        private Action<Action> startTask;
         public IList<CastMessage> messagesSend = new List<CastMessage>();
 
         public bool IsConnected()
@@ -24,11 +25,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
             messagesSend.Add(castMessage);
         }
 
-        public void SetCallback(Func<string> getHostIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn, Action<Action> startTaskIn)
         {
             getHost = getHostIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
+            startTask = startTaskIn;
         }
 
         private T[] SubArray<T>(T[] data, int index, int length)
@@ -39,11 +41,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Classes
         }
 
         public void SetPort(int portIn)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetCallback(Func<string> getHost, Func<int> getPort, Action<DeviceState, string> setDeviceState, Action<CastMessage> onReceiveMessage)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
-﻿using ChromeCast.Desktop.AudioStreamer.Discover;
+﻿using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -16,18 +16,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     /// </summary>
     public static class DeviceInformation
     {
-        public static void GetDeviceInformation(DiscoveredDevice discoveredDevice, Action<DeviceEureka> callback)
+        public static Action GetDeviceInformation(DiscoveredDevice discoveredDevice, Action<DeviceEureka> callback, ILogger logger)
         {
-            Task.Run(async () => {
-                var http = new HttpClient();
-                var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
-                var receiveStream = await response.Content.ReadAsStreamAsync();
-                var readStream = new StreamReader(receiveStream, Encoding.UTF8);
-                var eurekaInfo = readStream.ReadToEnd();
-                if (response.StatusCode == HttpStatusCode.OK)
+            return (async () => {
+                try
                 {
-                    var eureka = JsonConvert.DeserializeObject<DeviceEureka>(eurekaInfo);
-                    callback?.Invoke(eureka);
+                    var http = new HttpClient
+                    {
+                        Timeout = new TimeSpan(0, 0, 5)
+                    };
+                    var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
+                    var receiveStream = await response.Content.ReadAsStreamAsync();
+                    var readStream = new StreamReader(receiveStream, Encoding.UTF8);
+                    var eurekaInfo = readStream.ReadToEnd();
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var eureka = JsonConvert.DeserializeObject<DeviceEureka>(eurekaInfo);
+                        callback?.Invoke(eureka);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger?.Log(ex, "DeviceInformation.GetDeviceInformation");
                 }
             });
         }
@@ -37,15 +47,27 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="discoveredDevice"></param>
         /// <param name="callback"></param>
-        public static void CheckDeviceIsOn(DiscoveredDevice discoveredDevice, Action<DiscoveredDevice> callback)
+        public static Action CheckDeviceIsOn(DiscoveredDevice discoveredDevice, Action<DiscoveredDevice> callback, ILogger logger)
         {
-            Task.Run(async () => {
-                // Check if the device is on.
-                var http = new HttpClient();
-                var response = await http.GetAsync($"http://{discoveredDevice.IPAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
-                if (response.StatusCode == HttpStatusCode.OK)
+            return (async () => {
+                var ipAddress = discoveredDevice.IPAddress;
+                try
                 {
-                    callback?.Invoke(discoveredDevice);
+                    // Check if the device is on.
+                    var http = new HttpClient
+                    {
+                        Timeout = new TimeSpan(0, 0, 5)
+                    };
+                    var response = await http.GetAsync($"http://{ipAddress}:8008/setup/eureka_info?params=version,audio,name,build_info,detail,device_info,net,wifi,setup,settings,opt_in,opencast,multizone,proxy,night_mode_params,user_eq,room_equalizer&options=detail");
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        discoveredDevice.AddedByDeviceInfo = false;
+                        callback?.Invoke(discoveredDevice);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    logger?.Log(ex, $"DeviceInformation.CheckDeviceIsOn [{ipAddress}]");
                 }
             });
         }

@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
-using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
@@ -18,6 +17,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Func<int> getPort;
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
+        private Action<Action> startTask;
         private ILogger logger;
         private IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
@@ -27,6 +27,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private DeviceConnectionState state;
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
+        private bool IsDisposed = false;
 
         public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
         {
@@ -47,6 +48,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             try
             {
+                IsDisposed = false;
                 var host = getHost();
                 var port = getPort();
 
@@ -159,7 +161,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="send">the message</param>
         public void SendMessage(byte[] send)
         {
-            Task.Run(() => {
+            startTask(() => {
                 sendBuffer = send;
                 if (tcpClient != null &&
                     tcpClient.Client != null &&
@@ -210,6 +212,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void StartReceive()
         {
+            if (IsDisposed)
+                return;
+
             try
             {
                 receiveBuffer = new byte[bufferSize];
@@ -227,7 +232,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void DataReceived(IAsyncResult ar)
         {
-            if (ar == null || deviceReceiveBuffer == null || receiveBuffer == null)
+            if (ar == null || deviceReceiveBuffer == null || receiveBuffer == null || IsDisposed)
                 return;
 
             SslStream stream = (SslStream)ar.AsyncState;
@@ -254,6 +259,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="castMessage">the message that's received</param>
         private void OnReceiveMessage(CastMessage castMessage)
         {
+            if (IsDisposed)
+                return;
+
             onReceiveMessage?.Invoke(castMessage);
         }
 
@@ -278,12 +286,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         protected virtual void Dispose(bool cleanupAll)
         {
+            IsDisposed = true;
             try
             {
-                if (tcpClient != null)
-                    tcpClient.Close();
-                if (sslStream != null)
-                    sslStream.Close();
+                tcpClient?.Close();
+                sslStream?.Close();
+                sslStream?.Dispose();
             }
             catch (Exception ex)
             {
@@ -303,12 +311,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Set callbacks.
         /// </summary>
-        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn)
+        public void SetCallback(Func<string> getHostIn, Func<int> getPortIn, Action<DeviceState, string> setDeviceStateIn, Action<CastMessage> onReceiveMessageIn, Action<Action> startTaskIn)
         {
             getHost = getHostIn;
             getPort = getPortIn;
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
+            startTask = startTaskIn;
         }
     }
 }

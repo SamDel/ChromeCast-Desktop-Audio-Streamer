@@ -5,7 +5,12 @@
       <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="4.0.6900.0" tool-company="Microsoft" />
     </header>
     <body>
-      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" datatype="resx" />
+      <group id="CHROMECAST.DESKTOP.AUDIOSTREAMER/USERCONTROLS/DEVICECONTROL.RESX" datatype="resx">
+        <trans-unit id="toolTipGroup.TrayLocation" translate="yes" xml:space="preserve" extype="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" extradata="metadata">
+          <source>17, 17</source>
+          <target state="translated">17, 17</target>
+        </trans-unit>
+      </group>
     </body>
   </file>
   <file datatype="xml" source-language="en" target-language="fr" original="CHROMECAST.DESKTOP.AUDIOSTREAMER/MAINFORM.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
@@ -366,6 +371,10 @@
         /////////////////////////////////////////////////////////////w==
 </target>
         </trans-unit>
+        <trans-unit id="volumeMeterTooltip.TrayLocation" translate="yes" xml:space="preserve" extype="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" extradata="metadata">
+          <source>17, 17</source>
+          <target state="translated">17, 17</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -387,10 +396,6 @@
           <source>..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
           <target state="new">..\UserControls\Play.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
         </trans-unit>
-        <trans-unit id="silence" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
-          <source>silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-          <target state="new">silence.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
-        </trans-unit>
         <trans-unit id="Unmute" translate="yes" extype="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
           <source>..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
           <target state="new">..\UserControls\Unmute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
@@ -398,10 +403,6 @@
         <trans-unit id="Stop" translate="yes" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
           <source>..\UserControls\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
           <target state="new">..\UserControls\Stop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</target>
-        </trans-unit>
-        <trans-unit id="silenceWav" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
-          <source>silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</source>
-          <target state="final">silence.dat;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</target>
         </trans-unit>
         <trans-unit id="Group" translate="no" xml:space="preserve" extype="System.Resources.ResXFileRef, System.Windows.Forms">
           <source>..\UserControls\group.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</source>
@@ -517,7 +518,7 @@
           <target state="translated">Dernier message en direct :</target>
         </trans-unit>
         <trans-unit id="Label_LagExperimental_Text" translate="yes" xml:space="preserve">
-          <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</source>
+          <source>Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts.</source>
           <target state="translated">Fonctionnalité expérimentale : Essayer de maintenir le tampon le plus petit possible sur l'périphérique, sans temps-mort.</target>
         </trans-unit>
         <trans-unit id="Label_Language_Text" translate="yes" xml:space="preserve">
@@ -655,6 +656,46 @@
         <trans-unit id="Language" translate="yes" xml:space="preserve">
           <source>English</source>
           <target state="translated">Français</target>
+        </trans-unit>
+        <trans-unit id="Check_StartApplicationWhenWindowsStarts_Text" translate="yes" xml:space="preserve">
+          <source>Start application when Windows starts</source>
+          <target state="translated">Démarrer l'application au démarrage de Windows</target>
+        </trans-unit>
+        <trans-unit id="DevicesOnly" translate="yes" xml:space="preserve">
+          <source>Devices only</source>
+          <target state="translated">Périphériques seulement</target>
+        </trans-unit>
+        <trans-unit id="GroupsOnly" translate="yes" xml:space="preserve">
+          <source>Groups only</source>
+          <target state="translated">Groupes seulement</target>
+        </trans-unit>
+        <trans-unit id="ShowAll" translate="yes" xml:space="preserve">
+          <source>All</source>
+          <target state="translated">Tous</target>
+        </trans-unit>
+        <trans-unit id="Check_AutonaticallyStartLastUsed_Text" translate="yes" xml:space="preserve">
+          <source>Automatically start last used devices and groups at startup</source>
+          <target state="translated">Démarrage automatique des derniers périphériques et groupes utilisés au démarrage</target>
+        </trans-unit>
+        <trans-unit id="Label_LinkHelp_Text" translate="yes" xml:space="preserve">
+          <source>Information about options on Github</source>
+          <target state="translated">Informations sur les options de Github</target>
+        </trans-unit>
+        <trans-unit id="Tooltip_RecordingLevel_Text" translate="yes" xml:space="preserve">
+          <source>Recording level</source>
+          <target state="translated">Volume d'enregistrement</target>
+        </trans-unit>
+        <trans-unit id="Label_FilterDevices_Text" translate="yes" xml:space="preserve">
+          <source>Filter devices</source>
+          <target state="translated">Filtrer périphériques</target>
+        </trans-unit>
+        <trans-unit id="Tooltip_Group_Text" translate="yes" xml:space="preserve">
+          <source>Group</source>
+          <target state="translated">Groupe</target>
+        </trans-unit>
+        <trans-unit id="Label_BufferInSeconds_Text" translate="yes" xml:space="preserve">
+          <source>Device buffer (in seconds)</source>
+          <target state="translated">Mémoire tampon du périphérique (en secondes)</target>
         </trans-unit>
       </group>
     </body>

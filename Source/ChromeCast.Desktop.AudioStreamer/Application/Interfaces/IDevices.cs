@@ -10,7 +10,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public interface IDevices
     {
-        void AddStreamingConnection(Socket socket, string httpRequest);
+        void AddStreamingConnection(Socket socket, string httpRequest, SupportedStreamFormat streamFormat);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
         void OnDeviceAvailable(DiscoveredDevice discoveredDevice);
@@ -18,11 +18,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeDown();
         void VolumeMute();
         void Start();
-        void Stop();
-        void SetAutoStart(bool autoStart);
+        void Stop(bool changeUserMode = false);
+        void SetSettings(UserSettings settings);
         void SetCallback(Action<Device> onAddDeviceCallbackIn);
         void Dispose();
         void SetDependencies(MainForm mainFormIn, IApplicationLogic applicationLogicIn);
         List<DiscoveredDevice> GetHosts();
+        void SetFilterDevices(FilterDevicesEnum value);
+        void SetExtraBufferInSeconds(int bufferInSeconds);
     }
 }

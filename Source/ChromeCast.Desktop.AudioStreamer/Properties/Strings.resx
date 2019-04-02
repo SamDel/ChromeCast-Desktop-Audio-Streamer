@@ -202,7 +202,7 @@
     <value>Latest keep-alive message:</value>
   </data>
   <data name="Label_LagExperimental_Text" xml:space="preserve">
-    <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps.</value>
+    <value>Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts.</value>
   </data>
   <data name="Label_Language_Text" xml:space="preserve">
     <value>Language</value>
@@ -296,5 +296,35 @@
   </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
+  </data>
+  <data name="Check_StartApplicationWhenWindowsStarts_Text" xml:space="preserve">
+    <value>Start application when Windows starts</value>
+  </data>
+  <data name="DevicesOnly" xml:space="preserve">
+    <value>Devices only</value>
+  </data>
+  <data name="GroupsOnly" xml:space="preserve">
+    <value>Groups only</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Check_AutonaticallyStartLastUsed_Text" xml:space="preserve">
+    <value>Automatically start last used devices and groups at startup</value>
+  </data>
+  <data name="Label_LinkHelp_Text" xml:space="preserve">
+    <value>Information about options on Github</value>
+  </data>
+  <data name="Tooltip_RecordingLevel_Text" xml:space="preserve">
+    <value>Recording level</value>
+  </data>
+  <data name="Label_FilterDevices_Text" xml:space="preserve">
+    <value>Filter devices</value>
+  </data>
+  <data name="Tooltip_Group_Text" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="Label_BufferInSeconds_Text" xml:space="preserve">
+    <value>Device buffer (in seconds)</value>
   </data>
 </root>

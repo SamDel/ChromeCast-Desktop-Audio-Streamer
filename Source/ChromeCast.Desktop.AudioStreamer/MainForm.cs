@@ -16,6 +16,10 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Drawing;
+using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
+using System.Text;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -25,18 +29,27 @@ namespace ChromeCast.Desktop.AudioStreamer
         private IDevices devices;
         private ILogger logger;
         private IPAddress previousIpAddress;
+        private ILoopbackRecorder loopbackRecorder;
+        private Size windowSize;
+        private StringBuilder log = new StringBuilder();
+        private string previousRecordingDeviceID;
+        private bool eventHandlerAdded;
+        private bool isRecordingDeviceSelected;
+        private WavGenerator wavGenerator;
 
-        public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILogger loggerIn)
+        public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
             InitializeComponent();
 
             ApplyLocalization();
+            loopbackRecorder = loopbackRecorderIn;
             applicationLogic = applicationLogicIn;
             devices = devicesIn;
             logger = loggerIn;
             logger.SetCallback(Log);
             devices.SetDependencies(this, applicationLogic);
             applicationLogic.SetDependencies(this);
+            wavGenerator = new WavGenerator();
         }
 
         public MainForm()
@@ -45,20 +58,26 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (applicationLogic == null)
+                return;
+
             Update();
             AddIP4Addresses();
             applicationLogic.Initialize();
             NetworkChange.NetworkAddressChanged += new NetworkAddressChangedEventHandler(AddressChangedCallback);
             cmbIP4AddressUsed.SelectedIndexChanged += CmbIP4AddressUsed_SelectedIndexChanged;
+            cmbBufferInSeconds.SelectedIndexChanged += CmbBufferInSeconds_SelectedIndexChanged;
 
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             FillStreamFormats();
+            FillFilterDevices();
             lblVersion.Text = $"{Properties.Strings.Version} {fvi.FileVersion}";
-            Task.Run(() =>
+            applicationLogic.StartTask(() =>
             {
                 CheckForNewVersion(fvi.FileVersion);
             });
+            loopbackRecorder.Start(this, applicationLogic.OnRecordingDataAvailable, applicationLogic.ClearMp3Buffer);
         }
 
         private void ApplyLocalization()
@@ -83,14 +102,22 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkHook.Text = Properties.Strings.Check_KeyboardShortcuts_Text;
             chkShowWindowOnStart.Text = Properties.Strings.Check_ShowWindowOnStart_Text;
             chkAutoStart.Text = Properties.Strings.Check_AutomaticallyStart_Text;
+            chkAutoStartLastUsed.Text = Properties.Strings.Check_AutonaticallyStartLastUsed_Text;
             chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
+            chkStartApplicationWhenWindowsStarts.Text = Properties.Strings.Check_StartApplicationWhenWindowsStarts_Text;
             btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
             lblLanguage.Text = Properties.Strings.Label_Language_Text;
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
+            linkHelp.Text = Properties.Strings.Label_LinkHelp_Text;
+            volumeMeterTooltip.SetToolTip(pnlVolumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
+            volumeMeterTooltip.SetToolTip(lblDb, Properties.Strings.Tooltip_RecordingLevel_Text);
+            volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
+            lblFilterDevices.Text = Properties.Strings.Label_FilterDevices_Text;
+            lblBufferInSeconds.Text = Properties.Strings.Label_BufferInSeconds_Text;
 
             if (cmbLanguage.Items.Count == 0)
             {
@@ -161,6 +188,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             deviceControl.SetStatus(device.GetDeviceState(), null);
             pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);
+            var filter = GetFilterDevices();
+            if (filter != null)
+                deviceControl.Visible = FilterDevices.ShowFilterDevices(device, filter.Value);
 
             // Sort alphabetically.
             var deviceName = device.GetFriendlyName();
@@ -255,7 +285,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public void Log(string message)
         {
-            if (txtLog == null)
+            if (txtLog == null || log == null)
                 return;
 
             try
@@ -275,7 +305,17 @@ namespace ChromeCast.Desktop.AudioStreamer
                 else
                 {
                     if (chkLogDeviceCommunication.Checked)
-                        txtLog.AppendText(message + "\r\n\r\n");
+                    {
+                        message += "\r\n\r\n";
+                        txtLog.AppendText(message);
+                        log.Append(message);
+
+                        if (txtLog.Text.Length > 2000000)
+                            txtLog.Clear();
+
+                        if (log.Length > 100000000)
+                            log.Clear();
+                    }
                 }
             }
             catch (Exception)
@@ -360,45 +400,111 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             foreach (var device in devices)
             {
-                if (!cmbRecordingDevice.Items.Contains(device))
+                var exists = false;
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
+                    {
+                        exists = true;
+                    }
+                }
+                if (!exists)
                 {
                     var index = cmbRecordingDevice.Items.Add(device);
-                    if (device.DeviceID == defaultdevice.DeviceID)
-                        cmbRecordingDevice.SelectedIndex = index;
                 }
             }
-            cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
+
+            // Select the right device.
+            if (!isRecordingDeviceSelected)
+            {
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    var device = (MMDevice)cmbRecordingDevice.Items[i];
+                    if (previousRecordingDeviceID == null && device.DeviceID == defaultdevice.DeviceID)
+                    {
+                        // Nothing previously selected, select the default device.
+                        if (cmbRecordingDevice.SelectedIndex != i)
+                        {
+                            cmbRecordingDevice.SelectedIndex = i;
+                            PlaySilence();
+                            isRecordingDeviceSelected = true;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.DeviceID == previousRecordingDeviceID)
+                    {
+                        // Select the previously selected device (only once).
+                        cmbRecordingDevice.SelectedIndex = i;
+                        PlaySilence();
+                        previousRecordingDeviceID = string.Empty;
+                        isRecordingDeviceSelected = true;
+                    }
+                }
+            }
+
+            if (!eventHandlerAdded)
+            {
+                cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;
+                eventHandlerAdded = true;
+            }
         }
 
-        public void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice)
+        public void GetRecordingDevice()
         {
             if (InvokeRequired)
             {
-                Invoke(new Action<Action<MMDevice>>(GetRecordingDevice), new object[] { startRecordingSetDevice });
+                Invoke(new Action(GetRecordingDevice));
                 return;
             }
             if (IsDisposed) return;
 
-            SetDevice(startRecordingSetDevice);
-        }
-
-        private void SetDevice(Action<MMDevice> startRecordingSetDevice)
-        {
             if (cmbRecordingDevice == null)
                 return;
 
-            if (cmbRecordingDevice.Items.Count > 0)
-                startRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem);
+            if (!StartRecordingDevice())
+                loopbackRecorder.StartRecordingSetDevice(null);
+        }
+
+        private bool StartRecordingDevice()
+        {
+            if (cmbRecordingDevice == null || cmbRecordingDevice.Items.Count == 0)
+                return false;
+
+            if (!loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
+            {
+                // Start the first device that has no error.
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    if (loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
+                    {
+                        cmbRecordingDevice.SelectedIndex = i;
+                        PlaySilence();
+                        return true;
+                    }
+                }
+            }
             else
-                startRecordingSetDevice(null);
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void CmbRecordingDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (applicationLogic == null)
-                return;
+            isRecordingDeviceSelected = true;
+            loopbackRecorder?.StopRecording();
+            StartRecordingDevice();
+            PlaySilence();
+        }
 
-            applicationLogic.RecordingDeviceChanged();
+        private void PlaySilence()
+        {
+            if (cmbRecordingDevice.SelectedItem != null)
+            {
+                wavGenerator.Stop();
+                wavGenerator.PlaySilenceLoop(((MMDevice)cmbRecordingDevice.SelectedItem).FriendlyName);
+            }
         }
 
         private void ChkAutoRestart_CheckedChanged(object sender, EventArgs e)
@@ -422,39 +528,33 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbIP4AddressUsed == null)
                 return;
 
-            if (InvokeRequired)
+            if (!InvokeRequired)
             {
-                Invoke(new Action(AddIP4Addresses));
-                return;
-            }
+                var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
+                var ip4Adresses = Network.GetIp4ddresses();
 
-            if (cmbIP4AddressUsed == null)
-                return;
-
-            var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
-            var ip4Adresses = Network.GetIp4ddresses();
-
-            logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
-            cmbIP4AddressUsed.Items.Clear();
-            if (ip4Adresses.Count > 0)
-            {
-                foreach (var adapter in ip4Adresses)
+                logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
+                cmbIP4AddressUsed.Items.Clear();
+                if (ip4Adresses.Count > 0)
                 {
-                    cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
-                }
-
-                if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
-                {
-                    cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
-                    previousIpAddress = oldAddressUsed;
-                }
-                else
-                {
-                    var addressUsed = Network.GetIp4Address();
-                    if (addressUsed != null)
+                    foreach (var adapter in ip4Adresses)
                     {
-                        cmbIP4AddressUsed.SelectedItem = addressUsed;
-                        previousIpAddress = addressUsed;
+                        cmbIP4AddressUsed.Items.Add(adapter.IPAddress);
+                    }
+
+                    if (ip4Adresses.Any(x => x.IPAddress?.ToString() == oldAddressUsed?.ToString()))
+                    {
+                        cmbIP4AddressUsed.SelectedItem = oldAddressUsed;
+                        previousIpAddress = oldAddressUsed;
+                    }
+                    else
+                    {
+                        var addressUsed = Network.GetIp4Address();
+                        if (addressUsed != null)
+                        {
+                            cmbIP4AddressUsed.SelectedItem = addressUsed;
+                            previousIpAddress = addressUsed;
+                        }
                     }
                 }
             }
@@ -473,11 +573,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClipboardCopy_Click(object sender, EventArgs e)
         {
-            if (txtLog == null)
+            if (log == null)
                 return;
 
-            if (!string.IsNullOrEmpty(txtLog.Text))
-                Clipboard.SetText(txtLog.Text);
+            if (!string.IsNullOrEmpty(log.ToString()))
+                Clipboard.SetText(log.ToString());
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
@@ -649,10 +749,11 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         private void BtnClearLog_Click(object sender, EventArgs e)
         {
-            if (txtLog == null)
+            if (txtLog == null || log == null)
                 return;
 
             txtLog.Clear();
+            log.Clear();
         }
 
         public void SetLogDeviceCommunication(bool logDeviceCommunication)
@@ -681,6 +782,16 @@ namespace ChromeCast.Desktop.AudioStreamer
             return chkLogDeviceCommunication.Checked;
         }
 
+        public void SetStartApplicationWhenWindowsStarts(bool value)
+        {
+            chkStartApplicationWhenWindowsStarts.Checked = value;
+        }
+
+        public bool GetStartApplicationWhenWindowsStarts()
+        {
+            return chkStartApplicationWhenWindowsStarts.Checked;
+        }
+
         private void ChkLogDeviceCommunication_CheckedChanged(object sender, EventArgs e)
         {
             if (chkLogDeviceCommunication == null)
@@ -696,6 +807,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
+                request.Timeout = 5000;
                 ((HttpWebRequest)request).KeepAlive = false;
                 ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
                 var response = request.GetResponse();
@@ -746,6 +858,189 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             Process.Start(e.Link.LinkData as string);
+        }
+
+        private void ChkStartApplicationWhenWindowsStarts_CheckedChanged(object sender, EventArgs e)
+        {
+            WindowsStartup.StartApplicationWhenWindowsStarts(chkStartApplicationWhenWindowsStarts.Checked);
+        }
+
+        private void FillFilterDevices()
+        {
+            if (cmbFilterDevices == null)
+                return;
+
+            if (cmbFilterDevices.Items.Count == 0)
+            {
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.ShowAll));
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.DevicesOnly));
+                cmbFilterDevices.Items.Add(new ComboboxItem(FilterDevicesEnum.GroupsOnly));
+                cmbFilterDevices.SelectedIndex = 0;
+            }
+        }
+
+        public void SetFilterDevices(FilterDevicesEnum value)
+        {
+            if (cmbFilterDevices == null || applicationLogic == null)
+                return;
+
+            FillFilterDevices();
+            for (int i = 0; i < cmbFilterDevices.Items.Count; i++)
+            {
+                if ((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.Items[i]).Value == value)
+                    cmbFilterDevices.SelectedIndex = i;
+            }
+            applicationLogic.SetFilterDevices(value);
+        }
+
+        public FilterDevicesEnum? GetFilterDevices()
+        {
+            if (cmbFilterDevices == null)
+                return null;
+
+            return (FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value;
+        }
+
+        private void CmbFilterDevices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (applicationLogic == null)
+                return;
+
+            applicationLogic.SetFilterDevices((FilterDevicesEnum)((ComboboxItem)cmbFilterDevices.SelectedItem).Value);
+        }
+
+        public void SetStartLastUsedDevices(bool value)
+        {
+            if (chkAutoStartLastUsed == null)
+                return;
+
+            chkAutoStartLastUsed.Checked = value;
+        }
+
+        public bool? GetStartLastUsedDevices()
+        {
+            if (chkAutoStartLastUsed == null)
+                return false;
+
+            return chkAutoStartLastUsed.Checked;
+        }
+
+        public void SetSize(Size size)
+        {
+            logger.Log($"Set size, height: {size.Height} width: {size.Width}");
+            Height = size.Height;
+            Width = size.Width;
+        }
+
+        public Size GetSize()
+        {
+            return windowSize;
+        }
+
+        private void LinkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (e == null)
+                return;
+
+            Process.Start("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            if (Size.Width >= 50 && Size.Height >= 50)
+                windowSize = Size;
+        }
+
+        public void ShowWavMeterValue(byte[] data)
+        {
+            try
+            {
+                var maximum = 0f;
+                for (int index = 0; index < data.Length; index += 2)
+                {
+                    var sample = (short)((data[index + 1] << 8) | data[index + 0]);
+                    var sample32 = sample / 32768f;
+                    if (sample32 > maximum)
+                        maximum = sample32;
+                }
+                volumeMeter.Amplitude = maximum;
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex, "MainFrom.ViewWav");
+            }
+        }
+
+        /// <summary>
+        /// Set the device buffer value.
+        /// </summary>
+        /// <param name="extraBufferInSecondsIn">buffer in seconds</param>
+        public void SetExtraBufferInSeconds(int extraBufferInSecondsIn)
+        {
+            if (devices == null)
+                return;
+
+            for (int i = 0; i < cmbBufferInSeconds.Items.Count; i++)
+            {
+                if (int.Parse((string)cmbBufferInSeconds.Items[i]) == extraBufferInSecondsIn)
+                    cmbBufferInSeconds.SelectedIndex = i;
+            }
+        }
+
+        /// <summary>
+        /// Get the device buffer value (in seconds).
+        /// </summary>
+        /// <returns>buffer in seconds</returns>
+        public int? GetExtraBufferInSeconds()
+        {
+            if (devices == null)
+                return 0;
+
+            return int.Parse((string)cmbBufferInSeconds.SelectedItem);
+        }
+
+        /// <summary>
+        /// Change the buffer on the devices.
+        /// </summary>
+        private void CmbBufferInSeconds_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbBufferInSeconds == null || devices == null)
+                return;
+
+            var bufferInSeconds = int.Parse((string)cmbBufferInSeconds.SelectedItem);
+            devices.SetExtraBufferInSeconds(bufferInSeconds);
+        }
+
+        public void SetRecordingDeviceID(string recordingDeviceIDIn)
+        {
+            previousRecordingDeviceID = recordingDeviceIDIn;
+            isRecordingDeviceSelected = false;
+        }
+
+        public string GetRecordingDeviceID()
+        {
+            if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
+                return null;
+
+            return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
+        }
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+            loopbackRecorder?.Dispose();
+            wavGenerator?.Dispose();
         }
     }
 }

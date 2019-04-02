@@ -17,8 +17,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private List<IDevice> deviceList = new List<IDevice>();
         private Action<Device> onAddDeviceCallback;
         private bool AutoStart;
+        private bool StartLastUsedDevices;
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
+        private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
+        private ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -35,7 +38,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!discoveredDevice.AddedByDeviceInfo)
             {
                 if (!discoveredDevice.IsGroup)
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
             }
             else
             {
@@ -45,16 +48,87 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (existingDevice == null)
                     {
                         var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
-                        if (AutoStart && !newDevice.IsGroup())
+                        var wasPlaying = applicationLogic.WasPlaying(discoveredDevice);
+                        if ((AutoStart && !newDevice.IsGroup()) || (StartLastUsedDevices && wasPlaying))
                             newDevice.ResumePlaying();
                     }
                     else
                     {
-                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation);
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// If device is a group, stop devices in the group.
+        /// If device is a device, stop the groups the device is in.
+        /// </summary>
+        private void StopGroup(IDevice deviceIn)
+        {
+            if (deviceIn == null)
+                return;
+
+            if (deviceIn.IsGroup())
+            {
+                StopGroupDevices(deviceIn);
+            }
+            else
+            {
+                StopGroups(deviceIn);
+            }
+        }
+
+        /// <summary>
+        /// Stop all groups a device is in.
+        /// </summary>
+        private void StopGroups(IDevice deviceIn)
+        {
+            if (deviceList == null || deviceIn == null)
+                return;
+
+            var eurekaIn = deviceIn.GetEureka();
+            if (eurekaIn == null)
+                return;
+
+            foreach (var group in eurekaIn.Multizone.Groups)
+            {
+                // Stop all devices in the group.
+                foreach (var device in deviceList)
+                {
+                    if (group.Name == device.GetFriendlyName())
+                    {
+                        device.Stop(true);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop all devices in a group.
+        /// </summary>
+        private void StopGroupDevices(IDevice deviceIn)
+        {
+            if (deviceList == null || deviceIn == null)
+                return;
+
+            foreach (var device in deviceList)
+            {
+                // Check if this device is in the device-group that has to stop.
+                var deviceEureka = device.GetEureka();
+                if (deviceEureka == null)
+                    continue;
+
+                foreach (var group in deviceEureka.Multizone.Groups)
+                {
+                    if (group.Name == deviceIn.GetFriendlyName())
+                    {
+                        device.Stop(true);
+                        StopGroups(device);
                     }
                 }
             }
@@ -121,7 +195,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 // Get device information from unknown devices.
                 if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
                 {
-                    DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
                 }
             }
         }
@@ -191,15 +265,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Stop for all devices. 
         /// </summary>
         /// <returns>true if one of the devices was playing, or false</returns>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
-            if (deviceList == null)
+            if (deviceList == null || applicationBuffer == null)
                 return;
 
             foreach (var device in deviceList)
             {
-                device.Stop();
+                device.Stop(changeUserMode);
             }
+            applicationBuffer.ClearBuffer();
         }
 
         /// <summary>
@@ -221,16 +296,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="socket">the socket</param>
         /// <param name="httpRequest">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
-        public void AddStreamingConnection(Socket socket, string httpRequest)
+        public void AddStreamingConnection(Socket socket, string httpRequest, SupportedStreamFormat streamFormatIn)
         {
-            if (deviceList == null || socket == null)
+            if (deviceList == null || socket == null || applicationBuffer == null)
                 return;
 
             var remoteAddress = ((IPEndPoint)socket.RemoteEndPoint).Address.ToString();
             foreach (var device in deviceList)
             {
                 if (device.AddStreamingConnection(remoteAddress, socket))
+                {
+                    applicationBuffer.SendStartupBuffer(device, streamFormatIn);
                     break;
+                }
             }
         }
 
@@ -243,13 +321,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="streamFormat">the stream format</param>
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
-            if (deviceList == null || dataToSend == null)
+            if (deviceList == null || dataToSend == null || applicationBuffer == null)
                 return;
 
-            foreach (var device in deviceList)
+            if (applicationBuffer.IsStartBufferSend())
             {
-                device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
+                foreach (var device in deviceList)
+                {
+                    device.OnRecordingDataAvailable(dataToSend, format, reduceLagThreshold, streamFormat);
+                }
             }
+
+            // Keep a buffer
+            applicationBuffer.AddToBuffer(dataToSend, format, reduceLagThreshold, streamFormat);
         }
 
         /// <summary>
@@ -264,15 +348,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             // Cleanup disposed devices first.
             try
             {
-                for (int i = deviceList.Count - 1; i >= 0; i--)
+                lock(deviceList)
                 {
-                    if (deviceList[i].GetDeviceState() == DeviceState.Disposed)
-                        deviceList.RemoveAt(i);
+                    for (int i = deviceList.Count - 1; i >= 0; i--)
+                    {
+                        if (deviceList[i].GetDeviceState() == DeviceState.Disposed)
+                            deviceList.RemoveAt(i);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Devices.OnGetStatus: {ex.Message}");
+                logger.Log(ex, "Devices.OnGetStatus");
             }
 
             foreach (var device in deviceList)
@@ -285,9 +372,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Set the value to auto start a device right after it has been added.
         /// </summary>
         /// <param name="autoStartIn"></param>
-        public void SetAutoStart(bool autoStartIn)
+        public void SetSettings(UserSettings settingsIn)
         {
-            AutoStart = autoStartIn;
+            if (settingsIn == null)
+                return;
+
+            AutoStart = settingsIn.AutoStartDevices ?? false;
+            StartLastUsedDevices = settingsIn.StartLastUsedDevices ?? false;
+            applicationBuffer.SetExtraBufferInSeconds(settingsIn.ExtraBufferInSeconds ?? 0);
         }
 
         /// <summary>
@@ -298,10 +390,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceList == null)
                 return;
 
-            Stop();
-            foreach (var device in deviceList)
+            try
             {
-                device.SetDeviceState(DeviceState.Disposed);
+                Stop(true);
+                for (int i = deviceList.Count - 1; i >= 0; i--)
+                {
+                    var device = deviceList[i];
+                    device?.SetDeviceState(DeviceState.Disposed);
+                    device?.Dispose();
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
@@ -339,6 +439,30 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 hosts.Add(device.GetDiscoveredDevice());
             }
             return hosts;
+        }
+
+        /// <summary>
+        /// The devices filter has changed.
+        /// </summary>
+        /// <param name="value">new filter value</param>
+        public void SetFilterDevices(FilterDevicesEnum value)
+        {
+            if (deviceList == null)
+                return;
+
+            foreach (var device in deviceList)
+            {
+                device.GetDeviceControl().Visible = FilterDevices.ShowFilterDevices(device, value);
+            }
+        }
+
+        /// <summary>
+        /// Set the device buffer in seconds.
+        /// </summary>
+        /// <param name="bufferInSeconds">the buffer in seconds</param>
+        public void SetExtraBufferInSeconds(int bufferInSeconds)
+        {
+            applicationBuffer.SetExtraBufferInSeconds(bufferInSeconds);
         }
     }
 }

@@ -14,6 +14,8 @@ using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -26,7 +28,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IStreamingConnection streamingConnection;
         private IDeviceConnection deviceConnection;
         private DiscoveredDevice discoveredDevice;
-        private DeviceState deviceState;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
@@ -37,6 +38,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
         private Action<DeviceEureka> setDeviceInformationCallback;
+        private Action<Action, CancellationTokenSource> startTask;
+        private Action<IDevice> stopGroup;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -45,9 +48,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger = loggerIn;
             deviceConnection = deviceConnectionIn;
             deviceCommunication = deviceCommunicationIn;
-            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage);
-            deviceState = DeviceState.NotConnected;
-            discoveredDevice = new DiscoveredDevice();
+            deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage, StartTask);
+            discoveredDevice = new DiscoveredDevice
+            {
+                DeviceState = DeviceState.NotConnected
+            };
             volumeSetting = new Volume
             {
                 controlType = "attenuation",
@@ -61,9 +66,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// Initialize a device.
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
-        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn)
+        public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn
+            , Action<IDevice> stopGroupIn, Action<Action, CancellationTokenSource> startTaskIn)
         {
-            if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null)
+            setDeviceInformationCallback = setDeviceInformationCallbackIn;
+            stopGroup = stopGroupIn;
+            startTask = startTaskIn;
+
+            if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
+                discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
                 return;
 
             var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
@@ -75,7 +86,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.Groups)
                     != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.Groups))
             {
-                logger.Log($"Discovered device: {discoveredDeviceIn.Name} {discoveredDeviceIn.IPAddress}:{discoveredDeviceIn.Port} {JsonConvert.SerializeObject(discoveredDeviceIn.Eureka.Multizone.Groups)}");
+                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonConvert.SerializeObject(discoveredDeviceIn?.Eureka?.Multizone?.Groups)}");
             }
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
@@ -91,8 +102,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             deviceCommunication.SetCallback(this, deviceConnection.SendMessage, deviceConnection.IsConnected);
             if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
                 OnGetStatus();
-            setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            if (ipChanged && deviceState == DeviceState.Playing)
+            if (ipChanged && GetDeviceState() == DeviceState.Playing)
             {
                 ResumePlaying();
             }
@@ -117,6 +127,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
+            stopGroup(this);
             deviceCommunication.OnPlayStop_Click();
         }
 
@@ -141,11 +152,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Start()
         {
-            if (deviceCommunication == null)
-                return;
-
             if (devicePlayedWhenStopped)
-                deviceCommunication.LoadMedia();
+                ResumePlaying();
         }
 
         /// <summary>
@@ -162,15 +170,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (streamingConnection.IsConnected())
             {
-                if (deviceState != DeviceState.NotConnected &&
-                    deviceState != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
+                if (GetDeviceState() != DeviceState.NotConnected &&
+                    GetDeviceState() != DeviceState.Paused) // When you keep streaming to a device when it is paused, the application stops streaming after a while (local buffers full?)
                 {
                     streamingConnection.SendData(dataToSend, format, reduceLagThreshold, streamFormat);
                 }
             }
             else
             {
-                Console.WriteLine(string.Format("Connection closed from {0}", streamingConnection.GetRemoteEndPoint()));
+                logger.Log($"Connection closed from {streamingConnection.GetRemoteEndPoint()}");
                 streamingConnection = null;
             }
         }
@@ -183,7 +191,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            if (deviceState != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
+            if (GetDeviceState() != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
             {
                 deviceCommunication.GetStatus();
                 GetDeviceInformation();
@@ -198,7 +206,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="statusText">status text</param>
         public void SetDeviceState(DeviceState state, string statusText = null)
         {
-            if (deviceControl == null || deviceControl.IsDisposed)
+            if (deviceControl == null || deviceControl.IsDisposed || discoveredDevice == null)
                 return;
 
             if (deviceControl.InvokeRequired)
@@ -212,7 +220,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"SetDeviceState: {ex.Message}");
+                        logger.Log(ex, "Device.SetDeviceState");
                     }
                 }
             }
@@ -224,21 +232,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     wasPlayingWhenConnectError = false;
                     ResumePlaying();
                 }
-                else if (state == DeviceState.ConnectError && deviceState == DeviceState.Playing)
+                else if (state == DeviceState.ConnectError && GetDeviceState() == DeviceState.Playing)
                 {
                     wasPlayingWhenConnectError = true;
                 }
 
-                if (state == DeviceState.ConnectError && IsGroup())
-                {
-                    deviceState = state;
-                    deviceControl?.SetStatus(deviceState, statusText);
-                }
-                else
-                {
-                    deviceState = state;
-                    deviceControl?.SetStatus(deviceState, statusText);
-                }
+                discoveredDevice.DeviceState = state;
+                deviceControl?.SetStatus(discoveredDevice.DeviceState, statusText);
             }
         }
 
@@ -303,19 +303,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Stop playing on the device.
         /// </summary>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
             if (deviceCommunication == null)
                 return;
 
-            switch (deviceState)
+            switch (GetDeviceState())
             {
                 case DeviceState.Playing:
                 case DeviceState.LoadingMedia:
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
-                    devicePlayedWhenStopped = deviceState == DeviceState.Playing;
-                    deviceCommunication.Stop();
+                    devicePlayedWhenStopped = GetDeviceState() == DeviceState.Playing;
+                    deviceCommunication.Stop(changeUserMode);
                     SetDeviceState(DeviceState.Closed);
                     break;
                 default:
@@ -335,13 +335,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return false;
 
             //TODO: Is this right for device groups?
-            if ((deviceState == DeviceState.LoadingMedia || 
-                deviceState == DeviceState.Buffering || 
-                deviceState == DeviceState.Idle) &&
+            if ((GetDeviceState() == DeviceState.LoadingMedia ||
+                GetDeviceState() == DeviceState.Buffering ||
+                GetDeviceState() == DeviceState.Idle) &&
                 discoveredDevice.IPAddress == remoteAddress)
             {
                 streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
-                streamingConnection.SetSocket(socket);
+                streamingConnection.SetDependencies(socket, this, logger);
                 streamingConnection.SendStartStreamingResponse();
                 return true;
             }
@@ -400,7 +400,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public DeviceState GetDeviceState()
         {
-            return deviceState;
+            if (discoveredDevice == null)
+                return DeviceState.Disposed;
+
+            return discoveredDevice.DeviceState;
         }
 
         /// <summary>
@@ -478,14 +481,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return discoveredDevice;
         }
 
-        #region private helpers
-
         /// <summary>
         /// Determine if this is a Chromecast group.
         /// </summary>
         /// <returns>true if it's a group, false if it's not a group</returns>
         public bool IsGroup()
         {
+            if (discoveredDevice == null)
+                return false;
+
             return discoveredDevice.IsGroup;
         }
 
@@ -495,9 +499,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's connected, or false if not</returns>
         public bool IsConnected()
         {
-            return !(deviceState.Equals(DeviceState.NotConnected) ||
-                deviceState.Equals(DeviceState.ConnectError) ||
-                deviceState.Equals(DeviceState.Closed));
+            return !(GetDeviceState().Equals(DeviceState.NotConnected) ||
+                GetDeviceState().Equals(DeviceState.ConnectError) ||
+                GetDeviceState().Equals(DeviceState.Closed));
         }
 
         /// <summary>
@@ -518,19 +522,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void SendSilence()
         {
-            OnRecordingDataAvailable(Properties.Resources.silence,
-                new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
-        }
-
-        /// <summary>
-        /// Return if the device was playing when stopped. Used for auto restart.
-        /// </summary>
-        /// <returns></returns>
-        public bool WasPlayingWhenStopped()
-        {
-            var returnValue = devicePlayedWhenStopped;
-            devicePlayedWhenStopped = false;
-            return returnValue;
+            var silence = new WavGenerator().GetSilenceBytes(5);
+            OnRecordingDataAvailable(silence, new WaveFormat(44100, 2), 1000, SupportedStreamFormat.Mp3_320);
         }
 
         /// <summary>
@@ -539,14 +532,50 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void GetDeviceInformation()
         {
             if (!IsGroup())
-                DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation);
+            {
+                startTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger), null);
+            }
         }
 
+        /// <summary>
+        /// Resume playing.
+        /// </summary>
         public void ResumePlaying()
         {
+            if (deviceCommunication == null)
+                return;
+
             deviceCommunication.ResumePlaying();
         }
 
-        #endregion
+        /// <summary>
+        /// Return device eureka information.
+        /// </summary>
+        public DeviceEureka GetEureka()
+        {
+            return eureka;
+        }
+
+        /// <summary>
+        /// Start a task
+        /// </summary>
+        public void StartTask(Action action)
+        {
+            if (startTask == null)
+                Task.Run(action);
+            else
+                startTask(action, null);
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            deviceCommunication?.Dispose();
+            streamingConnection?.Dispose();
+            deviceConnection?.Dispose();
+            deviceControl?.Dispose();
+        }
     }
 }

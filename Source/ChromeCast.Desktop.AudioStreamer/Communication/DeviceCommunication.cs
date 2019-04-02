@@ -7,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
@@ -26,7 +27,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private VolumeSetItem lastVolumeSetItem;
         private VolumeSetItem nextVolumeSetItem;
         private bool Connected = false;
-        private int retryLoadAttempt = 0;
+        private bool IsDisposed = false;
+        private UserMode userMode = UserMode.Stopped;
+        private bool pendingStatusMessage = false;
+        private DateTime lastReceivedMessage;
+        private string statusText;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
         {
@@ -43,6 +48,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void LaunchAndLoadMedia()
         {
+            if (device == null || IsDisposed)
+                return;
+
+            pendingStatusMessage = false;
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
 
@@ -52,10 +61,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Wait till the connection is established.
         /// </summary>
-        private void WaitDeviceConnected(Action callback)
+        private void WaitDeviceConnected(Action callback, int nrWaitMsec = 5)
         {
             var attempt = 0;
-            while (!isDeviceConnected() && attempt++ < 5)
+            while (!isDeviceConnected() && attempt++ < nrWaitMsec)
             {
                 Task.Delay(100).Wait();
             }
@@ -71,7 +80,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="destinationId"></param>
         public void Connect(string sourceId = null, string destinationId = null)
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             SendMessage(chromeCastMessages.GetConnectMessage(sourceId, destinationId));
@@ -82,7 +91,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void Launch()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             SendMessage(chromeCastMessages.GetLaunchMessage(GetNextRequestId()));
@@ -93,11 +102,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void LoadMedia()
         {
-            if (applicationLogic == null || chromeCastMessages == null)
+            if (applicationLogic == null || chromeCastMessages == null || device == null || IsDisposed)
                 return;
 
             device.SetDeviceState(DeviceState.LoadingMedia, null);
-            retryLoadAttempt = 0;
             SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
         }
 
@@ -106,7 +114,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void PauseMedia()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null || IsDisposed)
                 return;
 
             device.SetDeviceState(DeviceState.Paused, null);
@@ -118,7 +126,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void PlayMedia()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             SendMessage(chromeCastMessages.GetPlayMessage(chromeCastApplicationSessionNr, chromeCastMediaSessionId, GetNextRequestId(), chromeCastSource, chromeCastDestination));
@@ -130,7 +138,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="volumeSetting">the new volume level</param>
         public void VolumeSet(Volume volumeSetting)
         {
-            if (volumeSetting == null)
+            if (volumeSetting == null || IsDisposed)
                 return;
 
             nextVolumeSetItem = new VolumeSetItem { Setting = volumeSetting };
@@ -142,7 +150,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void SendVolumeSet()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             if (!Connected)
@@ -165,7 +173,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="muted">true = mute, false = unmute</param>
         public void VolumeMute(bool muted)
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             if (!Connected)
@@ -179,7 +187,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void Pong()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             if (!Connected)
@@ -193,19 +201,54 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void GetStatus()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null || IsDisposed)
                 return;
 
             var deviceState = device.GetDeviceState();
-            if (deviceState == DeviceState.Playing ||
-                deviceState == DeviceState.Buffering ||
-                deviceState == DeviceState.Paused)
+            if (!pendingStatusMessage)
             {
-                SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+                pendingStatusMessage = true;
+                if (deviceState == DeviceState.Playing ||
+                    deviceState == DeviceState.Buffering ||
+                    deviceState == DeviceState.Paused)
+                {
+                    SendMessage(chromeCastMessages.GetMediaStatusMessage(GetNextRequestId(), chromeCastSource, chromeCastDestination));
+                }
+                else
+                {
+                    GetReceiverStatus();
+                }
             }
             else
             {
-                GetReceiverStatus();
+                logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
+            }
+
+            // Keep trying to play when in playing mode.
+            if (userMode == UserMode.Playing)
+            {
+                switch (deviceState)
+                {
+                    case DeviceState.NotConnected:
+                    case DeviceState.Disposed:
+                    case DeviceState.ConnectError:
+                    case DeviceState.LoadFailed:
+                    case DeviceState.LoadCancelled:
+                    case DeviceState.InvalidRequest:
+                    case DeviceState.Closed:
+                    case DeviceState.Connected:
+                    case DeviceState.LaunchingApplication:
+                    case DeviceState.LaunchedApplication:
+                    case DeviceState.Idle:
+                        ResumePlaying();
+                        break;
+                    case DeviceState.LoadingMedia:
+                    case DeviceState.Buffering:
+                    case DeviceState.Playing:
+                    case DeviceState.Paused:
+                    default:
+                        break;
+                }
             }
         }
 
@@ -214,7 +257,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void GetReceiverStatus()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             ConnectionConnect();
@@ -226,7 +269,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         private void ConnectionConnect()
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             if (!Connected)
@@ -239,10 +282,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Send a stop message.
         /// </summary>
-        public void Stop()
+        public void Stop(bool changeUserMode = false)
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || device == null || IsDisposed)
                 return;
+
+            if (changeUserMode)
+                userMode = UserMode.Stopped;
 
             var deviceState = device.GetDeviceState();
 
@@ -268,7 +314,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="castMessage">the message to send</param>
         public void SendMessage(CastMessage castMessage)
         {
-            if (chromeCastMessages == null)
+            if (chromeCastMessages == null || IsDisposed)
                 return;
 
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
@@ -283,13 +329,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="castMessage">the received message</param>
         public void OnReceiveMessage(CastMessage castMessage)
         {
-            if (castMessage == null)
+            if (castMessage == null || device == null || IsDisposed)
                 return;
 
+            lastReceivedMessage = DateTime.Now;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
             var js = new JavaScriptSerializer();
 
             var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
+            if (message.type != "PING" && message.type != "PONG")
+                pendingStatusMessage = false;
+
             switch (message.@type)
             {
                 case "RECEIVER_STATUS":
@@ -312,15 +362,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case "LOAD_FAILED":
                     var loadFailedMessage = js.Deserialize<MessageLoadFailed>(castMessage.PayloadUtf8);
                     device.SetDeviceState(DeviceState.LoadFailed, null);
-                    if (retryLoadAttempt <= 1)
-                    {
-                        retryLoadAttempt++;
-                        ResumePlaying();
-                    }
-                    else
-                    {
-                        retryLoadAttempt = 0;
-                    }
                     break;
                 case "LOAD_CANCELLED":
                     var loadCancelledMessage = js.Deserialize<MessageLoadCancelled>(castMessage.PayloadUtf8);
@@ -344,33 +385,34 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="closeMessage">the close message</param>
         private void OnReceiveCloseMessage(PayloadMessageBase closeMessage)
         {
-            if (applicationLogic == null)
+            if (applicationLogic == null || device == null || IsDisposed)
                 return;
 
-            var deviceState = device.GetDeviceState();
-            var previousState = deviceState;
+            if (!(applicationLogic.GetAutoRestart()))
+                userMode = UserMode.Stopped;
 
-            // Restart?
-            if (device.WasPlayingWhenStopped() || (applicationLogic.GetAutoRestart() && (previousState == DeviceState.Playing)))
+            var deviceState = device.GetDeviceState();
+            if (deviceState == DeviceState.Playing ||
+                deviceState == DeviceState.Buffering ||
+                deviceState == DeviceState.Paused ||
+                deviceState == DeviceState.LoadingMedia)
             {
-                ResumePlaying();
+                Stop();
             }
-            else
-            {
-                if (deviceState == DeviceState.Playing ||
-                    deviceState == DeviceState.Buffering ||
-                    deviceState == DeviceState.Paused ||
-                    deviceState == DeviceState.LoadingMedia)
+            device.SetDeviceState(DeviceState.Closed, null);
+            Connected = false;
+            var cancellationTokeSource = new CancellationTokenSource();
+            applicationLogic.StartTask(() => {
+                for (int i = 0; i < 20; i++)
                 {
-                    Stop();
+                    Task.Delay(100).Wait();
+
+                    if (cancellationTokeSource.IsCancellationRequested)
+                        return;
                 }
-                device.SetDeviceState(DeviceState.Closed, null);
-                Connected = false;
-                Task.Run(() => {
-                    Task.Delay(2000).Wait();
-                    GetReceiverStatus();
-                });
-            }
+
+                GetReceiverStatus();
+            }, cancellationTokeSource);
         }
 
         /// <summary>
@@ -378,9 +420,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// </summary>
         public void ResumePlaying()
         {
-            logger.Log("ResumePlaying");
+            if (device == null || IsDisposed)
+                return;
 
-            Task.Run(() =>
+            logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] ResumePlaying");
+            userMode = UserMode.Playing;
+            pendingStatusMessage = false;
+
+            var cancellationTokenSource = new CancellationTokenSource();
+            applicationLogic.StartTask(() =>
             {
                 Task.Delay(2000).Wait();
                 var deviceState = device.GetDeviceState();
@@ -391,26 +439,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 {
                     Stop();
                 }
-                device.SetDeviceState(DeviceState.NotConnected, null);
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
+                if (deviceState != DeviceState.ConnectError)
+                    device.SetDeviceState(DeviceState.NotConnected, null);
                 Disconnect();
                 Task.Delay(2000).Wait();
-                var attempt = 0;
-                while ((device.GetDeviceState() == DeviceState.NotConnected
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
+                if (device.GetDeviceState() == DeviceState.NotConnected
                         || device.GetDeviceState() == DeviceState.Connected
                         || device.GetDeviceState() == DeviceState.Closed
                         || device.GetDeviceState() == DeviceState.Idle)
-                    && attempt++ < 6)
                 {
                     device.OnGetStatus();
-                    Task.Delay(5000).Wait();
-                    if (device.GetDeviceState() == DeviceState.Connected
-                        || device.GetDeviceState() == DeviceState.Idle)
-                    {
-                        OnPlayStop_Click();
-                        return;
-                    }
+                    if (string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0)
+                        WaitDeviceConnected(PlayStop, 50);
                 }
-            });
+            }, cancellationTokenSource);
         }
 
         /// <summary>
@@ -419,8 +469,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="mediaStatusMessage">the media status message</param>
         private void OnReceiveMediaStatus(MessageMediaStatus mediaStatusMessage)
         {
-            if (mediaStatusMessage == null)
+            if (mediaStatusMessage == null || device == null || IsDisposed)
                 return;
+
+            Connected = true;
 
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
@@ -453,7 +505,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <returns>the playing time, format hh:mm</returns>
         private string GetPlayingTime(MessageMediaStatus mediaStatusMessage)
         {
-            if (mediaStatusMessage == null)
+            if (mediaStatusMessage == null || IsDisposed)
                 return string.Empty;
 
             if (mediaStatusMessage.status != null && mediaStatusMessage.status.First() != null)
@@ -473,13 +525,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="receiverStatusMessage">a receiver status message</param>
         private void OnReceiveReceiverStatus(MessageReceiverStatus receiverStatusMessage)
         {
-            if (receiverStatusMessage == null)
+            if (receiverStatusMessage == null || device == null || IsDisposed)
                 return;
 
             if (receiverStatusMessage?.status?.volume != null)
                 device.OnVolumeUpdate(receiverStatusMessage.status.volume);
 
-            var statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
+            statusText = receiverStatusMessage?.status?.applications?.FirstOrDefault()?.statusText;
             statusText = statusText?.Replace("Default Media Receiver", string.Empty);
             var state = device.GetDeviceState();
             if (state == DeviceState.ConnectError || state == DeviceState.NotConnected || state == DeviceState.Closed)
@@ -521,12 +573,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             device = deviceIn;
             sendMessage = sendMessageIn;
             isDeviceConnected = isDeviceConnectedIn;
+            pendingStatusMessage = false;
         }
 
         /// <summary>
         /// Handle a clcik on the play button.
         /// </summary>
         public void OnPlayStop_Click()
+        {
+            if (userMode == UserMode.Stopped)
+                userMode = UserMode.Playing;
+            else
+                userMode = UserMode.Stopped;
+
+            PlayStop();
+        }
+
+        /// <summary>
+        /// Play or stop.
+        /// </summary>
+        private void PlayStop()
         {
             switch (device.GetDeviceState())
             {
@@ -591,6 +657,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         public void Disconnect()
         {
             Connected = false;
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            IsDisposed = true;
+            userMode = UserMode.Stopped;
         }
     }
 }

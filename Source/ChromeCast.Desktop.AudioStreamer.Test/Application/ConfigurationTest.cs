@@ -16,14 +16,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             asyncEvent = new AutoResetEvent(false);
 
             var configuration = new Configuration();
-            configuration.Load(ConfigurationCallback);
+            configuration.Load(ConfigurationCallback, null);
 
             asyncEvent.WaitOne(100);
 
             Assert.AreEqual(string.Empty, ipAddressesDevices);
         }
 
-        private void ConfigurationCallback(string ipAddressesDevicesIn)
+        private void ConfigurationCallback(string ipAddressesDevicesIn, bool showLagControl)
         {
             ipAddressesDevices = ipAddressesDevicesIn;
 

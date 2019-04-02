@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using ChromeCast.Desktop.AudioStreamer.Discover;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -21,7 +22,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IDevices devices;
         private IMainForm mainForm;
         private IConfiguration configuration;
-        private ILoopbackRecorder loopbackRecorder;
         private IStreamingRequestsListener streamingRequestListener;
         private IDiscoverDevices discoverDevices;
         private IDeviceStatusTimer deviceStatusTimer;
@@ -33,18 +33,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Mp3_320;
         private string Culture;
         private ILogger logger;
+        private Size defaultSize = new Size(850, 550);
+        private TasksToCancel taskList;
 
         private bool AutoRestart { get; set; } = false;
 
         public ApplicationLogic(IDevices devicesIn, IDiscoverDevices discoverDevicesIn
-            , ILoopbackRecorder loopbackRecorderIn, IConfiguration configurationIn
+            , IConfiguration configurationIn
             , IStreamingRequestsListener streamingRequestListenerIn, IDeviceStatusTimer deviceStatusTimerIn
             , ILogger loggerIn)
         {
             devices = devicesIn;
             devices.SetCallback(OnAddDevice);
             discoverDevices = discoverDevicesIn;
-            loopbackRecorder = loopbackRecorderIn;
             configuration = configurationIn;
             streamingRequestListener = streamingRequestListenerIn;
             deviceStatusTimer = deviceStatusTimerIn;
@@ -56,22 +57,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Initialize()
         {
+            taskList = new TasksToCancel();
+            AddNotifyIcon();
+            LoadSettings();
+            configuration.Load(ApplyConfiguration, logger);
+            ScanForDevices();
+            deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
             var ipAddress = Network.GetIp4Address();
             if (ipAddress == null)
             {
-                MessageBox.Show(Properties.Strings.MessageBox_NoIPAddress);
+                logger.Log(Properties.Strings.MessageBox_NoIPAddress);
                 return;
             }
 
-            Task.Run(() => {
-                streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect);
+            StartTask(() => {
+                streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect, logger);
             });
-            AddNotifyIcon();
-            LoadSettings();
-            configuration.Load(ApplyConfiguration);
-            ScanForDevices();
-            deviceStatusTimer.StartPollingDevice(devices.OnGetStatus);
-            loopbackRecorder.GetDevices(mainForm);
         }
 
         /// <summary>
@@ -81,10 +82,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="httpRequestIn">the HTTP headers, including the 'CAST-DEVICE-CAPABILITIES' header</param>
         public void OnStreamingRequestConnect(Socket socketIn, string httpRequestIn)
         {
-            Console.WriteLine(string.Format("Connection added from {0}", socketIn.RemoteEndPoint));
+            if (devices == null)
+                return;
 
-            loopbackRecorder?.StartRecording(OnRecordingDataAvailable);
-            devices?.AddStreamingConnection(socketIn, httpRequestIn);
+            logger.Log(string.Format("Connection added from {0}", socketIn.RemoteEndPoint));
+            devices.AddStreamingConnection(socketIn, httpRequestIn, StreamFormatSelected);
         }
 
         /// <summary>
@@ -94,19 +96,30 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="formatIn">the wav format that's used</param>
         public void OnRecordingDataAvailable(byte[] dataToSendIn, WaveFormat formatIn)
         {
+            if (devices == null)
+                return;
+
             if (!StreamFormatSelected.Equals(SupportedStreamFormat.Wav))
             {
                 if (Mp3Stream == null)
                 {
-                    Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected);
+                    Mp3Stream = new Mp3Stream(formatIn, StreamFormatSelected, logger);
                 }
                 Mp3Stream.Encode(dataToSendIn.ToArray());
                 dataToSendIn = Mp3Stream.Read();
             }
             if (dataToSendIn.Length > 0)
             {
-                devices?.OnRecordingDataAvailable(dataToSendIn, formatIn, reduceLagThreshold, StreamFormatSelected);
+                devices.OnRecordingDataAvailable(dataToSendIn, formatIn, reduceLagThreshold, StreamFormatSelected);
             }
+        }
+
+        /// <summary>
+        /// Clear the audio data in the mp3 encoder.
+        /// </summary>
+        public void ClearMp3Buffer()
+        {
+            Mp3Stream = null;
         }
 
         /// <summary>
@@ -115,16 +128,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="deviceIn">the new device</param>
         public void OnAddDevice(IDevice deviceIn)
         {
-            if (deviceIn == null)
+            if (deviceIn == null || mainForm == null)
                 return;
 
-            var menuItem = new MenuItem
+            try
             {
-                Text = deviceIn.GetFriendlyName()
-            };
-            menuItem.Click += deviceIn.OnClickPlayPause;
-            notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
-            deviceIn.SetMenuItem(menuItem);
+                var menuItem = new MenuItem
+                {
+                    Text = deviceIn.GetFriendlyName()
+                };
+                menuItem.Click += deviceIn.OnClickPlayPause;
+                notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
+                deviceIn.SetMenuItem(menuItem);
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex, "ApplicationLogic.OnAddDevice");
+            }
             mainForm.AddDevice(deviceIn);
         }
 
@@ -135,17 +155,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetDependencies(MainForm mainFormIn)
         {
             mainForm = mainFormIn;
-        }
-
-        /// <summary>
-        /// The user changed the recording device in the user interface.
-        /// </summary>
-        public void RecordingDeviceChanged()
-        {
-            if (loopbackRecorder == null)
-                return;
-
-            loopbackRecorder.StartRecordingDevice();
         }
 
         /// <summary>
@@ -177,14 +186,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             logger.Log($"Change IP4 address: {ipAddressIn.ToString()}");
             devices.Stop();
             streamingRequestListener.StopListening();
-            Task.Run(() => {
-                streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect);
+            ScanForDevices();
+            StartTask(() => {
+                streamingRequestListener.StartListening(ipAddressIn, OnStreamingRequestConnect, logger);
             });
-            Task.Run(() =>
+            var cancellationTokenSource = new CancellationTokenSource();
+            StartTask(() =>
             {
                 Task.Delay(2500).Wait();
+
+                if (cancellationTokenSource.IsCancellationRequested)
+                    return;
+
                 devices.Start();
-            });
+            }, cancellationTokenSource);
         }
 
         /// <summary>
@@ -242,21 +257,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 settings.Upgraded = true;
             }
 
-            devices.SetAutoStart(settings.AutoStartDevices ?? false);
+            devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
             mainForm.SetAutoRestart(settings.AutoRestart ?? false);
+            mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
-            mainForm.ShowLagControl(settings.ShowLagControl ?? false);
             mainForm.SetLagValue(settings.LagControlValue ?? 1000);
+            mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
+            mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
+            if (settings.Size == null || settings.Size.Value.Width < 50|| settings.Size.Value.Height < 50)
+                settings.Size = defaultSize;
+            mainForm.SetSize(settings.Size.Value);
+            mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 0);
+            mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
             if (settings.ChromecastDiscoveredDevices != null)
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
-                    DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable);
+                    StartTask(DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger));
                 }
             }
         }
@@ -274,21 +296,32 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 discoveredDevices = new List<DiscoveredDevice>();
             foreach (var host in devices.GetHosts())
             {
-                if (!discoveredDevices.Any(x => x.IPAddress == host.IPAddress && x.Port == host.Port))
+                var discoveredDevice = discoveredDevices.Where(x => x.IPAddress == host.IPAddress && x.Port == host.Port);
+                if (!discoveredDevice.Any())
                 {
                     discoveredDevices.Add(host);
+                }
+                else
+                {
+                    discoveredDevice.First().DeviceState = host.DeviceState;
                 }
             }
             settings.ChromecastDiscoveredDevices = discoveredDevices;
             settings.UseKeyboardShortCuts = mainForm.GetUseKeyboardShortCuts();
             settings.AutoStartDevices = mainForm.GetAutoStartDevices();
-            settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.AutoRestart = mainForm.GetAutoRestart();
+            settings.StartLastUsedDevices = mainForm.GetStartLastUsedDevices();
+            settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
             settings.StreamFormat = StreamFormatSelected;
             settings.Culture = Culture;
             settings.LogDeviceCommunication = mainForm.GetLogDeviceCommunication();
             settings.ShowLagControl = mainForm.GetShowLagControl();
             settings.LagControlValue = mainForm.GetLagValue();
+            settings.StartApplicationWhenWindowsStarts = mainForm.GetStartApplicationWhenWindowsStarts();
+            settings.FilterDevices = mainForm.GetFilterDevices();
+            settings.Size = mainForm.GetSize();
+            settings.ExtraBufferInSeconds = mainForm.GetExtraBufferInSeconds();
+            settings.RecordingDeviceID = mainForm.GetRecordingDeviceID();
 
             settings.Save();
         }
@@ -307,6 +340,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ChromecastDiscoveredDevices = new List<DiscoveredDevice>();
             settings.UseKeyboardShortCuts = false;
             settings.AutoStartDevices = false;
+            settings.StartLastUsedDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
             settings.StreamFormat = SupportedStreamFormat.Mp3_320;
@@ -314,16 +348,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.LogDeviceCommunication = false;
             settings.ShowLagControl = false;
             settings.LagControlValue = 1000;
-            devices.SetAutoStart(settings.AutoStartDevices.Value);
+            settings.StartApplicationWhenWindowsStarts = false;
+            settings.FilterDevices = FilterDevicesEnum.ShowAll;
+            settings.Size = defaultSize;
+            settings.ExtraBufferInSeconds = 0;
+            settings.RecordingDeviceID = null;
+            devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
+            mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
             mainForm.SetStreamFormat(settings.StreamFormat.Value);
             mainForm.SetCulture(settings.Culture);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication.Value);
-            mainForm.ShowLagControl(settings.ShowLagControl.Value);
             mainForm.SetLagValue(settings.LagControlValue.Value);
+            mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts.Value);
+            mainForm.SetFilterDevices(settings.FilterDevices.Value);
+            mainForm.SetSize(settings.Size.Value);
+            mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds.Value);
+            mainForm.SetRecordingDeviceID(settings.RecordingDeviceID);
             settings.Save();
         }
 
@@ -346,12 +390,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void CloseApplication()
         {
             SaveSettings();
-            NativeMethods.StopSetWindowsHooks();
-            loopbackRecorder?.StopRecording();
-            devices?.Dispose();
-            streamingRequestListener?.StopListening();
-            if (notifyIcon != null) notifyIcon.Visible = false;
-            if (mainForm != null) mainForm.Dispose();
+            Dispose(true);
         }
 
         public void SetLagThreshold(int lagThresholdIn)
@@ -370,9 +409,49 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Dispose.
         /// </summary>
-        protected virtual void Dispose(bool cleanupAll)
+        protected virtual void Dispose(bool disposing)
         {
-            notifyIcon.Dispose();
+            devices?.Dispose();
+            streamingRequestListener?.StopListening();
+            streamingRequestListener?.Dispose();
+            Mp3Stream?.Dispose();
+            NativeMethods.StopSetWindowsHooks();
+            if (notifyIcon != null) notifyIcon.Visible = false;
+            notifyIcon?.Dispose();
+            mainForm?.Dispose();
+            taskList?.Dispose();
+        }
+
+        /// <summary>
+        /// The devices filter has changed.
+        /// </summary>
+        /// <param name="value">new filter value</param>
+        public void SetFilterDevices(FilterDevicesEnum value)
+        {
+            if (devices == null)
+                return;
+
+            devices.SetFilterDevices(value);
+        }
+
+        /// <summary>
+        /// Was the device playing when the application was closed for the last time?
+        /// </summary>
+        /// <returns>true if the device was playing, or false</returns>
+        public bool WasPlaying(DiscoveredDevice discoveredDevice)
+        {
+            for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
+            {
+                if (settings.ChromecastDiscoveredDevices[i].Port == discoveredDevice.Port &&
+                    settings.ChromecastDiscoveredDevices[i].Name == discoveredDevice.Name)
+                {
+                    return settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Playing ||
+                        settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.Buffering ||
+                        settings.ChromecastDiscoveredDevices[i].DeviceState == Communication.DeviceState.LoadingMedia;
+                }
+            }
+
+            return false;
         }
 
 
@@ -404,7 +483,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             catch (Exception ex)
             {
-                logger.Log($"AddNotifyIcon: {ex.Message}");
+                logger.Log(ex, "ApplicationLogic.AddNotifyIcon");
             }
         }
 
@@ -415,10 +494,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// ip addresses & device names
         /// format: 192.168.0.1,DeviceName1;192.168.0.2,DeviceName2
         /// </param>
-        private void ApplyConfiguration(string ipAddressesDevicesIn)
+        private void ApplyConfiguration(string ipAddressesDevicesIn, bool showLagControl)
         {
             try
             {
+                mainForm.ShowLagControl(showLagControl);
                 if (!string.IsNullOrWhiteSpace(ipAddressesDevicesIn))
                 {
                     var ipDevices = ipAddressesDevicesIn.Split(';');
@@ -437,7 +517,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             catch (Exception ex)
             {
-                logger.Log($"ApplyConfiguration: {ex.Message}");
+                logger.Log(ex, "ApplicationLogic.ApplyConfiguration");
             }
         }
 
@@ -447,6 +527,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private void CloseApplication(object sender, EventArgs e)
         {
             CloseApplication();
+        }
+
+        /// <summary>
+        /// Start an action in a new task.
+        /// </summary>
+        public void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null)
+        {
+            taskList.Add(action, cancellationTokenSource);
         }
 
         #endregion

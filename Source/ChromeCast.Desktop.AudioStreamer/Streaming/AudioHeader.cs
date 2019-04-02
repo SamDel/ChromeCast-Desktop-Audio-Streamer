@@ -11,12 +11,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Generate a header for a maximum length WAV stream.
         /// </summary>
-        public byte[] GetRiffHeader(WaveFormat format)
+        public byte[] GetRiffHeader(WaveFormat format, uint dataSize = 0)
         {
-            var dataSize = (uint)0;
+            if (format == null)
+                return new byte[0];
+
             uint chunkSize = dataSize;
             uint factChunkSize = 4;
-            uint numberOfSamples = (uint)((dataSize * 8) / format.BitsPerSample / format.Channels);
+            uint numberOfSamples = (uint)(dataSize * 8 / format.BitsPerSample / format.Channels);
 
             var riffHeaderStream = new MemoryStream();
             var writer = new BinaryWriter(riffHeaderStream, Encoding.UTF8);
@@ -43,6 +45,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <returns>a mp3 header</returns>
         public byte[] GetMp3Header(WaveFormat format, SupportedStreamFormat streamFormat)
         {
+            if (format == null)
+                return new byte[0];
+
             var riffHeaderStream = new MemoryStream();
             var writer = new BinaryWriter(riffHeaderStream, Encoding.UTF8);
 

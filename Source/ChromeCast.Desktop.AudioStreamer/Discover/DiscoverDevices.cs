@@ -12,8 +12,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
     {
         public const int Interval = 2000;
         public const int MaxNumberOfTries = 15;
+        private const string serviceType = "_googlecast._tcp";
+        private const string serviceTypeEmbedded = "_googlezone._tcp";
         private Action<DiscoveredDevice> onDiscovered;
-        private int numberDiscovered;
         private List<DiscoveredDevice> discoveredDevices;
         private Timer timer;
 
@@ -21,8 +22,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         {
         }
 
+        /// <summary>
+        /// Start discovering devices.
+        /// </summary>
+        /// <param name="onDiscoveredIn">callback for when a device is discovered</param>
         public void Discover(Action<DiscoveredDevice> onDiscoveredIn)
         {
+            if (onDiscoveredIn == null)
+                return;
+
             onDiscovered = onDiscoveredIn;
             discoveredDevices = new List<DiscoveredDevice>();
             timer = new Timer
@@ -35,25 +43,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
 
             // MDNS search
             MdnsSearch();
-
-            numberDiscovered = 0;
         }
 
-        public void UpdateCounter()
-        {
-            numberDiscovered++;
-        }
-
+        /// <summary>
+        /// Do a scan on the network.
+        /// </summary>
         public void MdnsSearch()
         {
-            string serviceType = "_googlecast._tcp";
             ServiceBrowser serviceBrowser = new ServiceBrowser();
             serviceBrowser.ServiceAdded += OnServiceAdded;
             serviceBrowser.ServiceRemoved += OnServiceRemoved;
             serviceBrowser.ServiceChanged += OnServiceChanged;
             serviceBrowser.StartBrowse(serviceType);
 
-            string serviceTypeEmbedded = "_googlezone._tcp";
             ServiceBrowser serviceBrowserEmbedded = new ServiceBrowser();
             serviceBrowserEmbedded.ServiceAdded += OnServiceAdded;
             serviceBrowserEmbedded.ServiceRemoved += OnServiceRemoved;
@@ -61,18 +63,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             serviceBrowserEmbedded.StartBrowse(serviceTypeEmbedded);
         }
 
+        /// <summary>
+        /// Callback for when a device is changed.
+        /// </summary>
         private void OnServiceChanged(object sender, ServiceAnnouncementEventArgs e)
         {
             //TODO
         }
 
+        /// <summary>
+        /// Callback for when a device is removed.
+        /// </summary>
         private void OnServiceRemoved(object sender, ServiceAnnouncementEventArgs e)
         {
             //TODO
         }
 
+        /// <summary>
+        /// Callback for when a device is added.
+        /// </summary>
         private void OnServiceAdded(object sender, ServiceAnnouncementEventArgs e)
         {
+            if (e == null || e.Announcement == null || e.Announcement.Addresses == null || e.Announcement.Txt == null
+                || discoveredDevices == null)
+                return;
+
             var discoveredDevice = new DiscoveredDevice
             {
                 IPAddress = e.Announcement.Addresses[0].ToString(),
@@ -86,15 +101,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             if (discoveredDevice.Name != null 
                 && discoveredDevice.Usn != null 
                 && discoveredDevice.Headers != null
-                && (discoveredDevice.Protocol.IndexOf("_googlecast._tcp") >= 0 
-                    || discoveredDevice.Protocol.IndexOf("_googlezone._tcp") >= 0))
+                && (discoveredDevice.Protocol.IndexOf(serviceType) >= 0 
+                    || discoveredDevice.Protocol.IndexOf(serviceTypeEmbedded) >= 0))
             {
                 discoveredDevices.Add(discoveredDevice);
             }
         }
 
+        /// <summary>
+        /// Call the callback function for the discovered devices.
+        /// </summary>
         private void OnAddDevice(object sender, ElapsedEventArgs e)
         {
+            if (discoveredDevices == null)
+                return;
+
             lock (discoveredDevices)
             {
                 if (discoveredDevices.Count > 0)
@@ -104,6 +125,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                     discoveredDevices.RemoveAt(0);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            timer?.Close();
+            timer?.Dispose();
         }
     }
 }

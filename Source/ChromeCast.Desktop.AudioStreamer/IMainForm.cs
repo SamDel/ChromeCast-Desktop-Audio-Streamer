@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Classes;
@@ -17,7 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void AddDevice(IDevice device);
         void Dispose();
         void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
-        void GetRecordingDevice(Action<MMDevice> startRecordingSetDevice);
+        void GetRecordingDevice();
         void SetAutoRestart(bool autoRestart);
         bool GetUseKeyboardShortCuts();
         bool GetAutoStartDevices();
@@ -32,5 +33,18 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetCulture(string culture);
         void SetLogDeviceCommunication(bool logDeviceCommunication);
         bool GetLogDeviceCommunication();
+        void SetStartApplicationWhenWindowsStarts(bool value);
+        bool GetStartApplicationWhenWindowsStarts();
+        void SetFilterDevices(FilterDevicesEnum filterDevicesEnum);
+        FilterDevicesEnum? GetFilterDevices();
+        void SetStartLastUsedDevices(bool value);
+        bool? GetStartLastUsedDevices();
+        void SetSize(Size size);
+        Size GetSize();
+        void ShowWavMeterValue(byte[] data);
+        void SetExtraBufferInSeconds(int extraBufferInSeconds);
+        int? GetExtraBufferInSeconds();
+        void SetRecordingDeviceID(string recordingDeviceID);
+        string GetRecordingDeviceID();
     }
 }

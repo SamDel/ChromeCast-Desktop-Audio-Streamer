@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
@@ -22,20 +23,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private Socket listener;
         private string ip;
         private int port;
+        private ILogger logger;
 
         public string GetStreamimgUrl()
         {
             return string.Format($"http://{ip}:{port}/");
         }
 
-        public void StartListening(IPAddress ipAddress, Action<Socket, string> onConnectCallbackIn)
+        /// <summary>
+        /// Start listening for new streaming connections.
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <param name="onConnectCallbackIn"></param>
+        public void StartListening(IPAddress ipAddress, Action<Socket, string> onConnectCallbackIn, ILogger loggerIn)
         {
+            if (ipAddress == null || onConnectCallbackIn == null)
+                return;
+
+            logger = loggerIn;
             onConnectCallback = onConnectCallbackIn;
-            var localEndPoint = new IPEndPoint(ipAddress, 0);
-            listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
+                var localEndPoint = new IPEndPoint(ipAddress, 0);
+                listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
                 var endPoint = (IPEndPoint)listener.LocalEndPoint;
@@ -55,10 +67,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                logger.Log(ex, "StreamingRequestsListener.StartListening");
             }
         }
 
+        /// <summary>
+        /// Stop listening.
+        /// </summary>
         public void StopListening()
         {
             try
@@ -70,42 +85,63 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
         }
 
+        /// <summary>
+        /// Accept the connection.
+        /// </summary>
+        /// <param name="asyncResult"></param>
         private void AcceptCallback(IAsyncResult asyncResult)
         {
-            allDone.Set();
+            if (asyncResult == null || asyncResult.AsyncState == null)
+                return;
 
-            var listener = (Socket)asyncResult.AsyncState;
             try
             {
+                allDone.Set();
+
+                var listener = (Socket)asyncResult.AsyncState;
                 var handlerSocket = listener.EndAccept(asyncResult);
                 var state = new StateObject { workSocket = handlerSocket };
 
                 state.buffer = new byte[StateObject.bufferSize];
                 handlerSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCallback), state);
             }
-            catch (ObjectDisposedException)
+            catch (Exception ex)
             {
+                logger.Log(ex, "StreamingRequestsListener.AcceptCallback");
             }
         }
 
+        /// <summary>
+        /// Read incoming bytes.
+        /// </summary>
         private void ReadCallback(IAsyncResult asyncResult)
         {
-            var state = (StateObject)asyncResult.AsyncState;
-            var handlerSocket = state.workSocket;
+            if (asyncResult == null || asyncResult.AsyncState == null || onConnectCallback == null)
+                return;
 
-            var bytesRead = handlerSocket.EndReceive(asyncResult);
-            if (bytesRead > 0)
+            try
             {
-                state.receiveBuffer.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-                if (state.receiveBuffer.ToString().IndexOf("\r\n\r\n") >= 0)
+                var state = (StateObject)asyncResult.AsyncState;
+                var handlerSocket = state.workSocket;
+
+                var bytesRead = handlerSocket.EndReceive(asyncResult);
+                if (bytesRead > 0)
                 {
-                    onConnectCallback?.Invoke(handlerSocket, state.receiveBuffer.ToString());
+                    state.receiveBuffer.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    if (state.receiveBuffer.ToString().IndexOf("\r\n\r\n") >= 0)
+                    {
+                        onConnectCallback?.Invoke(handlerSocket, state.receiveBuffer.ToString());
+                    }
+                    else
+                    {
+                        // Not all data received. Get more.  
+                        handlerSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCallback), state);
+                    }
                 }
-                else
-                {
-                    // Not all data received. Get more.  
-                    handlerSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCallback), state);
-                }
+            }
+            catch (Exception ex)
+            {
+                logger.Log(ex, "StreamingRequestsListener.ReadCallback");
             }
         }
 
@@ -122,10 +158,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         protected virtual void Dispose(bool cleanupAll)
         {
-            if (allDone != null)
-                allDone.Dispose();
-            if (listener != null)
-                listener.Dispose();
+            allDone?.Dispose();
+            listener?.Dispose();
         }
     }
 }

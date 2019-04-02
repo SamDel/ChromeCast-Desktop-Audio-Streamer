@@ -8,13 +8,14 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Discover;
+using System.Threading;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public interface IDevice
     {
         void SetDeviceState(DeviceState disposed, string text = null);
-        void Initialize(DiscoveredDevice discoveredDevice, Action<DeviceEureka> deviceInformationCallback);
+        void Initialize(DiscoveredDevice discoveredDevice, Action<DeviceEureka> deviceInformationCallback, Action<IDevice> stopGroup, Action<Action, CancellationTokenSource> startTaskIn);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
@@ -30,7 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void VolumeDown();
         void VolumeMute();
         void VolumeSet(float level);
-        void Stop();
+        void Stop(bool changeUserMode);
         void Start();
         void OnReceiveMessage(CastMessage castMessage);
         DeviceControl GetDeviceControl();
@@ -38,9 +39,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         DiscoveredDevice GetDiscoveredDevice();
         void SendSilence();
         bool IsGroup();
-        bool WasPlayingWhenStopped();
         bool IsConnected();
         void OnVolumeUpdate(Volume volume);
         void ResumePlaying();
+        DeviceEureka GetEureka();
+        void StartTask(Action action);
+        void Dispose();
     }
 }

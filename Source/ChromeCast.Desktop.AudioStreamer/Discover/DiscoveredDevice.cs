@@ -1,4 +1,5 @@
 ﻿using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Communication;
 using System.Xml.Serialization;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
@@ -18,6 +19,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
         public DeviceEureka Eureka { get; set; }
         [XmlIgnore]
         public Group Group { get; set; }
+        public DeviceState DeviceState { get; set; }
         public bool IsGroup {
             get
             {

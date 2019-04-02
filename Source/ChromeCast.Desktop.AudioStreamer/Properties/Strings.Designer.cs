@@ -160,6 +160,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically start last used devices and groups at startup.
+        /// </summary>
+        internal static string Check_AutonaticallyStartLastUsed_Text {
+            get {
+                return ResourceManager.GetString("Check_AutonaticallyStartLastUsed_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M.
         /// </summary>
         internal static string Check_KeyboardShortcuts_Text {
@@ -196,6 +205,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start application when Windows starts.
+        /// </summary>
+        internal static string Check_StartApplicationWhenWindowsStarts_Text {
+            get {
+                return ResourceManager.GetString("Check_StartApplicationWhenWindowsStarts_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Desktop Audio Streamer.
         /// </summary>
         internal static string ChromeCast_StreamTitle {
@@ -228,6 +246,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string ConnectError {
             get {
                 return ResourceManager.GetString("ConnectError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Devices only.
+        /// </summary>
+        internal static string DevicesOnly {
+            get {
+                return ResourceManager.GetString("DevicesOnly", resourceCulture);
             }
         }
         
@@ -277,6 +304,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Groups only.
+        /// </summary>
+        internal static string GroupsOnly {
+            get {
+                return ResourceManager.GetString("GroupsOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Idle.
         /// </summary>
         internal static string Idle {
@@ -291,6 +327,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string InvalidRequest {
             get {
                 return ResourceManager.GetString("InvalidRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device buffer (in seconds).
+        /// </summary>
+        internal static string Label_BufferInSeconds_Text {
+            get {
+                return ResourceManager.GetString("Label_BufferInSeconds_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter devices.
+        /// </summary>
+        internal static string Label_FilterDevices_Text {
+            get {
+                return ResourceManager.GetString("Label_FilterDevices_Text", resourceCulture);
             }
         }
         
@@ -313,7 +367,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Experimental feature: Try to keep the buffer on the device as small as possible without hearing gaps..
+        ///   Looks up a localized string similar to Experimental feature: Try to keep the buffer on the device as small as possible without hearing dropouts..
         /// </summary>
         internal static string Label_LagExperimental_Text {
             get {
@@ -327,6 +381,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Label_Language_Text {
             get {
                 return ResourceManager.GetString("Label_Language_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Information about options on Github.
+        /// </summary>
+        internal static string Label_LinkHelp_Text {
+            get {
+                return ResourceManager.GetString("Label_LinkHelp_Text", resourceCulture);
             }
         }
         
@@ -547,6 +610,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        internal static string ShowAll {
+            get {
+                return ResourceManager.GetString("ShowAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log.
         /// </summary>
         internal static string Tab_Log_Text {
@@ -570,6 +642,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         internal static string Tab_Options_Text {
             get {
                 return ResourceManager.GetString("Tab_Options_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Group.
+        /// </summary>
+        internal static string Tooltip_Group_Text {
+            get {
+                return ResourceManager.GetString("Tooltip_Group_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recording level.
+        /// </summary>
+        internal static string Tooltip_RecordingLevel_Text {
+            get {
+                return ResourceManager.GetString("Tooltip_RecordingLevel_Text", resourceCulture);
             }
         }
         

@@ -16,18 +16,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private LameMP3FileWriter Writer { get; set; }
         private ILogger Logger { get; set; }
 
-        public Mp3Stream(ILogger loggerIn)
-        {
-            Logger = loggerIn;
-        }
-
         /// <summary>
         /// Setup MP3 encoding with the selected WAV and stream formats.
         /// </summary>
         /// <param name="format">the WAV input format</param>
         /// <param name="formatSelected">the mp3 output format</param>
-        public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected)
+        public Mp3Stream(WaveFormat format, SupportedStreamFormat formatSelected, ILogger loggerIn)
         {
+            Logger = loggerIn;
             Output = new MemoryStream();
             var bitRate = 128;
             if (formatSelected.Equals(SupportedStreamFormat.Mp3_320))
@@ -48,11 +44,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             try
             {
                 var writeBuffer = buffer.ToArray();
-                Writer.Write(writeBuffer, 0, writeBuffer.Length);
+                lock(Writer)
+                {
+                    Writer.Write(writeBuffer, 0, writeBuffer.Length);
+                }
             }
             catch (Exception ex)
             {
-                Logger.Log($"ex : {ex.Message}");
+                Logger.Log(ex, "Mp3Stream.Encode");
             }
         }
 
@@ -69,5 +68,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             Output.SetLength(0);
             return byteArray;
         }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            // Sometimes you get a AccessViolationException when disposing Writer.
+            //try
+            //{
+            //    Writer?.Dispose();
+            //    Writer = null;
+            //    Output?.Dispose();
+            //    Output = null;
+            //}
+            //catch (Exception)
+            //{
+            //}
     }
+}
 }
