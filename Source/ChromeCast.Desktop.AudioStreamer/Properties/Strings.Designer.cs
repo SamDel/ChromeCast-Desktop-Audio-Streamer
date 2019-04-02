@@ -214,7 +214,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sandpiper.
+        ///   Looks up a localized string similar to Desktop Audio Streamer.
         /// </summary>
         internal static string ChromeCast_StreamTitle {
             get {
@@ -538,7 +538,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sandpiper - Desktop Audio Streamer.
+        ///   Looks up a localized string similar to Desktop Audio Streamer.
         /// </summary>
         internal static string MainForm_Text {
             get {
