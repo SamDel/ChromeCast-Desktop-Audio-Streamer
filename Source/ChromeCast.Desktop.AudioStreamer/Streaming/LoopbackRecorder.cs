@@ -9,6 +9,8 @@ using CSCore.Streams;
 using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
+using System.Threading;
+using System.Diagnostics;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -23,9 +25,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         NAudio.Wave.WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
-        Timer dataAvailableTimer;
-        Timer getDevicesTimer;
+        System.Timers.Timer dataAvailableTimer;
+        System.Timers.Timer getDevicesTimer;
         private ILogger logger;
+        Thread eventThread;
+        BufferBlock bufferCaptured, bufferSend;
+        readonly object bufferSwapSync = new object();
 
         public LoopbackRecorder(ILogger loggerIn)
         {
@@ -101,15 +106,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             if (dataAvailableCallback != null)
             {
-                byte[] buffer = new byte[convertedSource.WaveFormat.BytesPerSecond / 2];
                 int read;
 
-                while ((read = convertedSource.Read(buffer, 0, buffer.Length)) > 0)
+                lock (bufferSwapSync)
                 {
-                    var dataToSend = new List<byte>();
-                    dataToSend.AddRange(buffer.Take(read).ToArray());
-                    dataAvailableCallback(dataToSend.ToArray(), waveFormat);
-                    mainForm.ShowWavMeterValue(dataToSend.ToArray());
+                    var currentBuffer = bufferCaptured;
+                    var spaceLeft = bufferCaptured.Data.Length - bufferCaptured.Used;
+
+                    while (spaceLeft > 0 && (read = convertedSource.Read(currentBuffer.Data, currentBuffer.Used, spaceLeft)) > 0)
+                    {
+                        spaceLeft -= read;
+                        currentBuffer.Used += read;
+                    }
                 }
             }
         }
@@ -173,6 +181,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 var format = convertedSource.WaveFormat;
                 waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                 isRecording = true;
+                bufferCaptured = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };
+                bufferSend = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };
+
+                eventThread = new Thread(EventThread)
+                {
+                    Name = "Loopback Event Thread",
+                    IsBackground = true
+                };
+                eventThread.Start(new WeakReference<LoopbackRecorder>(this));
+
                 return true;
             }
             catch (Exception ex)
@@ -181,6 +199,52 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Thread for the data captured events.
+        /// </summary>
+        /// <param name="param"></param>
+        private static void EventThread(object param)
+        {
+            var thisRef = (WeakReference<LoopbackRecorder>)param;
+            try
+            {
+                while (true)
+                {
+                    if (!thisRef.TryGetTarget(out LoopbackRecorder recorder) || recorder == null)
+                    {
+                        // Instance is dead
+                        return;
+                    }
+
+                    if (!recorder.isRecording)
+                    {
+                        return;
+                    }
+
+                    recorder.SwapBuffer();
+                    if (recorder.bufferSend.Used > 0)
+                    {
+                        var bytes = new List<byte>();
+                        bytes.AddRange(recorder.bufferSend.Data.Take(recorder.bufferSend.Used).ToArray());
+                        recorder.dataAvailableCallback(bytes.ToArray(), recorder.waveFormat);
+                        recorder.bufferSend.Used = 0;
+                        recorder.mainForm.ShowWavMeterValue(bytes.ToArray());
+                    }
+
+                    Thread.Sleep(1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+            }
         }
 
         /// <summary>
@@ -231,6 +295,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if ((DateTime.Now - latestDataAvailable).TotalSeconds > 2)
             {
                 logger.Log($"Check For Silence: {(DateTime.Now - latestDataAvailable).TotalSeconds}");
+            }
+        }
+
+        private void SwapBuffer()
+        {
+            lock (bufferSwapSync)
+            {
+                var tmp = bufferCaptured;
+                bufferCaptured = bufferSend;
+                bufferSend = tmp;
             }
         }
 
