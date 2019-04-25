@@ -56,6 +56,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 var form = MainForm as MainForm;
                 form.Show();
                 form.TopMost = true;
+                form.TopMost = false;
             }
 
             protected override void OnCreateMainForm()
