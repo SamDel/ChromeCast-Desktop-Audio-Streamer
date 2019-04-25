@@ -10,6 +10,7 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -21,38 +22,69 @@ namespace ChromeCast.Desktop.AudioStreamer
         [STAThread]
         static void Main()
         {
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledHandler);
-
-            DependencyFactory.Container
-                .RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager())
-                .RegisterType<IApplicationLogic, ApplicationLogic>(new ContainerControlledLifetimeManager())
-                .RegisterType<IMainForm, MainForm>(new ContainerControlledLifetimeManager())
-                .RegisterType<IDevices, Devices>(new ContainerControlledLifetimeManager())
-                .RegisterType<IDiscoverDevices, DiscoverDevices>()
-                .RegisterType<IChromeCastMessages, ChromeCastMessages>()
-                .RegisterType<IDeviceConnection, DeviceConnection>()
-                .RegisterType<IDeviceCommunication, DeviceCommunication>()
-                .RegisterType<IStreamingConnection, StreamingConnection>()
-                .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
-                .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
-                .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
-                .RegisterType<IConfiguration, Configuration>()
-                .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
-                .RegisterType<IAudioHeader, AudioHeader>()
-                .RegisterType<IDevice, Device>();
-
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
-            System.Windows.Forms.Application.Run(DependencyFactory.Container.Resolve<MainForm>());
+            try
+            {
+                new SingleInstanceController().Run(new string[0]);
+            }
+            catch (Exception)
+            {
+            }
         }
 
-        private static void UnhandledHandler(object sender, UnhandledExceptionEventArgs e)
+        private static void UnhandledHandler(object sender, System.UnhandledExceptionEventArgs e)
         {
 #if DEBUG
             Exception exception = (Exception)e.ExceptionObject;
             MessageBox.Show(exception.Message);
 #endif
+        }
+
+        /// <summary>
+        /// Make sure only one instance is running.
+        /// </summary>
+        public class SingleInstanceController : WindowsFormsApplicationBase
+        {
+            public SingleInstanceController()
+            {
+                IsSingleInstance = true;
+                StartupNextInstance += MainFormStartupNextInstance;
+            }
+
+            void MainFormStartupNextInstance(object sender, StartupNextInstanceEventArgs e)
+            {
+                var form = MainForm as MainForm;
+                form.Show();
+                form.TopMost = true;
+            }
+
+            protected override void OnCreateMainForm()
+            {
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                currentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(UnhandledHandler);
+
+                DependencyFactory.Container
+                    .RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager())
+                    .RegisterType<IApplicationLogic, ApplicationLogic>(new ContainerControlledLifetimeManager())
+                    .RegisterType<IMainForm, MainForm>(new ContainerControlledLifetimeManager())
+                    .RegisterType<IDevices, Devices>(new ContainerControlledLifetimeManager())
+                    .RegisterType<IDiscoverDevices, DiscoverDevices>()
+                    .RegisterType<IChromeCastMessages, ChromeCastMessages>()
+                    .RegisterType<IDeviceConnection, DeviceConnection>()
+                    .RegisterType<IDeviceCommunication, DeviceCommunication>()
+                    .RegisterType<IStreamingConnection, StreamingConnection>()
+                    .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
+                    .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
+                    .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
+                    .RegisterType<IConfiguration, Configuration>()
+                    .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
+                    .RegisterType<IAudioHeader, AudioHeader>()
+                    .RegisterType<IDevice, Device>();
+
+                MainForm = DependencyFactory.Container.Resolve<MainForm>();
+                System.Windows.Forms.Application.Run(MainForm);
+            }
         }
     }
 }
