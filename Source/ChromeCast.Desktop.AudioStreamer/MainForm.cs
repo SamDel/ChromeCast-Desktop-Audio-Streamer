@@ -20,6 +20,7 @@ using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using System.Text;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
+using System.Net.Sockets;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -531,6 +532,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (!InvokeRequired)
             {
                 var oldAddressUsed = (IPAddress)cmbIP4AddressUsed.SelectedItem;
+                //LogNetworkInformation();
                 var ip4Adresses = Network.GetIp4ddresses();
 
                 logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
@@ -556,6 +558,52 @@ namespace ChromeCast.Desktop.AudioStreamer
                             previousIpAddress = addressUsed;
                         }
                     }
+                }
+            }
+        }
+
+        private void LogNetworkInformation()
+        {
+            Log($"Network information:");
+            Log($"");
+            NetworkInterface[] networkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
+            foreach (var networkInterface in networkInterfaces)
+            {
+                Log($"Name networkInterface: {networkInterface.Name}");
+                var properties = networkInterface.GetIPProperties();
+                if (properties != null)
+                {
+                    foreach (var ip in properties.UnicastAddresses)
+                    {
+                        if (ip != null && ip.Address != null)
+                        {
+                            var address = ip.Address;
+                            if (address.ToString().Length >= 5)
+                                Log($"Address: {address.ToString().Substring(0, 5)}**************");
+                            else
+                                Log($"Address: {address.ToString()}");
+                            Log($"Address family: {address.AddressFamily.ToString()}");
+                            Log($"Operational status: {networkInterface.OperationalStatus.ToString()}");
+                            Log($"NetworkInterface type: {networkInterface.NetworkInterfaceType.ToString()}");
+                            Log($"GatewayAddresses count: {properties.GatewayAddresses.Count.ToString()}");
+                            if (address.AddressFamily == AddressFamily.InterNetwork
+                                && Network.IsInLocalIpRange(address)
+                                && networkInterface.OperationalStatus != OperationalStatus.Down
+                                && networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback
+                                && properties.GatewayAddresses.Count > 0)
+                            {
+                                var IsEthernet = networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet ||
+                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.Ethernet3Megabit ||
+                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.GigabitEthernet ||
+                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetFx ||
+                                                networkInterface.NetworkInterfaceType == NetworkInterfaceType.FastEthernetT;
+                                Log($"Is ethernet: {IsEthernet}");
+                            }
+                        }
+                        Log($"");
+                    }
+                    Log($"_______________________________________________________________________");
+                    Log($"");
                 }
             }
         }
