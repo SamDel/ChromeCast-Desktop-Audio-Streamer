@@ -9,7 +9,6 @@ using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
-using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 
 namespace ChromeCast.Desktop.AudioStreamer
