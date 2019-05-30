@@ -4,7 +4,7 @@ This tool captures the audio from your desktop and streams it to a ChromeCast Au
 
 You can download an installer from the [releases](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/releases).
 
-Please read the [wiki](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki) page for further information, and the [developers](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki/Developers) to get it to work in Visual Studio.
+Please read the [wiki](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki) page for further information, and the [developers](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki/Developers) page to get it to work in Visual Studio.
 
 
 
