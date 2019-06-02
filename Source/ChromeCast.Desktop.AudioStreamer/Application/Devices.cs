@@ -155,9 +155,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="eurekaIn"></param>
         private void SetDeviceInformation(DeviceEureka eurekaIn)
         {
-            if (eurekaIn?.Multizone?.Groups == null)
-                return;
-
             var discoveredDevice = new DiscoveredDevice
             {
                 IPAddress = eurekaIn.Net.Ip_address,
@@ -170,6 +167,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 Eureka = eurekaIn
             };
             OnDeviceAvailable(discoveredDevice);
+
+            if (eurekaIn?.Multizone?.Groups == null)
+                return;
 
             foreach (var group in eurekaIn.Multizone.Groups)
             {
