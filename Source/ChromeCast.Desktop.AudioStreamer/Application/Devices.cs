@@ -92,7 +92,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             var eurekaIn = deviceIn.GetEureka();
-            if (eurekaIn == null)
+            if (eurekaIn == null || eurekaIn?.Multizone?.Groups == null)
                 return;
 
             foreach (var group in eurekaIn.Multizone.Groups)
@@ -120,7 +120,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 // Check if this device is in the device-group that has to stop.
                 var deviceEureka = device.GetEureka();
-                if (deviceEureka == null)
+                if (deviceEureka == null || deviceEureka?.Multizone?.Groups == null)
                     continue;
 
                 foreach (var group in deviceEureka.Multizone.Groups)
