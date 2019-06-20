@@ -15,7 +15,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public interface IDevice
     {
         void SetDeviceState(DeviceState disposed, string text = null);
-        void Initialize(DiscoveredDevice discoveredDevice, Action<DeviceEureka> deviceInformationCallback, Action<IDevice> stopGroup, Action<Action, CancellationTokenSource> startTaskIn);
+        void Initialize(DiscoveredDevice discoveredDevice, Action<DeviceEureka> deviceInformationCallback, Action<IDevice> stopGroup, Action<Action, CancellationTokenSource> startTaskIn, Func<IDevice, bool> isGroupStatusBlankIn);
         bool AddStreamingConnection(string remoteAddress, Socket socket);
         void OnGetStatus();
         void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat);
@@ -45,5 +45,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         DeviceEureka GetEureka();
         void StartTask(Action action);
         void Dispose();
+        bool IsStatusTextBlank();
+        string GetStatusText();
+        bool IsStatusTextBlankCheck(string statusText);
     }
 }

@@ -40,6 +40,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Action<DeviceEureka> setDeviceInformationCallback;
         private Action<Action, CancellationTokenSource> startTask;
         private Action<IDevice> stopGroup;
+        private Func<IDevice, bool> isGroupStatusBlank;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -67,11 +68,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
         public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn
-            , Action<IDevice> stopGroupIn, Action<Action, CancellationTokenSource> startTaskIn)
+            , Action<IDevice> stopGroupIn, Action<Action, CancellationTokenSource> startTaskIn, Func<IDevice, bool> isGroupStatusBlankIn)
         {
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
             stopGroup = stopGroupIn;
             startTask = startTaskIn;
+            isGroupStatusBlank = isGroupStatusBlankIn;
 
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
                 discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
@@ -576,6 +578,41 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             streamingConnection?.Dispose();
             deviceConnection?.Dispose();
             deviceControl?.Dispose();
+        }
+
+        /// <summary>
+        /// Check if the status text of the device is empty,
+        /// For groups the status text of all devices in the group should be empty.
+        /// </summary>
+        /// <returns>true if the status text(s) are empty, or false</returns>
+        public bool IsStatusTextBlank()
+        {
+            if (IsGroup())
+            {
+                return isGroupStatusBlank(this);
+            }
+            else
+            {
+                var statusText = GetStatusText();
+                return IsStatusTextBlankCheck(statusText);
+            }
+        }
+
+        /// <summary>
+        /// Get the status text returned by the device.
+        /// </summary>
+        /// <returns>the status text</returns>
+        public string GetStatusText()
+        {
+            return deviceCommunication.GetStatusText();
+        }
+
+        /// <summary>
+        /// Check if the status text of the device is blank.
+        /// </summary>
+        public bool IsStatusTextBlankCheck(string statusText)
+        {
+            return string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0;
         }
     }
 }

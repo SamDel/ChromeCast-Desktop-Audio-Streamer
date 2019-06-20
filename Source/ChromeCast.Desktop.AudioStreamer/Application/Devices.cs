@@ -48,7 +48,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (existingDevice == null)
                     {
                         var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
@@ -58,7 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     else
                     {
-                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask);
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank);
                     }
                 }
             }
@@ -463,6 +463,36 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void SetExtraBufferInSeconds(int bufferInSeconds)
         {
             applicationBuffer.SetExtraBufferInSeconds(bufferInSeconds);
+        }
+
+        /// <summary>
+        /// Check if the status text of all devices in a group is blank.
+        /// </summary>
+        /// <param name="deviceIn">the group device</param>
+        private bool IsGroupStatusBlank(IDevice deviceIn)
+        {
+            if (deviceList == null || deviceIn == null)
+                return true;
+
+            // Check the status text of all devices in the group.
+            foreach (var device in deviceList)
+            {
+                var eureka = device.GetEureka();
+                if (eureka == null || eureka?.Multizone?.Groups == null)
+                    return true;
+
+                foreach (var group in eureka.Multizone.Groups)
+                {
+                    if (group.Name == deviceIn.GetFriendlyName())
+                    {
+                        var statusText = device.GetStatusText();
+                        if (!device.IsStatusTextBlankCheck(statusText))
+                            return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

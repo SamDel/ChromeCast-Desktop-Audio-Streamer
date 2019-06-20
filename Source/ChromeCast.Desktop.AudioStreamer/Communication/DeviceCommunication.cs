@@ -253,6 +253,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         }
 
         /// <summary>
+        /// Get the status text returned by the device.
+        /// </summary>
+        /// <returns>the status text</returns>
+        public string GetStatusText()
+        {
+            return statusText;
+        }
+
+        /// <summary>
         /// Send a message to get the receiver status.
         /// </summary>
         private void GetReceiverStatus()
@@ -457,7 +466,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         || device.GetDeviceState() == DeviceState.Idle)
                 {
                     device.OnGetStatus();
-                    if (string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0)
+                    if (device.IsStatusTextBlank())
                         WaitDeviceConnected(PlayStop, 50);
                 }
             }, cancellationTokenSource);
