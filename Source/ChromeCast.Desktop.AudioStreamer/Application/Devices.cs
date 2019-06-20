@@ -79,14 +79,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
             else
             {
-                StopGroups(deviceIn);
+                StopGroups(deviceIn, true);
             }
         }
 
         /// <summary>
         /// Stop all groups a device is in.
         /// </summary>
-        private void StopGroups(IDevice deviceIn)
+        private void StopGroups(IDevice deviceIn, bool change)
         {
             if (deviceList == null || deviceIn == null)
                 return;
@@ -102,7 +102,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     if (group.Name == device.GetFriendlyName())
                     {
-                        device.Stop(true);
+                        device.Stop(true && change);
                     }
                 }
             }
@@ -127,8 +127,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     if (group.Name == deviceIn.GetFriendlyName())
                     {
-                        device.Stop(true);
-                        StopGroups(device);
+                        device.Stop(false);
+                        StopGroups(device, false);
                     }
                 }
             }
