@@ -133,7 +133,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     break;
             }
 
-            return string.Empty;
+            return DeviceInfo?.Mac_address;
         }
 
         public string GetIpAddress()
@@ -148,7 +148,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     break;
             }
 
-            return string.Empty;
+            return Net?.Ip_address;
         }
 
         public string GetName()
@@ -159,19 +159,26 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class Location
     {
-        public string country_code { get; set; }
-        public double latitude { get; set; }
-        public double longitude { get; set; }
+        [JsonProperty("country_code")]
+        public string CountryCode { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
     }
 
     public class SetupStats
     {
-        public bool historically_succeeded { get; set; }
-        public int num_check_connectivity { get; set; }
-        public int num_connect_wifi { get; set; }
-        public int num_connected_wifi_not_saved { get; set; }
-        public int num_initial_eureka_info { get; set; }
-        public int num_obtain_ip { get; set; }
+        [JsonProperty("historically_succeeded")]
+        public bool HistoricallySucceeded { get; set; }
+        [JsonProperty("num_check_connectivity")]
+        public int NumCheckConnectivity { get; set; }
+        [JsonProperty("num_connect_wifi")]
+        public int NumConnectWifi { get; set; }
+        [JsonProperty("num_connected_wifi_not_saved")]
+        public int NumConnectedWifiNotSaved { get; set; }
+        [JsonProperty("num_initial_eureka_info")]
+        public int NumInitialEurekaInfo { get; set; }
+        [JsonProperty("num_obtain_ip")]
+        public int NumObtainIp { get; set; }
     }
 
     public class Audio
@@ -238,7 +245,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public class DeviceInfo
     {
         [JsonProperty("4k_blocked")]
-        public int __invalid_name__4k_blocked { get; set; }
+        public int DI4kBlocked { get; set; }
         public Capabilities Capabilities { get; set; }
         public string Cloud_device_id { get; set; }
         public string Factory_country_code { get; set; }
