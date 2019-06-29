@@ -35,10 +35,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDevice.Port == 0 || discoveredDevice.Port == 10001)
                 return;
 
-            if (!discoveredDevice.AddedByDeviceInfo)
+            if (!discoveredDevice.AddedByDeviceInfo && !discoveredDevice.IsGroup)
             {
-                if (!discoveredDevice.IsGroup)
-                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
+                applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
             }
             else
             {
@@ -144,9 +143,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return null;
 
             if (discoveredDevice.IsGroup)
-                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Group?.Uuid == discoveredDevice.Group?.Uuid);
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Name == discoveredDevice.Name);
             else
-                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.DeviceInfo?.Mac_address == discoveredDevice.Eureka?.DeviceInfo?.Mac_address);
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.GetMacAddress() == discoveredDevice.Eureka?.GetMacAddress());
         }
 
         /// <summary>
@@ -157,8 +156,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             var discoveredDevice = new DiscoveredDevice
             {
-                IPAddress = eurekaIn.Net.Ip_address,
-                Name = eurekaIn.Name,
+                IPAddress = eurekaIn.GetIpAddress(),
+                Name = eurekaIn.GetName(),
                 Port = 8009,
                 Protocol = "",
                 Usn = null,
