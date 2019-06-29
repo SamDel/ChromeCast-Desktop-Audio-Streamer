@@ -93,6 +93,85 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public UserEq UserEq { get; set; }
         public int Version { get; set; }
         public Wifi Wifi { get; set; }
+        public string Bssid { get; set; }
+        public string Build_version { get; set; }
+        public string Cast_build_revision { get; set; }
+        public ClosedCaption Closed_caption { get; set; }
+        public bool Connected { get; set; }
+        public bool Ethernet_connected { get; set; }
+        public bool Has_update { get; set; }
+        public string Hotspot_bssid { get; set; }
+        public string Ip_address { get; set; }
+        public string Locale { get; set; }
+        public Location Location { get; set; }
+        public string Mac_address { get; set; }
+        public int Noise_level { get; set; }
+        public string Public_key { get; set; }
+        public string Release_track { get; set; }
+        public int Setup_state { get; set; }
+        public SetupStats Setup_stats { get; set; }
+        public int Signal_level { get; set; }
+        public string Ssdp_udn { get; set; }
+        public string Ssid { get; set; }
+        public int Time_format { get; set; }
+        public string Timezone { get; set; }
+        public bool Tos_accepted { get; set; }
+        public double Uptime { get; set; }
+        public bool Wpa_configured { get; set; }
+        public int Wpa_id { get; set; }
+        public int Wpa_state { get; set; }
+
+        public string GetMacAddress()
+        {
+            switch (Version)
+            {
+                case 8:
+                    return DeviceInfo?.Mac_address;
+                case 10:
+                    return Mac_address;
+                default:
+                    break;
+            }
+
+            return string.Empty;
+        }
+
+        public string GetIpAddress()
+        {
+            switch (Version)
+            {
+                case 8:
+                    return Net.Ip_address;
+                case 10:
+                    return Ip_address;
+                default:
+                    break;
+            }
+
+            return string.Empty;
+        }
+
+        public string GetName()
+        {
+            return Name;
+        }
+    }
+
+    public class Location
+    {
+        public string country_code { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+    }
+
+    public class SetupStats
+    {
+        public bool historically_succeeded { get; set; }
+        public int num_check_connectivity { get; set; }
+        public int num_connect_wifi { get; set; }
+        public int num_connected_wifi_not_saved { get; set; }
+        public int num_initial_eureka_info { get; set; }
+        public int num_obtain_ip { get; set; }
     }
 
     public class Audio
@@ -217,6 +296,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public bool Remote_ducking { get; set; }
         public bool Stats { get; set; }
         public bool Ui_flipped { get; set; }
+        public bool Crash { get; set; }
     }
 
     public class Proxy
