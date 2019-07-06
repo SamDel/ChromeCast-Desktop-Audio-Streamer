@@ -206,6 +206,32 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public int? Left
+        {
+            get
+            {
+                return (int?)this["Left"];
+            }
+            set
+            {
+                this["Left"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public int? Top
+        {
+            get
+            {
+                return (int?)this["Top"];
+            }
+            set
+            {
+                this["Top"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public int? ExtraBufferInSeconds
         {
             get

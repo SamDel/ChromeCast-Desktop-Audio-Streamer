@@ -41,6 +41,9 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool? GetStartLastUsedDevices();
         void SetSize(Size size);
         Size GetSize();
+        void SetPosition(int? left, int? top);
+        int GetLeft();
+        int GetTop();
         void ShowWavMeterValue(byte[] data);
         void SetExtraBufferInSeconds(int extraBufferInSeconds);
         int? GetExtraBufferInSeconds();

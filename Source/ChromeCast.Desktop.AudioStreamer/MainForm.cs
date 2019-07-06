@@ -991,6 +991,29 @@ namespace ChromeCast.Desktop.AudioStreamer
             return windowSize;
         }
 
+        public void SetPosition(int? left, int? top)
+        {
+            if (left.HasValue && top.HasValue)
+            {
+                Left = left.Value;
+                Top = top.Value;
+            }
+            else
+            {
+                StartPosition = FormStartPosition.CenterScreen;
+            }
+        }
+
+        public int GetLeft()
+        {
+            return Left;
+        }
+
+        public int GetTop()
+        {
+            return Top;
+        }
+
         private void LinkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (e == null)
