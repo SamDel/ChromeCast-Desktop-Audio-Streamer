@@ -327,4 +327,7 @@
   <data name="Label_BufferInSeconds_Text" xml:space="preserve">
     <value>Device buffer (in seconds)</value>
   </data>
+  <data name="Check_AutoMute_Text" xml:space="preserve">
+    <value>Auto-mute/unmute desktop audio</value>
+  </data>
 </root>

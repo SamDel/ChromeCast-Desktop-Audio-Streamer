@@ -274,6 +274,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetSize(settings.Size.Value);
             mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 0);
             mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
+            mainForm.SetAutoMute(settings.AutoMute ?? false);
             if (settings.ChromecastDiscoveredDevices != null)
             {
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
@@ -322,6 +323,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Size = mainForm.GetSize();
             settings.ExtraBufferInSeconds = mainForm.GetExtraBufferInSeconds();
             settings.RecordingDeviceID = mainForm.GetRecordingDeviceID();
+            settings.AutoMute = mainForm.GetAutoMute();
 
             settings.Save();
         }
@@ -353,6 +355,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Size = defaultSize;
             settings.ExtraBufferInSeconds = 0;
             settings.RecordingDeviceID = null;
+            settings.AutoMute = false;
             devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
@@ -368,6 +371,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetSize(settings.Size.Value);
             mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds.Value);
             mainForm.SetRecordingDeviceID(settings.RecordingDeviceID);
+            mainForm.SetAutoMute(settings.AutoMute.Value);
             settings.Save();
         }
 

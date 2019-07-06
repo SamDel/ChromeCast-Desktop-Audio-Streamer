@@ -41,6 +41,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Action<Action, CancellationTokenSource> startTask;
         private Action<IDevice> stopGroup;
         private Func<IDevice, bool> isGroupStatusBlank;
+        private Action<bool> autoMute;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -68,12 +69,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         /// <param name="discoveredDeviceIn">the discovered device</param>
         public void Initialize(DiscoveredDevice discoveredDeviceIn, Action<DeviceEureka> setDeviceInformationCallbackIn
-            , Action<IDevice> stopGroupIn, Action<Action, CancellationTokenSource> startTaskIn, Func<IDevice, bool> isGroupStatusBlankIn)
+            , Action<IDevice> stopGroupIn, Action<Action, CancellationTokenSource> startTaskIn, Func<IDevice, bool> isGroupStatusBlankIn
+            , Action<bool> autoMuteIn)
         {
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
             stopGroup = stopGroupIn;
             startTask = startTaskIn;
             isGroupStatusBlank = isGroupStatusBlankIn;
+            autoMute = autoMuteIn;
 
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
                 discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
@@ -131,6 +134,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             stopGroup(this);
             deviceCommunication.OnPlayStop_Click();
+            autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
         }
 
         public void OnClickPlayPause(object sender, EventArgs e)
@@ -147,6 +151,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             deviceCommunication.OnStop_Click();
+            autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
         }
 
         /// <summary>
@@ -155,7 +160,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void Start()
         {
             if (devicePlayedWhenStopped)
+            {
                 ResumePlaying();
+            }
         }
 
         /// <summary>
@@ -323,6 +330,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 default:
                     break;
             }
+            autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
         }
 
         /// <summary>
@@ -548,6 +556,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             deviceCommunication.ResumePlaying();
+            autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
         }
 
         /// <summary>
@@ -613,6 +622,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public bool IsStatusTextBlankCheck(string statusText)
         {
             return string.IsNullOrEmpty(statusText) || statusText?.IndexOf(Properties.Strings.ChromeCast_StreamTitle) >= 0;
+        }
+
+        /// <summary>
+        /// Return the usermode.
+        /// </summary>
+        /// <returns>the usermode</returns>
+        public UserMode GetUserMode()
+        {
+            return deviceCommunication.GetUserMode();
         }
     }
 }

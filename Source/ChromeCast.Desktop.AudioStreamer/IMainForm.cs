@@ -46,5 +46,8 @@ namespace ChromeCast.Desktop.AudioStreamer
         int? GetExtraBufferInSeconds();
         void SetRecordingDeviceID(string recordingDeviceID);
         string GetRecordingDeviceID();
+        void SetAutoMute(bool autoMute);
+        bool GetAutoMute();
+        IntPtr GetHandle();
     }
 }

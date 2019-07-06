@@ -375,6 +375,10 @@
           <source>17, 17</source>
           <target state="translated">17, 17</target>
         </trans-unit>
+        <trans-unit id="$this.TrayHeight" translate="yes" xml:space="preserve" extype="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" extradata="metadata">
+          <source>52</source>
+          <target state="needs-review-translation">52</target>
+        </trans-unit>
       </group>
     </body>
   </file>
@@ -696,6 +700,10 @@
         <trans-unit id="Label_BufferInSeconds_Text" translate="yes" xml:space="preserve">
           <source>Device buffer (in seconds)</source>
           <target state="translated">Mémoire tampon du périphérique (en secondes)</target>
+        </trans-unit>
+        <trans-unit id="Check_AutoMute_Text" translate="yes" xml:space="preserve">
+          <source>Auto-mute/unmute desktop audio</source>
+          <target state="new">Auto-mute/unmute desktop audio</target>
         </trans-unit>
       </group>
     </body>

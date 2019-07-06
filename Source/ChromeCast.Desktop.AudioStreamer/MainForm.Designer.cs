@@ -42,6 +42,7 @@
             this.pnlResetSettings = new System.Windows.Forms.Panel();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.pnlOptionsCheckBoxes = new System.Windows.Forms.Panel();
+            this.chkAutoMute = new System.Windows.Forms.CheckBox();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
             this.chkShowLagControl = new System.Windows.Forms.CheckBox();
             this.chkAutoRestart = new System.Windows.Forms.CheckBox();
@@ -365,7 +366,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 407);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 429);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 100);
             this.flowLayoutPanel1.TabIndex = 43;
@@ -374,7 +375,7 @@
             // 
             this.pnlResetSettings.Controls.Add(this.btnResetSettings);
             this.pnlResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlResetSettings.Location = new System.Drawing.Point(0, 507);
+            this.pnlResetSettings.Location = new System.Drawing.Point(0, 529);
             this.pnlResetSettings.Name = "pnlResetSettings";
             this.pnlResetSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.pnlResetSettings.Size = new System.Drawing.Size(1030, 57);
@@ -395,6 +396,7 @@
             // pnlOptionsCheckBoxes
             // 
             this.pnlOptionsCheckBoxes.AutoSize = true;
+            this.pnlOptionsCheckBoxes.Controls.Add(this.chkAutoMute);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkLogDeviceCommunication);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkShowLagControl);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkAutoRestart);
@@ -407,8 +409,20 @@
             this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 191);
             this.pnlOptionsCheckBoxes.Name = "pnlOptionsCheckBoxes";
             this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 20, 20, 20);
-            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 216);
+            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 238);
             this.pnlOptionsCheckBoxes.TabIndex = 35;
+            // 
+            // chkAutoMute
+            // 
+            this.chkAutoMute.AutoSize = true;
+            this.chkAutoMute.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkAutoMute.Location = new System.Drawing.Point(15, 196);
+            this.chkAutoMute.Name = "chkAutoMute";
+            this.chkAutoMute.Size = new System.Drawing.Size(995, 22);
+            this.chkAutoMute.TabIndex = 44;
+            this.chkAutoMute.Text = "Auto-mute/unmute desktop audio";
+            this.chkAutoMute.UseVisualStyleBackColor = true;
+            this.chkAutoMute.CheckedChanged += new System.EventHandler(this.ChkAutoMute_CheckedChanged);
             // 
             // chkLogDeviceCommunication
             // 
@@ -914,6 +928,7 @@
         private System.Windows.Forms.Label lblDb;
         private System.Windows.Forms.Label lblBufferInSeconds;
         private System.Windows.Forms.ComboBox cmbBufferInSeconds;
+        private System.Windows.Forms.CheckBox chkAutoMute;
     }
 }
 

@@ -81,6 +81,11 @@ namespace ChromeCast.Desktop.AudioStreamer
             loopbackRecorder.Start(this, applicationLogic.OnRecordingDataAvailable, applicationLogic.ClearMp3Buffer);
         }
 
+        public IntPtr GetHandle()
+        {
+            return this.Handle;
+        }
+
         private void ApplyLocalization()
         {
             Text = Properties.Strings.MainForm_Text;
@@ -113,6 +118,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             lblLanguage.Text = Properties.Strings.Label_Language_Text;
             btnClearLog.Text = Properties.Strings.Button_ClearLog_Text;
             chkLogDeviceCommunication.Text = Properties.Strings.Check_LogDeviceCommunication_Text;
+            chkAutoMute.Text = Properties.Strings.Check_AutoMute_Text;
             linkHelp.Text = Properties.Strings.Label_LinkHelp_Text;
             volumeMeterTooltip.SetToolTip(pnlVolumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
             volumeMeterTooltip.SetToolTip(lblDb, Properties.Strings.Tooltip_RecordingLevel_Text);
@@ -1089,6 +1095,27 @@ namespace ChromeCast.Desktop.AudioStreamer
             base.Dispose(disposing);
             loopbackRecorder?.Dispose();
             wavGenerator?.Dispose();
+        }
+
+        private void ChkAutoMute_CheckedChanged(object sender, EventArgs e)
+        {
+            SetAutoMute(chkAutoMute.Checked);
+        }
+
+        public void SetAutoMute(bool autoMute)
+        {
+            if (chkLogDeviceCommunication == null || tabControl == null)
+                return;
+
+            chkAutoMute.Checked = autoMute;
+        }
+
+        public bool GetAutoMute()
+        {
+            if (chkAutoMute == null)
+                return false;
+
+            return chkAutoMute.Checked;
         }
     }
 }

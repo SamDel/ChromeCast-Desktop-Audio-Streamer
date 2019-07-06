@@ -230,5 +230,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["RecordingDeviceID"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public bool? AutoMute
+        {
+            get
+            {
+                return (bool?)this["AutoMute"];
+            }
+            set
+            {
+                this["AutoMute"] = value;
+            }
+        }
+
     }
 }

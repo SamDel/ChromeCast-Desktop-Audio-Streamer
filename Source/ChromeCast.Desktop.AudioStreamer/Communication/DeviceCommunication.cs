@@ -676,5 +676,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             IsDisposed = true;
             userMode = UserMode.Stopped;
         }
+
+        /// <summary>
+        /// Return the usermode.
+        /// </summary>
+        /// <returns>the usermode</returns>
+        public UserMode GetUserMode()
+        {
+            return userMode;
+        }
     }
 }

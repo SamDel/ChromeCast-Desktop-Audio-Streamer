@@ -22,6 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IApplicationLogic applicationLogic;
         private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
         private ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
+        private bool isMuted;
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -47,7 +48,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     if (existingDevice == null)
                     {
                         var newDevice = DependencyFactory.Container.Resolve<Device>();
-                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank);
+                        newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank, AutoMute);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);
 
@@ -57,7 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     else
                     {
-                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank);
+                        existingDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank, AutoMute);
                     }
                 }
             }
@@ -166,37 +167,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 Eureka = eurekaIn
             };
             OnDeviceAvailable(discoveredDevice);
-
-            if (eurekaIn?.Multizone?.Groups == null)
-                return;
-
-            foreach (var group in eurekaIn.Multizone.Groups)
-            {
-                discoveredDevice = new DiscoveredDevice
-                {
-                    IPAddress = GetIpOfGroup(group, eurekaIn),
-                    Name = group.Name,
-                    Port = GetPortOfGroup(group, eurekaIn),
-                    Protocol = "",
-                    Usn = null,
-                    IsGroup = true,
-                    AddedByDeviceInfo = true,
-                    Eureka = eurekaIn,
-                    Group = group
-                };
-
-                // Add the group.
-                if (group.Elected_leader == "self")
-                {
-                    OnDeviceAvailable(discoveredDevice);
-                }
-
-                // Get device information from unknown devices.
-                if (!deviceList.Any(x => x.GetHost() == GetIpOfGroup(group, eurekaIn)))
-                {
-                    applicationLogic.StartTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger));
-                }
-            }
         }
 
         private string GetIpOfGroup(Group group, DeviceEureka eurekaIn)
@@ -492,6 +462,38 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Automute the system volume.
+        /// Mute when one device is playng, Unmute when no one is playing.
+        /// </summary>
+        public void AutoMute(bool playing)
+        {
+            if (mainForm.GetAutoMute())
+            {
+                if (playing)
+                {
+                    SystemVolume.Mute(true, mainForm);
+                    isMuted = true;
+                }
+                else if (!playing && !IsAnyDevicePlaying() && isMuted)
+                {
+                    SystemVolume.Mute(false, mainForm);
+                    isMuted = false;
+                }
+            }
+        }
+
+        private bool IsAnyDevicePlaying()
+        {
+            foreach (var device in deviceList)
+            {
+                if (device.GetUserMode() == UserMode.Playing)
+                    return true;
+            }
+
+            return false;
         }
     }
 }
