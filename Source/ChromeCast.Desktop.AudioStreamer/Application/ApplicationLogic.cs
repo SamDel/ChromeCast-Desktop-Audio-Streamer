@@ -272,6 +272,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (settings.Size == null || settings.Size.Value.Width < 50|| settings.Size.Value.Height < 50)
                 settings.Size = defaultSize;
             mainForm.SetSize(settings.Size.Value);
+            mainForm.SetPosition(
+                    Math.Min(Math.Max(settings.Left.Value, 0), Screen.PrimaryScreen.Bounds.Width),
+                    Math.Min(Math.Max(settings.Top.Value, 0), Screen.PrimaryScreen.Bounds.Height)
+                );
             mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 0);
             mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
             mainForm.SetAutoMute(settings.AutoMute ?? false);
@@ -321,6 +325,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.StartApplicationWhenWindowsStarts = mainForm.GetStartApplicationWhenWindowsStarts();
             settings.FilterDevices = mainForm.GetFilterDevices();
             settings.Size = mainForm.GetSize();
+            settings.Left = mainForm.GetLeft();
+            settings.Top = mainForm.GetTop();
             settings.ExtraBufferInSeconds = mainForm.GetExtraBufferInSeconds();
             settings.RecordingDeviceID = mainForm.GetRecordingDeviceID();
             settings.AutoMute = mainForm.GetAutoMute();
@@ -353,6 +359,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.StartApplicationWhenWindowsStarts = false;
             settings.FilterDevices = FilterDevicesEnum.ShowAll;
             settings.Size = defaultSize;
+            settings.Left = Screen.PrimaryScreen.Bounds.Width / 2 - settings.Size.Value.Width / 2;
+            settings.Top = Screen.PrimaryScreen.Bounds.Height / 2 - settings.Size.Value.Height / 2;
             settings.ExtraBufferInSeconds = 0;
             settings.RecordingDeviceID = null;
             settings.AutoMute = false;

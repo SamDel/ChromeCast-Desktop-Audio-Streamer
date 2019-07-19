@@ -1006,12 +1006,18 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public int GetLeft()
         {
-            return Left;
+            if (WindowState == FormWindowState.Normal)
+                return Left;
+            else
+                return RestoreBounds.Left;
         }
 
         public int GetTop()
         {
-            return Top;
+            if (WindowState == FormWindowState.Normal)
+                return Top;
+            else
+                return RestoreBounds.Top;
         }
 
         private void LinkHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
