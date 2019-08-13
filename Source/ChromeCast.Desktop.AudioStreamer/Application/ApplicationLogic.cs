@@ -299,16 +299,40 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var discoveredDevices = settings.ChromecastDiscoveredDevices;
             if (discoveredDevices == null)
                 discoveredDevices = new List<DiscoveredDevice>();
+
+            // Remove (old) entries of devices without a saved MAC address,
+            // and remove (old) entries of groups without a saved ID.
+            discoveredDevices = discoveredDevices.Where(
+                x => (x.IsGroup && !string.IsNullOrEmpty(x.Id)) || (!x.IsGroup && !string.IsNullOrEmpty(x.MACAddress))).ToList();
+
             foreach (var host in devices.GetHosts())
             {
-                var discoveredDevice = discoveredDevices.Where(x => x.IPAddress == host.IPAddress && x.Port == host.Port);
-                if (!discoveredDevice.Any())
+                if (host.IsGroup)
                 {
-                    discoveredDevices.Add(host);
+                    var discoveredDevice = discoveredDevices.Where(x => x.Id == host.Id);
+                    if (!discoveredDevice.Any())
+                    {
+                        discoveredDevices.Add(host);
+                    }
+                    else
+                    {
+                        discoveredDevice.First().Name = host.Name;
+                        discoveredDevice.First().IPAddress = host.IPAddress;
+                        discoveredDevice.First().Port = host.Port;
+                        discoveredDevice.First().DeviceState = host.DeviceState;
+                    }
                 }
                 else
                 {
-                    discoveredDevice.First().DeviceState = host.DeviceState;
+                    var discoveredDevice = discoveredDevices.Where(x => x.MACAddress == host.MACAddress);
+                    if (!discoveredDevice.Any())
+                    {
+                        discoveredDevices.Add(host);
+                    }
+                    else
+                    {
+                        discoveredDevice.First().DeviceState = host.DeviceState;
+                    }
                 }
             }
             settings.ChromecastDiscoveredDevices = discoveredDevices;
@@ -452,6 +476,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if the device was playing, or false</returns>
         public bool WasPlaying(DiscoveredDevice discoveredDevice)
         {
+            if (settings.ChromecastDiscoveredDevices == null)
+                return false;
+
             for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
             {
                 if (settings.ChromecastDiscoveredDevices[i].Port == discoveredDevice.Port &&

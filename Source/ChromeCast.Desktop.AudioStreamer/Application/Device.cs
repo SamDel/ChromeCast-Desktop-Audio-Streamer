@@ -96,6 +96,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
             if (discoveredDeviceIn.IPAddress != null) discoveredDevice.IPAddress = discoveredDeviceIn.IPAddress;
+            if (discoveredDeviceIn.MACAddress != null) discoveredDevice.MACAddress = discoveredDeviceIn.MACAddress;
+            if (discoveredDeviceIn.Id != null) discoveredDevice.Id = discoveredDeviceIn.Id;
             if (discoveredDeviceIn.Name != null) discoveredDevice.Name = discoveredDeviceIn.Name;
             if (discoveredDeviceIn.Port != 0) discoveredDevice.Port = discoveredDeviceIn.Port;
             if (discoveredDeviceIn.Protocol != null) discoveredDevice.Protocol = discoveredDeviceIn.Protocol;
@@ -544,6 +546,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (!IsGroup())
             {
                 startTask(DeviceInformation.GetDeviceInformation(discoveredDevice, SetDeviceInformation, logger), null);
+            }
+            else
+            {
+                SetDeviceName(discoveredDevice.Name);
             }
         }
 

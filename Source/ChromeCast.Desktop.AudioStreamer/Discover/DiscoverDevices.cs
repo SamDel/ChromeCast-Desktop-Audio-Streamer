@@ -96,6 +96,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                 Name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", ""),
                 Headers = JsonConvert.SerializeObject(e.Announcement.Txt),
                 Usn = e.Announcement.Hostname,
+                Id = e.Announcement.Txt.Where(x => x.ToString().StartsWith("id=")).FirstOrDefault()?.Replace("id=", ""),
             };
 
             if (discoveredDevice.Name != null 

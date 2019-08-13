@@ -34,5 +34,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                     Headers = GroupIdentifier;
             }
         }
+
+        public string MACAddress { get; set; }
+        public string Id { get; set; }
     }
 }

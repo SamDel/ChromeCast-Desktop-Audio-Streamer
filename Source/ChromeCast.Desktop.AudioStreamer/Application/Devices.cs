@@ -144,7 +144,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return null;
 
             if (discoveredDevice.IsGroup)
-                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Name == discoveredDevice.Name);
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Id == discoveredDevice.Id);
             else
                 return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.GetMacAddress() == discoveredDevice.Eureka?.GetMacAddress());
         }
@@ -158,6 +158,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             var discoveredDevice = new DiscoveredDevice
             {
                 IPAddress = eurekaIn.GetIpAddress(),
+                MACAddress = eurekaIn.GetMacAddress(),
                 Name = eurekaIn.GetName(),
                 Port = 8009,
                 Protocol = "",
@@ -167,25 +168,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 Eureka = eurekaIn
             };
             OnDeviceAvailable(discoveredDevice);
-        }
-
-        private string GetIpOfGroup(Group group, DeviceEureka eurekaIn)
-        {
-            if (group.Elected_leader == null || group.Elected_leader == "self" || group.Elected_leader.IndexOf(":") < 0)
-                return eurekaIn.Net.Ip_address;
-
-            return group.Elected_leader.Substring(0, group.Elected_leader.IndexOf(":"));
-        }
-
-        private int GetPortOfGroup(Group group, DeviceEureka eurekaIn)
-        {
-            if (group.Elected_leader == null || group.Elected_leader == "self" || group.Elected_leader.IndexOf(":") < 0)
-                return group.Cast_port;
-
-            if (int.TryParse(group.Elected_leader.Substring(group.Elected_leader.IndexOf(":") + 1), out int result))
-                return result;
-
-            return 0;
         }
 
         /// <summary>
