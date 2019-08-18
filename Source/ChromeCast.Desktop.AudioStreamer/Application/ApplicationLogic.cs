@@ -281,6 +281,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoMute(settings.AutoMute ?? false);
             if (settings.ChromecastDiscoveredDevices != null)
             {
+                settings.ChromecastDiscoveredDevices = RemoveOldEntries(settings.ChromecastDiscoveredDevices);
                 for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
                 {
                     StartTask(DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger));
@@ -302,8 +303,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             // Remove (old) entries of devices without a saved MAC address,
             // and remove (old) entries of groups without a saved ID.
-            discoveredDevices = discoveredDevices.Where(
-                x => (x.IsGroup && !string.IsNullOrEmpty(x.Id)) || (!x.IsGroup && !string.IsNullOrEmpty(x.MACAddress))).ToList();
+            discoveredDevices = RemoveOldEntries(discoveredDevices);
 
             foreach (var host in devices.GetHosts())
             {
@@ -356,6 +356,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoMute = mainForm.GetAutoMute();
 
             settings.Save();
+        }
+
+        /// <summary>
+        /// Remove (old) entries of devices without a saved MAC address,
+        /// and remove (old) entries of groups without a saved ID.
+        /// </summary>
+        private static List<DiscoveredDevice> RemoveOldEntries(List<DiscoveredDevice> discoveredDevices)
+        {
+            return discoveredDevices.Where(
+                            x => (x.IsGroup && !string.IsNullOrEmpty(x.Id)) || (!x.IsGroup && !string.IsNullOrEmpty(x.MACAddress))).ToList();
         }
 
         /// <summary>

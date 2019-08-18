@@ -26,6 +26,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                 if (Headers != null && Headers.IndexOf(GroupIdentifier) >= 0)
                     return true;
 
+                if (Port != 8009)
+                    return true;
+
                 return false;
             }
             set
