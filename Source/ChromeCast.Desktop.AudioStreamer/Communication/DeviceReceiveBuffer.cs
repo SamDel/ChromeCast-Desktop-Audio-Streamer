@@ -62,8 +62,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (message == null)
                 return;
 
-            var castMessage = CastMessage.ParseFrom(message);
-            onReceiveMessage?.Invoke(castMessage);
+            try
+            {
+                var castMessage = CastMessage.ParseFrom(message);
+                onReceiveMessage?.Invoke(castMessage);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>
