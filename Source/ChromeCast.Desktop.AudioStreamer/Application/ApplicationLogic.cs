@@ -316,10 +316,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     }
                     else
                     {
-                        discoveredDevice.First().Name = host.Name;
-                        discoveredDevice.First().IPAddress = host.IPAddress;
-                        discoveredDevice.First().Port = host.Port;
-                        discoveredDevice.First().DeviceState = host.DeviceState;
+                        if (host.DeviceState == Communication.DeviceState.ConnectError)
+                        {
+                            discoveredDevices.Remove(discoveredDevice.First());
+                        }
+                        else
+                        {
+                            discoveredDevice.First().Name = host.Name;
+                            discoveredDevice.First().IPAddress = host.IPAddress;
+                            discoveredDevice.First().Port = host.Port;
+                            discoveredDevice.First().DeviceState = host.DeviceState;
+                        }
                     }
                 }
                 else
