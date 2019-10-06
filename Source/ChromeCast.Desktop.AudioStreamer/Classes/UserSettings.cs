@@ -197,7 +197,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (Size?)this["Size"];
+                return (Size?)this["Size"] == null ? new Size(850, 550) : (Size?)this["Size"];
             }
             set
             {
@@ -210,7 +210,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["Left"];
+                return (int?)this["Left"] == null ? 0 : (int?)this["Left"];
             }
             set
             {
@@ -223,7 +223,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["Top"];
+                return (int?)this["Top"] == null ? 0 : (int?)this["Top"];
             }
             set
             {
