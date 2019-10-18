@@ -477,5 +477,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             return false;
         }
+
+        public List<IDevice> GetDeviceList()
+        {
+            return deviceList;
+        }
     }
 }

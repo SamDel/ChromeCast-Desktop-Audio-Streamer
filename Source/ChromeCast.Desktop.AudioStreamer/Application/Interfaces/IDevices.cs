@@ -27,5 +27,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetFilterDevices(FilterDevicesEnum value);
         void SetExtraBufferInSeconds(int bufferInSeconds);
         void AutoMute(bool mute);
+        List<IDevice> GetDeviceList();
     }
 }
