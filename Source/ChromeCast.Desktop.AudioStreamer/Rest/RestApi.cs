@@ -12,19 +12,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
     public class RestApi : IDisposable
     {
         public ManualResetEvent allDone = new ManualResetEvent(false);
-        private Action<Socket, string, IDevices, ILogger> onConnectCallback;
+        private Action<Socket, string, IDevices, ILogger, IMainForm> onConnectCallback;
         private Socket listener;
         private string ip;
         private int port;
         private ILogger logger;
         private IDevices devices;
+        private IMainForm mainForm;
 
         /// <summary>
         /// Start listening for new API request.
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <param name="onConnectCallbackIn"></param>
-        public void StartListening(IPAddress ipAddress, Action<Socket, string, IDevices, ILogger> onConnectCallbackIn, ILogger loggerIn, IDevices devicesIn)
+        public void StartListening(IPAddress ipAddress, Action<Socket, string, IDevices, ILogger, IMainForm> onConnectCallbackIn, ILogger loggerIn, IDevices devicesIn, IMainForm mainFormIn)
         {
             if (ipAddress == null || onConnectCallbackIn == null)
                 return;
@@ -32,6 +33,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
             logger = loggerIn;
             onConnectCallback = onConnectCallbackIn;
             devices = devicesIn;
+            mainForm = mainFormIn;
 
             try
             {
@@ -121,7 +123,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
                     if (state.receiveBuffer.ToString().IndexOf("\r\n\r\n") >= 0)
                     {
                         logger.Log(state.receiveBuffer.ToString());
-                        onConnectCallback?.Invoke(handlerSocket, state.receiveBuffer.ToString(), devices, logger);
+                        onConnectCallback?.Invoke(handlerSocket, state.receiveBuffer.ToString(), devices, logger, mainForm);
                         handlerSocket.Close();
                     }
                     else

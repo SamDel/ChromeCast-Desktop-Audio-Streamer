@@ -75,7 +75,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect, logger);
             });
             StartTask(() => {
-                new RestApi().StartListening(ipAddress, RestApiHandler.Process, logger, devices);
+                new RestApi().StartListening(ipAddress, RestApiHandler.Process, logger, devices, mainForm);
             });
         }
 

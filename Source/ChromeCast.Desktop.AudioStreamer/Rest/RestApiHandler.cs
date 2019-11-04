@@ -17,12 +17,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
         private const string errorDeviceNotFound = "{\"errors\": { \"status\": \"404 Not Found\", \"id\": \"3\", \"title\": \"Device not found\" } }";
         private const string errorWrongVolume = "{\"errors\": { \"status\": \"400 Bad Request\", \"id\": \"3\", \"title\": \"Volume should be an integer between 0 and 100 (/volume/<device>/<volume>)\" } }";
         
-        public static void Process(Socket socket, string request, IDevices devices, ILogger logger)
+        public static void Process(Socket socket, string request, IDevices devices, ILogger logger, IMainForm mainForm)
         {
             if (request == null || socket == null)
                 return;
 
-            string response = string.Empty;
+            string response;
             try
             {
                 var req = request.Split('\r');
@@ -44,7 +44,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
                 else if (action.StartsWith("/togglemute"))
                     response = ToggleMute(action.Replace("/togglemute", ""), devices);
                 else if (action.StartsWith("/list"))
-                    response = List(action.Replace("/list", ""), devices);
+                    response = List(devices);
+                else if (action.StartsWith("/restartrecording"))
+                    response = RestartRecording(mainForm);
                 else
                     response = errorNotSupported;
 
@@ -61,7 +63,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
             }
         }
 
-        private static string List(string action, IDevices devices)
+        private static string RestartRecording(IMainForm mainForm)
+        {
+            mainForm.RestartRecording();
+            var response = "{\"data\": { \"type\": \"done\", \"id\": \"1\", \"attributes\": { \"action\": \"/restartrecording\" } } }";
+            return response;
+        }
+
+        private static string List(IDevices devices)
         {
             var deviceList = devices.GetDeviceList();
             List<string> list = new List<string>();

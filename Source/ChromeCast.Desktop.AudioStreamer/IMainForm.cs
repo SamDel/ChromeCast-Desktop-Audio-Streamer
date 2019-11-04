@@ -52,5 +52,6 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetAutoMute(bool autoMute);
         bool GetAutoMute();
         IntPtr GetHandle();
+        void RestartRecording();
     }
 }
