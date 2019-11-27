@@ -243,6 +243,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         ResumePlaying();
                         break;
                     case DeviceState.LoadingMedia:
+                    case DeviceState.LoadingMediaCheckFirewall:
                     case DeviceState.Buffering:
                     case DeviceState.Playing:
                     case DeviceState.Paused:
@@ -404,7 +405,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (deviceState == DeviceState.Playing ||
                 deviceState == DeviceState.Buffering ||
                 deviceState == DeviceState.Paused ||
-                deviceState == DeviceState.LoadingMedia)
+                deviceState == DeviceState.LoadingMedia ||
+                deviceState == DeviceState.LoadingMediaCheckFirewall)
             {
                 Stop();
             }
@@ -444,7 +446,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 if (deviceState == DeviceState.Playing ||
                     deviceState == DeviceState.Buffering ||
                     deviceState == DeviceState.Paused ||
-                    deviceState == DeviceState.LoadingMedia)
+                    deviceState == DeviceState.LoadingMedia ||
+                    deviceState == DeviceState.LoadingMediaCheckFirewall)
                 {
                     Stop();
                 }
@@ -612,6 +615,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LaunchingApplication:
                 case DeviceState.LaunchedApplication:
                 case DeviceState.LoadingMedia:
+                case DeviceState.LoadingMediaCheckFirewall:
                 case DeviceState.Idle:
                     LoadMedia();
                     break;
@@ -643,6 +647,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LaunchingApplication:
                 case DeviceState.LaunchedApplication:
                 case DeviceState.LoadingMedia:
+                case DeviceState.LoadingMediaCheckFirewall:
                 case DeviceState.Paused:
                     Stop();
                     break;

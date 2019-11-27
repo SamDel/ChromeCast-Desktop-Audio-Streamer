@@ -16,6 +16,7 @@
         LoadCancelled,
         InvalidRequest,
         Closed,
-        Connected
+        Connected,
+        LoadingMediaCheckFirewall
     };
 }

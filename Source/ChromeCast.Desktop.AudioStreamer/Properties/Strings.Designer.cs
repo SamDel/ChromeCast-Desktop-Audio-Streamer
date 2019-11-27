@@ -529,6 +529,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check Firewall.
+        /// </summary>
+        internal static string LoadingMediaCheckFirewall {
+            get {
+                return ResourceManager.GetString("LoadingMediaCheckFirewall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to in.
         /// </summary>
         internal static string Log_In {
