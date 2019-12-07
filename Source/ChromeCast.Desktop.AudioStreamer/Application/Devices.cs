@@ -144,7 +144,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return null;
 
             if (discoveredDevice.IsGroup)
-                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Id == discoveredDevice.Id);
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Name == discoveredDevice.Name);
             else
                 return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.GetMacAddress() == discoveredDevice.Eureka?.GetMacAddress());
         }
