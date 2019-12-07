@@ -638,5 +638,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             return deviceCommunication.GetUserMode();
         }
+
+        public int GetVolumeLevel()
+        {
+            return (int)Math.Round(volumeSetting.level * 100, 0);
+        }
     }
 }

@@ -14,6 +14,7 @@ using System.Linq;
 using System.Globalization;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using System.Threading;
+using ChromeCast.Desktop.AudioStreamer.Rest;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -72,6 +73,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             StartTask(() => {
                 streamingRequestListener.StartListening(ipAddress, OnStreamingRequestConnect, logger);
+            });
+            StartTask(() => {
+                new RestApi().StartListening(ipAddress, RestApiHandler.Process, logger, devices, mainForm);
             });
         }
 

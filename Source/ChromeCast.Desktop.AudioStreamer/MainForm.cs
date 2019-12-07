@@ -1146,5 +1146,10 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             return chkAutoMute.Checked;
         }
+
+        public void RestartRecording()
+        {
+            loopbackRecorder.Restart();
+        }
     }
 }

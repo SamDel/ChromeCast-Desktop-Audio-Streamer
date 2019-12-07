@@ -322,5 +322,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             getDevicesTimer?.Close();
             getDevicesTimer?.Dispose();
         }
+
+        public void Restart()
+        {
+            StopRecording();
+            DoStart(null, null);
+        }
     }
 }
