@@ -42,6 +42,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Action<IDevice> stopGroup;
         private Func<IDevice, bool> isGroupStatusBlank;
         private Action<bool> autoMute;
+        private DateTime? lastLoadMessageTime;
+        private DateTime? addStreamingConnectionTime;
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
@@ -202,6 +204,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
+            DoFirewallCheck();
+
             if (GetDeviceState() != DeviceState.Disposed && (DateTime.Now - lastGetStatus).TotalSeconds > 5)
             {
                 deviceCommunication.GetStatus();
@@ -247,6 +251,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 {
                     wasPlayingWhenConnectError = true;
                 }
+
+                DoFirewallCheckSaveTimes(state);
 
                 discoveredDevice.DeviceState = state;
                 deviceControl?.SetStatus(discoveredDevice.DeviceState, statusText);
@@ -323,6 +329,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 case DeviceState.Playing:
                 case DeviceState.LoadingMedia:
+                case DeviceState.LoadingMediaCheckFirewall:
                 case DeviceState.Buffering:
                 case DeviceState.Paused:
                     devicePlayedWhenStopped = GetDeviceState() == DeviceState.Playing;
@@ -346,8 +353,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDevice == null)
                 return false;
 
+            addStreamingConnectionTime = DateTime.Now;
+
             //TODO: Is this right for device groups?
             if ((GetDeviceState() == DeviceState.LoadingMedia ||
+                GetDeviceState() == DeviceState.LoadingMediaCheckFirewall ||
                 GetDeviceState() == DeviceState.Buffering ||
                 GetDeviceState() == DeviceState.Idle) &&
                 discoveredDevice.IPAddress == remoteAddress)
@@ -642,6 +652,48 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public int GetVolumeLevel()
         {
             return (int)Math.Round(volumeSetting.level * 100, 0);
+        }
+
+        /// <summary>
+        /// Do a check if the firewall is closed.
+        /// The device should create a streaming connection in 15 seconds after a LOAD message is send.
+        /// </summary>
+        private void DoFirewallCheck()
+        {
+            if (lastLoadMessageTime.HasValue)
+            {
+                if (addStreamingConnectionTime.HasValue)
+                {
+                    if ((addStreamingConnectionTime.Value - lastLoadMessageTime.Value).TotalSeconds > 15)
+                        SetDeviceState(DeviceState.LoadingMediaCheckFirewall);
+                }
+                else
+                {
+                    if ((DateTime.Now - lastLoadMessageTime.Value).TotalSeconds > 15)
+                        SetDeviceState(DeviceState.LoadingMediaCheckFirewall);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save the time to do the firewall check later.
+        /// </summary>
+        /// <param name="state"></param>
+        private void DoFirewallCheckSaveTimes(DeviceState state)
+        {
+            if (state == DeviceState.LoadingMedia)
+            {
+                lastLoadMessageTime = DateTime.Now;
+                addStreamingConnectionTime = null;
+            }
+            else if (state != DeviceState.Idle &&
+                state != DeviceState.Connected &&
+                state != DeviceState.NotConnected &&
+                state != DeviceState.Buffering &&
+                state != DeviceState.Closed)
+            {
+                lastLoadMessageTime = null;
+            }
         }
     }
 }

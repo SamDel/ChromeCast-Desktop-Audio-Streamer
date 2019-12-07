@@ -330,4 +330,7 @@
   <data name="Check_AutoMute_Text" xml:space="preserve">
     <value>Auto-mute/unmute desktop audio</value>
   </data>
+  <data name="LoadingMediaCheckFirewall" xml:space="preserve">
+    <value>Check Firewall</value>
+  </data>
 </root>

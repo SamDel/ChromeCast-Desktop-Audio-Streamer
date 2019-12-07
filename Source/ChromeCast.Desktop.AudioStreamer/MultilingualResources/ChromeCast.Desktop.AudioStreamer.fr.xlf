@@ -705,6 +705,10 @@
           <source>Auto-mute/unmute desktop audio</source>
           <target state="new">Sourdine auto/Désactiver la sourdine des sons du bureau.</target>
         </trans-unit>
+        <trans-unit id="LoadingMediaCheckFirewall" translate="yes" xml:space="preserve">
+          <source>Check Firewall</source>
+          <target state="new">Check Firewall</target>
+        </trans-unit>
       </group>
     </body>
   </file>

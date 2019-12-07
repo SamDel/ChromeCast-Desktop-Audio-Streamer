@@ -58,6 +58,12 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
             switch (state)
             {
+                case DeviceState.LoadingMediaCheckFirewall:
+                    SetBackColor(Color.MistyRose);
+                    lblStatus.Text = $"{Resource.Get(state.ToString())}";
+                    device.GetMenuItem().Checked = false;
+                    picturePlayPause.Image = Properties.Resources.Play;
+                    break;
                 case DeviceState.NotConnected:
                 case DeviceState.Connected:
                 case DeviceState.Idle:
