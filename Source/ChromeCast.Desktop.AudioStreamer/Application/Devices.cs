@@ -144,7 +144,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return null;
 
             if (discoveredDevice.IsGroup)
-                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Name == discoveredDevice.Name);
+                return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Id == discoveredDevice.Id);
             else
                 return deviceList.FirstOrDefault(d => d.GetDiscoveredDevice()?.Eureka?.GetMacAddress() == discoveredDevice.Eureka?.GetMacAddress());
         }
@@ -350,6 +350,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     device?.SetDeviceState(DeviceState.Disposed);
                     device?.Dispose();
                 }
+                deviceList.Clear();
             }
             catch (Exception)
             {

@@ -426,6 +426,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetRecordingDeviceID(settings.RecordingDeviceID);
             mainForm.SetAutoMute(settings.AutoMute.Value);
             settings.Save();
+            devices?.Dispose();
+            ScanForDevices();
         }
 
         /// <summary>
