@@ -55,13 +55,14 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
             }
 
             lblStatus.Text = $"{Resource.Get(state.ToString())} {text}";
+            var tmpMenuItem = device.GetMenuItem();
 
             switch (state)
             {
                 case DeviceState.LoadingMediaCheckFirewall:
                     SetBackColor(Color.MistyRose);
                     lblStatus.Text = $"{Resource.Get(state.ToString())}";
-                    device.GetMenuItem().Checked = false;
+                    if (tmpMenuItem != null) tmpMenuItem.Checked = false;
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 case DeviceState.NotConnected:
@@ -74,13 +75,13 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.Closed:
                 case DeviceState.Paused:
                     SetBackColor(Color.LightGray);
-                    device.GetMenuItem().Checked = false;
+                    if (tmpMenuItem != null) tmpMenuItem.Checked = false;
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 case DeviceState.Buffering:
                 case DeviceState.Playing:
                     SetBackColor(Color.PaleGreen);
-                    device.GetMenuItem().Checked = true;
+                    if (tmpMenuItem != null) tmpMenuItem.Checked = true;
                     picturePlayPause.Image = Properties.Resources.Stop;
                     break;
                 case DeviceState.ConnectError:
@@ -88,7 +89,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
                     SetBackColor(Color.PeachPuff);
-                    device.GetMenuItem().Checked = false;
+                    if (tmpMenuItem != null) tmpMenuItem.Checked = false;
                     picturePlayPause.Image = Properties.Resources.Play;
                     break;
                 default:

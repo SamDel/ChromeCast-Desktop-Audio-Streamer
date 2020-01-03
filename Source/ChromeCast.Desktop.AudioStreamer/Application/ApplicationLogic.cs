@@ -427,6 +427,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoMute(settings.AutoMute.Value);
             settings.Save();
             devices?.Dispose();
+            if (notifyIcon?.ContextMenu != null)
+            {
+                for (int i = notifyIcon.ContextMenu.MenuItems.Count - 2; i >= 0; i--)
+                {
+                    notifyIcon.ContextMenu.MenuItems[i].Dispose();
+                }
+            }
             ScanForDevices();
         }
 
