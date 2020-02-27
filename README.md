@@ -4,7 +4,8 @@ This tool captures the audio from your desktop and streams it to a ChromeCast Au
 
 You can download an installer from the [releases](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/releases).
 After running setup.exe you can run the installed program from `C:\Program Files (x86)\Desktop Audio Streamer\Desktop Audio Streamer\ChromeCast.Desktop.AudioStreamer.exe`.
-On the first run Windows will ask you to configure the firewall and this must be enabled for your home-network type (public or private) for audio to play.
+- On the first run Windows will ask you to configure the firewall and this must be enabled for your home-network type (public or private) for audio to play.
+- If the application doesn't find your devices please read [troubleshooting](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#troubleshooting).
 
 Please read the [wiki](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki) page for further information, and the [developers](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki/Developers) page to get it to work in Visual Studio.
 
