@@ -93,7 +93,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.Groups)
                     != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.Groups))
             {
-                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonConvert.SerializeObject(discoveredDeviceIn?.Eureka?.Multizone?.Groups)}");
+                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonConvert.SerializeObject(discoveredDeviceIn?.Eureka?.Multizone?.Groups)} {discoveredDeviceIn?.Id}");
             }
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;

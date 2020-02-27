@@ -250,6 +250,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 deviceReceiveBuffer.OnReceive(receiveBuffer.Take(byteCount).ToArray());
             }
+            else
+            {
+                Thread.Sleep(500);
+            }
             StartReceive();
         }
 
