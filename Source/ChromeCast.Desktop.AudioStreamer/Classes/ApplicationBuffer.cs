@@ -14,7 +14,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         private int reduceLagThreshold;
         private SupportedStreamFormat streamFormatSelected;
         private bool startBufferSend;
-        private const double BufferSizeInBytesDefault = 310000;
+        private const double BufferSizeInBytesDefault = 350000;
         private double BufferSizeInBytes = BufferSizeInBytesDefault;
         private int ExtraBufferInSeconds = 0;
 
