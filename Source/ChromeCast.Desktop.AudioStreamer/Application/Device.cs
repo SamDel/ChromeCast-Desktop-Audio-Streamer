@@ -138,6 +138,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             stopGroup(this);
             deviceCommunication.OnPlayStop_Click();
+            lastGetStatus = DateTime.Now;
             autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
         }
 
