@@ -237,10 +237,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     case DeviceState.InvalidRequest:
                     case DeviceState.Closed:
                     case DeviceState.Connected:
+                        ResumePlaying();
+                        break;
                     case DeviceState.LaunchingApplication:
                     case DeviceState.LaunchedApplication:
                     case DeviceState.Idle:
-                        ResumePlaying();
+                        var deviceStateBefore = deviceState;
+                        Task.Delay(5000).Wait();
+                        if (device.GetDeviceState() == deviceStateBefore)
+                            ResumePlaying();
                         break;
                     case DeviceState.LoadingMedia:
                     case DeviceState.LoadingMediaCheckFirewall:
