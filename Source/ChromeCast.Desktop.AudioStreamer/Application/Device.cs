@@ -109,8 +109,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (discoveredDeviceIn.Group != null) discoveredDevice.Group = discoveredDeviceIn.Group;
 
             deviceCommunication.SetCallback(this, deviceConnection.SendMessage, deviceConnection.IsConnected);
-            if (!IsGroup() || (IsGroup() && discoveredDevice.AddedByDeviceInfo))
-                OnGetStatus();
             if (ipChanged && GetDeviceState() == DeviceState.Playing)
             {
                 ResumePlaying();
@@ -136,7 +134,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null)
                 return;
 
-            stopGroup(this);
+            // Disabled because group information isn't available since a firmware update.
+            //stopGroup(this);
             deviceCommunication.OnPlayStop_Click();
             lastGetStatus = DateTime.Now;
             autoMute(deviceCommunication.GetUserMode() == UserMode.Playing);
@@ -600,6 +599,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Dispose()
         {
+            Stop();
             deviceCommunication?.Dispose();
             streamingConnection?.Dispose();
             deviceConnection?.Dispose();

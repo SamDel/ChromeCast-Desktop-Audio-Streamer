@@ -51,11 +51,36 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (device == null || IsDisposed)
                 return;
 
+            // Check to make sure the status of the device is received before streaming is started.
+            if (device.GetDeviceState() == DeviceState.Undefined)
+            {
+                GetStatus();
+                if (!WaitDeviceStatusReceived(20))
+                    return;
+            }
+
             pendingStatusMessage = false;
             device.SetDeviceState(DeviceState.LaunchingApplication, null);
             Connect();
 
             WaitDeviceConnected(Launch);
+        }
+
+        /// <summary>
+        /// Wait till the status has been received.
+        /// </summary>
+        private bool WaitDeviceStatusReceived(int nrWaitMsec = 5)
+        {
+            var attempt = 0;
+            while (pendingStatusMessage && attempt++ < nrWaitMsec)
+            {
+                Task.Delay(100).Wait();
+            }
+
+            if (pendingStatusMessage)
+                return false;
+
+            return true;
         }
 
         /// <summary>
@@ -106,7 +131,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 return;
 
             device.SetDeviceState(DeviceState.LoadingMedia, null);
-            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination));
+            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination, GetNextRequestId()));
         }
 
         /// <summary>
@@ -222,6 +247,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             else
             {
                 logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
+                device.SetDeviceState(DeviceState.Undefined);
             }
 
             // Keep trying to play when in playing mode.
@@ -634,6 +660,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadCancelled:
                 case DeviceState.LoadFailed:
                 case DeviceState.InvalidRequest:
+                case DeviceState.Undefined:
                     LaunchAndLoadMedia();
                     break;
                 case DeviceState.Disposed:
@@ -654,6 +681,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 case DeviceState.LoadingMedia:
                 case DeviceState.LoadingMediaCheckFirewall:
                 case DeviceState.Paused:
+                case DeviceState.Undefined:
                     Stop();
                     break;
                 case DeviceState.Idle:

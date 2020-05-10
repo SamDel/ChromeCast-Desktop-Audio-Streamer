@@ -144,6 +144,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 menuItem.Click += deviceIn.OnClickPlayPause;
                 notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
                 deviceIn.SetMenuItem(menuItem);
+                deviceIn.OnGetStatus();
             }
             catch (Exception ex)
             {

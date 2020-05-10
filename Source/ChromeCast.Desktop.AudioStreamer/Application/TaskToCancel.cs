@@ -62,7 +62,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 }
                 taskList.RemoveAll(x => x?.Task == null || x.Task.IsCompleted);
             }
-            Task.WaitAll(taskList.Select(x => x.Task).ToArray(), 10000);
+            Task.WaitAll(taskList.Select(x => x.Task).ToArray(), 4000);
             taskList.RemoveAll(x => x?.Task == null || x.Task.IsCompleted);
             taskList = null;
         }

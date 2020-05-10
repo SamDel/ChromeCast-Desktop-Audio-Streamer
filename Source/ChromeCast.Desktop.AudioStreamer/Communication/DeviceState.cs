@@ -2,6 +2,7 @@
 {
     public enum DeviceState
     {
+        Undefined,
         NotConnected,
         Idle,
         Disposed,
