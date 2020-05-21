@@ -55,8 +55,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (device.GetDeviceState() == DeviceState.Undefined)
             {
                 GetStatus();
-                if (!WaitDeviceStatusReceived(20))
-                    return;
+                WaitDeviceStatusReceived(20);
             }
 
             pendingStatusMessage = false;
@@ -248,6 +247,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
                 device.SetDeviceState(DeviceState.Undefined);
+                if ((DateTime.Now - lastReceivedMessage).Minutes > 15)
+                    pendingStatusMessage = false;
             }
 
             // Keep trying to play when in playing mode.
