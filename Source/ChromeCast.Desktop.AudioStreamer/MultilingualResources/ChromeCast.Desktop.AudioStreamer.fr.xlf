@@ -711,8 +711,7 @@
         </trans-unit>
         <trans-unit id="Check_MinimizeToTray_Text" translate="yes" xml:space="preserve">
           <source>Minimize to systray when closing</source>
-          <target state="needs-review-translation">Minimiser à systray lors de la fermeture</target>
-          <note from="MultilingualUpdate" annotates="source" priority="2">Please verify the translation’s accuracy as the source string was updated after it was translated.</note>
+          <target state="translated">Réduire dans la barre d'état à la fermeture</target>
         </trans-unit>
       </group>
     </body>
