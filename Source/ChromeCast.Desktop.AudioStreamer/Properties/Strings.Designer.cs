@@ -196,6 +196,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimize to systray when closing.
+        /// </summary>
+        internal static string Check_MinimizeToTray_Text {
+            get {
+                return ResourceManager.GetString("Check_MinimizeToTray_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show lag control (experimental).
         /// </summary>
         internal static string Check_ShowLagControl_Text {

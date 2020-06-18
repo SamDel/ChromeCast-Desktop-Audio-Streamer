@@ -112,6 +112,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkAutoRestart.Text = Properties.Strings.Check_AutomaticallyRestart_Text;
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
             chkStartApplicationWhenWindowsStarts.Text = Properties.Strings.Check_StartApplicationWhenWindowsStarts_Text;
+            chkMinimizeToTray.Text = Properties.Strings.Check_MinimizeToTray_Text;
             btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
@@ -175,7 +176,15 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (applicationLogic == null)
                 return;
 
-            applicationLogic.CloseApplication();
+            if (GetMinimizeToTray())
+            {
+                Hide();
+                e.Cancel = true;
+            }
+            else
+            {
+                applicationLogic.CloseApplication();
+            }
         }
 
         public void AddDevice(IDevice device)
@@ -541,7 +550,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 //LogNetworkInformation();
                 var ip4Adresses = Network.GetIp4ddresses();
 
-                logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
+                //logger?.Log($"Add IP4 addresses: {string.Join(" - ", ip4Adresses.Select(x => x.IPAddress))}");
                 cmbIP4AddressUsed.Items.Clear();
                 if (ip4Adresses.Count > 0)
                 {
@@ -1150,6 +1159,22 @@ namespace ChromeCast.Desktop.AudioStreamer
         public void RestartRecording()
         {
             loopbackRecorder.Restart();
+        }
+
+        public void SetMinimizeToTray(bool minimizeToTray)
+        {
+            if (chkMinimizeToTray == null)
+                return;
+
+            chkMinimizeToTray.Checked = minimizeToTray;
+        }
+
+        public bool GetMinimizeToTray()
+        {
+            if (chkMinimizeToTray == null)
+                return false;
+
+            return chkMinimizeToTray.Checked;
         }
     }
 }

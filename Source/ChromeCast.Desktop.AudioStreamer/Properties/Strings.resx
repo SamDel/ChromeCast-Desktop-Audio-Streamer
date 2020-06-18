@@ -333,4 +333,7 @@
   <data name="LoadingMediaCheckFirewall" xml:space="preserve">
     <value>Check Firewall</value>
   </data>
+  <data name="Check_MinimizeToTray_Text" xml:space="preserve">
+    <value>Minimize to systray when closing</value>
+  </data>
 </root>

@@ -213,4 +213,10 @@
   <data name="Label_BufferInSeconds_Text" xml:space="preserve">
     <value>Mémoire tampon du périphérique (en secondes)</value>
   </data>
+  <data name="Check_AutoMute_Text" xml:space="preserve">
+    <value>Sourdine auto/Désactiver la sourdine des sons du bureau.</value>
+  </data>
+  <data name="Check_MinimizeToTray_Text" xml:space="preserve">
+    <value>Minimiser à systray lors de la fermeture</value>
+  </data>
 </root>

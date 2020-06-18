@@ -270,5 +270,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             }
         }
 
+        [UserScopedSetting()]
+        public bool? MinimizeToTray
+        {
+            get
+            {
+                return (bool?)this["MinimizeToTray"];
+            }
+            set
+            {
+                this["MinimizeToTray"] = value;
+            }
+        }
     }
 }
