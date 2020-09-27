@@ -128,12 +128,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 case 8:
                     return DeviceInfo?.Mac_address;
                 case 10:
+                case 12:
                     return Mac_address;
                 default:
                     break;
             }
 
-            return DeviceInfo?.Mac_address;
+            return Mac_address;
         }
 
         public string GetIpAddress()
@@ -143,12 +144,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 case 8:
                     return Net.Ip_address;
                 case 10:
+                case 12:
                     return Ip_address;
                 default:
                     break;
             }
 
-            return Net?.Ip_address;
+            return Ip_address;
         }
 
         public string GetName()
