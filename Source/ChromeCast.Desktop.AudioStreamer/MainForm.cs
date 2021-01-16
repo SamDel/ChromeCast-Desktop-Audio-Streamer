@@ -178,6 +178,7 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             if (GetMinimizeToTray())
             {
+                applicationLogic.SaveSettings();
                 Hide();
                 e.Cancel = true;
             }

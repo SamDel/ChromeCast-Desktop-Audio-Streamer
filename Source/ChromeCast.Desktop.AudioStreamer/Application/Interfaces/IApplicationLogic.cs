@@ -29,5 +29,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         bool WasPlaying(DiscoveredDevice discoveredDevice);
         void ClearMp3Buffer();
         void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null);
+        void SaveSettings();
     }
 }

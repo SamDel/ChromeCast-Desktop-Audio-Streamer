@@ -298,7 +298,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Save the settings.
         /// </summary>
-        private void SaveSettings()
+        public void SaveSettings()
         {
             if (settings == null || devices == null || mainForm == null)
                 return;
