@@ -123,7 +123,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     tcpClient.EndConnect(ar);
                     sslStream = new SslStream(tcpClient.GetStream(), false, new RemoteCertificateValidationCallback(DontValidateServerCertificate), null);
                     var host = getHost?.Invoke();
-                    sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, false);
+                    sslStream.AuthenticateAsClient(host, new X509CertificateCollection(), SslProtocols.Tls12, true);
                     StartReceive();
                     DoSendMessage();
                     state = DeviceConnectionState.Connected;
