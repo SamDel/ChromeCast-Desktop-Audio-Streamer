@@ -330,7 +330,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             AutoStart = settingsIn.AutoStartDevices ?? false;
             StartLastUsedDevices = settingsIn.StartLastUsedDevices ?? false;
-            applicationBuffer.SetExtraBufferInSeconds(settingsIn.ExtraBufferInSeconds ?? 0);
+            applicationBuffer.SetExtraBufferInSeconds(settingsIn.ExtraBufferInSeconds ?? 4);
         }
 
         /// <summary>

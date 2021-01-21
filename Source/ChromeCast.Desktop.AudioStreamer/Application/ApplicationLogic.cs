@@ -281,7 +281,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     Math.Min(Math.Max(settings.Left.Value, 0), Screen.PrimaryScreen.Bounds.Width),
                     Math.Min(Math.Max(settings.Top.Value, 0), Screen.PrimaryScreen.Bounds.Height)
                 );
-            mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 0);
+            mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 4);
             mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
             mainForm.SetAutoMute(settings.AutoMute ?? false);
             mainForm.SetMinimizeToTray(settings.MinimizeToTray ?? false);
@@ -409,7 +409,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.Size = defaultSize;
             settings.Left = Screen.PrimaryScreen.Bounds.Width / 2 - settings.Size.Value.Width / 2;
             settings.Top = Screen.PrimaryScreen.Bounds.Height / 2 - settings.Size.Value.Height / 2;
-            settings.ExtraBufferInSeconds = 0;
+            settings.ExtraBufferInSeconds = 4;
             settings.RecordingDeviceID = null;
             settings.AutoMute = false;
             devices.SetSettings(settings);
