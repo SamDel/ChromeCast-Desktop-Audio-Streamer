@@ -641,9 +641,26 @@
             this.cmbBufferInSeconds.FormattingEnabled = true;
             this.cmbBufferInSeconds.Items.AddRange(new object[] {
             "0",
+            "1",
+            "2",
+            "3",
+            "4",
             "5",
+            "6",
+            "7",
+            "8",
+            "9",
             "10",
-            "15"});
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"});
             this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 156);
             this.cmbBufferInSeconds.Name = "cmbBufferInSeconds";
             this.cmbBufferInSeconds.Size = new System.Drawing.Size(442, 26);
