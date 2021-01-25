@@ -518,6 +518,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             Connected = true;
 
+            if (mediaStatusMessage?.status?.First()?.volume != null)
+                device.OnVolumeUpdate(mediaStatusMessage.status.First().volume);
+
             chromeCastMediaSessionId = mediaStatusMessage.status.Any() ? mediaStatusMessage.status.First().mediaSessionId : 1;
 
             if (device.IsConnected() && mediaStatusMessage.status.Any())

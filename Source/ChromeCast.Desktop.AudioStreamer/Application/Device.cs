@@ -31,7 +31,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
-        private DateTime lastVolumeChange;
+        private DateTime latestVolumeChange;
+        private float latestVolumeSet;
         private ILogger logger;
         private DateTime lastGetStatus;
         private bool devicePlayedWhenStopped;
@@ -268,20 +269,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceCommunication == null || volumeSetting == null)
                 return;
 
-            if (DateTime.Now.Ticks - lastVolumeChange.Ticks < 1000)
+            if (DateTime.Now.Ticks - latestVolumeChange.Ticks < 1000)
                 return;
 
-            lastVolumeChange = DateTime.Now;
+            latestVolumeChange = DateTime.Now;
 
             if (volumeSetting.level > level)
                 while (volumeSetting.level > level) volumeSetting.level -= volumeSetting.stepInterval;
             if (volumeSetting.level < level)
                 while (volumeSetting.level < level) volumeSetting.level += volumeSetting.stepInterval;
-            if (level > 1) level = 1;
-            if (level < 0) level = 0;
+            if (level > 1) { level = 1; volumeSetting.level = level; }
+            if (level < 0) { level = 0; volumeSetting.level = level; }
 
-            volumeSetting.level = level;
             deviceCommunication.VolumeSet(volumeSetting);
+            latestVolumeSet = level;
         }
 
         /// <summary>
@@ -535,8 +536,31 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (deviceControl == null)
                 return;
 
+            var tmpLevel = volume.level;
             volumeSetting = volume;
+            logger.Log($"OnVolumeUpdate: {volume.level} {latestVolumeSet}");
+            if (volume.level != latestVolumeSet && latestVolumeSet != 0)
+            {
+                volume.level = latestVolumeSet;
+                logger.Log($"OnVolumeUpdate2: {volume.level} {latestVolumeSet}");
+                if (LevelIsOk(tmpLevel))
+                {
+                    latestVolumeSet = 0;
+                    logger.Log($"OnVolumeUpdate4: {volume.level} {latestVolumeSet}");
+                }
+            }
+            else if (LevelIsOk(tmpLevel))
+            {
+                latestVolumeSet = 0;
+                logger.Log($"OnVolumeUpdate3: {volume.level} {latestVolumeSet}");
+            }
+
             deviceControl.OnVolumeUpdate(volume);
+        }
+
+        private bool LevelIsOk(float level)
+        {
+            return Math.Abs(level - latestVolumeSet) <= volumeSetting.stepInterval;
         }
 
         /// <summary>
