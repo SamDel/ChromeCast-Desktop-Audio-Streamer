@@ -165,20 +165,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             try
             {
-                if(recordingDevice.DataFlow == DataFlow.Render)
+                if (recordingDevice.DataFlow == DataFlow.Render)
                 {
                     soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
                     {
                         Device = recordingDevice
                     };
-                } else
+                }
+                else
                 {
                     soundIn = new CSCore.SoundIn.WasapiCapture
                     {
                         Device = recordingDevice
                     };
                 }
-                
+
 
                 soundIn.Initialize();
                 soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
@@ -268,7 +269,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 isRecording = false;
             }
         }
-        
+
         /// <summary>
         /// Start a timer that checks for silence (nothing recorded).
         /// </summary>
