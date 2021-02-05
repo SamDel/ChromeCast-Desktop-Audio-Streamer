@@ -142,7 +142,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (mainForm == null)
                 return;
 
-            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.Render, DeviceState.Active);
+            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.All, DeviceState.Active);
             if (devices.Count > 0)
             {
                 var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
@@ -165,10 +165,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             try
             {
-                soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+                if(recordingDevice.DataFlow == DataFlow.Render)
                 {
-                    Device = recordingDevice
-                };
+                    soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
+                    {
+                        Device = recordingDevice
+                    };
+                } else
+                {
+                    soundIn = new CSCore.SoundIn.WasapiCapture
+                    {
+                        Device = recordingDevice
+                    };
+                }
+                
 
                 soundIn.Initialize();
                 soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
