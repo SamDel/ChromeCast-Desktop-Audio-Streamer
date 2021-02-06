@@ -538,21 +538,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             var tmpLevel = volume.level;
             volumeSetting = volume;
-            logger.Log($"OnVolumeUpdate: {volume.level} {latestVolumeSet}");
             if (volume.level != latestVolumeSet && latestVolumeSet != 0)
             {
                 volume.level = latestVolumeSet;
-                logger.Log($"OnVolumeUpdate2: {volume.level} {latestVolumeSet}");
                 if (LevelIsOk(tmpLevel))
                 {
                     latestVolumeSet = 0;
-                    logger.Log($"OnVolumeUpdate4: {volume.level} {latestVolumeSet}");
                 }
             }
             else if (LevelIsOk(tmpLevel))
             {
                 latestVolumeSet = 0;
-                logger.Log($"OnVolumeUpdate3: {volume.level} {latestVolumeSet}");
             }
 
             deviceControl.OnVolumeUpdate(volume);
