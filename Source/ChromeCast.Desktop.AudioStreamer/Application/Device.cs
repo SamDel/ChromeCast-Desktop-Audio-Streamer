@@ -24,23 +24,23 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     /// </summary>
     public class Device : IDevice
     {
-        private IDeviceCommunication deviceCommunication;
+        private readonly IDeviceCommunication deviceCommunication;
         private IStreamingConnection streamingConnection;
-        private IDeviceConnection deviceConnection;
-        private DiscoveredDevice discoveredDevice;
+        private readonly IDeviceConnection deviceConnection;
+        private readonly DiscoveredDevice discoveredDevice;
         private DeviceControl deviceControl;
         private MenuItem menuItem;
         private Volume volumeSetting;
         private DateTime latestVolumeChange;
         private float latestVolumeSet;
-        private ILogger logger;
+        private readonly ILogger logger;
         private DateTime lastGetStatus;
         private bool devicePlayedWhenStopped;
         private bool wasPlayingWhenConnectError;
         private DeviceEureka eureka;
         private Action<DeviceEureka> setDeviceInformationCallback;
         private Action<Action, CancellationTokenSource> startTask;
-        private Action<IDevice> stopGroup;
+        //private Action<IDevice> stopGroup;
         private Func<IDevice, bool> isGroupStatusBlank;
         private Action<bool> autoMute;
         private DateTime? lastLoadMessageTime;
@@ -76,7 +76,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             , Action<bool> autoMuteIn)
         {
             setDeviceInformationCallback = setDeviceInformationCallbackIn;
-            stopGroup = stopGroupIn;
+            //stopGroup = stopGroupIn;
             startTask = startTaskIn;
             isGroupStatusBlank = isGroupStatusBlankIn;
             autoMute = autoMuteIn;

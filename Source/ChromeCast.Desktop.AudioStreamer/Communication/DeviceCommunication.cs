@@ -16,9 +16,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private IDevice device;
         private Action<byte[]> sendMessage;
         private Func<bool> isDeviceConnected;
-        private IApplicationLogic applicationLogic;
-        private ILogger logger;
-        private IChromeCastMessages chromeCastMessages;
+        private readonly IApplicationLogic applicationLogic;
+        private readonly ILogger logger;
+        private readonly IChromeCastMessages chromeCastMessages;
         private string chromeCastDestination;
         private readonly string chromeCastSource;
         private string chromeCastApplicationSessionNr;
@@ -394,23 +394,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     Pong();
                     break;
                 case "PONG":
-                    var pongMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     break;
                 case "CLOSE":
-                    var previousState = device.GetDeviceState();
-                    var closeMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
-                    OnReceiveCloseMessage(closeMessage);
+                    OnReceiveCloseMessage();
                     break;
                 case "LOAD_FAILED":
-                    var loadFailedMessage = js.Deserialize<MessageLoadFailed>(castMessage.PayloadUtf8);
                     device.SetDeviceState(DeviceState.LoadFailed, null);
                     break;
                 case "LOAD_CANCELLED":
-                    var loadCancelledMessage = js.Deserialize<MessageLoadCancelled>(castMessage.PayloadUtf8);
                     device.SetDeviceState(DeviceState.LoadCancelled, null);
                     break;
                 case "INVALID_REQUEST":
-                    var invalidRequestMessage = js.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
                     device.SetDeviceState(DeviceState.InvalidRequest, null);
                     break;
                 case "LAUNCH_ERROR":
@@ -424,8 +418,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <summary>
         /// Handle a close message from the device.
         /// </summary>
-        /// <param name="closeMessage">the close message</param>
-        private void OnReceiveCloseMessage(PayloadMessageBase closeMessage)
+        private void OnReceiveCloseMessage()
         {
             if (applicationLogic == null || device == null || IsDisposed)
                 return;
@@ -558,10 +551,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             if (mediaStatusMessage.status != null && mediaStatusMessage.status.First() != null)
             {
-                var seconds = (int)(mediaStatusMessage.status.First().currentTime % 60);
                 var minutes = ((int)(mediaStatusMessage.status.First().currentTime) % 3600) / 60;
                 var hours = ((int)mediaStatusMessage.status.First().currentTime) / 3600;
-                return $"{hours}:{minutes.ToString("D2")}";
+                return $"{hours}:{minutes:D2}";
             }
 
             return null;

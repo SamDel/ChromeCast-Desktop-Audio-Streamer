@@ -18,8 +18,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private Action<DeviceState, string> setDeviceState;
         private Action<CastMessage> onReceiveMessage;
         private Action<Action> startTask;
-        private ILogger logger;
-        private IDeviceReceiveBuffer deviceReceiveBuffer;
+        private readonly ILogger logger;
+        private readonly IDeviceReceiveBuffer deviceReceiveBuffer;
         private const int bufferSize = 2048;
         private TcpClient tcpClient;
         private SslStream sslStream;

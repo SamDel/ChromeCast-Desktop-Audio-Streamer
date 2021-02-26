@@ -20,12 +20,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class ApplicationLogic : IApplicationLogic, IDisposable
     {
-        private IDevices devices;
+        private readonly IDevices devices;
         private IMainForm mainForm;
-        private IConfiguration configuration;
-        private IStreamingRequestsListener streamingRequestListener;
-        private IDiscoverDevices discoverDevices;
-        private IDeviceStatusTimer deviceStatusTimer;
+        private readonly IConfiguration configuration;
+        private readonly IStreamingRequestsListener streamingRequestListener;
+        private readonly IDiscoverDevices discoverDevices;
+        private readonly IDeviceStatusTimer deviceStatusTimer;
         private NotifyIcon notifyIcon;
         private const int trbLagMaximumValue = 1000;
         private int reduceLagThreshold = trbLagMaximumValue;
@@ -33,7 +33,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private Mp3Stream Mp3Stream = null;
         private SupportedStreamFormat StreamFormatSelected = SupportedStreamFormat.Mp3_320;
         private string Culture;
-        private ILogger logger;
+        private readonly ILogger logger;
         private Size defaultSize = new Size(850, 550);
         private TasksToCancel taskList;
 
@@ -188,7 +188,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (devices == null || streamingRequestListener == null)
                 return;
 
-            logger.Log($"Change IP4 address: {ipAddressIn.ToString()}");
+            logger.Log($"Change IP4 address: {ipAddressIn}");
             devices.Stop();
             streamingRequestListener.StopListening();
             ScanForDevices();
@@ -219,7 +219,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             if (formatIn != StreamFormatSelected)
             {
-                logger.Log($"Set stream format to {formatIn.ToString()}");
+                logger.Log($"Set stream format to {formatIn}");
                 StreamFormatSelected = formatIn;
                 Mp3Stream = null;
 

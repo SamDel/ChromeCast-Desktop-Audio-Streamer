@@ -14,14 +14,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 {
     public class Devices : IDevices
     {
-        private List<IDevice> deviceList = new List<IDevice>();
+        private readonly List<IDevice> deviceList = new List<IDevice>();
         private Action<Device> onAddDeviceCallback;
         private bool AutoStart;
         private bool StartLastUsedDevices;
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
-        private ApplicationBuffer applicationBuffer = new ApplicationBuffer();
-        private ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
+        private readonly ApplicationBuffer applicationBuffer = new ApplicationBuffer();
+        private readonly ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
         private bool isMuted;
 
         /// <summary>

@@ -130,7 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
             if (level < 0 || level > 100)
                 return errorWrongVolume;
 
-            device.VolumeSet((level / 100.0f));
+            device.VolumeSet(level / 100.0f);
 
             var response = "{\"data\": { \"type\": \"done\", \"id\": \"1\", \"attributes\": { \"action\": \"/volume" + action + "\" } } }";
             return response;

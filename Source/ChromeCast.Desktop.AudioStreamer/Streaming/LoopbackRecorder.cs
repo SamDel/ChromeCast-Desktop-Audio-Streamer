@@ -18,7 +18,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
     {
         WasapiCapture soundIn;
         private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
-        private Action clearMp3Buffer;
         private bool isRecording = false;
         IWaveSource convertedSource;
         SoundInSource soundInSource;
@@ -27,7 +26,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
         System.Timers.Timer getDevicesTimer;
-        private ILogger logger;
+        private readonly ILogger logger;
         Thread eventThread;
         BufferBlock bufferCaptured, bufferSend;
         readonly object bufferSwapSync = new object();
@@ -54,7 +53,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             getDevicesTimer.Start();
 
             dataAvailableCallback = dataAvailableCallbackIn;
-            clearMp3Buffer = clearMp3BufferIn;
             mainForm = mainFormIn;
             DoStart(null, null);
         }
@@ -242,6 +240,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                         recorder.dataAvailableCallback(bytes.ToArray(), recorder.waveFormat);
                         recorder.bufferSend.Used = 0;
                         recorder.mainForm.ShowWavMeterValue(bytes.ToArray());
+                        //NAudio.CoreAudioApi.MMDeviceEnumerator enumerator = new NAudio.CoreAudioApi.MMDeviceEnumerator();
+                        //var device = enumerator.GetDefaultAudioEndpoint(NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.Role.Multimedia);
+                        //Console.WriteLine(device.AudioMeterInformation.MasterPeakValue);
                     }
 
                     Thread.Sleep(1);

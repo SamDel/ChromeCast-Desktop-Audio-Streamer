@@ -26,17 +26,17 @@ namespace ChromeCast.Desktop.AudioStreamer
 {
     public partial class MainForm : Form, IMainForm
     {
-        private IApplicationLogic applicationLogic;
-        private IDevices devices;
-        private ILogger logger;
+        private readonly IApplicationLogic applicationLogic;
+        private readonly IDevices devices;
+        private readonly ILogger logger;
         private IPAddress previousIpAddress;
-        private ILoopbackRecorder loopbackRecorder;
+        private readonly ILoopbackRecorder loopbackRecorder;
         private Size windowSize;
-        private StringBuilder log = new StringBuilder();
+        private readonly StringBuilder log = new StringBuilder();
         private string previousRecordingDeviceID;
         private bool eventHandlerAdded;
         private bool isRecordingDeviceSelected;
-        private WavGenerator wavGenerator;
+        private readonly WavGenerator wavGenerator;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
         {
@@ -213,9 +213,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             var deviceName = device.GetFriendlyName();
             for (int i = 0; i < pnlDevices.Controls.Count - 1; i++)
             {
-                if (pnlDevices.Controls[i] is DeviceControl)
+                if (pnlDevices.Controls[i] is DeviceControl recordingDevice)
                 {
-                    var name = ((DeviceControl)pnlDevices.Controls[i]).GetDeviceName();
+                    var name = recordingDevice.GetDeviceName();
                     if (string.CompareOrdinal(deviceName, name) < 0)
                     {
                         pnlDevices.Controls.SetChildIndex(deviceControl, i);
@@ -706,11 +706,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             if (e.Data.GetFormats().Length >= 1 &&
-                e.Data.GetData(e.Data.GetFormats()[0]) is DeviceControl &&
-                sender is DeviceControl)
+                e.Data.GetData(format: e.Data.GetFormats()[0]) is DeviceControl &&
+                sender is DeviceControl deviceControl)
             {
                 var draggingControl = (DeviceControl)e.Data.GetData(e.Data.GetFormats()[0]);
-                var droppingOnControl = (DeviceControl)sender;
+                var droppingOnControl = deviceControl;
                 var indexDrop = pnlDevices.Controls.GetChildIndex(droppingOnControl);
 
                 pnlDevices.Controls.SetChildIndex(draggingControl, indexDrop);
