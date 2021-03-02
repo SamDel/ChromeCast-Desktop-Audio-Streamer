@@ -15,17 +15,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Play (looping) silence, to make sure there always something captured.
         /// </summary>
-        public void PlaySilenceLoop(string deviceName)
+        public void PlaySilenceLoop(string deviceName, CSCore.WaveFormat deviceFormat)
         {
+            waveFormat = new WaveFormat(deviceFormat.SampleRate, deviceFormat.Channels);
             Play(GenerateSilence(60), deviceName);
-        }
-
-        /// <summary>
-        /// Play a 440Hz sinewave loop.
-        /// </summary>
-        public void PlaySineWaveLoop(string deviceName)
-        {
-            Play(GenerateSineWave(60), deviceName);
         }
 
         /// <summary>
@@ -95,7 +88,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Get silence data.
         /// </summary>
-        public WaveDataChunk GetSilence(uint nrSeconds)
+        private WaveDataChunk GetSilence(uint nrSeconds)
         {
             // Fill the data array with silence samples.
             var data = new WaveDataChunk();

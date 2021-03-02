@@ -289,7 +289,7 @@
     <value>Version</value>
   </data>
   <data name="Wav" xml:space="preserve">
-    <value>Wav (44100 Hz)</value>
+    <value>Wav</value>
   </data>
   <data name="Tab_Main_Text" xml:space="preserve">
     <value>Devices</value>

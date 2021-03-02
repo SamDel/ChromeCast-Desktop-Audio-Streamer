@@ -520,7 +520,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbRecordingDevice.SelectedItem != null)
             {
                 wavGenerator.Stop();
-                wavGenerator.PlaySilenceLoop(((MMDevice)cmbRecordingDevice.SelectedItem).FriendlyName);
+                var device = (MMDevice)cmbRecordingDevice.SelectedItem;
+                wavGenerator.PlaySilenceLoop(device.FriendlyName, device.DeviceFormat);
             }
         }
 

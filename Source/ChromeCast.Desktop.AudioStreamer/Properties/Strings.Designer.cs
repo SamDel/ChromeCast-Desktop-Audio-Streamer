@@ -709,7 +709,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wav (44100 Hz).
+        ///   Looks up a localized string similar to Wav.
         /// </summary>
         internal static string Wav {
             get {

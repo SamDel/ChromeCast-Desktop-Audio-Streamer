@@ -181,7 +181,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
                 soundIn.Initialize();
                 soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-                convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+                convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
                 convertedSource = convertedSource.ToStereo();
                 soundInSource.DataAvailable += OnDataAvailable;
                 soundIn.Stopped += OnRecordingStopped;
@@ -240,9 +240,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                         recorder.dataAvailableCallback(bytes.ToArray(), recorder.waveFormat);
                         recorder.bufferSend.Used = 0;
                         recorder.mainForm.ShowWavMeterValue(bytes.ToArray());
-                        //NAudio.CoreAudioApi.MMDeviceEnumerator enumerator = new NAudio.CoreAudioApi.MMDeviceEnumerator();
-                        //var device = enumerator.GetDefaultAudioEndpoint(NAudio.CoreAudioApi.DataFlow.Render, NAudio.CoreAudioApi.Role.Multimedia);
-                        //Console.WriteLine(device.AudioMeterInformation.MasterPeakValue);
                     }
 
                     Thread.Sleep(1);

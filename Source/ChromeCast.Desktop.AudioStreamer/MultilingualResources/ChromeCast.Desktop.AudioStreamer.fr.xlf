@@ -638,8 +638,8 @@
           <target state="new">Mp3 (320 kbps)</target>
         </trans-unit>
         <trans-unit id="Wav" translate="yes" xml:space="preserve">
-          <source>Wav (44100 Hz)</source>
-          <target state="new">Wav (44100 Hz)</target>
+          <source>Wav</source>
+          <target state="new">Wav</target>
         </trans-unit>
         <trans-unit id="MessageBox_NoIPAddress" translate="yes" xml:space="preserve">
           <source>No IP addresses found on your device.</source>
