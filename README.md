@@ -1,6 +1,6 @@
 # Desktop Audio Streamer
 
-This tool captures the audio from your desktop and streams it to a ChromeCast Audio device.
+This tool captures the audio from your desktop (or microphone) and streams it to a ChromeCast Audio device.
 
 You can download an installer from the [releases](https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/releases).
 After running setup.exe you can run the installed program from `C:\Program Files (x86)\Desktop Audio Streamer\Desktop Audio Streamer\ChromeCast.Desktop.AudioStreamer.exe`.
