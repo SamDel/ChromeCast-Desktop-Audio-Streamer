@@ -289,7 +289,7 @@
     <value>Version</value>
   </data>
   <data name="Wav" xml:space="preserve">
-    <value>Wav</value>
+    <value>Wav (44100 Hz/16bit)</value>
   </data>
   <data name="Tab_Main_Text" xml:space="preserve">
     <value>Devices</value>
@@ -335,5 +335,14 @@
   </data>
   <data name="Check_MinimizeToTray_Text" xml:space="preserve">
     <value>Minimize to systray when closing</value>
+  </data>
+  <data name="Wav_16bit" xml:space="preserve">
+    <value>Wav (Soundcard's sample rate/16bit)</value>
+  </data>
+  <data name="Wav_24bit" xml:space="preserve">
+    <value>Wav (Soundcard's sample rate/24bit)</value>
+  </data>
+  <data name="Wav_32bit" xml:space="preserve">
+    <value>Wav (Soundcard's sample rate/32bit)</value>
   </data>
 </root>

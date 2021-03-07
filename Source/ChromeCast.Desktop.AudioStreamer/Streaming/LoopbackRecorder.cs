@@ -181,14 +181,46 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
                 soundIn.Initialize();
                 soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-                convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
-                convertedSource = convertedSource.ToStereo();
+
+                var selectedFormat = mainForm.GetSelectedStreamFormat();
+                CSCore.WaveFormat format;
+                switch (selectedFormat)
+                {
+                    case Classes.SupportedStreamFormat.Wav:
+                        convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
+                        convertedSource = convertedSource.ToStereo();
+                        format = convertedSource.WaveFormat;
+                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        break;
+                    case Classes.SupportedStreamFormat.Mp3_320:
+                    case Classes.SupportedStreamFormat.Mp3_128:
+                    case Classes.SupportedStreamFormat.Wav_16bit:
+                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
+                        convertedSource = convertedSource.ToStereo();
+                        format = convertedSource.WaveFormat;
+                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        break;
+                    case Classes.SupportedStreamFormat.Wav_24bit:
+                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(24);
+                        convertedSource = convertedSource.ToStereo();
+                        format = convertedSource.WaveFormat;
+                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        break;
+                    case Classes.SupportedStreamFormat.Wav_32bit:
+                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(32);
+                        convertedSource = convertedSource.ToStereo();
+                        format = convertedSource.WaveFormat;
+                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.IeeeFloat, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        break;
+                    default:
+                        break;
+                }
+
+                logger.Log($"Stream format set to {waveFormat.Encoding} {waveFormat.SampleRate} {waveFormat.BitsPerSample} bit");
                 soundInSource.DataAvailable += OnDataAvailable;
                 soundIn.Stopped += OnRecordingStopped;
                 soundIn.Start();
 
-                var format = convertedSource.WaveFormat;
-                waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                 isRecording = true;
                 bufferCaptured = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };
                 bufferSend = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };

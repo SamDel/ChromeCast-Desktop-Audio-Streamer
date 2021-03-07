@@ -159,6 +159,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbStreamFormat.Items.Count == 0)
             {
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav));
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_16bit));
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_24bit));
+                // Not sure about quality:  cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_32bit));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_128));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_320));
                 cmbStreamFormat.SelectedIndex = 2;
@@ -775,6 +778,25 @@ namespace ChromeCast.Desktop.AudioStreamer
             SetStreamFormat();
         }
 
+        public SupportedStreamFormat GetSelectedStreamFormat()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Func<SupportedStreamFormat>(GetSelectedStreamFormat));
+                return SupportedStreamFormat.Mp3_320;
+            }
+            if (IsDisposed) return SupportedStreamFormat.Mp3_320;
+
+            try
+            {
+                return (SupportedStreamFormat)((ComboboxItem)cmbStreamFormat.SelectedItem).Value;
+            }
+            catch (Exception)
+            {
+                return SupportedStreamFormat.Mp3_320;
+            }
+        }
+
         private void CmbStreamFormat_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetStreamFormat();
@@ -786,7 +808,10 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             if (cmbStreamFormat.SelectedItem != null)
+            {
                 applicationLogic.SetStreamFormat((SupportedStreamFormat)((ComboboxItem)cmbStreamFormat.SelectedItem).Value);
+                loopbackRecorder.Restart();
+            }
         }
 
         private void CmbLanguage_SelectedIndexChanged(object sender, EventArgs e)

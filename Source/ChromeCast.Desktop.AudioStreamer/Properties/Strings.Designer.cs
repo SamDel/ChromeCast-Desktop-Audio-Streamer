@@ -709,11 +709,38 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wav.
+        ///   Looks up a localized string similar to Wav (44100 Hz/16bit).
         /// </summary>
         internal static string Wav {
             get {
                 return ResourceManager.GetString("Wav", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wav (Soundcard&apos;s sample rate/16bit).
+        /// </summary>
+        internal static string Wav_16bit {
+            get {
+                return ResourceManager.GetString("Wav_16bit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wav (Soundcard&apos;s sample rate/24bit).
+        /// </summary>
+        internal static string Wav_24bit {
+            get {
+                return ResourceManager.GetString("Wav_24bit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wav (Soundcard&apos;s sample rate/32bit).
+        /// </summary>
+        internal static string Wav_32bit {
+            get {
+                return ResourceManager.GetString("Wav_32bit", resourceCulture);
             }
         }
     }

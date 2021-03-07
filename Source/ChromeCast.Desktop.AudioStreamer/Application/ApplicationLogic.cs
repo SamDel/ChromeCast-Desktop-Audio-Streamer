@@ -103,7 +103,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (devices == null)
                 return;
 
-            if (!StreamFormatSelected.Equals(SupportedStreamFormat.Wav))
+            if (!StreamFormatSelected.Equals(SupportedStreamFormat.Wav) &&
+                !StreamFormatSelected.Equals(SupportedStreamFormat.Wav_16bit) &&
+                !StreamFormatSelected.Equals(SupportedStreamFormat.Wav_24bit) &&
+                !StreamFormatSelected.Equals(SupportedStreamFormat.Wav_32bit))
             {
                 if (Mp3Stream == null)
                 {

@@ -75,6 +75,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
             switch (streamFormatSelected)
             {
                 case SupportedStreamFormat.Wav:
+                case SupportedStreamFormat.Wav_16bit:
+                case SupportedStreamFormat.Wav_24bit:
+                case SupportedStreamFormat.Wav_32bit:
                     BufferSizeInBytes = ExtraBufferInSeconds * 40000 + BufferSizeInBytesDefault;
                     break;
                 case SupportedStreamFormat.Mp3_320:

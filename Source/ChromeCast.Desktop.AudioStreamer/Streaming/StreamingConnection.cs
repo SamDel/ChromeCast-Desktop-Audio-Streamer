@@ -53,7 +53,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (!isAudioHeaderSent)
             {
                 isAudioHeaderSent = true;
-                if (streamFormat.Equals(SupportedStreamFormat.Wav))
+                if (streamFormat.Equals(SupportedStreamFormat.Wav) ||
+                    streamFormat.Equals(SupportedStreamFormat.Wav_16bit) ||
+                    streamFormat.Equals(SupportedStreamFormat.Wav_24bit) ||
+                    streamFormat.Equals(SupportedStreamFormat.Wav_32bit))
                 {
                     Send(audioHeader.GetRiffHeader(format));
                 }
