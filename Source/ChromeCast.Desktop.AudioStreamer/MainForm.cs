@@ -645,7 +645,16 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             if (!string.IsNullOrEmpty(log.ToString()))
-                Clipboard.SetText(log.ToString());
+            {
+                try
+                {
+                    Clipboard.SetText(log.ToString());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"{ex.Message}\r\n\r\nPlease try again.");
+                }
+            }
         }
 
         private void BtnScan_Click(object sender, EventArgs e)
