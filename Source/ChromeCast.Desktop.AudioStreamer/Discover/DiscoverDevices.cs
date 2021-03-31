@@ -5,7 +5,6 @@ using System.Linq;
 using System.Timers;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Makaretu.Dns;
 using System.Net;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
@@ -65,42 +64,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
             serviceBrowserEmbedded.ServiceRemoved += OnServiceRemoved;
             serviceBrowserEmbedded.ServiceChanged += OnServiceChanged;
             serviceBrowserEmbedded.StartBrowse(serviceTypeEmbedded);
-
-            var mdns = new MulticastService();
-            mdns.AnswerReceived += Mdns_AnswerReceived;
-            mdns.Start();
-        }
-
-        private void Mdns_AnswerReceived(object sender, MessageEventArgs e)
-        {
-            if (e == null || e.Message == null || e.Message.Answers == null)
-                return;
-
-            msdnIps.RemoveAll(x => (DateTime.Now - x.Added).TotalSeconds > 120);
-            if (!msdnIps.Where(x => x.Endpoint?.Address.ToString() == e.RemoteEndPoint?.Address.ToString()).Any())
-            {
-                msdnIps.Add(new MsdnIps { Added = DateTime.Now, Endpoint = e.RemoteEndPoint });
-
-                var protocols = e.Message.Answers.Select(q => q.Name + " " + q.Type).Distinct();
-                foreach (var protocol in protocols)
-                {
-                    if (protocol.Contains(serviceType))
-                    {
-                        var discoveredDevice = new DiscoveredDevice
-                        {
-                            IPAddress = e.RemoteEndPoint?.Address.ToString(),
-                            Protocol = protocol,
-                            Port = 8009,
-                            Name = string.Empty,
-                            Headers = string.Empty,
-                            Usn = string.Empty,
-                            Id = string.Empty,
-                        };
-
-                        discoveredDevices.Add(discoveredDevice);
-                    }
-                }
-            }
         }
 
         /// <summary>
