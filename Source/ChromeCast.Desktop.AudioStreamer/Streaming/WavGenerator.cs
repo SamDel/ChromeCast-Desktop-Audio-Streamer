@@ -94,13 +94,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             var data = new WaveDataChunk();
             var numSamples = waveFormat.SampleRate * waveFormat.Channels * nrSeconds;
             data.AudioSamples = new short[numSamples];
-            for (uint i = 0; i < numSamples - 1; i++)
-            {
-                for (int channel = 0; channel < waveFormat.Channels; channel++)
-                {
-                    data.AudioSamples[i + channel] = 0;
-                }
-            }
             data.Length = (uint)(data.AudioSamples.Length * (waveFormat.BitsPerSample / 8));
             return data;
         }
