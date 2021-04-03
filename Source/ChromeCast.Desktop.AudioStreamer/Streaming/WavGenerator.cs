@@ -116,10 +116,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             // This value is like the period of the wave.
             double t = (Math.PI * 2 * freq) / (waveFormat.SampleRate * waveFormat.Channels);
   
-            for (uint i = 0; i < numSamples - 1; i++)
+            for (uint i = 0; i < numSamples - waveFormat.Channels; i++)
             {
                 // Fill with a simple sine wave at max amplitude
-                for (int channel = 0; channel<waveFormat.Channels; channel++)
+                for (int channel = 0; channel < waveFormat.Channels; channel++)
                 {
                     data.AudioSamples[i + channel] = Convert.ToInt16(amplitude * Math.Sin(t * i));
                 }                        
