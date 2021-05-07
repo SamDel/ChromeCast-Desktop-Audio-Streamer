@@ -34,8 +34,10 @@ namespace ChromeCast.Desktop.AudioStreamer
         private Size windowSize;
         private readonly StringBuilder log = new StringBuilder();
         private string previousRecordingDeviceID;
+        private bool previousRecordingDeviceExists;
         private bool eventHandlerAdded;
         private bool isRecordingDeviceSelected;
+        private MMDevice previousDefaultDevice;
         private readonly WavGenerator wavGenerator;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
@@ -51,6 +53,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             devices.SetDependencies(this, applicationLogic);
             applicationLogic.SetDependencies(this);
             wavGenerator = new WavGenerator();
+            previousRecordingDeviceExists = false;
         }
 
         public MainForm()
@@ -434,8 +437,28 @@ namespace ChromeCast.Desktop.AudioStreamer
                 }
             }
 
+            // Select the new default device when the default device has changed.
+            if (previousDefaultDevice != null)
+            {
+                var selectedDevice = (MMDevice)cmbRecordingDevice.SelectedItem;
+                if (defaultdevice.DeviceID != previousDefaultDevice.DeviceID && selectedDevice?.DataFlow == defaultdevice.DataFlow)
+                {
+                    for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                    {
+                        var device = (MMDevice)cmbRecordingDevice.Items[i];
+                        if (device.DeviceID == defaultdevice.DeviceID)
+                        {
+                            if (cmbRecordingDevice.SelectedIndex != i)
+                            {
+                                cmbRecordingDevice.SelectedIndex = i;
+                            }
+                        }
+                    }
+                }
+            }
+
             // Select the right device.
-            if (!isRecordingDeviceSelected)
+            if (!isRecordingDeviceSelected || !previousRecordingDeviceExists)
             {
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
@@ -449,6 +472,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                             PlaySilence();
                             isRecordingDeviceSelected = true;
                         }
+                        previousRecordingDeviceExists = true;
                     }
                     else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.DeviceID == previousRecordingDeviceID)
                     {
@@ -456,10 +480,12 @@ namespace ChromeCast.Desktop.AudioStreamer
                         cmbRecordingDevice.SelectedIndex = i;
                         PlaySilence();
                         previousRecordingDeviceID = string.Empty;
+                        previousRecordingDeviceExists = true;
                         isRecordingDeviceSelected = true;
                     }
                 }
             }
+            previousDefaultDevice = defaultdevice;
 
             if (!eventHandlerAdded)
             {
