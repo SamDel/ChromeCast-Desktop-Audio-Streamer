@@ -282,5 +282,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["MinimizeToTray"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public bool? ConvertMultiChannelToStereo
+        {
+            get
+            {
+                return (bool?)this["ConvertMultiChannelToStereo"];
+            }
+            set
+            {
+                this["ConvertMultiChannelToStereo"] = value;
+            }
+        }
     }
 }

@@ -116,6 +116,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             chkShowLagControl.Text = Properties.Strings.Check_ShowLagControl_Text;
             chkStartApplicationWhenWindowsStarts.Text = Properties.Strings.Check_StartApplicationWhenWindowsStarts_Text;
             chkMinimizeToTray.Text = Properties.Strings.Check_MinimizeToTray_Text;
+            chkConvertMultiChannelToStereo.Text = Properties.Strings.Check_ConvertMultiChannelToStereo_Text;
             btnResetSettings.Text = Properties.Strings.Button_ResetSetting_Text;
             tabPageLog.Text = Properties.Strings.Tab_Log_Text;
             btnClipboardCopy.Text = Properties.Strings.Button_ClipboardCopy_Text;
@@ -1237,6 +1238,22 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return false;
 
             return chkMinimizeToTray.Checked;
+        }
+
+        public void SetConvertMultiChannelToStereo(bool convertMultiChannelToStereo)
+        {
+            if (chkConvertMultiChannelToStereo == null)
+                return;
+
+            chkConvertMultiChannelToStereo.Checked = convertMultiChannelToStereo;
+        }
+
+        public bool GetConvertMultiChannelToStereo()
+        {
+            if (chkConvertMultiChannelToStereo == null)
+                return false;
+
+            return chkConvertMultiChannelToStereo.Checked;
         }
     }
 }

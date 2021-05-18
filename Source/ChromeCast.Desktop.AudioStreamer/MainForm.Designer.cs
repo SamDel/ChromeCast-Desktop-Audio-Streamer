@@ -42,6 +42,7 @@
             this.pnlResetSettings = new System.Windows.Forms.Panel();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.pnlOptionsCheckBoxes = new System.Windows.Forms.Panel();
+            this.chkConvertMultiChannelToStereo = new System.Windows.Forms.CheckBox();
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.chkAutoMute = new System.Windows.Forms.CheckBox();
             this.chkLogDeviceCommunication = new System.Windows.Forms.CheckBox();
@@ -367,7 +368,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 451);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 473);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 100);
             this.flowLayoutPanel1.TabIndex = 43;
@@ -376,7 +377,7 @@
             // 
             this.pnlResetSettings.Controls.Add(this.btnResetSettings);
             this.pnlResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlResetSettings.Location = new System.Drawing.Point(0, 551);
+            this.pnlResetSettings.Location = new System.Drawing.Point(0, 573);
             this.pnlResetSettings.Name = "pnlResetSettings";
             this.pnlResetSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.pnlResetSettings.Size = new System.Drawing.Size(1030, 57);
@@ -397,6 +398,7 @@
             // pnlOptionsCheckBoxes
             // 
             this.pnlOptionsCheckBoxes.AutoSize = true;
+            this.pnlOptionsCheckBoxes.Controls.Add(this.chkConvertMultiChannelToStereo);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkMinimizeToTray);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkAutoMute);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkLogDeviceCommunication);
@@ -411,8 +413,19 @@
             this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 191);
             this.pnlOptionsCheckBoxes.Name = "pnlOptionsCheckBoxes";
             this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 20, 20, 20);
-            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 260);
+            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 282);
             this.pnlOptionsCheckBoxes.TabIndex = 35;
+            // 
+            // chkConvertMultiChannelToStereo
+            // 
+            this.chkConvertMultiChannelToStereo.AutoSize = true;
+            this.chkConvertMultiChannelToStereo.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkConvertMultiChannelToStereo.Location = new System.Drawing.Point(15, 240);
+            this.chkConvertMultiChannelToStereo.Name = "chkConvertMultiChannelToStereo";
+            this.chkConvertMultiChannelToStereo.Size = new System.Drawing.Size(995, 22);
+            this.chkConvertMultiChannelToStereo.TabIndex = 46;
+            this.chkConvertMultiChannelToStereo.Text = "Convert multi-channel audio to stereo output";
+            this.chkConvertMultiChannelToStereo.UseVisualStyleBackColor = true;
             // 
             // chkMinimizeToTray
             // 
@@ -960,6 +973,7 @@
         private System.Windows.Forms.ComboBox cmbBufferInSeconds;
         private System.Windows.Forms.CheckBox chkAutoMute;
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
+        private System.Windows.Forms.CheckBox chkConvertMultiChannelToStereo;
     }
 }
 

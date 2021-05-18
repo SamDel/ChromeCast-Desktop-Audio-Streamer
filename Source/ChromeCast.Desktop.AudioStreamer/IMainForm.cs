@@ -56,5 +56,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void RestartRecording();
         void SetMinimizeToTray(bool minimizeToTray);
         bool GetMinimizeToTray();
+        void SetConvertMultiChannelToStereo(bool convertMultiChannelToStereo);
+        bool GetConvertMultiChannelToStereo();
     }
 }

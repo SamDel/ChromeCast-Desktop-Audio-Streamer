@@ -345,4 +345,7 @@
   <data name="Wav_32bit" xml:space="preserve">
     <value>Wav (Soundcard's sample rate/32bit)</value>
   </data>
+  <data name="Check_ConvertMultiChannelToStereo_Text" xml:space="preserve">
+    <value>Convert multi-channel audio to stereo output</value>
+  </data>
 </root>

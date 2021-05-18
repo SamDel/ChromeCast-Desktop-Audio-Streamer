@@ -168,6 +168,15 @@
   <data name="Check_LogDeviceCommunication_Text" xml:space="preserve">
     <value>Journaliser la communication du périphérique</value>
   </data>
+  <data name="Mp3_128" xml:space="preserve">
+    <value>Mp3 (128 kbps)</value>
+  </data>
+  <data name="Mp3_320" xml:space="preserve">
+    <value>Mp3 (320 kbps)</value>
+  </data>
+  <data name="Wav" xml:space="preserve">
+    <value>Wav (44100 Hz/16bit)</value>
+  </data>
   <data name="MessageBox_NoIPAddress" xml:space="preserve">
     <value>Aucune adresse IP trouvée sur votre périphérique.</value>
   </data>
@@ -215,6 +224,9 @@
   </data>
   <data name="Check_AutoMute_Text" xml:space="preserve">
     <value>Sourdine auto/Désactiver la sourdine des sons du bureau.</value>
+  </data>
+  <data name="LoadingMediaCheckFirewall" xml:space="preserve">
+    <value>Vérifiez le pare-feu</value>
   </data>
   <data name="Check_MinimizeToTray_Text" xml:space="preserve">
     <value>Réduire dans la barre d'état à la fermeture</value>

@@ -183,32 +183,42 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
 
                 var selectedFormat = mainForm.GetSelectedStreamFormat();
+                var convertMultiChannelToStereo = mainForm.GetConvertMultiChannelToStereo();
                 CSCore.WaveFormat format;
                 switch (selectedFormat)
                 {
                     case Classes.SupportedStreamFormat.Wav:
                         convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
-                        convertedSource = convertedSource.ToStereo();
                         format = convertedSource.WaveFormat;
+                        if (convertMultiChannelToStereo)
+                            convertedSource = convertedSource.ToStereo();
                         waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                         break;
                     case Classes.SupportedStreamFormat.Mp3_320:
                     case Classes.SupportedStreamFormat.Mp3_128:
-                    case Classes.SupportedStreamFormat.Wav_16bit:
                         convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
                         convertedSource = convertedSource.ToStereo();
                         format = convertedSource.WaveFormat;
                         waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                         break;
+                    case Classes.SupportedStreamFormat.Wav_16bit:
+                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
+                        if (convertMultiChannelToStereo)
+                            convertedSource = convertedSource.ToStereo();
+                        format = convertedSource.WaveFormat;
+                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        break;
                     case Classes.SupportedStreamFormat.Wav_24bit:
                         convertedSource = soundInSource.ToSampleSource().ToWaveSource(24);
-                        convertedSource = convertedSource.ToStereo();
+                        if (convertMultiChannelToStereo)
+                            convertedSource = convertedSource.ToStereo();
                         format = convertedSource.WaveFormat;
                         waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                         break;
                     case Classes.SupportedStreamFormat.Wav_32bit:
                         convertedSource = soundInSource.ToSampleSource().ToWaveSource(32);
-                        convertedSource = convertedSource.ToStereo();
+                        if (convertMultiChannelToStereo)
+                            convertedSource = convertedSource.ToStereo();
                         format = convertedSource.WaveFormat;
                         waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.IeeeFloat, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
                         break;
