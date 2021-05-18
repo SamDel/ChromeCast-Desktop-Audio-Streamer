@@ -715,15 +715,15 @@
         </trans-unit>
         <trans-unit id="Wav_24bit" translate="yes" xml:space="preserve">
           <source>Wav (Soundcard's sample rate/24bit)</source>
-          <target state="new">Wav (Soundcard's sample rate/24bit)</target>
+          <target state="translated">Wav ((taux d'échantillonnage de la carte son/24bit)</target>
         </trans-unit>
         <trans-unit id="Wav_32bit" translate="yes" xml:space="preserve">
           <source>Wav (Soundcard's sample rate/32bit)</source>
-          <target state="new">Wav (Soundcard's sample rate/32bit)</target>
+          <target state="translated">Wav ((taux d'échantillonnage de la carte son/32bit)</target>
         </trans-unit>
         <trans-unit id="Wav_16bit" translate="yes" xml:space="preserve">
           <source>Wav (Soundcard's sample rate/16bit)</source>
-          <target state="new">Wav (Soundcard's sample rate/16bit)</target>
+          <target state="translated">Wav ((taux d'échantillonnage de la carte son/16bit)</target>
         </trans-unit>
         <trans-unit id="Check_ConvertMultiChannelToStereo_Text" translate="yes" xml:space="preserve">
           <source>Convert multi-channel audio to stereo output</source>

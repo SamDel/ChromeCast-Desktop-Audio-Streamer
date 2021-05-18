@@ -231,6 +231,15 @@
   <data name="Check_MinimizeToTray_Text" xml:space="preserve">
     <value>Réduire dans la barre d'état à la fermeture</value>
   </data>
+  <data name="Wav_24bit" xml:space="preserve">
+    <value>Wav ((taux d'échantillonnage de la carte son/24bit)</value>
+  </data>
+  <data name="Wav_32bit" xml:space="preserve">
+    <value>Wav ((taux d'échantillonnage de la carte son/32bit)</value>
+  </data>
+  <data name="Wav_16bit" xml:space="preserve">
+    <value>Wav ((taux d'échantillonnage de la carte son/16bit)</value>
+  </data>
   <data name="Check_ConvertMultiChannelToStereo_Text" xml:space="preserve">
     <value>Conversion de l'audio multicanal en sortie stéréo</value>
   </data>
