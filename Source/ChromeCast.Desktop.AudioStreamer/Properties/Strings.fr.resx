@@ -231,4 +231,7 @@
   <data name="Check_MinimizeToTray_Text" xml:space="preserve">
     <value>Réduire dans la barre d'état à la fermeture</value>
   </data>
+  <data name="Check_ConvertMultiChannelToStereo_Text" xml:space="preserve">
+    <value>Conversion de l'audio multicanal en sortie stéréo</value>
+  </data>
 </root>

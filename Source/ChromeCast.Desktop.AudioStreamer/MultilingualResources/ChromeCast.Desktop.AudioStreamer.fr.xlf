@@ -727,7 +727,7 @@
         </trans-unit>
         <trans-unit id="Check_ConvertMultiChannelToStereo_Text" translate="yes" xml:space="preserve">
           <source>Convert multi-channel audio to stereo output</source>
-          <target state="new">Convert multi-channel audio to stereo output</target>
+          <target state="translated">Conversion de l'audio multicanal en sortie stéréo</target>
         </trans-unit>
       </group>
     </body>
