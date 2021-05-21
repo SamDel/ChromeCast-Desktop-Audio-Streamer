@@ -417,6 +417,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.ExtraBufferInSeconds = 4;
             settings.RecordingDeviceID = null;
             settings.AutoMute = false;
+            settings.MinimizeToTray = false;
+            settings.ConvertMultiChannelToStereo = false;
             devices.SetSettings(settings);
             mainForm.SetAutoStart(settings.AutoStartDevices.Value);
             mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices.Value);
