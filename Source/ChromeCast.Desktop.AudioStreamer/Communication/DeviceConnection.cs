@@ -113,7 +113,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// <param name="ar"></param>
         private void ConnectCallback(IAsyncResult ar)
         {
-            if (tcpClient == null)
+            if (tcpClient == null || tcpClient.Client == null)
                 return;
 
             try

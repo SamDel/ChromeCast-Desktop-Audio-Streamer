@@ -404,6 +404,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             foreach (var device in deviceList)
             {
+                if (device == null ||device.GetDeviceControl() == null || device.GetDeviceControl().IsDisposed)
+                    continue;
+
                 device.GetDeviceControl().Visible = FilterDevices.ShowFilterDevices(device, value);
             }
         }

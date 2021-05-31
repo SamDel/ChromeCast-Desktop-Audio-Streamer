@@ -210,8 +210,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             var deviceControl = new DeviceControl(device);
             deviceControl.SetDeviceName(device.GetFriendlyName());
             deviceControl.SetStatus(device.GetDeviceState(), null);
-            pnlDevices.Controls.Add(deviceControl);
             device.SetDeviceControl(deviceControl);
+            pnlDevices.Controls.Add(deviceControl);
             var filter = GetFilterDevices();
             if (filter != null)
                 deviceControl.Visible = FilterDevices.ShowFilterDevices(device, filter.Value);
@@ -738,6 +738,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             applicationLogic.ResetSettings();
+            pnlDevices.Controls.Clear();
         }
 
         public void DoDragDrop(object sender, DragEventArgs e)

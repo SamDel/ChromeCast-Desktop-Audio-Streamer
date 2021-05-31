@@ -10,7 +10,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 {
     public partial class DeviceControl : UserControl
     {
-        private IDevice device;
+        private readonly IDevice device;
         private Action PlayPause_Click;
         private Action Stop_Click;
 
@@ -45,7 +45,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         public void SetStatus(DeviceState state, string text)
         {
-            if (device == null)
+            if (device == null || device.IsDisposed())
                 return;
 
             if (InvokeRequired)
@@ -141,7 +141,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void TrbVolume_Scroll(object sender, EventArgs e)
         {
-            if (device == null)
+            if (device == null || device.IsDisposed())
                 return;
 
             device.VolumeSet(trbVolume.Value / 100f);
@@ -149,7 +149,7 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void PictureVolumeMute_Click(object sender, EventArgs e)
         {
-            if (device == null)
+            if (device == null || device.IsDisposed())
                 return;
 
             device.VolumeMute();
@@ -185,11 +185,17 @@ namespace ChromeCast.Desktop.AudioStreamer.UserControls
 
         private void BtnDevicePlay_Click(object sender, EventArgs e)
         {
+            if (device == null || device.IsDisposed())
+                return;
+
             PlayPause_Click();
         }
 
         private void BtnDeviceStop_Click(object sender, EventArgs e)
         {
+            if (device == null || device.IsDisposed())
+                return;
+
             Stop_Click();
         }
     }

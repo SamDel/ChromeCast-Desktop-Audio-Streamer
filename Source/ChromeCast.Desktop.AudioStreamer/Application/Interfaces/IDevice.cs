@@ -50,5 +50,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         bool IsStatusTextBlankCheck(string statusText);
         UserMode GetUserMode();
         int GetVolumeLevel();
+        bool IsDisposed();
     }
 }

@@ -46,6 +46,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private DateTime? lastLoadMessageTime;
         private DateTime? addStreamingConnectionTime;
 
+        private bool isDisposed;
+
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
         public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
@@ -82,7 +84,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             autoMute = autoMuteIn;
 
             if (discoveredDevice == null || deviceCommunication == null || deviceConnection == null ||
-                discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null)
+                discoveredDeviceIn == null || setDeviceInformationCallbackIn == null || stopGroupIn == null || isDisposed)
                 return;
 
             var ipChanged = discoveredDevice.IPAddress != discoveredDeviceIn.IPAddress;
@@ -132,7 +134,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void OnClickPlayStop()
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             // Disabled because group information isn't available since a firmware update.
@@ -152,7 +154,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         private void OnClickStop()
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             deviceCommunication.OnStop_Click();
@@ -164,7 +166,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Start()
         {
-            if (devicePlayedWhenStopped)
+            if (devicePlayedWhenStopped || isDisposed)
             {
                 ResumePlaying();
             }
@@ -179,7 +181,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="streamFormat">the stream format</param>
         public void OnRecordingDataAvailable(byte[] dataToSend, WaveFormat format, int reduceLagThreshold, SupportedStreamFormat streamFormat)
         {
-            if (streamingConnection == null || dataToSend == null || dataToSend.Length == 0)
+            if (streamingConnection == null || dataToSend == null || dataToSend.Length == 0 || isDisposed)
                 return;
 
             if (streamingConnection.IsConnected())
@@ -202,7 +204,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void OnGetStatus()
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             DoFirewallCheck();
@@ -222,7 +224,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="statusText">status text</param>
         public void SetDeviceState(DeviceState state, string statusText = null)
         {
-            if (deviceControl == null || deviceControl.IsDisposed || discoveredDevice == null)
+            if (deviceControl == null || deviceControl.IsDisposed || discoveredDevice == null || isDisposed)
                 return;
 
             if (deviceControl.InvokeRequired)
@@ -266,7 +268,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="level"></param>
         public void VolumeSet(float level)
         {
-            if (deviceCommunication == null || volumeSetting == null)
+            if (deviceCommunication == null || volumeSetting == null || isDisposed)
                 return;
 
             if (DateTime.Now.Ticks - latestVolumeChange.Ticks < 1000)
@@ -290,7 +292,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeUp()
         {
-            if (volumeSetting == null)
+            if (volumeSetting == null || isDisposed)
                 return;
 
             VolumeSet(volumeSetting.level + 0.05f);
@@ -301,7 +303,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeDown()
         {
-            if (volumeSetting == null)
+            if (volumeSetting == null || isDisposed)
                 return;
 
             VolumeSet(volumeSetting.level - 0.05f);
@@ -312,7 +314,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void VolumeMute()
         {
-            if (deviceCommunication == null || volumeSetting == null)
+            if (deviceCommunication == null || volumeSetting == null || isDisposed)
                 return;
 
             deviceCommunication.VolumeMute(!volumeSetting.muted);
@@ -323,7 +325,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Stop(bool changeUserMode = false)
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             switch (GetDeviceState())
@@ -351,7 +353,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns></returns>
         public bool AddStreamingConnection(string remoteAddress, Socket socket)
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return false;
 
             addStreamingConnectionTime = DateTime.Now;
@@ -377,7 +379,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public string GetUsn()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return string.Empty;
 
             return discoveredDevice.Usn;
@@ -388,7 +390,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public string GetHost()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return string.Empty;
 
             return discoveredDevice.IPAddress;
@@ -400,7 +402,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns></returns>
         public string GetFriendlyName()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return string.Empty;
 
             return discoveredDevice.Name;
@@ -411,7 +413,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         private void SetDeviceName(string name)
         {
-            if (deviceControl == null || menuItem == null)
+            if (deviceControl == null || menuItem == null || isDisposed)
                 return;
 
             deviceControl.SetDeviceName(name);
@@ -423,7 +425,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public DeviceState GetDeviceState()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return DeviceState.Disposed;
 
             return discoveredDevice.DeviceState;
@@ -442,7 +444,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void SetDeviceControl(DeviceControl deviceControlIn)
         {
-            if (deviceControlIn == null)
+            if (deviceControlIn == null || isDisposed)
                 return;
 
             deviceControl = deviceControlIn;
@@ -462,6 +464,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public MenuItem GetMenuItem()
         {
+            if (isDisposed)
+                return null;
+
             return menuItem;
         }
 
@@ -478,7 +483,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void OnReceiveMessage(CastMessage castMessage)
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             deviceCommunication.OnReceiveMessage(castMessage);
@@ -490,7 +495,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>the port of the device, or 0</returns>
         public int GetPort()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return 0;
 
             return discoveredDevice.Port;
@@ -510,7 +515,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <returns>true if it's a group, false if it's not a group</returns>
         public bool IsGroup()
         {
-            if (discoveredDevice == null)
+            if (discoveredDevice == null || isDisposed)
                 return false;
 
             return discoveredDevice.IsGroup;
@@ -533,7 +538,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <param name="volume">the volume on the device</param>
         public void OnVolumeUpdate(Volume volume)
         {
-            if (deviceControl == null)
+            if (deviceControl == null || isDisposed)
                 return;
 
             var tmpLevel = volume.level;
@@ -588,7 +593,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void ResumePlaying()
         {
-            if (deviceCommunication == null)
+            if (deviceCommunication == null || isDisposed)
                 return;
 
             deviceCommunication.ResumePlaying();
@@ -619,10 +624,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void Dispose()
         {
+            isDisposed = true;
             Stop();
             deviceCommunication?.Dispose();
             streamingConnection?.Dispose();
             deviceConnection?.Dispose();
+            deviceControl?.Hide();
             deviceControl?.Dispose();
         }
 
@@ -715,6 +722,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             {
                 lastLoadMessageTime = null;
             }
+        }
+
+        public bool IsDisposed()
+        {
+            return isDisposed;
         }
     }
 }
