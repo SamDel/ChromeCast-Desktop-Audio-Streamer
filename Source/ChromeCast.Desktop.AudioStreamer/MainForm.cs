@@ -1256,5 +1256,31 @@ namespace ChromeCast.Desktop.AudioStreamer
 
             return chkConvertMultiChannelToStereo.Checked;
         }
+
+        public void SetIP4AddressUsed(string ip4Address)
+        {
+            if (cmbIP4AddressUsed == null || string.IsNullOrEmpty(ip4Address))
+                return;
+
+            for (int i = 0; i < cmbIP4AddressUsed.Items.Count; i++)
+            {
+                var ipAddress = cmbIP4AddressUsed.Items[i].ToString();
+                if (ip4Address == ipAddress)
+                {
+                    if (cmbIP4AddressUsed.SelectedIndex != i)
+                    {
+                        cmbIP4AddressUsed.SelectedIndex = i;
+                    }
+                }
+            }
+        }
+
+        public string GetIP4AddressUsed()
+        {
+            if (cmbIP4AddressUsed.Items.Count == 0 || cmbIP4AddressUsed.SelectedItem == null)
+                return string.Empty;
+
+            return cmbIP4AddressUsed.SelectedItem.ToString();
+        }
     }
 }

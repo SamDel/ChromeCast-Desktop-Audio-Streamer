@@ -76,6 +76,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         }
 
         [UserScopedSetting()]
+        public string Ip4AddressUsed
+        {
+            get
+            {
+                return (string)this["Ip4AddressUsed"];
+            }
+            set
+            {
+                this["Ip4AddressUsed"] = value;
+            }
+        }
+
+        [UserScopedSetting()]
         public SupportedStreamFormat? StreamFormat
         {
             get

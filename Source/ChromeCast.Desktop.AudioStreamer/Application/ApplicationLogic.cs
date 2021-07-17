@@ -271,6 +271,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices ?? false);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
+            mainForm.SetIP4AddressUsed(settings.Ip4AddressUsed ?? string.Empty);
             mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
             mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
@@ -358,6 +359,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.AutoRestart = mainForm.GetAutoRestart();
             settings.StartLastUsedDevices = mainForm.GetStartLastUsedDevices();
             settings.ShowWindowOnStart = mainForm.GetShowWindowOnStart();
+            settings.Ip4AddressUsed = mainForm.GetIP4AddressUsed();
             settings.StreamFormat = StreamFormatSelected;
             settings.Culture = Culture;
             settings.LogDeviceCommunication = mainForm.GetLogDeviceCommunication();
@@ -404,6 +406,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.StartLastUsedDevices = false;
             settings.ShowWindowOnStart = true;
             settings.AutoRestart = false;
+            settings.Ip4AddressUsed = string.Empty;
             settings.StreamFormat = SupportedStreamFormat.Mp3_320;
             settings.Culture = CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
             settings.LogDeviceCommunication = false;
@@ -425,6 +428,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetAutoRestart(settings.AutoRestart.Value);
             mainForm.SetWindowVisibility(settings.ShowWindowOnStart.Value);
             mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts.Value);
+            mainForm.SetIP4AddressUsed(settings.Ip4AddressUsed);
             mainForm.SetStreamFormat(settings.StreamFormat.Value);
             mainForm.SetCulture(settings.Culture);
             mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication.Value);

@@ -58,5 +58,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool GetMinimizeToTray();
         void SetConvertMultiChannelToStereo(bool convertMultiChannelToStereo);
         bool GetConvertMultiChannelToStereo();
+        void SetIP4AddressUsed(string ip4Address);
+        string GetIP4AddressUsed();
     }
 }
