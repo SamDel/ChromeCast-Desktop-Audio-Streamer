@@ -331,7 +331,7 @@
     <value>Auto-mute/unmute desktop audio</value>
   </data>
   <data name="LoadingMediaCheckFirewall" xml:space="preserve">
-    <value>Check Firewall</value>
+    <value>Check Firewall &amp; Wi-Fi Privacy Status</value>
   </data>
   <data name="Check_MinimizeToTray_Text" xml:space="preserve">
     <value>Minimize to systray when closing</value>

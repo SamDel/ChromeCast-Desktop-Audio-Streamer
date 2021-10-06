@@ -547,7 +547,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check Firewall.
+        ///   Looks up a localized string similar to Check Firewall &amp; Wi-Fi Privacy Status.
         /// </summary>
         internal static string LoadingMediaCheckFirewall {
             get {

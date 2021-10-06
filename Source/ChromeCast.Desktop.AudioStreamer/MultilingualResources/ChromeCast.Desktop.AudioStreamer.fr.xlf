@@ -706,7 +706,7 @@
           <target state="translated">Sourdine auto/Désactiver la sourdine des sons du bureau.</target>
         </trans-unit>
         <trans-unit id="LoadingMediaCheckFirewall" translate="yes" xml:space="preserve">
-          <source>Check Firewall</source>
+          <source>Check Firewall &amp; Wi-Fi Privacy Status</source>
           <target state="translated">Vérifiez le pare-feu</target>
         </trans-unit>
         <trans-unit id="Check_MinimizeToTray_Text" translate="yes" xml:space="preserve">
