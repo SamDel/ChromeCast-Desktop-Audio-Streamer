@@ -15,6 +15,9 @@ using System.Globalization;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using System.Threading;
 using ChromeCast.Desktop.AudioStreamer.Rest;
+using System.Configuration;
+using System.IO;
+using System.Diagnostics;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -259,44 +262,53 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (settings == null || devices == null || mainForm == null)
                 return;
 
-            if (!settings.Upgraded ?? true)
+            try
             {
-                settings.Upgrade();
-                settings.Upgraded = true;
-            }
-
-            devices.SetSettings(settings);
-            mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
-            mainForm.SetAutoRestart(settings.AutoRestart ?? false);
-            mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices ?? false);
-            mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
-            mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
-            mainForm.SetIP4AddressUsed(settings.Ip4AddressUsed ?? string.Empty);
-            mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
-            mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
-            mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
-            mainForm.SetLagValue(settings.LagControlValue ?? 1000);
-            mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
-            mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
-            if (settings.Size == null || settings.Size.Value.Width < 50|| settings.Size.Value.Height < 50)
-                settings.Size = defaultSize;
-            mainForm.SetSize(settings.Size.Value);
-            mainForm.SetPosition(
-                    Math.Min(Math.Max(settings.Left.Value, 0), Screen.PrimaryScreen.Bounds.Width),
-                    Math.Min(Math.Max(settings.Top.Value, 0), Screen.PrimaryScreen.Bounds.Height)
-                );
-            mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 4);
-            mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
-            mainForm.SetAutoMute(settings.AutoMute ?? false);
-            mainForm.SetMinimizeToTray(settings.MinimizeToTray ?? false);
-            mainForm.SetConvertMultiChannelToStereo(settings.ConvertMultiChannelToStereo ?? false);
-            if (settings.ChromecastDiscoveredDevices != null)
-            {
-                settings.ChromecastDiscoveredDevices = RemoveOldEntries(settings.ChromecastDiscoveredDevices);
-                for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
+                if (!settings.Upgraded ?? true)
                 {
-                    StartTask(DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger));
+                    settings.Upgrade();
+                    settings.Upgraded = true;
                 }
+
+                devices.SetSettings(settings);
+                mainForm.SetAutoStart(settings.AutoStartDevices ?? false);
+                mainForm.SetAutoRestart(settings.AutoRestart ?? false);
+                mainForm.SetStartLastUsedDevices(settings.StartLastUsedDevices ?? false);
+                mainForm.SetWindowVisibility(settings.ShowWindowOnStart ?? true);
+                mainForm.SetKeyboardHooks(settings.UseKeyboardShortCuts ?? false);
+                mainForm.SetIP4AddressUsed(settings.Ip4AddressUsed ?? string.Empty);
+                mainForm.SetStreamFormat(settings.StreamFormat ?? SupportedStreamFormat.Mp3_320);
+                mainForm.SetCulture(settings.Culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName);
+                mainForm.SetLogDeviceCommunication(settings.LogDeviceCommunication ?? false);
+                mainForm.SetLagValue(settings.LagControlValue ?? 1000);
+                mainForm.SetStartApplicationWhenWindowsStarts(settings.StartApplicationWhenWindowsStarts ?? false);
+                mainForm.SetFilterDevices(settings.FilterDevices ?? FilterDevicesEnum.ShowAll);
+                if (settings.Size == null || settings.Size.Value.Width < 50 || settings.Size.Value.Height < 50)
+                    settings.Size = defaultSize;
+                mainForm.SetSize(settings.Size.Value);
+                mainForm.SetPosition(
+                        Math.Min(Math.Max(settings.Left.Value, 0), Screen.PrimaryScreen.Bounds.Width),
+                        Math.Min(Math.Max(settings.Top.Value, 0), Screen.PrimaryScreen.Bounds.Height)
+                    );
+                mainForm.SetExtraBufferInSeconds(settings.ExtraBufferInSeconds ?? 4);
+                mainForm.SetRecordingDeviceID(settings.RecordingDeviceID ?? null);
+                mainForm.SetAutoMute(settings.AutoMute ?? false);
+                mainForm.SetMinimizeToTray(settings.MinimizeToTray ?? false);
+                mainForm.SetConvertMultiChannelToStereo(settings.ConvertMultiChannelToStereo ?? false);
+                if (settings.ChromecastDiscoveredDevices != null)
+                {
+                    settings.ChromecastDiscoveredDevices = RemoveOldEntries(settings.ChromecastDiscoveredDevices);
+                    for (int i = 0; i < settings.ChromecastDiscoveredDevices.Count; i++)
+                    {
+                        StartTask(DeviceInformation.CheckDeviceIsOn(settings.ChromecastDiscoveredDevices[i], devices.OnDeviceAvailable, logger));
+                    }
+                }
+            }
+            catch (ConfigurationErrorsException ex)
+            {
+                // Corrupted config file, remove the config file.
+                File.Delete(((ConfigurationErrorsException)ex.InnerException).Filename);
+                Process.GetCurrentProcess().Kill();
             }
         }
 
