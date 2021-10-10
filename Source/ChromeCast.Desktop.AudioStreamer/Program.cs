@@ -22,6 +22,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         [STAThread]
         static void Main()
         {
+            if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             try
@@ -32,6 +33,9 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
             }
         }
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
 
         private static void UnhandledHandler(object sender, System.UnhandledExceptionEventArgs e)
         {
