@@ -166,7 +166,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
                 var deviceList = devices.GetDeviceList();
                 foreach (var device in deviceList)
                 {
-                    device.ResumePlaying();
+                    device.OnClickPlayStop();
                 }
             }
             else
@@ -175,7 +175,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
                 if (device == null)
                     return errorDeviceNotFound;
 
-                device.ResumePlaying();
+                device.OnClickPlayStop();
             }
 
             var response = "{\"data\": { \"type\": \"done\", \"id\": \"1\", \"attributes\": { \"action\": \"/start" + action + "\" } } }";
