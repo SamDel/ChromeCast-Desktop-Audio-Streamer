@@ -715,10 +715,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 addStreamingConnectionTime = null;
             }
             else if (state != DeviceState.Idle &&
-                state != DeviceState.Connected &&
-                state != DeviceState.NotConnected &&
-                state != DeviceState.Buffering &&
-                state != DeviceState.Closed)
+                state != DeviceState.Buffering)
             {
                 lastLoadMessageTime = null;
             }
