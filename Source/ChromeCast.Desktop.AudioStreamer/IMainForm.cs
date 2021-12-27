@@ -60,5 +60,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         bool GetConvertMultiChannelToStereo();
         void SetIP4AddressUsed(string ip4Address);
         string GetIP4AddressUsed();
+        void SetDarkMode(bool darkmode);
+        bool GetDarkMode();
     }
 }

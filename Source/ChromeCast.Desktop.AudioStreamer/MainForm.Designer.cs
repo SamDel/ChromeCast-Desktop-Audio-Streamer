@@ -42,6 +42,7 @@
             this.pnlResetSettings = new System.Windows.Forms.Panel();
             this.btnResetSettings = new System.Windows.Forms.Button();
             this.pnlOptionsCheckBoxes = new System.Windows.Forms.Panel();
+            this.chkDarkMode = new System.Windows.Forms.CheckBox();
             this.chkConvertMultiChannelToStereo = new System.Windows.Forms.CheckBox();
             this.chkMinimizeToTray = new System.Windows.Forms.CheckBox();
             this.chkAutoMute = new System.Windows.Forms.CheckBox();
@@ -217,7 +218,7 @@
             this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
             this.grpVolume.Location = new System.Drawing.Point(20, 20);
             this.grpVolume.Name = "grpVolume";
-            this.grpVolume.Padding = new System.Windows.Forms.Padding(10, 10, 0, 10);
+            this.grpVolume.Padding = new System.Windows.Forms.Padding(10, 10, 2, 10);
             this.grpVolume.Size = new System.Drawing.Size(1071, 87);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
@@ -231,7 +232,7 @@
             this.pnlVolumeMeter.Controls.Add(this.volumeMeter);
             this.pnlVolumeMeter.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlVolumeMeter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlVolumeMeter.Location = new System.Drawing.Point(1025, 25);
+            this.pnlVolumeMeter.Location = new System.Drawing.Point(1023, 25);
             this.pnlVolumeMeter.Name = "pnlVolumeMeter";
             this.pnlVolumeMeter.Size = new System.Drawing.Size(46, 52);
             this.pnlVolumeMeter.TabIndex = 18;
@@ -368,7 +369,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 473);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 495);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 100);
             this.flowLayoutPanel1.TabIndex = 43;
@@ -377,7 +378,7 @@
             // 
             this.pnlResetSettings.Controls.Add(this.btnResetSettings);
             this.pnlResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlResetSettings.Location = new System.Drawing.Point(0, 573);
+            this.pnlResetSettings.Location = new System.Drawing.Point(0, 595);
             this.pnlResetSettings.Name = "pnlResetSettings";
             this.pnlResetSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
             this.pnlResetSettings.Size = new System.Drawing.Size(1030, 57);
@@ -398,6 +399,7 @@
             // pnlOptionsCheckBoxes
             // 
             this.pnlOptionsCheckBoxes.AutoSize = true;
+            this.pnlOptionsCheckBoxes.Controls.Add(this.chkDarkMode);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkConvertMultiChannelToStereo);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkMinimizeToTray);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkAutoMute);
@@ -413,8 +415,20 @@
             this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 191);
             this.pnlOptionsCheckBoxes.Name = "pnlOptionsCheckBoxes";
             this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 20, 20, 20);
-            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 282);
+            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 304);
             this.pnlOptionsCheckBoxes.TabIndex = 35;
+            // 
+            // chkDarkMode
+            // 
+            this.chkDarkMode.AutoSize = true;
+            this.chkDarkMode.Dock = System.Windows.Forms.DockStyle.Top;
+            this.chkDarkMode.Location = new System.Drawing.Point(15, 262);
+            this.chkDarkMode.Name = "chkDarkMode";
+            this.chkDarkMode.Size = new System.Drawing.Size(995, 22);
+            this.chkDarkMode.TabIndex = 47;
+            this.chkDarkMode.Text = "Dark mode";
+            this.chkDarkMode.UseVisualStyleBackColor = true;
+            this.chkDarkMode.CheckedChanged += new System.EventHandler(this.chkDarkMode_CheckedChanged);
             // 
             // chkConvertMultiChannelToStereo
             // 
@@ -974,6 +988,7 @@
         private System.Windows.Forms.CheckBox chkAutoMute;
         private System.Windows.Forms.CheckBox chkMinimizeToTray;
         private System.Windows.Forms.CheckBox chkConvertMultiChannelToStereo;
+        private System.Windows.Forms.CheckBox chkDarkMode;
     }
 }
 

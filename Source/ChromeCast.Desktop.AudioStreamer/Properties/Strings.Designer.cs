@@ -187,6 +187,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dark mode.
+        /// </summary>
+        internal static string Check_DarkMode_Text {
+            get {
+                return ResourceManager.GetString("Check_DarkMode_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use Keyboard shortcuts: Up = Ctrl+Alt+U; Down = Ctrl+Alt+D; (Un)Mute = Ctrl+Alt+M.
         /// </summary>
         internal static string Check_KeyboardShortcuts_Text {

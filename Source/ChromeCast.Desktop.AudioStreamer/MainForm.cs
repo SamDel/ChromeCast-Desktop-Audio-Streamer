@@ -130,6 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
             lblFilterDevices.Text = Properties.Strings.Label_FilterDevices_Text;
             lblBufferInSeconds.Text = Properties.Strings.Label_BufferInSeconds_Text;
+            chkDarkMode.Text = Properties.Strings.Check_DarkMode_Text;
 
             if (cmbLanguage.Items.Count == 0)
             {
@@ -899,6 +900,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 if (tabControl.TabPages.Contains(tabPageLog))
                     tabControl.TabPages.Remove(tabPageLog);
             }
+            ApplyTheme(null, GetDarkMode());
         }
 
         public bool GetLogDeviceCommunication()
@@ -1257,6 +1259,23 @@ namespace ChromeCast.Desktop.AudioStreamer
             return chkConvertMultiChannelToStereo.Checked;
         }
 
+        public void SetDarkMode(bool darkmode)
+        {
+            if (chkDarkMode == null)
+                return;
+
+            chkDarkMode.Checked = darkmode;
+            ApplyTheme(null, darkmode);
+        }
+
+        public bool GetDarkMode()
+        {
+            if (chkDarkMode == null)
+                return false;
+
+            return chkDarkMode.Checked;
+        }
+
         public void SetIP4AddressUsed(string ip4Address)
         {
             if (cmbIP4AddressUsed == null || string.IsNullOrEmpty(ip4Address))
@@ -1281,6 +1300,94 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return string.Empty;
 
             return cmbIP4AddressUsed.SelectedItem.ToString();
+        }
+
+        public void ApplyTheme(Control item, bool darkmode)
+        {
+            if (item == null) 
+            { 
+                item = this;
+                if (darkmode)
+                {
+                    BackColor = Color.Black;
+                    ForeColor = Color.White;
+                }
+                else
+                {
+                    BackColor = SystemColors.Control;
+                    ForeColor = Color.Black;
+                }
+            }
+
+            foreach (var control in item.Controls)
+            {
+                DoApplyTheme(control, darkmode);
+                ApplyTheme((Control)control, darkmode);
+            }
+
+        }
+
+        private void DoApplyTheme(object item, bool darkmode)
+        {
+            var backColor = darkmode ? Color.Black : Color.White;
+            var buttonColor = darkmode ? Color.Black : Color.Transparent;
+            var controlColor = darkmode ? Color.Black : SystemColors.Control;
+            var foreColor = darkmode ? Color.White : Color.Black;
+
+            if (item is TabPage tp)
+            {
+                tp.BackColor = backColor;
+                tp.ForeColor = foreColor;
+            }
+            if (item is GroupBox gb)
+            {
+                gb.BackColor = backColor;
+                gb.ForeColor = foreColor;
+            }
+            if (item is TextBox tb)
+            {
+                tb.BackColor = controlColor;
+                tb.ForeColor = foreColor;
+            }
+            if (item is FlowLayoutPanel flp)
+            {
+                if (!(((Control)item).Parent is DeviceControl))
+                {
+                    flp.BackColor = backColor;
+                    flp.ForeColor = foreColor;
+                }
+            }
+            if (item is Button button)
+            {
+                if (((Control)item).Parent is DeviceControl)
+                {
+                    button.BackColor = Color.LightGray;
+                    button.ForeColor = SystemColors.ControlText;
+                }
+                else
+                {
+                    button.BackColor = buttonColor;
+                    button.ForeColor = foreColor;
+                }
+            }
+            if (item is LinkLabel linklabel)
+            {
+                linklabel.BackColor = backColor;
+                linklabel.ForeColor = foreColor;
+            }
+            if (item is ComboBox cb)
+            {
+                cb.BackColor = backColor;
+                cb.ForeColor = foreColor;
+            }
+        }
+
+        private void chkDarkMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkDarkMode == null)
+                return;
+
+            ApplyTheme(null, chkDarkMode.Checked);
         }
     }
 }

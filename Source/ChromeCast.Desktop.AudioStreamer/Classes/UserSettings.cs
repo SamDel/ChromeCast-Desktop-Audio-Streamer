@@ -308,5 +308,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                 this["ConvertMultiChannelToStereo"] = value;
             }
         }
+
+        [UserScopedSetting()]
+        public bool? DarkMode
+        {
+            get
+            {
+                return (bool?)this["DarkMode"];
+            }
+            set
+            {
+                this["DarkMode"] = value;
+            }
+        }
     }
 }

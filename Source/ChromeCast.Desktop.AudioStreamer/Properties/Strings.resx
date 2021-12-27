@@ -348,4 +348,7 @@
   <data name="Check_ConvertMultiChannelToStereo_Text" xml:space="preserve">
     <value>Convert multi-channel audio to stereo output</value>
   </data>
+  <data name="Check_DarkMode_Text" xml:space="preserve">
+    <value>Dark mode</value>
+  </data>
 </root>
