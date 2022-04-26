@@ -423,6 +423,24 @@ namespace ChromeCast.Desktop.AudioStreamer
             }
             if (IsDisposed) return;
 
+            // Remove items that have become unavailable.
+            for (int i = cmbRecordingDevice.Items.Count - 1; i >= 0; i--)
+            {
+                var remove = true;
+                foreach (var device in devices)
+                {
+                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
+                    {
+                        remove = false;
+                    }
+                }
+                if (remove)
+                {
+                    cmbRecordingDevice.Items.RemoveAt(i);
+                }
+            }
+
+            // Add items that don't occur in the combobox.
             foreach (var device in devices)
             {
                 var exists = false;
