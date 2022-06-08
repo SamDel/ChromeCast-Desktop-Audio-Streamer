@@ -28,5 +28,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         void SetExtraBufferInSeconds(int bufferInSeconds);
         void AutoMute(bool mute);
         List<IDevice> GetDeviceList();
+        void SetIgnoreIpAddresses(string ignoreIpAddressesDevicesIn);
     }
 }

@@ -23,6 +23,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private readonly ApplicationBuffer applicationBuffer = new ApplicationBuffer();
         private readonly ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
         private bool isMuted;
+        private List<string> ignoreIpAddresses;
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -34,6 +35,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 return;
 
             if (discoveredDevice.Port == 0 || discoveredDevice.Port == 10001)
+                return;
+
+            if (ignoreIpAddresses.Contains(discoveredDevice.IPAddress))
                 return;
 
             if (!discoveredDevice.AddedByDeviceInfo && !discoveredDevice.IsGroup)
@@ -485,6 +489,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public List<IDevice> GetDeviceList()
         {
             return deviceList;
+        }
+
+        public void SetIgnoreIpAddresses(string ignoreIpAddressesDevicesIn)
+        {
+            ignoreIpAddresses = new List<string>();
+            if (!string.IsNullOrWhiteSpace(ignoreIpAddressesDevicesIn))
+            {
+                ignoreIpAddresses.AddRange(ignoreIpAddressesDevicesIn.Split(';'));
+            }
         }
     }
 }

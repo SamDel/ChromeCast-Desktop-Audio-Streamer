@@ -23,7 +23,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
             Assert.AreEqual(string.Empty, ipAddressesDevices);
         }
 
-        private void ConfigurationCallback(string ipAddressesDevicesIn, bool showLagControl)
+        private void ConfigurationCallback(string ipAddressesDevicesIn, string ignoreIpAddressesDevicesIn, bool showLagControl)
         {
             ipAddressesDevices = ipAddressesDevicesIn;
 

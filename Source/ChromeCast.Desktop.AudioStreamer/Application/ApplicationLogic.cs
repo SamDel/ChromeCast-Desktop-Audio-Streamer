@@ -594,11 +594,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// ip addresses & device names
         /// format: 192.168.0.1,DeviceName1;192.168.0.2,DeviceName2
         /// </param>
-        private void ApplyConfiguration(string ipAddressesDevicesIn, bool showLagControl)
+        private void ApplyConfiguration(string ipAddressesDevicesIn, string ignoreIpAddressesDevicesIn, bool showLagControl)
         {
             try
             {
                 mainForm.ShowLagControl(showLagControl);
+                devices.SetIgnoreIpAddresses(ignoreIpAddressesDevicesIn);
                 if (!string.IsNullOrWhiteSpace(ipAddressesDevicesIn))
                 {
                     var ipDevices = ipAddressesDevicesIn.Split(';');
