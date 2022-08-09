@@ -4,11 +4,11 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using NAudio.Wave;
-using Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -21,9 +21,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
         private readonly ApplicationBuffer applicationBuffer = new ApplicationBuffer();
-        private readonly ILogger logger = DependencyFactory.Container.Resolve<ILogger>();
+        private readonly ILogger logger = new Logger();
         private bool isMuted;
         private List<string> ignoreIpAddresses;
+
+        public Devices()
+        {
+
+        }
 
         /// <summary>
         /// A new device is discoverd. Add the device, or update if it already exists.
@@ -51,7 +56,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     var existingDevice = GetDevice(discoveredDevice);
                     if (existingDevice == null)
                     {
-                        var newDevice = DependencyFactory.Container.Resolve<Device>();
+                        var newDevice = new Device(new Logger()
+                            , new DeviceConnection(new Logger()
+                                            , new DeviceReceiveBuffer())
+                                            , new DeviceCommunication(
+                                                    applicationLogic
+                                                    , new Logger()
+                                                    , new ChromeCastMessages()
+                                            )
+                                        );
                         newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank, AutoMute);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);

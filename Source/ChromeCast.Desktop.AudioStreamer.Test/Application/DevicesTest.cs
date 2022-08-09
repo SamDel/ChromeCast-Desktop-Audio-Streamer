@@ -1,21 +1,13 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-using Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Application;
-using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication;
-using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
-using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Test.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
-using Unity.Lifetime;
 
 namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 {
@@ -28,23 +20,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
         [TestInitialize]
         public void Initialize()
         {
-            DependencyFactory.Container
-                .RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager())
-                .RegisterType<IApplicationLogic, ApplicationLogic>(new ContainerControlledLifetimeManager())
-                .RegisterType<IMainForm, MainForm>(new ContainerControlledLifetimeManager())
-                .RegisterType<IDevices, Devices>(new ContainerControlledLifetimeManager())
-                .RegisterType<IDiscoverDevices, DiscoverDevices>()
-                .RegisterType<IChromeCastMessages, ChromeCastMessages>()
-                .RegisterType<IDeviceConnection, TestDeviceConnection>()
-                .RegisterType<IDeviceCommunication, DeviceCommunication>()
-                .RegisterType<IStreamingConnection, StreamingConnection>()
-                .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
-                .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
-                .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
-                .RegisterType<IConfiguration, Configuration>()
-                .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
-                .RegisterType<IAudioHeader, AudioHeader>()
-                .RegisterType<IDevice, Device>();
         }
 
         [TestMethod]

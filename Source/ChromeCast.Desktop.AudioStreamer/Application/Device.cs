@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Windows.Forms;
 using NAudio.Wave;
-using Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
@@ -365,7 +364,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 GetDeviceState() == DeviceState.Idle) &&
                 discoveredDevice.IPAddress == remoteAddress)
             {
-                streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
+                streamingConnection = new StreamingConnection();
                 streamingConnection.SetDependencies(socket, this, logger);
                 streamingConnection.SendStartStreamingResponse();
                 return true;

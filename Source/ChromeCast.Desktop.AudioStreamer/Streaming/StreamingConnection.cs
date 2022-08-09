@@ -20,9 +20,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private bool isAudioHeaderSent;
         private int reduceLagCounter = 0;
 
-        public StreamingConnection(IAudioHeader audioHeaderIn)
+        public StreamingConnection()
         {
-            audioHeader = audioHeaderIn;
+            audioHeader = new AudioHeader();
             isAudioHeaderSent = false;
         }
 
