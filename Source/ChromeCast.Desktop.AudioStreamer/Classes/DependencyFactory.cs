@@ -1,4 +1,4 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Unity;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {

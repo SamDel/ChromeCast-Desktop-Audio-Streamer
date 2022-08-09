@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
-using Microsoft.Practices.Unity;
+using Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Classes;
@@ -15,6 +15,7 @@ using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Test.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using Unity.Lifetime;
 
 namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 {

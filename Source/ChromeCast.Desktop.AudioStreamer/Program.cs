@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Practices.Unity;
+using Unity;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Communication;
@@ -11,6 +11,7 @@ using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Windows.Forms;
+using Unity.Lifetime;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
