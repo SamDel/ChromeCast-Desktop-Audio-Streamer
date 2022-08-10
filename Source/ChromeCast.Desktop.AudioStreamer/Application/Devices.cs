@@ -8,7 +8,6 @@ using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -21,13 +20,18 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private IMainForm mainForm;
         private IApplicationLogic applicationLogic;
         private readonly ApplicationBuffer applicationBuffer = new ApplicationBuffer();
-        private readonly ILogger logger = new Logger();
+        private readonly ILogger logger;
         private bool isMuted;
         private List<string> ignoreIpAddresses;
 
         public Devices()
         {
 
+        }
+
+        public Devices(Logger loggerIn)
+        {
+            logger = loggerIn;
         }
 
         /// <summary>
@@ -56,15 +60,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     var existingDevice = GetDevice(discoveredDevice);
                     if (existingDevice == null)
                     {
-                        var newDevice = new Device(new Logger()
-                            , new DeviceConnection(new Logger()
-                                            , new DeviceReceiveBuffer())
-                                            , new DeviceCommunication(
-                                                    applicationLogic
-                                                    , new Logger()
-                                                    , new ChromeCastMessages()
-                                            )
-                                        );
+                        var newDevice = new Device(logger, applicationLogic);
                         newDevice.Initialize(discoveredDevice, SetDeviceInformation, StopGroup, applicationLogic.StartTask, IsGroupStatusBlank, AutoMute);
                         deviceList.Add(newDevice);
                         onAddDeviceCallback?.Invoke(newDevice);

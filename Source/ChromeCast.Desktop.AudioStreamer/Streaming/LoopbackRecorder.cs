@@ -163,9 +163,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             try
             {
-                logger.Log("New recording device:");
-                logger.Log($"Friendlyname: {recordingDevice.FriendlyName}");
-                logger.Log($"DeviceFormat: {recordingDevice.DeviceFormat}");
                 if (recordingDevice.DataFlow == DataFlow.Render)
                 {
                     soundIn = new CSCore.SoundIn.WasapiLoopbackCapture

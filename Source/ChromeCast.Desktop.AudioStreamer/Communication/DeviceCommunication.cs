@@ -33,11 +33,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private DateTime lastReceivedMessage;
         private string statusText;
 
-        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
+        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn)
         {
             applicationLogic = applicationLogicIn;
             logger = loggerIn;
-            chromeCastMessages = chromeCastMessagesIn;
+            chromeCastMessages = new ChromeCastMessages();
             chromeCastDestination = string.Empty;
             chromeCastSource = string.Format("client-8{0}", new Random().Next(10000, 99999));
             requestId = 0;

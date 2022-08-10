@@ -49,11 +49,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
-        public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
+        public Device(ILogger loggerIn, IApplicationLogic applicationLogicIn)
         {
             logger = loggerIn;
-            deviceConnection = deviceConnectionIn;
-            deviceCommunication = deviceCommunicationIn;
+            deviceConnection = new DeviceConnection(logger);
+            deviceCommunication = new DeviceCommunication(applicationLogicIn, logger);
             deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage, StartTask);
             discoveredDevice = new DiscoveredDevice
             {

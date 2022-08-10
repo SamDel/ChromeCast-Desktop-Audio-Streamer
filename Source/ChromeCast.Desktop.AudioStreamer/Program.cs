@@ -65,14 +65,18 @@ namespace ChromeCast.Desktop.AudioStreamer
                 AppDomain currentDomain = AppDomain.CurrentDomain;
                 currentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(UnhandledHandler);
 
-                var devices = new Devices();
-                MainForm = new MainForm(new ApplicationLogic(devices
-                        , new DiscoverDevices()
-                        , new Configuration()
-                        , new StreamingRequestsListener()
-                        , new DeviceStatusTimer()
-                        , new Logger())
-                    , devices, new LoopbackRecorder(new Logger()), new Logger());
+                var logger = new Logger();
+                var devices = new Devices(logger);
+                MainForm = new MainForm(
+                        new ApplicationLogic(devices
+                            , new DiscoverDevices()
+                            , new Configuration()
+                            , new StreamingRequestsListener()
+                            , new DeviceStatusTimer()
+                            , logger)
+                        , devices
+                        , new LoopbackRecorder(logger)
+                        , logger);
                 System.Windows.Forms.Application.Run(MainForm);
             }
         }
