@@ -4,8 +4,8 @@ using Tmds.MDns;
 using System.Linq;
 using System.Timers;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Net;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Discover
 {
@@ -97,7 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Discover
                 Protocol = e.Announcement.Type,
                 Port = e.Announcement.Port,
                 Name = e.Announcement.Txt.Where(x => x.ToString().StartsWith("fn=")).FirstOrDefault()?.Replace("fn=", ""),
-                Headers = JsonConvert.SerializeObject(e.Announcement.Txt),
+                Headers = JsonSerializer.Serialize(e.Announcement.Txt),
                 Usn = e.Announcement.Hostname,
                 Id = e.Announcement.Txt.Where(x => x.ToString().StartsWith("id=")).FirstOrDefault()?.Replace("id=", ""),
             };

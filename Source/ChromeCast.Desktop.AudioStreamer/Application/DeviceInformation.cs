@@ -1,12 +1,13 @@
 ﻿using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Discover;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -31,7 +32,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                     var eurekaInfo = readStream.ReadToEnd();
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        var eureka = JsonConvert.DeserializeObject<DeviceEureka>(eurekaInfo);
+                        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                        var eureka = JsonSerializer.Deserialize<DeviceEureka>(eurekaInfo, options);
                         callback?.Invoke(eureka);
                     }
                 }
@@ -76,20 +78,20 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
     public class DeviceEureka
     {
         public Audio Audio { get; set; }
-        [JsonProperty("build_info")]
+        [JsonPropertyName("build_info")]
         public BuildInfo BuildInfo { get; set; }
         public Detail Detail { get; set; }
-        [JsonProperty("device_info")]
+        [JsonPropertyName("device_info")]
         public DeviceInfo DeviceInfo { get; set; }
         public Multizone Multizone { get; set; }
         public string Name { get; set; }
         public Net Net { get; set; }
-        [JsonProperty("opt_in")]
+        [JsonPropertyName("opt_in")]
         public OptIn OptIn { get; set; }
         public Proxy Proxy { get; set; }
         public Settings Settings { get; set; }
         public Setup Setup { get; set; }
-        [JsonProperty("user_eq")]
+        [JsonPropertyName("user_eq")]
         public UserEq UserEq { get; set; }
         public int Version { get; set; }
         public Wifi Wifi { get; set; }
@@ -161,7 +163,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class Location
     {
-        [JsonProperty("country_code")]
+        [JsonPropertyName("country_code")]
         public string CountryCode { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
@@ -169,17 +171,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class SetupStats
     {
-        [JsonProperty("historically_succeeded")]
+        [JsonPropertyName("historically_succeeded")]
         public bool HistoricallySucceeded { get; set; }
-        [JsonProperty("num_check_connectivity")]
+        [JsonPropertyName("num_check_connectivity")]
         public int NumCheckConnectivity { get; set; }
-        [JsonProperty("num_connect_wifi")]
+        [JsonPropertyName("num_connect_wifi")]
         public int NumConnectWifi { get; set; }
-        [JsonProperty("num_connected_wifi_not_saved")]
+        [JsonPropertyName("num_connected_wifi_not_saved")]
         public int NumConnectedWifiNotSaved { get; set; }
-        [JsonProperty("num_initial_eureka_info")]
+        [JsonPropertyName("num_initial_eureka_info")]
         public int NumInitialEurekaInfo { get; set; }
-        [JsonProperty("num_obtain_ip")]
+        [JsonPropertyName("num_obtain_ip")]
         public int NumObtainIp { get; set; }
     }
 
@@ -246,7 +248,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
     public class DeviceInfo
     {
-        [JsonProperty("4k_blocked")]
+        [JsonPropertyName("4k_blocked")]
         public int DI4kBlocked { get; set; }
         public Capabilities Capabilities { get; set; }
         public string Cloud_device_id { get; set; }

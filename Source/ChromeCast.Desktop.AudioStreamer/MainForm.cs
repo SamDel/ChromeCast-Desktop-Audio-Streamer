@@ -13,14 +13,13 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Newtonsoft.Json;
 using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using System.Text;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
 using System.Net.Sockets;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -961,11 +960,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                 var dataStream = response.GetResponseStream();
                 var reader = new StreamReader(dataStream);
                 var responseFromServer = reader.ReadToEnd();
-                var json = JsonConvert.DeserializeObject(responseFromServer);
-                var latestRelease = ((JObject)json)["tag_name"].ToString().Replace("v", "");
+                var doc = JsonDocument.Parse(responseFromServer);
+                var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
                 if (latestRelease.CompareTo(currentVersion) > 0)
                 {
-                    var latestReleaseUrl = ((JObject)json)["html_url"].ToString();
+                    var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
                     ShowLatestRelease(latestRelease, latestReleaseUrl);
                 }
 
