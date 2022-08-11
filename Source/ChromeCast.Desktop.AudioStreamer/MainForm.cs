@@ -1349,7 +1349,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             var backColor = darkmode ? Color.Black : Color.White;
             var buttonColor = darkmode ? Color.Black : Color.Transparent;
             var controlColor = darkmode ? Color.Black : SystemColors.Control;
-            var foreColor = darkmode ? Color.White : Color.Black;
+            var foreColor = darkmode ? Color.Gray : Color.Black;
 
             if (item is TabPage tp)
             {
@@ -1385,6 +1385,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 {
                     button.BackColor = buttonColor;
                     button.ForeColor = foreColor;
+                    button.FlatStyle = darkmode ? FlatStyle.Flat : FlatStyle.Standard;
                 }
             }
             if (item is LinkLabel linklabel)
