@@ -17,6 +17,8 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
             System.Windows.Forms.Application.EnableVisualStyles();
+            //TODO: .Net 6.0 replacement necessary? (SetHighDpiMode is not available anymore)
+            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             try
             {
