@@ -25,8 +25,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         string GetFriendlyName();
         DeviceState GetDeviceState();
         void SetDeviceControl(DeviceControl deviceControl);
-        MenuItem GetMenuItem();
-        void SetMenuItem(MenuItem menuItem);
+        ToolStripMenuItem GetMenuItem();
+        void SetMenuItem(ToolStripMenuItem menuItem);
         void VolumeUp();
         void VolumeDown();
         void VolumeMute();

@@ -143,12 +143,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
             try
             {
-                var menuItem = new MenuItem
+                var menuItem = new ToolStripMenuItem
                 {
                     Text = deviceIn.GetFriendlyName()
                 };
                 menuItem.Click += deviceIn.OnClickPlayPause;
-                notifyIcon?.ContextMenu?.MenuItems?.Add(notifyIcon.ContextMenu.MenuItems.Count - 1, menuItem);
+                notifyIcon?.ContextMenuStrip?.Items?.Insert(0, menuItem);
                 deviceIn.SetMenuItem(menuItem);
                 deviceIn.OnGetStatus();
             }
@@ -458,11 +458,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetDarkMode(settings.DarkMode.Value);
             settings.Save();
             devices?.Dispose();
-            if (notifyIcon?.ContextMenu != null)
+            if (notifyIcon?.ContextMenuStrip != null)
             {
-                for (int i = notifyIcon.ContextMenu.MenuItems.Count - 2; i >= 0; i--)
+                for (int i = notifyIcon.ContextMenuStrip.Items.Count - 2; i >= 0; i--)
                 {
-                    notifyIcon.ContextMenu.MenuItems[i].Dispose();
+                    notifyIcon.ContextMenuStrip.Items[i].Dispose();
                 }
             }
             ScanForDevices();
@@ -564,21 +564,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             try
             {
-                var contextMenu = new ContextMenu();
-                var menuItem = new MenuItem
+                var contextMenuStrip = new ContextMenuStrip();
+                var menuItem = new ToolStripMenuItem
                 {
-                    Index = 0,
+                    //Index = 0, 
                     Text = Properties.Strings.TrayIcon_Close
                 };
                 menuItem.Click += new EventHandler(CloseApplication);
-                contextMenu.MenuItems.AddRange(new MenuItem[] { menuItem });
+                contextMenuStrip.Items.AddRange(new ToolStripMenuItem[] { menuItem });
 
                 notifyIcon = new NotifyIcon();
                 System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
                 notifyIcon.Icon = (Icon)resources.GetObject("$this.Icon");
                 notifyIcon.Visible = true;
                 notifyIcon.Text = Properties.Strings.MainForm_Text;
-                notifyIcon.ContextMenu = contextMenu;
+                notifyIcon.ContextMenuStrip = contextMenuStrip;
                 notifyIcon.Click += mainForm.ToggleFormVisibility;
             }
             catch (Exception ex)

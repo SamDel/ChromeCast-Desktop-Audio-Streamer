@@ -28,7 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private readonly IDeviceConnection deviceConnection;
         private readonly DiscoveredDevice discoveredDevice;
         private DeviceControl deviceControl;
-        private MenuItem menuItem;
+        private ToolStripMenuItem menuItem;
         private Volume volumeSetting;
         private DateTime latestVolumeChange;
         private float latestVolumeSet;
@@ -454,7 +454,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Set the menu item in the systray.
         /// </summary>
-        public void SetMenuItem(MenuItem menuItemIn)
+        public void SetMenuItem(ToolStripMenuItem menuItemIn)
         {
             menuItem = menuItemIn;
         }
@@ -462,7 +462,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Return the menuitem in the systray.
         /// </summary>
-        public MenuItem GetMenuItem()
+        public ToolStripMenuItem GetMenuItem()
         {
             if (isDisposed)
                 return null;
