@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Collections.Generic;
-using System.Web.Script.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Communication;
@@ -8,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Test.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 {
@@ -123,7 +123,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Test.Application
 
         private T GetMessage<T>(string message)
         {
-            return new JavaScriptSerializer().Deserialize<T>(message);
+            return JsonSerializer.Deserialize<T>(message);
         }
 
         private void OnAddDeviceCallback(Device deviceIn)
