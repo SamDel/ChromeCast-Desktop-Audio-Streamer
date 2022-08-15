@@ -46,12 +46,12 @@
             // 
             // lblStatus
             // 
-            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
             this.lblStatus.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.lblStatus.Location = new System.Drawing.Point(3, 116);
+            this.lblStatus.Location = new System.Drawing.Point(0, 112);
             this.lblStatus.Margin = new System.Windows.Forms.Padding(3, 0, 10, 0);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(301, 21);
+            this.lblStatus.Size = new System.Drawing.Size(315, 26);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "status";
             this.lblStatus.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
@@ -63,12 +63,12 @@
             this.btnDevice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevice.FlatAppearance.BorderSize = 0;
             this.btnDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.btnDevice.Location = new System.Drawing.Point(43, 0);
             this.btnDevice.Margin = new System.Windows.Forms.Padding(0);
             this.btnDevice.Name = "btnDevice";
-            this.btnDevice.Padding = new System.Windows.Forms.Padding(16, 8, 16, 8);
-            this.btnDevice.Size = new System.Drawing.Size(267, 50);
+            this.btnDevice.Padding = new System.Windows.Forms.Padding(16, 10, 16, 10);
+            this.btnDevice.Size = new System.Drawing.Size(272, 52);
             this.btnDevice.TabIndex = 3;
             this.btnDevice.Text = "name";
             this.btnDevice.UseVisualStyleBackColor = true;
@@ -78,11 +78,12 @@
             // trbVolume
             // 
             this.trbVolume.Enabled = false;
-            this.trbVolume.Location = new System.Drawing.Point(43, 59);
+            this.trbVolume.Location = new System.Drawing.Point(47, 52);
+            this.trbVolume.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.trbVolume.Maximum = 100;
             this.trbVolume.MinimumSize = new System.Drawing.Size(250, 0);
             this.trbVolume.Name = "trbVolume";
-            this.trbVolume.Size = new System.Drawing.Size(261, 56);
+            this.trbVolume.Size = new System.Drawing.Size(268, 56);
             this.trbVolume.SmallChange = 5;
             this.trbVolume.TabIndex = 5;
             this.trbVolume.TickFrequency = 5;
@@ -93,10 +94,11 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.picturePlayPause);
             this.flowLayoutPanel1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 3);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 4);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(5);
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(309, 50);
+            this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(252, 40);
             this.flowLayoutPanel1.TabIndex = 10;
             this.flowLayoutPanel1.Click += new System.EventHandler(this.BtnDevicePlay_Click);
             // 
@@ -106,10 +108,10 @@
             this.picturePlayPause.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.picturePlayPause.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picturePlayPause.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Play;
-            this.picturePlayPause.Location = new System.Drawing.Point(5, 5);
+            this.picturePlayPause.Location = new System.Drawing.Point(5, 6);
             this.picturePlayPause.Margin = new System.Windows.Forms.Padding(0);
             this.picturePlayPause.Name = "picturePlayPause";
-            this.picturePlayPause.Padding = new System.Windows.Forms.Padding(3);
+            this.picturePlayPause.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.picturePlayPause.Size = new System.Drawing.Size(30, 30);
             this.picturePlayPause.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picturePlayPause.TabIndex = 7;
@@ -120,9 +122,10 @@
             // pictureGroup
             // 
             this.pictureGroup.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Group;
-            this.pictureGroup.Location = new System.Drawing.Point(279, 114);
+            this.pictureGroup.Location = new System.Drawing.Point(283, 112);
+            this.pictureGroup.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureGroup.Name = "pictureGroup";
-            this.pictureGroup.Size = new System.Drawing.Size(32, 18);
+            this.pictureGroup.Size = new System.Drawing.Size(32, 22);
             this.pictureGroup.TabIndex = 11;
             this.pictureGroup.TabStop = false;
             // 
@@ -130,10 +133,10 @@
             // 
             this.pictureVolumeMute.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureVolumeMute.Image = global::ChromeCast.Desktop.AudioStreamer.Properties.Resources.Unmute;
-            this.pictureVolumeMute.Location = new System.Drawing.Point(8, 59);
+            this.pictureVolumeMute.Location = new System.Drawing.Point(8, 52);
             this.pictureVolumeMute.Margin = new System.Windows.Forms.Padding(0);
             this.pictureVolumeMute.Name = "pictureVolumeMute";
-            this.pictureVolumeMute.Size = new System.Drawing.Size(30, 30);
+            this.pictureVolumeMute.Size = new System.Drawing.Size(30, 38);
             this.pictureVolumeMute.TabIndex = 8;
             this.pictureVolumeMute.TabStop = false;
             this.pictureVolumeMute.Click += new System.EventHandler(this.PictureVolumeMute_Click);
@@ -142,7 +145,7 @@
             // DeviceControl
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -152,9 +155,10 @@
             this.Controls.Add(this.pictureVolumeMute);
             this.Controls.Add(this.trbVolume);
             this.Controls.Add(this.lblStatus);
-            this.MaximumSize = new System.Drawing.Size(315, 140);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MaximumSize = new System.Drawing.Size(315, 175);
             this.Name = "DeviceControl";
-            this.Size = new System.Drawing.Size(315, 140);
+            this.Size = new System.Drawing.Size(315, 138);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragDrop);
             this.DragOver += new System.Windows.Forms.DragEventHandler(this.DeviceControl_DragOver);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DeviceControl_MouseDown);

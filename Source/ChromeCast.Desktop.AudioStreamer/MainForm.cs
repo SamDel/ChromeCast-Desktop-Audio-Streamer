@@ -13,13 +13,13 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using System.IO;
 using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using System.Text;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
 using System.Net.Sockets;
 using System.Text.Json;
+using System.Net.Http;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -569,7 +569,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 wavGenerator.Stop();
                 var device = (MMDevice)cmbRecordingDevice.SelectedItem;
-                wavGenerator.PlaySilenceLoop(device.FriendlyName, device.DeviceFormat);
+                wavGenerator.PlaySilenceLoop(device.FriendlyName, device.DeviceFormat.SampleRate, device.DeviceFormat.Channels);
             }
         }
 
@@ -950,26 +950,33 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
-                request.Timeout = 5000;
-                ((HttpWebRequest)request).KeepAlive = false;
-                ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
-                var response = request.GetResponse();
-                var dataStream = response.GetResponseStream();
-                var reader = new StreamReader(dataStream);
-                var responseFromServer = reader.ReadToEnd();
-                var doc = JsonDocument.Parse(responseFromServer);
-                var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
-                if (latestRelease.CompareTo(currentVersion) > 0)
-                {
-                    var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
-                    ShowLatestRelease(latestRelease, latestReleaseUrl);
-                }
+                applicationLogic.StartTask(async () => {
+                    var url = "https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest";
+                    using (var handler = new HttpClientHandler())
+                    {
+                        handler.UseDefaultCredentials = true;
+                        handler.UseProxy = false;
 
-                reader.Close();
-                response.Close();
+                        using (var client = new HttpClient(handler))
+                        {
+                            client.DefaultRequestHeaders.Add("KeepAlive", "false");
+                            client.DefaultRequestHeaders.Add("User-Agent", "SamDel/ChromeCast-Desktop-Audio-Streamer");
+
+                            var response = await client.GetAsync(new Uri(url));
+                            response.EnsureSuccessStatusCode();
+
+                            var responseBody = response.Content.ReadAsStringAsync();
+
+                            var doc = JsonDocument.Parse(responseBody.Result);
+                            var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
+                            if (latestRelease.CompareTo(currentVersion) > 0)
+                            {
+                                var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
+                                ShowLatestRelease(latestRelease, latestReleaseUrl);
+                            }
+                        }
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -1003,7 +1010,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (e == null)
                 return;
 
-            Process.Start(e.Link.LinkData as string);
+            OpenUrl(e.Link.LinkData as string);
         }
 
         private void ChkStartApplicationWhenWindowsStarts_CheckedChanged(object sender, EventArgs e)
@@ -1117,7 +1124,24 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (e == null)
                 return;
 
-            Process.Start("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+            OpenUrl("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+        }
+
+        private void OpenUrl(string url)
+        {
+            ProcessStartInfo psInfo = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+            try
+            {
+                Process.Start(psInfo);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show($"There was an error opening the url {psInfo.FileName}");
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)

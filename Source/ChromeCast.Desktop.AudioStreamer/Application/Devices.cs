@@ -469,19 +469,22 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// </summary>
         public void AutoMute(bool playing)
         {
-            if (mainForm.GetAutoMute())
+            applicationLogic.StartTask(() =>
             {
-                if (playing)
+                if (mainForm.GetAutoMute())
                 {
-                    SystemVolume.Mute(true, mainForm);
-                    isMuted = true;
+                    if (playing)
+                    {
+                        SystemVolume.Mute(true, mainForm);
+                        isMuted = true;
+                    }
+                    else if (!playing && !IsAnyDevicePlaying() && isMuted)
+                    {
+                        SystemVolume.Mute(false, mainForm);
+                        isMuted = false;
+                    }
                 }
-                else if (!playing && !IsAnyDevicePlaying() && isMuted)
-                {
-                    SystemVolume.Mute(false, mainForm);
-                    isMuted = false;
-                }
-            }
+            });
         }
 
         private bool IsAnyDevicePlaying()
