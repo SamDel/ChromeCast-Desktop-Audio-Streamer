@@ -1,0 +1,2 @@
+Compiled from:
+https://github.com/KalleStae/CScore.NET6
