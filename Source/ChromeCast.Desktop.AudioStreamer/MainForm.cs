@@ -460,7 +460,14 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (previousDefaultDevice != null)
             {
                 var selectedDevice = (MMDevice)cmbRecordingDevice.SelectedItem;
-                if (defaultdevice.DeviceID != previousDefaultDevice.DeviceID && selectedDevice?.DataFlow == defaultdevice.DataFlow)
+                var nrSameDataflowItems = 0;
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    var device = (MMDevice)cmbRecordingDevice.Items[i];
+                    if (device.DataFlow == selectedDevice?.DataFlow) nrSameDataflowItems++;
+                }
+                if (defaultdevice.DeviceID != previousDefaultDevice.DeviceID 
+                    && (selectedDevice?.DataFlow == defaultdevice.DataFlow || nrSameDataflowItems <= 1))
                 {
                     for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                     {
@@ -1218,10 +1225,18 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public string GetRecordingDeviceID()
         {
-            if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
-                return null;
+            try
+            {
+                if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
+                    return null;
 
-            return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
+                return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
         }
 
         /// <summary>
