@@ -27,7 +27,6 @@ Please read the [wiki](https://github.com/SamDel/ChromeCast-Desktop-Audio-Stream
 
 - [NAudio](https://github.com/naudio/NAudio)
 - [NAudio.Lame](https://github.com/Corey-M/NAudio.Lame)
-- [CSCore](https://github.com/filoe/cscore)
 - [Protocol Buffers](https://github.com/google/protobuf)
 - [Tmds.MDns](https://github.com/tmds/Tmds.MDns)
 - [protobuf-csharp-port](https://github.com/jskeet/protobuf-csharp-port)
