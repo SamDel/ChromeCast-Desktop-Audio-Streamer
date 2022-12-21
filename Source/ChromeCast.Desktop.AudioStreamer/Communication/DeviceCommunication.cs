@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Web.Script.Serialization;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
@@ -8,6 +7,7 @@ using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
 using System.Threading.Tasks;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using System.Threading;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
@@ -33,11 +33,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private DateTime lastReceivedMessage;
         private string statusText;
 
-        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn, IChromeCastMessages chromeCastMessagesIn)
+        public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn)
         {
             applicationLogic = applicationLogicIn;
             logger = loggerIn;
-            chromeCastMessages = chromeCastMessagesIn;
+            chromeCastMessages = new ChromeCastMessages();
             chromeCastDestination = string.Empty;
             chromeCastSource = string.Format("client-8{0}", new Random().Next(10000, 99999));
             requestId = 0;
@@ -376,19 +376,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
 
             lastReceivedMessage = DateTime.Now;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
-            var js = new JavaScriptSerializer();
 
-            var message = new JavaScriptSerializer().Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var message = JsonSerializer.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8, options);
             if (message.type != "PING" && message.type != "PONG")
                 pendingStatusMessage = false;
 
             switch (message.@type)
             {
                 case "RECEIVER_STATUS":
-                    OnReceiveReceiverStatus(js.Deserialize<MessageReceiverStatus>(castMessage.PayloadUtf8));
+                    OnReceiveReceiverStatus(JsonSerializer.Deserialize<MessageReceiverStatus>(castMessage.PayloadUtf8, options));
                     break;
                 case "MEDIA_STATUS":
-                    OnReceiveMediaStatus(js.Deserialize<MessageMediaStatus>(castMessage.PayloadUtf8));
+                    OnReceiveMediaStatus(JsonSerializer.Deserialize<MessageMediaStatus>(castMessage.PayloadUtf8, options));
                     break;
                 case "PING":
                     Pong();

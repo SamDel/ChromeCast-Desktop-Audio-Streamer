@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
-using System.Web.Script.Serialization;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Communication
 {
@@ -133,7 +133,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (string.IsNullOrWhiteSpace(sourceId)) sourceId = "sender-0";
             if (string.IsNullOrWhiteSpace(destinationId)) destinationId = "receiver-0";
 
-            var jsonMessage = new JavaScriptSerializer().Serialize(message);
+            string jsonMessage = JsonSerializer.Serialize(message, message.GetType());
             return new CastMessage.Builder
             {
                 ProtocolVersion = 0,

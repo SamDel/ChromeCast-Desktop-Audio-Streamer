@@ -29,10 +29,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private byte[] sendBuffer;
         private bool IsDisposed = false;
 
-        public DeviceConnection(ILogger loggerIn, IDeviceReceiveBuffer deviceReceiveBufferIn)
+        public DeviceConnection(ILogger loggerIn)
         {
             logger = loggerIn;
-            deviceReceiveBuffer = deviceReceiveBufferIn;
+            deviceReceiveBuffer = new DeviceReceiveBuffer();
             deviceReceiveBuffer.SetCallback(OnReceiveMessage);
         }
 

@@ -109,10 +109,11 @@
             this.tabControl.Controls.Add(this.tabPageOptions);
             this.tabControl.Controls.Add(this.tabPageLog);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl.Location = new System.Drawing.Point(16, 16);
+            this.tabControl.Location = new System.Drawing.Point(16, 20);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1119, 625);
+            this.tabControl.Size = new System.Drawing.Size(1119, 781);
             this.tabControl.TabIndex = 3;
             // 
             // tabPageMain
@@ -120,10 +121,11 @@
             this.tabPageMain.Controls.Add(this.grpDevices);
             this.tabPageMain.Controls.Add(this.grpLag);
             this.tabPageMain.Controls.Add(this.grpVolume);
-            this.tabPageMain.Location = new System.Drawing.Point(4, 25);
+            this.tabPageMain.Location = new System.Drawing.Point(4, 29);
+            this.tabPageMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageMain.Name = "tabPageMain";
-            this.tabPageMain.Padding = new System.Windows.Forms.Padding(20);
-            this.tabPageMain.Size = new System.Drawing.Size(1111, 596);
+            this.tabPageMain.Padding = new System.Windows.Forms.Padding(20, 25, 20, 25);
+            this.tabPageMain.Size = new System.Drawing.Size(1111, 748);
             this.tabPageMain.TabIndex = 1;
             this.tabPageMain.UseVisualStyleBackColor = true;
             // 
@@ -131,10 +133,11 @@
             // 
             this.grpDevices.Controls.Add(this.pnlDevices);
             this.grpDevices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpDevices.Location = new System.Drawing.Point(20, 220);
+            this.grpDevices.Location = new System.Drawing.Point(20, 250);
+            this.grpDevices.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.grpDevices.Name = "grpDevices";
-            this.grpDevices.Padding = new System.Windows.Forms.Padding(10);
-            this.grpDevices.Size = new System.Drawing.Size(1071, 356);
+            this.grpDevices.Padding = new System.Windows.Forms.Padding(10, 12, 10, 12);
+            this.grpDevices.Size = new System.Drawing.Size(1071, 473);
             this.grpDevices.TabIndex = 13;
             this.grpDevices.TabStop = false;
             this.grpDevices.Text = "Devices (click name to start streaming)";
@@ -143,9 +146,10 @@
             // 
             this.pnlDevices.AutoScroll = true;
             this.pnlDevices.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlDevices.Location = new System.Drawing.Point(10, 25);
+            this.pnlDevices.Location = new System.Drawing.Point(10, 32);
+            this.pnlDevices.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlDevices.Name = "pnlDevices";
-            this.pnlDevices.Size = new System.Drawing.Size(1051, 321);
+            this.pnlDevices.Size = new System.Drawing.Size(1051, 429);
             this.pnlDevices.TabIndex = 10;
             // 
             // grpLag
@@ -155,10 +159,11 @@
             this.grpLag.Controls.Add(this.lblLagMax);
             this.grpLag.Controls.Add(this.trbLag);
             this.grpLag.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpLag.Location = new System.Drawing.Point(20, 107);
+            this.grpLag.Location = new System.Drawing.Point(20, 109);
+            this.grpLag.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.grpLag.Name = "grpLag";
-            this.grpLag.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
-            this.grpLag.Size = new System.Drawing.Size(1071, 113);
+            this.grpLag.Padding = new System.Windows.Forms.Padding(20, 12, 20, 12);
+            this.grpLag.Size = new System.Drawing.Size(1071, 141);
             this.grpLag.TabIndex = 12;
             this.grpLag.TabStop = false;
             this.grpLag.Text = "Lag Control";
@@ -167,9 +172,9 @@
             // lblLagExperimental
             // 
             this.lblLagExperimental.BackColor = System.Drawing.SystemColors.Control;
-            this.lblLagExperimental.Location = new System.Drawing.Point(23, 83);
+            this.lblLagExperimental.Location = new System.Drawing.Point(23, 104);
             this.lblLagExperimental.Name = "lblLagExperimental";
-            this.lblLagExperimental.Size = new System.Drawing.Size(726, 17);
+            this.lblLagExperimental.Size = new System.Drawing.Size(726, 21);
             this.lblLagExperimental.TabIndex = 4;
             this.lblLagExperimental.Text = "Experimental feature: Try to keep the buffer on the device as small as possible w" +
     "ithout hearing gaps.";
@@ -179,9 +184,9 @@
             // 
             this.lblLagMin.AutoSize = true;
             this.lblLagMin.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lblLagMin.Location = new System.Drawing.Point(20, 25);
+            this.lblLagMin.Location = new System.Drawing.Point(20, 32);
             this.lblLagMin.Name = "lblLagMin";
-            this.lblLagMin.Size = new System.Drawing.Size(172, 17);
+            this.lblLagMin.Size = new System.Drawing.Size(192, 20);
             this.lblLagMin.TabIndex = 2;
             this.lblLagMin.Text = "minimum lag / poor quality";
             // 
@@ -189,9 +194,9 @@
             // 
             this.lblLagMax.AutoSize = true;
             this.lblLagMax.Dock = System.Windows.Forms.DockStyle.Right;
-            this.lblLagMax.Location = new System.Drawing.Point(878, 25);
+            this.lblLagMax.Location = new System.Drawing.Point(860, 32);
             this.lblLagMax.Name = "lblLagMax";
-            this.lblLagMax.Size = new System.Drawing.Size(173, 17);
+            this.lblLagMax.Size = new System.Drawing.Size(191, 20);
             this.lblLagMax.TabIndex = 1;
             this.lblLagMax.Text = "maximum lag / best quality";
             this.lblLagMax.TextAlign = System.Drawing.ContentAlignment.TopRight;
@@ -200,7 +205,8 @@
             // 
             this.trbLag.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.trbLag.LargeChange = 10;
-            this.trbLag.Location = new System.Drawing.Point(20, 47);
+            this.trbLag.Location = new System.Drawing.Point(20, 73);
+            this.trbLag.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.trbLag.Maximum = 1000;
             this.trbLag.Minimum = 1;
             this.trbLag.Name = "trbLag";
@@ -216,10 +222,11 @@
             this.grpVolume.Controls.Add(this.pnlVolumeMeter);
             this.grpVolume.Controls.Add(this.pnlVolumeAllButtons);
             this.grpVolume.Dock = System.Windows.Forms.DockStyle.Top;
-            this.grpVolume.Location = new System.Drawing.Point(20, 20);
+            this.grpVolume.Location = new System.Drawing.Point(20, 25);
+            this.grpVolume.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.grpVolume.Name = "grpVolume";
-            this.grpVolume.Padding = new System.Windows.Forms.Padding(10, 10, 2, 10);
-            this.grpVolume.Size = new System.Drawing.Size(1071, 87);
+            this.grpVolume.Padding = new System.Windows.Forms.Padding(10, 2, 2, 4);
+            this.grpVolume.Size = new System.Drawing.Size(1071, 84);
             this.grpVolume.TabIndex = 10;
             this.grpVolume.TabStop = false;
             this.grpVolume.Text = "Volume all devices:";
@@ -232,9 +239,10 @@
             this.pnlVolumeMeter.Controls.Add(this.volumeMeter);
             this.pnlVolumeMeter.Dock = System.Windows.Forms.DockStyle.Right;
             this.pnlVolumeMeter.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlVolumeMeter.Location = new System.Drawing.Point(1023, 25);
+            this.pnlVolumeMeter.Location = new System.Drawing.Point(1021, 22);
+            this.pnlVolumeMeter.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlVolumeMeter.Name = "pnlVolumeMeter";
-            this.pnlVolumeMeter.Size = new System.Drawing.Size(46, 52);
+            this.pnlVolumeMeter.Size = new System.Drawing.Size(48, 58);
             this.pnlVolumeMeter.TabIndex = 18;
             this.pnlVolumeMeter.WrapContents = false;
             // 
@@ -243,7 +251,7 @@
             this.lblDb.AutoSize = true;
             this.lblDb.Location = new System.Drawing.Point(18, 0);
             this.lblDb.Name = "lblDb";
-            this.lblDb.Size = new System.Drawing.Size(25, 17);
+            this.lblDb.Size = new System.Drawing.Size(27, 20);
             this.lblDb.TabIndex = 20;
             this.lblDb.Text = "dB";
             // 
@@ -252,12 +260,12 @@
             this.volumeMeter.Amplitude = 0F;
             this.volumeMeter.BackColor = System.Drawing.SystemColors.Window;
             this.volumeMeter.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.volumeMeter.Location = new System.Drawing.Point(3, 5);
-            this.volumeMeter.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.volumeMeter.Location = new System.Drawing.Point(3, 6);
+            this.volumeMeter.Margin = new System.Windows.Forms.Padding(3, 6, 3, 4);
             this.volumeMeter.MaxDb = 18F;
             this.volumeMeter.MinDb = -60F;
             this.volumeMeter.Name = "volumeMeter";
-            this.volumeMeter.Size = new System.Drawing.Size(9, 40);
+            this.volumeMeter.Size = new System.Drawing.Size(9, 50);
             this.volumeMeter.TabIndex = 19;
             // 
             // pnlVolumeAllButtons
@@ -268,9 +276,10 @@
             this.pnlVolumeAllButtons.Controls.Add(this.btnVolumeMute);
             this.pnlVolumeAllButtons.Controls.Add(this.btnScan);
             this.pnlVolumeAllButtons.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(10, 25);
+            this.pnlVolumeAllButtons.Location = new System.Drawing.Point(10, 22);
+            this.pnlVolumeAllButtons.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlVolumeAllButtons.Name = "pnlVolumeAllButtons";
-            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(546, 52);
+            this.pnlVolumeAllButtons.Size = new System.Drawing.Size(551, 58);
             this.pnlVolumeAllButtons.TabIndex = 17;
             this.pnlVolumeAllButtons.WrapContents = false;
             // 
@@ -278,10 +287,11 @@
             // 
             this.btnVolumeUp.AutoSize = true;
             this.btnVolumeUp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnVolumeUp.Location = new System.Drawing.Point(3, 3);
+            this.btnVolumeUp.Location = new System.Drawing.Point(3, 4);
+            this.btnVolumeUp.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnVolumeUp.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeUp.Name = "btnVolumeUp";
-            this.btnVolumeUp.Size = new System.Drawing.Size(120, 27);
+            this.btnVolumeUp.Size = new System.Drawing.Size(120, 30);
             this.btnVolumeUp.TabIndex = 15;
             this.btnVolumeUp.Text = "Up";
             this.btnVolumeUp.UseVisualStyleBackColor = true;
@@ -291,10 +301,11 @@
             // 
             this.btnVolumeDown.AutoSize = true;
             this.btnVolumeDown.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnVolumeDown.Location = new System.Drawing.Point(129, 3);
+            this.btnVolumeDown.Location = new System.Drawing.Point(129, 4);
+            this.btnVolumeDown.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnVolumeDown.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeDown.Name = "btnVolumeDown";
-            this.btnVolumeDown.Size = new System.Drawing.Size(120, 27);
+            this.btnVolumeDown.Size = new System.Drawing.Size(120, 30);
             this.btnVolumeDown.TabIndex = 14;
             this.btnVolumeDown.Text = "Down";
             this.btnVolumeDown.UseVisualStyleBackColor = true;
@@ -304,10 +315,11 @@
             // 
             this.btnVolumeMute.AutoSize = true;
             this.btnVolumeMute.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnVolumeMute.Location = new System.Drawing.Point(255, 3);
+            this.btnVolumeMute.Location = new System.Drawing.Point(255, 4);
+            this.btnVolumeMute.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnVolumeMute.MinimumSize = new System.Drawing.Size(120, 0);
             this.btnVolumeMute.Name = "btnVolumeMute";
-            this.btnVolumeMute.Size = new System.Drawing.Size(120, 27);
+            this.btnVolumeMute.Size = new System.Drawing.Size(120, 30);
             this.btnVolumeMute.TabIndex = 11;
             this.btnVolumeMute.Text = "Mute";
             this.btnVolumeMute.UseVisualStyleBackColor = true;
@@ -317,9 +329,10 @@
             // 
             this.btnScan.AutoSize = true;
             this.btnScan.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnScan.Location = new System.Drawing.Point(381, 3);
+            this.btnScan.Location = new System.Drawing.Point(381, 4);
+            this.btnScan.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnScan.Name = "btnScan";
-            this.btnScan.Size = new System.Drawing.Size(162, 27);
+            this.btnScan.Size = new System.Drawing.Size(167, 30);
             this.btnScan.TabIndex = 11;
             this.btnScan.Text = "Scan again for devices";
             this.btnScan.UseVisualStyleBackColor = true;
@@ -328,10 +341,11 @@
             // tabPageOptions
             // 
             this.tabPageOptions.Controls.Add(this.grpOptions);
-            this.tabPageOptions.Location = new System.Drawing.Point(4, 25);
+            this.tabPageOptions.Location = new System.Drawing.Point(4, 29);
+            this.tabPageOptions.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageOptions.Name = "tabPageOptions";
-            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(20);
-            this.tabPageOptions.Size = new System.Drawing.Size(1111, 596);
+            this.tabPageOptions.Padding = new System.Windows.Forms.Padding(20, 25, 20, 25);
+            this.tabPageOptions.Size = new System.Drawing.Size(1111, 748);
             this.tabPageOptions.TabIndex = 2;
             this.tabPageOptions.Text = "Options";
             this.tabPageOptions.UseVisualStyleBackColor = true;
@@ -343,11 +357,12 @@
             this.grpOptions.Controls.Add(this.linkHelp);
             this.grpOptions.Controls.Add(this.lblVersion);
             this.grpOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpOptions.Location = new System.Drawing.Point(20, 20);
+            this.grpOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.grpOptions.Location = new System.Drawing.Point(20, 25);
+            this.grpOptions.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.grpOptions.Name = "grpOptions";
-            this.grpOptions.Padding = new System.Windows.Forms.Padding(10, 40, 10, 10);
-            this.grpOptions.Size = new System.Drawing.Size(1071, 556);
+            this.grpOptions.Padding = new System.Windows.Forms.Padding(10, 50, 10, 12);
+            this.grpOptions.Size = new System.Drawing.Size(1071, 698);
             this.grpOptions.TabIndex = 14;
             this.grpOptions.TabStop = false;
             this.grpOptions.Text = "Options";
@@ -361,34 +376,38 @@
             this.pnlOptions.Controls.Add(this.pnlOptionsCheckBoxes);
             this.pnlOptions.Controls.Add(this.pnlOptionsComboBoxes);
             this.pnlOptions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlOptions.Location = new System.Drawing.Point(10, 57);
+            this.pnlOptions.Location = new System.Drawing.Point(10, 67);
+            this.pnlOptions.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlOptions.Name = "pnlOptions";
-            this.pnlOptions.Size = new System.Drawing.Size(1051, 441);
+            this.pnlOptions.Size = new System.Drawing.Size(1051, 567);
             this.pnlOptions.TabIndex = 41;
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 495);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 517);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 100);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1030, 10);
             this.flowLayoutPanel1.TabIndex = 43;
             // 
             // pnlResetSettings
             // 
             this.pnlResetSettings.Controls.Add(this.btnResetSettings);
             this.pnlResetSettings.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlResetSettings.Location = new System.Drawing.Point(0, 595);
+            this.pnlResetSettings.Location = new System.Drawing.Point(0, 527);
+            this.pnlResetSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlResetSettings.Name = "pnlResetSettings";
             this.pnlResetSettings.Padding = new System.Windows.Forms.Padding(20, 0, 0, 0);
-            this.pnlResetSettings.Size = new System.Drawing.Size(1030, 57);
+            this.pnlResetSettings.Size = new System.Drawing.Size(1030, 71);
             this.pnlResetSettings.TabIndex = 36;
             // 
             // btnResetSettings
             // 
             this.btnResetSettings.AutoSize = true;
             this.btnResetSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnResetSettings.Location = new System.Drawing.Point(15, 3);
+            this.btnResetSettings.Location = new System.Drawing.Point(15, 4);
+            this.btnResetSettings.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnResetSettings.Name = "btnResetSettings";
             this.btnResetSettings.Size = new System.Drawing.Size(114, 28);
             this.btnResetSettings.TabIndex = 46;
@@ -412,17 +431,19 @@
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkShowWindowOnStart);
             this.pnlOptionsCheckBoxes.Controls.Add(this.chkHook);
             this.pnlOptionsCheckBoxes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 191);
+            this.pnlOptionsCheckBoxes.Location = new System.Drawing.Point(0, 203);
+            this.pnlOptionsCheckBoxes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlOptionsCheckBoxes.Name = "pnlOptionsCheckBoxes";
-            this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 20, 20, 20);
-            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 304);
+            this.pnlOptionsCheckBoxes.Padding = new System.Windows.Forms.Padding(15, 25, 20, 25);
+            this.pnlOptionsCheckBoxes.Size = new System.Drawing.Size(1030, 314);
             this.pnlOptionsCheckBoxes.TabIndex = 35;
             // 
             // chkDarkMode
             // 
             this.chkDarkMode.AutoSize = true;
             this.chkDarkMode.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkDarkMode.Location = new System.Drawing.Point(15, 262);
+            this.chkDarkMode.Location = new System.Drawing.Point(15, 267);
+            this.chkDarkMode.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkDarkMode.Name = "chkDarkMode";
             this.chkDarkMode.Size = new System.Drawing.Size(995, 22);
             this.chkDarkMode.TabIndex = 47;
@@ -434,7 +455,8 @@
             // 
             this.chkConvertMultiChannelToStereo.AutoSize = true;
             this.chkConvertMultiChannelToStereo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkConvertMultiChannelToStereo.Location = new System.Drawing.Point(15, 240);
+            this.chkConvertMultiChannelToStereo.Location = new System.Drawing.Point(15, 245);
+            this.chkConvertMultiChannelToStereo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkConvertMultiChannelToStereo.Name = "chkConvertMultiChannelToStereo";
             this.chkConvertMultiChannelToStereo.Size = new System.Drawing.Size(995, 22);
             this.chkConvertMultiChannelToStereo.TabIndex = 46;
@@ -445,7 +467,8 @@
             // 
             this.chkMinimizeToTray.AutoSize = true;
             this.chkMinimizeToTray.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkMinimizeToTray.Location = new System.Drawing.Point(15, 218);
+            this.chkMinimizeToTray.Location = new System.Drawing.Point(15, 223);
+            this.chkMinimizeToTray.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkMinimizeToTray.Name = "chkMinimizeToTray";
             this.chkMinimizeToTray.Size = new System.Drawing.Size(995, 22);
             this.chkMinimizeToTray.TabIndex = 45;
@@ -456,7 +479,8 @@
             // 
             this.chkAutoMute.AutoSize = true;
             this.chkAutoMute.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkAutoMute.Location = new System.Drawing.Point(15, 196);
+            this.chkAutoMute.Location = new System.Drawing.Point(15, 201);
+            this.chkAutoMute.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkAutoMute.Name = "chkAutoMute";
             this.chkAutoMute.Size = new System.Drawing.Size(995, 22);
             this.chkAutoMute.TabIndex = 44;
@@ -470,7 +494,8 @@
             this.chkLogDeviceCommunication.Checked = true;
             this.chkLogDeviceCommunication.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkLogDeviceCommunication.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 174);
+            this.chkLogDeviceCommunication.Location = new System.Drawing.Point(15, 179);
+            this.chkLogDeviceCommunication.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkLogDeviceCommunication.Name = "chkLogDeviceCommunication";
             this.chkLogDeviceCommunication.Size = new System.Drawing.Size(995, 22);
             this.chkLogDeviceCommunication.TabIndex = 43;
@@ -482,7 +507,8 @@
             // 
             this.chkShowLagControl.AutoSize = true;
             this.chkShowLagControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkShowLagControl.Location = new System.Drawing.Point(15, 152);
+            this.chkShowLagControl.Location = new System.Drawing.Point(15, 157);
+            this.chkShowLagControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkShowLagControl.Name = "chkShowLagControl";
             this.chkShowLagControl.Size = new System.Drawing.Size(995, 22);
             this.chkShowLagControl.TabIndex = 42;
@@ -495,7 +521,8 @@
             // 
             this.chkAutoRestart.AutoSize = true;
             this.chkAutoRestart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkAutoRestart.Location = new System.Drawing.Point(15, 130);
+            this.chkAutoRestart.Location = new System.Drawing.Point(15, 135);
+            this.chkAutoRestart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkAutoRestart.Name = "chkAutoRestart";
             this.chkAutoRestart.Size = new System.Drawing.Size(995, 22);
             this.chkAutoRestart.TabIndex = 41;
@@ -507,7 +534,8 @@
             // 
             this.chkAutoStartLastUsed.AutoSize = true;
             this.chkAutoStartLastUsed.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkAutoStartLastUsed.Location = new System.Drawing.Point(15, 108);
+            this.chkAutoStartLastUsed.Location = new System.Drawing.Point(15, 113);
+            this.chkAutoStartLastUsed.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkAutoStartLastUsed.Name = "chkAutoStartLastUsed";
             this.chkAutoStartLastUsed.Size = new System.Drawing.Size(995, 22);
             this.chkAutoStartLastUsed.TabIndex = 40;
@@ -518,7 +546,8 @@
             // 
             this.chkAutoStart.AutoSize = true;
             this.chkAutoStart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkAutoStart.Location = new System.Drawing.Point(15, 86);
+            this.chkAutoStart.Location = new System.Drawing.Point(15, 91);
+            this.chkAutoStart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(995, 22);
             this.chkAutoStart.TabIndex = 39;
@@ -529,7 +558,8 @@
             // 
             this.chkStartApplicationWhenWindowsStarts.AutoSize = true;
             this.chkStartApplicationWhenWindowsStarts.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkStartApplicationWhenWindowsStarts.Location = new System.Drawing.Point(15, 64);
+            this.chkStartApplicationWhenWindowsStarts.Location = new System.Drawing.Point(15, 69);
+            this.chkStartApplicationWhenWindowsStarts.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkStartApplicationWhenWindowsStarts.Name = "chkStartApplicationWhenWindowsStarts";
             this.chkStartApplicationWhenWindowsStarts.Size = new System.Drawing.Size(995, 22);
             this.chkStartApplicationWhenWindowsStarts.TabIndex = 38;
@@ -543,7 +573,8 @@
             this.chkShowWindowOnStart.Checked = true;
             this.chkShowWindowOnStart.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowWindowOnStart.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 42);
+            this.chkShowWindowOnStart.Location = new System.Drawing.Point(15, 47);
+            this.chkShowWindowOnStart.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkShowWindowOnStart.Name = "chkShowWindowOnStart";
             this.chkShowWindowOnStart.Size = new System.Drawing.Size(995, 22);
             this.chkShowWindowOnStart.TabIndex = 24;
@@ -554,7 +585,8 @@
             // 
             this.chkHook.AutoSize = true;
             this.chkHook.Dock = System.Windows.Forms.DockStyle.Top;
-            this.chkHook.Location = new System.Drawing.Point(15, 20);
+            this.chkHook.Location = new System.Drawing.Point(15, 25);
+            this.chkHook.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chkHook.Name = "chkHook";
             this.chkHook.Size = new System.Drawing.Size(995, 22);
             this.chkHook.TabIndex = 15;
@@ -570,10 +602,11 @@
             this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesLabels);
             this.pnlOptionsComboBoxes.Controls.Add(this.pnlOptionsComboBoxesRight);
             this.pnlOptionsComboBoxes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlOptionsComboBoxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pnlOptionsComboBoxes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.pnlOptionsComboBoxes.Location = new System.Drawing.Point(0, 0);
+            this.pnlOptionsComboBoxes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlOptionsComboBoxes.Name = "pnlOptionsComboBoxes";
-            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(1030, 191);
+            this.pnlOptionsComboBoxes.Size = new System.Drawing.Size(1030, 203);
             this.pnlOptionsComboBoxes.TabIndex = 42;
             this.pnlOptionsComboBoxes.WrapContents = false;
             // 
@@ -587,16 +620,17 @@
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblLanguage);
             this.pnlOptionsComboBoxesLabels.Controls.Add(this.lblDevice);
             this.pnlOptionsComboBoxesLabels.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 3);
+            this.pnlOptionsComboBoxesLabels.Location = new System.Drawing.Point(3, 4);
+            this.pnlOptionsComboBoxesLabels.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlOptionsComboBoxesLabels.Name = "pnlOptionsComboBoxesLabels";
             this.pnlOptionsComboBoxesLabels.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(217, 185);
+            this.pnlOptionsComboBoxesLabels.Size = new System.Drawing.Size(217, 195);
             this.pnlOptionsComboBoxesLabels.TabIndex = 0;
             // 
             // lblBufferInSeconds
             // 
             this.lblBufferInSeconds.AutoSize = true;
-            this.lblBufferInSeconds.Location = new System.Drawing.Point(9, 159);
+            this.lblBufferInSeconds.Location = new System.Drawing.Point(9, 169);
             this.lblBufferInSeconds.Name = "lblBufferInSeconds";
             this.lblBufferInSeconds.Size = new System.Drawing.Size(180, 18);
             this.lblBufferInSeconds.TabIndex = 34;
@@ -605,7 +639,7 @@
             // lblFilterDevices
             // 
             this.lblFilterDevices.AutoSize = true;
-            this.lblFilterDevices.Location = new System.Drawing.Point(9, 127);
+            this.lblFilterDevices.Location = new System.Drawing.Point(9, 135);
             this.lblFilterDevices.Name = "lblFilterDevices";
             this.lblFilterDevices.Size = new System.Drawing.Size(94, 18);
             this.lblFilterDevices.TabIndex = 32;
@@ -614,7 +648,7 @@
             // lblStreamFormat
             // 
             this.lblStreamFormat.AutoSize = true;
-            this.lblStreamFormat.Location = new System.Drawing.Point(9, 65);
+            this.lblStreamFormat.Location = new System.Drawing.Point(9, 69);
             this.lblStreamFormat.Name = "lblStreamFormat";
             this.lblStreamFormat.Size = new System.Drawing.Size(103, 18);
             this.lblStreamFormat.TabIndex = 28;
@@ -623,7 +657,7 @@
             // lblIpAddressUsed
             // 
             this.lblIpAddressUsed.AutoSize = true;
-            this.lblIpAddressUsed.Location = new System.Drawing.Point(9, 3);
+            this.lblIpAddressUsed.Location = new System.Drawing.Point(9, 4);
             this.lblIpAddressUsed.Name = "lblIpAddressUsed";
             this.lblIpAddressUsed.Size = new System.Drawing.Size(126, 18);
             this.lblIpAddressUsed.TabIndex = 19;
@@ -632,7 +666,7 @@
             // lblLanguage
             // 
             this.lblLanguage.AutoSize = true;
-            this.lblLanguage.Location = new System.Drawing.Point(9, 96);
+            this.lblLanguage.Location = new System.Drawing.Point(9, 102);
             this.lblLanguage.Name = "lblLanguage";
             this.lblLanguage.Size = new System.Drawing.Size(72, 18);
             this.lblLanguage.TabIndex = 31;
@@ -641,7 +675,7 @@
             // lblDevice
             // 
             this.lblDevice.AutoSize = true;
-            this.lblDevice.Location = new System.Drawing.Point(9, 34);
+            this.lblDevice.Location = new System.Drawing.Point(9, 36);
             this.lblDevice.Name = "lblDevice";
             this.lblDevice.Size = new System.Drawing.Size(126, 18);
             this.lblDevice.TabIndex = 21;
@@ -657,9 +691,10 @@
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbRecordingDevice);
             this.pnlOptionsComboBoxesRight.Controls.Add(this.cmbStreamFormat);
             this.pnlOptionsComboBoxesRight.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(226, 3);
+            this.pnlOptionsComboBoxesRight.Location = new System.Drawing.Point(226, 4);
+            this.pnlOptionsComboBoxesRight.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlOptionsComboBoxesRight.Name = "pnlOptionsComboBoxesRight";
-            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 185);
+            this.pnlOptionsComboBoxesRight.Size = new System.Drawing.Size(448, 195);
             this.pnlOptionsComboBoxesRight.TabIndex = 1;
             // 
             // cmbBufferInSeconds
@@ -688,7 +723,8 @@
             "18",
             "19",
             "20"});
-            this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 156);
+            this.cmbBufferInSeconds.Location = new System.Drawing.Point(3, 165);
+            this.cmbBufferInSeconds.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbBufferInSeconds.Name = "cmbBufferInSeconds";
             this.cmbBufferInSeconds.Size = new System.Drawing.Size(442, 26);
             this.cmbBufferInSeconds.TabIndex = 34;
@@ -697,7 +733,8 @@
             // 
             this.cmbFilterDevices.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbFilterDevices.FormattingEnabled = true;
-            this.cmbFilterDevices.Location = new System.Drawing.Point(3, 124);
+            this.cmbFilterDevices.Location = new System.Drawing.Point(3, 131);
+            this.cmbFilterDevices.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbFilterDevices.Name = "cmbFilterDevices";
             this.cmbFilterDevices.Size = new System.Drawing.Size(442, 26);
             this.cmbFilterDevices.TabIndex = 33;
@@ -707,7 +744,8 @@
             // 
             this.cmbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbLanguage.FormattingEnabled = true;
-            this.cmbLanguage.Location = new System.Drawing.Point(3, 93);
+            this.cmbLanguage.Location = new System.Drawing.Point(3, 98);
+            this.cmbLanguage.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbLanguage.Name = "cmbLanguage";
             this.cmbLanguage.Size = new System.Drawing.Size(442, 26);
             this.cmbLanguage.TabIndex = 32;
@@ -718,6 +756,7 @@
             this.cmbIP4AddressUsed.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbIP4AddressUsed.FormattingEnabled = true;
             this.cmbIP4AddressUsed.Location = new System.Drawing.Point(3, 0);
+            this.cmbIP4AddressUsed.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbIP4AddressUsed.Name = "cmbIP4AddressUsed";
             this.cmbIP4AddressUsed.Size = new System.Drawing.Size(442, 26);
             this.cmbIP4AddressUsed.TabIndex = 20;
@@ -726,7 +765,8 @@
             // 
             this.cmbRecordingDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRecordingDevice.FormattingEnabled = true;
-            this.cmbRecordingDevice.Location = new System.Drawing.Point(3, 31);
+            this.cmbRecordingDevice.Location = new System.Drawing.Point(3, 33);
+            this.cmbRecordingDevice.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbRecordingDevice.Name = "cmbRecordingDevice";
             this.cmbRecordingDevice.Size = new System.Drawing.Size(442, 26);
             this.cmbRecordingDevice.TabIndex = 22;
@@ -735,7 +775,8 @@
             // 
             this.cmbStreamFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbStreamFormat.FormattingEnabled = true;
-            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 62);
+            this.cmbStreamFormat.Location = new System.Drawing.Point(3, 66);
+            this.cmbStreamFormat.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbStreamFormat.Name = "cmbStreamFormat";
             this.cmbStreamFormat.Size = new System.Drawing.Size(442, 26);
             this.cmbStreamFormat.TabIndex = 29;
@@ -745,10 +786,10 @@
             // 
             this.lblNewReleaseAvailable.AutoSize = true;
             this.lblNewReleaseAvailable.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(10, 498);
+            this.lblNewReleaseAvailable.Location = new System.Drawing.Point(10, 634);
             this.lblNewReleaseAvailable.Name = "lblNewReleaseAvailable";
-            this.lblNewReleaseAvailable.Padding = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(225, 24);
+            this.lblNewReleaseAvailable.Padding = new System.Windows.Forms.Padding(10, 4, 3, 4);
+            this.lblNewReleaseAvailable.Size = new System.Drawing.Size(225, 26);
             this.lblNewReleaseAvailable.TabIndex = 40;
             this.lblNewReleaseAvailable.TabStop = true;
             this.lblNewReleaseAvailable.Text = "Version x is available on Github";
@@ -759,8 +800,8 @@
             // 
             this.linkHelp.AutoSize = true;
             this.linkHelp.BackColor = System.Drawing.Color.White;
-            this.linkHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkHelp.Location = new System.Drawing.Point(22, 22);
+            this.linkHelp.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkHelp.Location = new System.Drawing.Point(22, 28);
             this.linkHelp.Name = "linkHelp";
             this.linkHelp.Size = new System.Drawing.Size(244, 18);
             this.linkHelp.TabIndex = 43;
@@ -773,10 +814,10 @@
             // 
             this.lblVersion.AutoSize = true;
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.lblVersion.Location = new System.Drawing.Point(10, 522);
+            this.lblVersion.Location = new System.Drawing.Point(10, 660);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Padding = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.lblVersion.Size = new System.Drawing.Size(71, 24);
+            this.lblVersion.Padding = new System.Windows.Forms.Padding(10, 4, 3, 4);
+            this.lblVersion.Size = new System.Drawing.Size(71, 26);
             this.lblVersion.TabIndex = 39;
             this.lblVersion.Text = "Version";
             // 
@@ -785,10 +826,11 @@
             this.tabPageLog.Controls.Add(this.pnlLog);
             this.tabPageLog.Controls.Add(this.pnlPingPong);
             this.tabPageLog.Controls.Add(this.pnlLogCopyToClipboard);
-            this.tabPageLog.Location = new System.Drawing.Point(4, 25);
+            this.tabPageLog.Location = new System.Drawing.Point(4, 29);
+            this.tabPageLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPageLog.Name = "tabPageLog";
-            this.tabPageLog.Padding = new System.Windows.Forms.Padding(20);
-            this.tabPageLog.Size = new System.Drawing.Size(1111, 596);
+            this.tabPageLog.Padding = new System.Windows.Forms.Padding(20, 25, 20, 25);
+            this.tabPageLog.Size = new System.Drawing.Size(1111, 748);
             this.tabPageLog.TabIndex = 0;
             this.tabPageLog.Text = "Log";
             this.tabPageLog.UseVisualStyleBackColor = true;
@@ -797,21 +839,23 @@
             // 
             this.pnlLog.Controls.Add(this.txtLog);
             this.pnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlLog.Location = new System.Drawing.Point(20, 20);
+            this.pnlLog.Location = new System.Drawing.Point(20, 25);
+            this.pnlLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlLog.Name = "pnlLog";
-            this.pnlLog.Size = new System.Drawing.Size(1071, 496);
+            this.pnlLog.Size = new System.Drawing.Size(1071, 628);
             this.pnlLog.TabIndex = 6;
             // 
             // txtLog
             // 
             this.txtLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLog.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.txtLog.Location = new System.Drawing.Point(0, 0);
+            this.txtLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(1071, 496);
+            this.txtLog.Size = new System.Drawing.Size(1071, 628);
             this.txtLog.TabIndex = 2;
             // 
             // pnlPingPong
@@ -819,19 +863,20 @@
             this.pnlPingPong.AutoSize = true;
             this.pnlPingPong.Controls.Add(this.lblPingPong);
             this.pnlPingPong.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPingPong.Location = new System.Drawing.Point(20, 516);
+            this.pnlPingPong.Location = new System.Drawing.Point(20, 653);
+            this.pnlPingPong.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlPingPong.Name = "pnlPingPong";
-            this.pnlPingPong.Padding = new System.Windows.Forms.Padding(5);
-            this.pnlPingPong.Size = new System.Drawing.Size(1071, 27);
+            this.pnlPingPong.Padding = new System.Windows.Forms.Padding(5, 6, 5, 6);
+            this.pnlPingPong.Size = new System.Drawing.Size(1071, 32);
             this.pnlPingPong.TabIndex = 5;
             // 
             // lblPingPong
             // 
             this.lblPingPong.AutoSize = true;
             this.lblPingPong.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblPingPong.Location = new System.Drawing.Point(5, 5);
+            this.lblPingPong.Location = new System.Drawing.Point(5, 6);
             this.lblPingPong.Name = "lblPingPong";
-            this.lblPingPong.Size = new System.Drawing.Size(148, 17);
+            this.lblPingPong.Size = new System.Drawing.Size(149, 20);
             this.lblPingPong.TabIndex = 3;
             this.lblPingPong.Text = "                                   ";
             // 
@@ -842,18 +887,20 @@
             this.pnlLogCopyToClipboard.Controls.Add(this.btnClearLog);
             this.pnlLogCopyToClipboard.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlLogCopyToClipboard.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(20, 543);
+            this.pnlLogCopyToClipboard.Location = new System.Drawing.Point(20, 685);
+            this.pnlLogCopyToClipboard.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pnlLogCopyToClipboard.Name = "pnlLogCopyToClipboard";
-            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(1071, 33);
+            this.pnlLogCopyToClipboard.Size = new System.Drawing.Size(1071, 38);
             this.pnlLogCopyToClipboard.TabIndex = 4;
             // 
             // btnClipboardCopy
             // 
             this.btnClipboardCopy.AutoSize = true;
             this.btnClipboardCopy.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClipboardCopy.Location = new System.Drawing.Point(940, 3);
+            this.btnClipboardCopy.Location = new System.Drawing.Point(929, 4);
+            this.btnClipboardCopy.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClipboardCopy.Name = "btnClipboardCopy";
-            this.btnClipboardCopy.Size = new System.Drawing.Size(128, 27);
+            this.btnClipboardCopy.Size = new System.Drawing.Size(139, 30);
             this.btnClipboardCopy.TabIndex = 3;
             this.btnClipboardCopy.Text = "Copy to clipboard";
             this.btnClipboardCopy.UseVisualStyleBackColor = true;
@@ -863,9 +910,10 @@
             // 
             this.btnClearLog.AutoSize = true;
             this.btnClearLog.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnClearLog.Location = new System.Drawing.Point(855, 3);
+            this.btnClearLog.Location = new System.Drawing.Point(841, 4);
+            this.btnClearLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnClearLog.Name = "btnClearLog";
-            this.btnClearLog.Size = new System.Drawing.Size(79, 27);
+            this.btnClearLog.Size = new System.Drawing.Size(82, 30);
             this.btnClearLog.TabIndex = 4;
             this.btnClearLog.Text = "Clear Log";
             this.btnClearLog.UseVisualStyleBackColor = true;
@@ -873,14 +921,15 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 657);
+            this.ClientSize = new System.Drawing.Size(1151, 821);
             this.Controls.Add(this.tabControl);
             this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainForm";
-            this.Padding = new System.Windows.Forms.Padding(16);
+            this.Padding = new System.Windows.Forms.Padding(16, 20, 16, 20);
             this.Text = "Chromecast Desktop Audio Streamer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);

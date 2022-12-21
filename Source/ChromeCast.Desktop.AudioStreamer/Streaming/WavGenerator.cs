@@ -15,9 +15,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Play (looping) silence, to make sure there always something captured.
         /// </summary>
-        public void PlaySilenceLoop(string deviceName, CSCore.WaveFormat deviceFormat)
+        public void PlaySilenceLoop(string deviceName, int sampleRate, int nrOfChannels)
         {
-            waveFormat = new WaveFormat(deviceFormat.SampleRate, deviceFormat.Channels);
+            waveFormat = new WaveFormat(sampleRate, nrOfChannels);
             Play(GenerateSilence(60), deviceName);
         }
 

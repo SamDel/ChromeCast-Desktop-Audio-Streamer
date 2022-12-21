@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
 {
@@ -33,7 +33,8 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                     {
                         try
                         {
-                            return new JavaScriptSerializer().Deserialize<CastDeviceCapabilities>(header[1].Trim());
+                            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                            return JsonSerializer.Deserialize<CastDeviceCapabilities>(header[1].Trim(), options);
                         }
                         catch (Exception)
                         {

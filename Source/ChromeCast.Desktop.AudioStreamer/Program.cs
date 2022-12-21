@@ -1,16 +1,9 @@
 ﻿using System;
-using Microsoft.Practices.Unity;
-using ChromeCast.Desktop.AudioStreamer.Application;
-using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Communication;
-using ChromeCast.Desktop.AudioStreamer.Discover;
-using ChromeCast.Desktop.AudioStreamer.Streaming;
-using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Communication.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Discover.Interfaces;
-using ChromeCast.Desktop.AudioStreamer.Classes;
 using Microsoft.VisualBasic.ApplicationServices;
 using System.Windows.Forms;
+using ChromeCast.Desktop.AudioStreamer.Application;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
+using ChromeCast.Desktop.AudioStreamer.Discover;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -24,6 +17,8 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             if (Environment.OSVersion.Version.Major >= 6) SetProcessDPIAware();
             System.Windows.Forms.Application.EnableVisualStyles();
+            //TODO: .Net 6.0 replacement necessary? (SetHighDpiMode is not available anymore)
+            //Application.SetHighDpiMode(HighDpiMode.SystemAware);
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             try
             {
@@ -59,9 +54,12 @@ namespace ChromeCast.Desktop.AudioStreamer
             void MainFormStartupNextInstance(object sender, StartupNextInstanceEventArgs e)
             {
                 var form = MainForm as MainForm;
-                form.Show();
-                form.TopMost = true;
-                form.TopMost = false;
+                if (!form.IsDisposed)
+                {
+                    form.Show();
+                    form.TopMost = true;
+                    form.TopMost = false;
+                }
             }
 
             protected override void OnCreateMainForm()
@@ -69,25 +67,18 @@ namespace ChromeCast.Desktop.AudioStreamer
                 AppDomain currentDomain = AppDomain.CurrentDomain;
                 currentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(UnhandledHandler);
 
-                DependencyFactory.Container
-                    .RegisterType<ILogger, Logger>(new ContainerControlledLifetimeManager())
-                    .RegisterType<IApplicationLogic, ApplicationLogic>(new ContainerControlledLifetimeManager())
-                    .RegisterType<IMainForm, MainForm>(new ContainerControlledLifetimeManager())
-                    .RegisterType<IDevices, Devices>(new ContainerControlledLifetimeManager())
-                    .RegisterType<IDiscoverDevices, DiscoverDevices>()
-                    .RegisterType<IChromeCastMessages, ChromeCastMessages>()
-                    .RegisterType<IDeviceConnection, DeviceConnection>()
-                    .RegisterType<IDeviceCommunication, DeviceCommunication>()
-                    .RegisterType<IStreamingConnection, StreamingConnection>()
-                    .RegisterType<IDeviceReceiveBuffer, DeviceReceiveBuffer>()
-                    .RegisterType<ILoopbackRecorder, LoopbackRecorder>()
-                    .RegisterType<IDeviceStatusTimer, DeviceStatusTimer>()
-                    .RegisterType<IConfiguration, Configuration>()
-                    .RegisterType<IStreamingRequestsListener, StreamingRequestsListener>()
-                    .RegisterType<IAudioHeader, AudioHeader>()
-                    .RegisterType<IDevice, Device>();
-
-                MainForm = DependencyFactory.Container.Resolve<MainForm>();
+                var logger = new Logger();
+                var devices = new Devices(logger);
+                MainForm = new MainForm(
+                        new ApplicationLogic(devices
+                            , new DiscoverDevices()
+                            , new Configuration()
+                            , new StreamingRequestsListener()
+                            , new DeviceStatusTimer()
+                            , logger)
+                        , devices
+                        , new LoopbackRecorder(logger)
+                        , logger);
                 System.Windows.Forms.Application.Run(MainForm);
             }
         }

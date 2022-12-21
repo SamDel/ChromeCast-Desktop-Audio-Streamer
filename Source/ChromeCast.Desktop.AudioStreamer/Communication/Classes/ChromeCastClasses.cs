@@ -7,78 +7,78 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     /// </summary>
     public class PayloadMessageBase
     {
-        public string type;
+        public string type { get; set; }
     }
 
     public class MessageVolume : PayloadMessageBase
     {
-        public SendVolume volume;
-        public int requestId;
+        public SendVolume volume { get; set; }
+        public int requestId { get; set; }
     }
 
     public class SendVolume
     {
-        public float level;
+        public float level { get; set; }
     }
 
     public class MessageVolumeMute : PayloadMessageBase
     {
-        public SendVolumeMute volume;
-        public int requestId;
+        public SendVolumeMute volume { get; set; }
+        public int requestId { get; set; }
     }
 
     public class SendVolumeMute
     {
-        public bool muted;
+        public bool muted { get; set; }
     }
 
     public class MessageLaunch : PayloadMessageBase
     {
-        public string appId;
-        public int requestId;
+        public string appId { get; set; }
+        public int requestId { get; set; }
     }
 
     public class MessageLoad : PayloadMessageBase
     {
-        public bool autoplay;
-        public float currentTime;
-        public List<object> activeTrackIds;
-        public string repeatMode;
-        public Media media;
-        public int requestId;
+        public bool autoplay { get; set; }
+        public float currentTime { get; set; }
+        public List<object> activeTrackIds { get; set; }
+        public string repeatMode { get; set; }
+        public Media media { get; set; }
+        public int requestId { get; set; }
     }
 
     public class MessagePause : PayloadMessageBase
     {
-        public int mediaSessionId;
-        public string sessionId;
-        public int requestId;
+        public int mediaSessionId { get; set; }
+        public string sessionId { get; set; }
+        public int requestId { get; set; }
     }
 
     public class MessageStatus : PayloadMessageBase
     {
-        public int requestId;
+        public int requestId { get; set; }
     }
 
     public class Media
     {
-        public string contentId;
-        public string contentType;
-        public string streamType;
-        public Metadata metadata;
+        public string contentId { get; set; }
+        public string contentType { get; set; }
+        public string streamType { get; set; }
+        public Metadata metadata { get; set; }
     }
 
     public class Metadata
     {
-        public int type;
-        public int metadataType;
-        public string title;
-        public List<Image> images;
+        public int type { get; set; }
+        public int metadataType { get; set; }
+        public string title { get; set; }
+        public List<Image> images { get; set; }
     }
 
     public class Image
     {
-        public string url;
+        public string url { get; set; }
     }
 
     /// <summary>
@@ -87,7 +87,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     /// </summary>
     public class MessageLoadFailed : PayloadMessageBase
     {
-        public int requestId;
+        public int requestId { get; set; }
     }
 
     /// <summary>
@@ -97,7 +97,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     /// </summary>
     public class MessageLoadCancelled : PayloadMessageBase
     {
-        public int requestId;
+        public int requestId { get; set; }
     }
 
     /// <summary>
@@ -106,29 +106,29 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     /// </summary>
     public class MessageMediaStatus : PayloadMessageBase
     {
-        public List<MediaStatus> status;
-        public int requestId;
+        public List<MediaStatus> status { get; set; }
+        public int requestId { get; set; }
     }
 
     public class MediaStatus
     {
-        public int mediaSessionId;
-        public int playbackRate;
-        public string playerState;
-        public float currentTime;
-        public int supportedMediaCommands;
-        public Volume volume;
-        public List<object> activeTrackIds;
-        public Media media;
-        public int currentItemId;
-        public ExtendedStatus extendedStatus;
-        public string repeatMode;
+        public int mediaSessionId { get; set; }
+        public int playbackRate { get; set; }
+        public string playerState { get; set; }
+        public float currentTime { get; set; }
+        public int supportedMediaCommands { get; set; }
+        public Volume volume { get; set; }
+        public List<object> activeTrackIds { get; set; }
+        public Media media { get; set; }
+        public int currentItemId { get; set; }
+        public ExtendedStatus extendedStatus { get; set; }
+        public string repeatMode { get; set; }
     }
 
     public class ExtendedStatus
     {
-        public string playerState;
-        public Media media;
+        public string playerState { get; set; }
+        public Media media { get; set; }
     }
 
     /// <summary>
@@ -137,37 +137,37 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Classes
     /// </summary>
     public class MessageReceiverStatus : PayloadMessageBase
     {
-        public int requestId;
-        public ReceiverStatus status;
+        public int requestId { get; set; }
+        public ReceiverStatus status { get; set; }
     }
 
     public class ReceiverStatus
     {
-        public List<Application> applications;
-        public Volume volume;
+        public List<Application> applications { get; set; }
+        public Volume volume { get; set; }
     }
 
     public class Volume
     {
-        public string controlType;
-        public float level;
-        public bool muted;
-        public float stepInterval;
+        public string controlType { get; set; }
+        public float level { get; set; }
+        public bool muted { get; set; }
+        public float stepInterval { get; set; }
     }
 
     public class Application
     {
-        public string appId;
-        public string displayName;
-        public bool isIdleScreen;
-        public List<Namespaces> namespaces;
-        public string sessionId;
-        public string statusText;
-        public string transportId;
+        public string appId { get; set; }
+        public string displayName { get; set; }
+        public bool isIdleScreen { get; set; }
+        public List<Namespaces> namespaces { get; set; }
+        public string sessionId { get; set; }
+        public string statusText { get; set; }
+        public string transportId { get; set; }
     }
 
     public class Namespaces
     {
-        public string name;
+        public string name { get; set; }
     }
 }

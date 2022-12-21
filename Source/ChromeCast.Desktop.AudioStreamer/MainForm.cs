@@ -4,7 +4,6 @@ using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Threading.Tasks;
-using CSCore.CoreAudioAPI;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -13,14 +12,14 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Newtonsoft.Json;
-using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Drawing;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using System.Text;
 using ChromeCast.Desktop.AudioStreamer.Streaming;
 using System.Net.Sockets;
+using System.Text.Json;
+using System.Net.Http;
+using System.Collections.Generic;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -37,7 +36,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         private bool previousRecordingDeviceExists;
         private bool eventHandlerAdded;
         private bool isRecordingDeviceSelected;
-        private MMDevice previousDefaultDevice;
+        private RecordingDevice previousDefaultDevice;
         private readonly WavGenerator wavGenerator;
 
         public MainForm(IApplicationLogic applicationLogicIn, IDevices devicesIn, ILoopbackRecorder loopbackRecorderIn, ILogger loggerIn)
@@ -166,7 +165,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_16bit));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_24bit));
-                // Not sure about quality:  cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_32bit));
+                cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Wav_32bit));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_128));
                 cmbStreamFormat.Items.Add(new ComboboxItem(SupportedStreamFormat.Mp3_320));
                 cmbStreamFormat.SelectedIndex = 2;
@@ -411,14 +410,14 @@ namespace ChromeCast.Desktop.AudioStreamer
             Hide();
         }
 
-        public void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice)
+        public void AddRecordingDevices(List<RecordingDevice> devices, RecordingDevice defaultdevice)
         {
             if (devices == null || cmbRecordingDevice == null)
                 return;
 
             if (InvokeRequired)
             {
-                Invoke(new Action<MMDeviceCollection, MMDevice>(AddRecordingDevices), new object[] { devices, defaultdevice });
+                Invoke(new Action<List<RecordingDevice>, RecordingDevice>(AddRecordingDevices), new object[] { devices, defaultdevice });
                 return;
             }
             if (IsDisposed) return;
@@ -429,7 +428,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 var remove = true;
                 foreach (var device in devices)
                 {
-                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
+                    if (((RecordingDevice)cmbRecordingDevice.Items[i]).ID == device.ID)
                     {
                         remove = false;
                     }
@@ -446,7 +445,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 var exists = false;
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
-                    if (((MMDevice)cmbRecordingDevice.Items[i]).DeviceID == device.DeviceID)
+                    if (((RecordingDevice)cmbRecordingDevice.Items[i]).ID == device.ID)
                     {
                         exists = true;
                     }
@@ -460,13 +459,20 @@ namespace ChromeCast.Desktop.AudioStreamer
             // Select the new default device when the default device has changed.
             if (previousDefaultDevice != null)
             {
-                var selectedDevice = (MMDevice)cmbRecordingDevice.SelectedItem;
-                if (defaultdevice.DeviceID != previousDefaultDevice.DeviceID && selectedDevice?.DataFlow == defaultdevice.DataFlow)
+                var selectedDevice = (RecordingDevice)cmbRecordingDevice.SelectedItem;
+                var nrSameDataflowItems = 0;
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    var device = (RecordingDevice)cmbRecordingDevice.Items[i];
+                    if (device.Flow == selectedDevice?.Flow) nrSameDataflowItems++;
+                }
+                if (defaultdevice.ID != previousDefaultDevice.ID 
+                    && (selectedDevice?.Flow == defaultdevice.Flow || nrSameDataflowItems <= 1))
                 {
                     for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                     {
-                        var device = (MMDevice)cmbRecordingDevice.Items[i];
-                        if (device.DeviceID == defaultdevice.DeviceID)
+                        var device = (RecordingDevice)cmbRecordingDevice.Items[i];
+                        if (device.ID == defaultdevice.ID)
                         {
                             if (cmbRecordingDevice.SelectedIndex != i)
                             {
@@ -482,8 +488,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             {
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
-                    var device = (MMDevice)cmbRecordingDevice.Items[i];
-                    if (previousRecordingDeviceID == null && device.DeviceID == defaultdevice.DeviceID)
+                    var device = (RecordingDevice)cmbRecordingDevice.Items[i];
+                    if (previousRecordingDeviceID == null && device.ID == defaultdevice.ID)
                     {
                         // Nothing previously selected, select the default device.
                         if (cmbRecordingDevice.SelectedIndex != i)
@@ -494,7 +500,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                         }
                         previousRecordingDeviceExists = true;
                     }
-                    else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.DeviceID == previousRecordingDeviceID)
+                    else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.ID == previousRecordingDeviceID)
                     {
                         // Select the previously selected device (only once).
                         cmbRecordingDevice.SelectedIndex = i;
@@ -535,12 +541,12 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbRecordingDevice == null || cmbRecordingDevice.Items.Count == 0)
                 return false;
 
-            if (!loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.SelectedItem))
+            if (!loopbackRecorder.StartRecordingSetDevice((RecordingDevice)cmbRecordingDevice.SelectedItem))
             {
                 // Start the first device that has no error.
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
-                    if (loopbackRecorder.StartRecordingSetDevice((MMDevice)cmbRecordingDevice.Items[i]))
+                    if (loopbackRecorder.StartRecordingSetDevice((RecordingDevice)cmbRecordingDevice.Items[i]))
                     {
                         cmbRecordingDevice.SelectedIndex = i;
                         PlaySilence();
@@ -569,8 +575,8 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (cmbRecordingDevice.SelectedItem != null)
             {
                 wavGenerator.Stop();
-                var device = (MMDevice)cmbRecordingDevice.SelectedItem;
-                wavGenerator.PlaySilenceLoop(device.FriendlyName, device.DeviceFormat);
+                var device = (RecordingDevice)cmbRecordingDevice.SelectedItem;
+                wavGenerator.PlaySilenceLoop(device.Name, device.SampleRate, device.Channels);
             }
         }
 
@@ -951,26 +957,33 @@ namespace ChromeCast.Desktop.AudioStreamer
         {
             try
             {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                var request = HttpWebRequest.Create("https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest");
-                request.Timeout = 5000;
-                ((HttpWebRequest)request).KeepAlive = false;
-                ((HttpWebRequest)request).UserAgent = "SamDel/ChromeCast-Desktop-Audio-Streamer";
-                var response = request.GetResponse();
-                var dataStream = response.GetResponseStream();
-                var reader = new StreamReader(dataStream);
-                var responseFromServer = reader.ReadToEnd();
-                var json = JsonConvert.DeserializeObject(responseFromServer);
-                var latestRelease = ((JObject)json)["tag_name"].ToString().Replace("v", "");
-                if (latestRelease.CompareTo(currentVersion) > 0)
-                {
-                    var latestReleaseUrl = ((JObject)json)["html_url"].ToString();
-                    ShowLatestRelease(latestRelease, latestReleaseUrl);
-                }
+                applicationLogic.StartTask(async () => {
+                    var url = "https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest";
+                    using (var handler = new HttpClientHandler())
+                    {
+                        handler.UseDefaultCredentials = true;
+                        handler.UseProxy = false;
 
-                reader.Close();
-                response.Close();
+                        using (var client = new HttpClient(handler))
+                        {
+                            client.DefaultRequestHeaders.Add("KeepAlive", "false");
+                            client.DefaultRequestHeaders.Add("User-Agent", "SamDel/ChromeCast-Desktop-Audio-Streamer");
+
+                            var response = await client.GetAsync(new Uri(url));
+                            response.EnsureSuccessStatusCode();
+
+                            var responseBody = response.Content.ReadAsStringAsync();
+
+                            var doc = JsonDocument.Parse(responseBody.Result);
+                            var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
+                            if (latestRelease.CompareTo(currentVersion) > 0)
+                            {
+                                var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
+                                ShowLatestRelease(latestRelease, latestReleaseUrl);
+                            }
+                        }
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -1004,7 +1017,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (e == null)
                 return;
 
-            Process.Start(e.Link.LinkData as string);
+            OpenUrl(e.Link.LinkData as string);
         }
 
         private void ChkStartApplicationWhenWindowsStarts_CheckedChanged(object sender, EventArgs e)
@@ -1118,7 +1131,24 @@ namespace ChromeCast.Desktop.AudioStreamer
             if (e == null)
                 return;
 
-            Process.Start("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+            OpenUrl("https://github.com/SamDel/ChromeCast-Desktop-Audio-Streamer/wiki#options");
+        }
+
+        private void OpenUrl(string url)
+        {
+            ProcessStartInfo psInfo = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+            try
+            {
+                Process.Start(psInfo);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show($"There was an error opening the url {psInfo.FileName}");
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -1195,10 +1225,18 @@ namespace ChromeCast.Desktop.AudioStreamer
 
         public string GetRecordingDeviceID()
         {
-            if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
-                return null;
+            try
+            {
+                if (cmbRecordingDevice.Items.Count == 0 || cmbRecordingDevice.SelectedItem == null)
+                    return null;
 
-            return ((MMDevice)cmbRecordingDevice.SelectedItem).DeviceID;
+                return ((RecordingDevice)cmbRecordingDevice.SelectedItem).ID;
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -1350,7 +1388,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             var backColor = darkmode ? Color.Black : Color.White;
             var buttonColor = darkmode ? Color.Black : Color.Transparent;
             var controlColor = darkmode ? Color.Black : SystemColors.Control;
-            var foreColor = darkmode ? Color.White : Color.Black;
+            var foreColor = darkmode ? Color.Gray : Color.Black;
 
             if (item is TabPage tp)
             {
@@ -1386,6 +1424,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 {
                     button.BackColor = buttonColor;
                     button.ForeColor = foreColor;
+                    button.FlatStyle = darkmode ? FlatStyle.Flat : FlatStyle.Standard;
                 }
             }
             if (item is LinkLabel linklabel)

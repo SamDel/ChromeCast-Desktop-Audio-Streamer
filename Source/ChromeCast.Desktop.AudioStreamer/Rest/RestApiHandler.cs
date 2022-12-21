@@ -2,9 +2,9 @@
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Web;
 
 namespace ChromeCast.Desktop.AudioStreamer.Rest
 {
@@ -33,7 +33,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Rest
                 if (requestAction.Length < 2 || string.IsNullOrEmpty(requestAction[1]))
                     return;
 
-                var action = HttpUtility.UrlDecode(requestAction[1].ToLowerInvariant());
+                var action = WebUtility.UrlDecode(requestAction[1].ToLowerInvariant());
                 logger.Log($"RestApiHandler: {action}");
                 if (action.StartsWith("/start"))
                     response = Start(action.Replace("/start", ""), devices);

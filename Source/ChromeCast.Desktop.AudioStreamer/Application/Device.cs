@@ -2,7 +2,6 @@
 using System.Net.Sockets;
 using System.Windows.Forms;
 using NAudio.Wave;
-using Microsoft.Practices.Unity;
 using ChromeCast.Desktop.AudioStreamer.Communication;
 using ChromeCast.Desktop.AudioStreamer.Communication.Classes;
 using ChromeCast.Desktop.AudioStreamer.UserControls;
@@ -13,9 +12,9 @@ using ChromeCast.Desktop.AudioStreamer.Streaming;
 using ChromeCast.Desktop.AudioStreamer.ProtocolBuffer;
 using ChromeCast.Desktop.AudioStreamer.Discover;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Text.Json;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -29,7 +28,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         private readonly IDeviceConnection deviceConnection;
         private readonly DiscoveredDevice discoveredDevice;
         private DeviceControl deviceControl;
-        private MenuItem menuItem;
+        private ToolStripMenuItem menuItem;
         private Volume volumeSetting;
         private DateTime latestVolumeChange;
         private float latestVolumeSet;
@@ -50,11 +49,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
 
         delegate void SetDeviceStateCallback(DeviceState state, string text = null);
 
-        public Device(ILogger loggerIn, IDeviceConnection deviceConnectionIn, IDeviceCommunication deviceCommunicationIn)
+        public Device(ILogger loggerIn, IApplicationLogic applicationLogicIn)
         {
             logger = loggerIn;
-            deviceConnection = deviceConnectionIn;
-            deviceCommunication = deviceCommunicationIn;
+            deviceConnection = new DeviceConnection(logger);
+            deviceCommunication = new DeviceCommunication(applicationLogicIn, logger);
             deviceConnection.SetCallback(GetHost, GetPort, SetDeviceState, OnReceiveMessage, StartTask);
             discoveredDevice = new DiscoveredDevice
             {
@@ -93,10 +92,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             if (ipChanged ||
                 discoveredDevice.Name != discoveredDeviceIn.Name ||
                 discoveredDevice.Port != discoveredDeviceIn.Port ||
-                JsonConvert.SerializeObject(discoveredDevice.Eureka?.Multizone?.Groups)
-                    != JsonConvert.SerializeObject(discoveredDeviceIn.Eureka?.Multizone?.Groups))
+                JsonSerializer.Serialize(discoveredDevice.Eureka?.Multizone?.Groups)
+                    != JsonSerializer.Serialize(discoveredDeviceIn.Eureka?.Multizone?.Groups)
+               )
             {
-                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonConvert.SerializeObject(discoveredDeviceIn?.Eureka?.Multizone?.Groups)} {discoveredDeviceIn?.Id}");
+                logger.Log($"Discovered device: {discoveredDeviceIn?.Name} {discoveredDeviceIn?.IPAddress}:{discoveredDeviceIn?.Port} {JsonSerializer.Serialize(discoveredDeviceIn?.Eureka?.Multizone?.Groups)} {discoveredDeviceIn?.Id}");
             }
 
             if (discoveredDeviceIn.Headers != null) discoveredDevice.Headers = discoveredDeviceIn.Headers;
@@ -365,7 +365,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 GetDeviceState() == DeviceState.Idle) &&
                 discoveredDevice.IPAddress == remoteAddress)
             {
-                streamingConnection = DependencyFactory.Container.Resolve<StreamingConnection>();
+                streamingConnection = new StreamingConnection();
                 streamingConnection.SetDependencies(socket, this, logger);
                 streamingConnection.SendStartStreamingResponse();
                 return true;
@@ -454,7 +454,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Set the menu item in the systray.
         /// </summary>
-        public void SetMenuItem(MenuItem menuItemIn)
+        public void SetMenuItem(ToolStripMenuItem menuItemIn)
         {
             menuItem = menuItemIn;
         }
@@ -462,7 +462,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         /// <summary>
         /// Return the menuitem in the systray.
         /// </summary>
-        public MenuItem GetMenuItem()
+        public ToolStripMenuItem GetMenuItem()
         {
             if (isDisposed)
                 return null;
