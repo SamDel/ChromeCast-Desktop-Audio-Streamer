@@ -3,25 +3,20 @@ using System.Linq;
 using System.Collections.Generic;
 using ChromeCast.Desktop.AudioStreamer.Streaming.Interfaces;
 using NAudio.Wave;
-using CSCore.CoreAudioAPI;
-using CSCore.SoundIn;
-using CSCore.Streams;
-using CSCore;
 using System.Timers;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using System.Threading;
 using System.Diagnostics;
+using NAudio.CoreAudioApi;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
     public class LoopbackRecorder : ILoopbackRecorder
     {
         WasapiCapture soundIn;
-        private Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallback;
+        private Action<byte[], WaveFormat> dataAvailableCallback;
         private bool isRecording = false;
-        IWaveSource convertedSource;
-        SoundInSource soundInSource;
-        NAudio.Wave.WaveFormat waveFormat;
+        WaveFormat waveFormat;
         IMainForm mainForm;
         DateTime latestDataAvailable;
         System.Timers.Timer dataAvailableTimer;
@@ -29,7 +24,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private readonly ILogger logger;
         Thread eventThread;
         BufferBlock bufferCaptured, bufferSend;
-        readonly object bufferSwapSync = new object();
+        readonly object bufferSwapSync = new();
 
         public LoopbackRecorder(ILogger loggerIn)
         {
@@ -39,7 +34,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Start
         /// </summary>
-        public void Start(IMainForm mainFormIn, Action<byte[], NAudio.Wave.WaveFormat> dataAvailableCallbackIn, Action clearMp3BufferIn)
+        public void Start(IMainForm mainFormIn, Action<byte[], WaveFormat> dataAvailableCallbackIn, Action clearMp3BufferIn)
         {
             if (mainFormIn == null || dataAvailableCallbackIn == null)
                 return;
@@ -95,26 +90,28 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// New recording data is available, distribute the data.
         /// </summary>
-        private void OnDataAvailable(object sender, DataAvailableEventArgs e)
+        private void OnDataAvailable(object sender, WaveInEventArgs e)
         {
-            if (convertedSource == null || convertedSource.WaveFormat == null)
+            if (soundIn == null || soundIn.WaveFormat == null)
                 return;
 
             latestDataAvailable = DateTime.Now;
 
             if (dataAvailableCallback != null)
             {
-                int read;
+                int read = 0;
 
                 lock (bufferSwapSync)
                 {
                     var currentBuffer = bufferCaptured;
                     var spaceLeft = bufferCaptured.Data.Length - bufferCaptured.Used;
 
-                    while (spaceLeft > 0 && (read = convertedSource.Read(currentBuffer.Data, currentBuffer.Used, spaceLeft)) > 0)
+                    while (spaceLeft > 0 && read < e.BytesRecorded)
                     {
-                        spaceLeft -= read;
-                        currentBuffer.Used += read;
+                        currentBuffer.Data[currentBuffer.Used] = e.Buffer[read];
+                        spaceLeft -= 1;
+                        currentBuffer.Used += 1;
+                        read++;
                     }
                 }
             }
@@ -125,11 +122,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         public void StopRecording()
         {
+            isRecording = false;
+
             if (soundIn == null)
                 return;
 
-            isRecording = false;
-            soundIn?.Stop();
+            soundIn?.StopRecording();
+            soundIn?.Dispose();
+            soundIn = null;
         }
 
         /// <summary>
@@ -140,12 +140,38 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (mainForm == null)
                 return;
 
-            var devices = MMDeviceEnumerator.EnumerateDevices(DataFlow.All, DeviceState.Active);
+            var enumerator = new MMDeviceEnumerator();
+            var enumDevices = enumerator.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active);
+            var devices = ConvertDevices(enumDevices);
             if (devices.Count > 0)
             {
-                var defaultDevice = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                var defaultDeviceEndpoint = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                var defaultDevice = ConvertDevice(defaultDeviceEndpoint);
                 mainForm.AddRecordingDevices(devices, defaultDevice);
             }
+        }
+
+        private static List<RecordingDevice> ConvertDevices(MMDeviceCollection devices)
+        {
+            List<RecordingDevice> result = new();
+            foreach (var device in devices)
+            {
+                result.Add(ConvertDevice(device));
+            }
+            return result;
+        }
+
+        private static RecordingDevice ConvertDevice(MMDevice device)
+        {
+            if (device == null)
+                return null;
+
+            return new RecordingDevice { 
+                Name = device.FriendlyName, 
+                ID = device.ID, 
+                Flow = device.DataFlow, 
+                SampleRate = device.AudioClient.MixFormat.SampleRate, 
+                Channels = device.AudioClient.MixFormat.Channels };
         }
 
         /// <summary>
@@ -153,9 +179,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// </summary>
         /// <param name="recordingDevice">the device to start recording</param>
         /// <returns>true if the recording is started, or false</returns>
-        public bool StartRecordingSetDevice(MMDevice recordingDevice)
+        public bool StartRecordingSetDevice(RecordingDevice audioDevice)
         {
-            if (recordingDevice == null)
+            if (audioDevice == null)
             {
                 logger.Log(Properties.Strings.MessageBox_NoRecordingDevices);
                 return false;
@@ -163,77 +189,62 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             try
             {
+                MMDevice recordingDevice = null;
+                var enumerator = new MMDeviceEnumerator();
+                var enumDevices = enumerator.EnumerateAudioEndPoints(DataFlow.All, DeviceState.Active);
+                foreach (var enumDevice in enumDevices)
+                {
+                    if (enumDevice.ID == audioDevice.ID)
+                        recordingDevice = enumDevice;
+                }
+
+                if (recordingDevice == null)
+                    return false;
+
                 if (recordingDevice.DataFlow == DataFlow.Render)
                 {
-                    soundIn = new CSCore.SoundIn.WasapiLoopbackCapture
-                    {
-                        Device = recordingDevice
-                    };
+                    soundIn = new WasapiLoopbackCapture(recordingDevice);
                 }
                 else
                 {
-                    soundIn = new CSCore.SoundIn.WasapiCapture
-                    {
-                        Device = recordingDevice
-                    };
+                    soundIn = new WasapiCapture(recordingDevice);
                 }
 
 
-                soundIn.Initialize();
-                soundInSource = new SoundInSource(soundIn) { FillWithZeros = false };
-
                 var selectedFormat = mainForm.GetSelectedStreamFormat();
                 var convertMultiChannelToStereo = mainForm.GetConvertMultiChannelToStereo();
-                CSCore.WaveFormat format;
+                var nrChannels = convertMultiChannelToStereo ? soundIn.WaveFormat.Channels : 2;
                 switch (selectedFormat)
                 {
                     case Classes.SupportedStreamFormat.Wav:
-                        convertedSource = soundInSource.ChangeSampleRate(44100).ToSampleSource().ToWaveSource(16);
-                        format = convertedSource.WaveFormat;
-                        if (convertMultiChannelToStereo)
-                            convertedSource = convertedSource.ToStereo();
-                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        soundIn.WaveFormat = new WaveFormat(44100, 16, nrChannels);
                         break;
                     case Classes.SupportedStreamFormat.Mp3_320:
                     case Classes.SupportedStreamFormat.Mp3_128:
-                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
-                        convertedSource = convertedSource.ToStereo();
-                        format = convertedSource.WaveFormat;
-                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        soundIn.WaveFormat = new WaveFormat(soundIn.WaveFormat.SampleRate, 16, 2);
                         break;
                     case Classes.SupportedStreamFormat.Wav_16bit:
-                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(16);
-                        if (convertMultiChannelToStereo)
-                            convertedSource = convertedSource.ToStereo();
-                        format = convertedSource.WaveFormat;
-                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        soundIn.WaveFormat = new WaveFormat(soundIn.WaveFormat.SampleRate, 16, nrChannels);
                         break;
                     case Classes.SupportedStreamFormat.Wav_24bit:
-                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(24);
-                        if (convertMultiChannelToStereo)
-                            convertedSource = convertedSource.ToStereo();
-                        format = convertedSource.WaveFormat;
-                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.Pcm, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        soundIn.WaveFormat = new WaveFormat(soundIn.WaveFormat.SampleRate, 24, nrChannels);
                         break;
                     case Classes.SupportedStreamFormat.Wav_32bit:
-                        convertedSource = soundInSource.ToSampleSource().ToWaveSource(32);
-                        if (convertMultiChannelToStereo)
-                            convertedSource = convertedSource.ToStereo();
-                        format = convertedSource.WaveFormat;
-                        waveFormat = NAudio.Wave.WaveFormat.CreateCustomFormat(WaveFormatEncoding.IeeeFloat, format.SampleRate, format.Channels, format.BytesPerSecond, format.BlockAlign, format.BitsPerSample);
+                        soundIn.WaveFormat = new WaveFormat(soundIn.WaveFormat.SampleRate, 32, nrChannels);
                         break;
                     default:
                         break;
                 }
-
+                waveFormat = soundIn.WaveFormat;
                 logger.Log($"Stream format set to {waveFormat.Encoding} {waveFormat.SampleRate} {waveFormat.BitsPerSample} bit");
-                soundInSource.DataAvailable += OnDataAvailable;
-                soundIn.Stopped += OnRecordingStopped;
-                soundIn.Start();
-
+                soundIn.DataAvailable += OnDataAvailable;
+                soundIn.RecordingStopped += OnRecordingStopped;
+                soundIn.StartRecording();
                 isRecording = true;
-                bufferCaptured = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };
-                bufferSend = new BufferBlock() { Data = new byte[convertedSource.WaveFormat.BytesPerSecond / 2] };
+
+                var bytesPerSecond = soundIn.WaveFormat.SampleRate * soundIn.WaveFormat.Channels * (soundIn.WaveFormat.BitsPerSample / 8);
+                bufferCaptured = new BufferBlock() { Data = new byte[bytesPerSecond / 2] };
+                bufferSend = new BufferBlock() { Data = new byte[bytesPerSecond / 2] };
 
                 eventThread = new Thread(EventThread)
                 {
@@ -301,12 +312,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Recording has stopped.
         /// </summary>
-        private void OnRecordingStopped(object sender, RecordingStoppedEventArgs e)
+        private void OnRecordingStopped(object sender, StoppedEventArgs e)
         {
             if (isRecording)
             {
                 logger.Log("Recording Stopped");
-                isRecording = false;
             }
         }
 
@@ -361,13 +371,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
         public void Dispose()
         {
-            soundIn?.Stop();
+            soundIn?.StopRecording();
             soundIn?.Dispose();
             soundIn = null;
-            convertedSource?.Dispose();
-            convertedSource = null;
-            soundInSource?.Dispose();
-            soundInSource = null;
             dataAvailableTimer?.Close();
             dataAvailableTimer?.Dispose();
             getDevicesTimer?.Close();

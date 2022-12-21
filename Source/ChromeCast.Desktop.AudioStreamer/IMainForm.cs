@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Classes;
-using CSCore.CoreAudioAPI;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -17,7 +18,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         void SetWindowVisibility(bool visible);
         void AddDevice(IDevice device);
         void Dispose();
-        void AddRecordingDevices(MMDeviceCollection devices, MMDevice defaultdevice);
+        void AddRecordingDevices(List<RecordingDevice> devices, RecordingDevice defaultdevice);
         void GetRecordingDevice();
         void SetAutoRestart(bool autoRestart);
         bool GetUseKeyboardShortCuts();
