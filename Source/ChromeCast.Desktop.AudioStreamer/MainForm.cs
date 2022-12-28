@@ -32,7 +32,8 @@ namespace ChromeCast.Desktop.AudioStreamer
         private readonly ILoopbackRecorder loopbackRecorder;
         private Size windowSize;
         private readonly StringBuilder log = new StringBuilder();
-        private string previousRecordingDeviceID;
+        private string previousRecordingDeviceID = null;
+        private bool isSetRecordingDeviceID = false;
         private bool previousRecordingDeviceExists;
         private bool eventHandlerAdded;
         private bool isRecordingDeviceSelected;
@@ -489,7 +490,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
                 {
                     var device = (RecordingDevice)cmbRecordingDevice.Items[i];
-                    if (previousRecordingDeviceID == null && device.ID == defaultdevice.ID)
+                    if (!isSetRecordingDeviceID && device.ID == defaultdevice.ID)
                     {
                         // Nothing previously selected, select the default device.
                         if (cmbRecordingDevice.SelectedIndex != i)
@@ -500,7 +501,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                         }
                         previousRecordingDeviceExists = true;
                     }
-                    else if (!string.IsNullOrEmpty(previousRecordingDeviceID) && device.ID == previousRecordingDeviceID)
+                    else if (!isSetRecordingDeviceID && device.ID == previousRecordingDeviceID)
                     {
                         // Select the previously selected device (only once).
                         cmbRecordingDevice.SelectedIndex = i;
@@ -512,6 +513,7 @@ namespace ChromeCast.Desktop.AudioStreamer
                 }
             }
             previousDefaultDevice = defaultdevice;
+            isSetRecordingDeviceID = true;
 
             if (!eventHandlerAdded)
             {
