@@ -66,7 +66,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 }
                 finally
                 {
-                    wh.Close();
+                    //wh.Close();
                 }
             }
             catch (Exception ex)

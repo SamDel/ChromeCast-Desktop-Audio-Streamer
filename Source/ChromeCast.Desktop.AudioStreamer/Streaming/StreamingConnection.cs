@@ -77,21 +77,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (!IsConnected() || device == null || logger == null)
                 return;
 
-            device.StartTask(() => {
+            device?.StartTask(() => {
                 try
                 {
-                    Socket.Send(data);
+                    Socket?.Send(data);
                 }
                 catch (Exception ex)
                 {
-                    var deviceState = device.GetDeviceState();
+                    var deviceState = device?.GetDeviceState();
                     if (deviceState == DeviceState.Playing ||
                         deviceState == DeviceState.Buffering ||
                         deviceState == DeviceState.Paused)
                     {
                         Dispose();
                         logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Disconnected Send");
-                        device.SetDeviceState(DeviceState.ConnectError);
+                        device?.SetDeviceState(DeviceState.ConnectError);
                     }
                 }
             });
@@ -147,7 +147,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
             if (Socket == null)
                 return string.Empty;
 
-            return Socket.RemoteEndPoint?.ToString();
+            try
+            {
+                return Socket?.RemoteEndPoint?.ToString();
+            }
+            catch (Exception)
+            {
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
