@@ -247,6 +247,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             {
                 logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
                 device.SetDeviceState(DeviceState.Undefined);
+                device.CloseConnection();
                 if ((DateTime.Now - lastReceivedMessage).Minutes > 15)
                     pendingStatusMessage = false;
             }

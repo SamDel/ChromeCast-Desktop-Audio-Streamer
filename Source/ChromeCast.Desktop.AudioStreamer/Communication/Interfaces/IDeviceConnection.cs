@@ -9,5 +9,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication.Interfaces
         bool IsConnected();
         void SetCallback(Func<string> getHost, Func<int> getPort, Action<DeviceState, string> setDeviceState, Action<CastMessage> onReceiveMessage, Action<Action> startTask);
         void Dispose();
+        void ReConnect();
     }
 }

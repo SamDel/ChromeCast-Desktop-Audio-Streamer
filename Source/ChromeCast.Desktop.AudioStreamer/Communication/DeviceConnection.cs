@@ -42,10 +42,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private void Connect()
         {
             if (tcpClient != null && tcpClient.Client != null && tcpClient.Connected)
-            {
-                state = DeviceConnectionState.Disconnected;
                 return;
-            }
 
             Close();
 
@@ -178,6 +175,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     if (state != DeviceConnectionState.Connecting)
                     {
                         state = DeviceConnectionState.Connecting;
+                        Dispose(true);
                         Connect();
                     }
                 }
@@ -325,6 +323,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             setDeviceState = setDeviceStateIn;
             onReceiveMessage = onReceiveMessageIn;
             startTask = startTaskIn;
+        }
+
+        public void ReConnect()
+        {
+            state = DeviceConnectionState.Disconnected;
+            Dispose(true);
+            Connect();
         }
     }
 }

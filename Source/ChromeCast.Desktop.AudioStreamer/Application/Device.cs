@@ -725,5 +725,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         {
             return isDisposed;
         }
+
+        public void CloseConnection()
+        {
+            deviceConnection.ReConnect();
+        }
     }
 }

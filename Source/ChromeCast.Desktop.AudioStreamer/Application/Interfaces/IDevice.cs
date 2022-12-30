@@ -52,5 +52,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         int GetVolumeLevel();
         bool IsDisposed();
         void OnClickPlayStop();
+        void CloseConnection();
     }
 }
