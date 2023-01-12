@@ -25,6 +25,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private SslStream sslStream;
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
+        private DateTime connectingStartTime;
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
         private bool IsDisposed = false;
@@ -175,8 +176,13 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     if (state != DeviceConnectionState.Connecting)
                     {
                         state = DeviceConnectionState.Connecting;
+                        connectingStartTime = DateTime.Now;
                         Dispose(true);
                         Connect();
+                    }
+                    else if (connectingStartTime != DateTime.MinValue && (DateTime.Now - connectingStartTime).TotalSeconds > 15)
+                    {
+                        state = DeviceConnectionState.Disconnected;
                     }
                 }
             });
