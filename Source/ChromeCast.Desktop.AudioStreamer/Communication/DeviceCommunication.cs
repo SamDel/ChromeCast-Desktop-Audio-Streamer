@@ -375,13 +375,15 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             if (castMessage == null || device == null || IsDisposed)
                 return;
 
-            lastReceivedMessage = DateTime.Now;
             logger.Log($"{Properties.Strings.Log_In} [{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] [{device.GetDeviceState()}]: {castMessage.PayloadUtf8}");
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var message = JsonSerializer.Deserialize<PayloadMessageBase>(castMessage.PayloadUtf8, options);
             if (message.type != "PING" && message.type != "PONG")
+            {
+                lastReceivedMessage = DateTime.Now;
                 pendingStatusMessage = false;
+            }
 
             switch (message.@type)
             {
