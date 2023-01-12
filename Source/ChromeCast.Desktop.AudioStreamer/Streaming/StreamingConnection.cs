@@ -92,6 +92,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                         Dispose();
                         logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Disconnected Send");
                         device?.SetDeviceState(DeviceState.ConnectError);
+                        device?.CloseConnection();
                     }
                 }
             });
