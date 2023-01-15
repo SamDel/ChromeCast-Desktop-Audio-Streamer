@@ -99,20 +99,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
 
             if (dataAvailableCallback != null)
             {
-                int read = 0;
-
                 lock (bufferSwapSync)
                 {
                     var currentBuffer = bufferCaptured;
-                    var spaceLeft = bufferCaptured.Data.Length - bufferCaptured.Used;
-
-                    while (spaceLeft > 0 && read < e.BytesRecorded)
-                    {
-                        currentBuffer.Data[currentBuffer.Used] = e.Buffer[read];
-                        spaceLeft -= 1;
-                        currentBuffer.Used += 1;
-                        read++;
-                    }
+                    currentBuffer.Add(e.Buffer, e.BytesRecorded);
                 }
             }
         }

@@ -7,7 +7,10 @@ using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Application.Interfaces;
 using ChromeCast.Desktop.AudioStreamer.Application;
 using ChromeCast.Desktop.AudioStreamer.Communication;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Threading;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ChromeCast.Desktop.AudioStreamer.Streaming
 {
@@ -16,14 +19,97 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         private Socket Socket;
         private IDevice device;
         private ILogger logger;
-        private IAudioHeader audioHeader;
+        private readonly IAudioHeader audioHeader;
         private bool isAudioHeaderSent;
         private int reduceLagCounter = 0;
+        private readonly Thread streamThread;
+        private BufferBlock bufferCaptured, bufferSend;
+        readonly object bufferSwapSync = new();
 
         public StreamingConnection()
         {
             audioHeader = new AudioHeader();
             isAudioHeaderSent = false;
+            bufferCaptured = new BufferBlock() { Data = new byte[10000000] };
+            bufferSend = new BufferBlock() { Data = new byte[10000000] };
+
+            streamThread = new Thread(StreamThread)
+            {
+                Name = "Stream Thread",
+                IsBackground = true
+            };
+            streamThread.Start(new WeakReference<StreamingConnection>(this));
+        }
+
+        /// <summary>
+        /// Thread for streaming the captured data.
+        /// </summary>
+        /// <param name="param">the streaming connection</param>
+        private static void StreamThread(object param)
+        {
+            var thisRef = (WeakReference<StreamingConnection>)param;
+            try
+            {
+                while (true)
+                {
+                    if (!thisRef.TryGetTarget(out StreamingConnection streamer) || streamer == null)
+                    {
+                        // Instance is dead
+                        return;
+                    }
+
+                    // Stream the data that is captured.
+                    streamer.SwapBuffer();
+                    if (streamer.bufferSend.Used > 0)
+                    {
+                        var bytes = new List<byte>();
+                        bytes.AddRange(streamer.bufferSend.Data.Take(streamer.bufferSend.Used).ToArray());
+                        streamer.bufferSend.Used = 0;
+
+                        try
+                        {
+                            streamer.Socket?.Send(bytes.ToArray());
+                        }
+                        catch (Exception ex)
+                        {
+                            var deviceState = streamer.device?.GetDeviceState();
+                            if (deviceState == DeviceState.Playing ||
+                                deviceState == DeviceState.Buffering ||
+                                deviceState == DeviceState.Paused)
+                            {
+                                streamer.Dispose();
+                                streamer.logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{streamer.device.GetHost()}:{streamer.device.GetPort()}] Disconnected Send");
+                                streamer.device?.SetDeviceState(DeviceState.ConnectError);
+                                streamer.device?.CloseConnection();
+                            }
+                        }
+                    }
+
+                    Thread.Sleep(1);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+
+                if (Debugger.IsAttached)
+                {
+                    Debugger.Break();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Swap the captured and send buffers.
+        /// </summary>
+        private void SwapBuffer()
+        {
+            lock (bufferSwapSync)
+            {
+                var tmp = bufferCaptured;
+                bufferCaptured = bufferSend;
+                bufferSend = tmp;
+            }
         }
 
         /// <summary>
@@ -49,7 +135,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
                 }
             }
 
-            // Send audio header before the fitrst data.
+            // Send audio header before the first data.
             if (!isAudioHeaderSent)
             {
                 isAudioHeaderSent = true;
@@ -70,32 +156,19 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         }
 
         /// <summary>
-        /// Send data.
+        /// Add the data to the buffer. 
+        /// The actual sending is done in the thread.
         /// </summary>
         public void Send(byte[] data)
         {
             if (!IsConnected() || device == null || logger == null)
                 return;
 
-            device?.StartTask(() => {
-                try
-                {
-                    Socket?.Send(data);
-                }
-                catch (Exception ex)
-                {
-                    var deviceState = device?.GetDeviceState();
-                    if (deviceState == DeviceState.Playing ||
-                        deviceState == DeviceState.Buffering ||
-                        deviceState == DeviceState.Paused)
-                    {
-                        Dispose();
-                        logger.Log(ex, $"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Disconnected Send");
-                        device?.SetDeviceState(DeviceState.ConnectError);
-                        device?.CloseConnection();
-                    }
-                }
-            });
+            lock (bufferSwapSync)
+            {
+                var currentBuffer = bufferCaptured;
+                currentBuffer.Add(data, data.Length);
+            }
         }
 
         /// <summary>
@@ -110,7 +183,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Streaming
         /// <summary>
         /// Return the HTTP header.
         /// </summary>
-        private string GetStartStreamingResponse()
+        private static string GetStartStreamingResponse()
         {
             var httpStartStreamingReply = new StringBuilder();
 
