@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Reflection;
 using System.Windows.Forms;
 
 namespace ChromeCast.Desktop.AudioStreamer.Classes
@@ -15,7 +14,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
                     ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
                 if (value)
-                    rk.SetValue("Desktop Audio Streamer", Assembly.GetExecutingAssembly().Location);
+                    rk.SetValue("Desktop Audio Streamer", System.Windows.Forms.Application.ExecutablePath);
                 else
                     rk.DeleteValue("Desktop Audio Streamer", false);
             }
