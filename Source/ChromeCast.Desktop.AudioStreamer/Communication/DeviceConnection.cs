@@ -203,9 +203,14 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     sslStream.Write(sendBuffer);
                     sslStream.Flush();
                 }
+                else
+                {
+                    logger.Log($"[{getHost?.Invoke()}] DeviceConnection.DoSendMessage: {state}");
+                }
             }
             catch (Exception ex)
             {
+                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.DoSendMessage: {ex.Message}");
                 Console.WriteLine($"DoSendMessage: {ex.Message}");
             }
             finally
@@ -229,6 +234,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             catch (Exception ex)
             {
+                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.StartReceive: {ex.Message}");
                 Console.WriteLine($"StartReceive: {ex.Message}");
                 CloseConnection();
             }
@@ -250,6 +256,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             catch (Exception ex)
             {
+                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.DataReceived: {ex.Message}");
                 Console.WriteLine(ex.Message);
                 CloseConnection();
             }
@@ -314,7 +321,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// Don't validate the ssl certificate.
         /// </summary>
         /// <returns></returns>
-        public bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        public static bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }

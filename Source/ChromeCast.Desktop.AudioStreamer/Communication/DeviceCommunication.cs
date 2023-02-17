@@ -30,7 +30,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private bool IsDisposed = false;
         private UserMode userMode = UserMode.Stopped;
         private bool pendingStatusMessage = false;
-        private DateTime lastReceivedMessage;
+        private DateTime lastReceivedMessage = DateTime.MinValue;
         private string statusText;
 
         public DeviceCommunication(IApplicationLogic applicationLogicIn, ILogger loggerIn)
@@ -248,7 +248,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 logger.Log($"[{DateTime.Now.ToLongTimeString()}] [{device.GetHost()}:{device.GetPort()}] Last received message: {lastReceivedMessage}");
                 device.SetDeviceState(DeviceState.Undefined);
                 device.CloseConnection();
-                if ((DateTime.Now - lastReceivedMessage).Minutes > 15)
+                if (NoContactFor(15 * 60))
                     pendingStatusMessage = false;
             }
 
@@ -284,6 +284,16 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                         break;
                 }
             }
+        }
+
+        private bool NoContactFor(int nrSeconds)
+        {
+            return HadContact() && (DateTime.Now - lastReceivedMessage).Seconds > nrSeconds;
+        }
+
+        private bool HadContact()
+        {
+            return lastReceivedMessage != DateTime.MinValue;
         }
 
         /// <summary>
@@ -359,6 +369,12 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         {
             if (chromeCastMessages == null || IsDisposed)
                 return;
+
+            if (NoContactFor(60))
+            {
+                device.CloseConnection();
+                return;
+            }
 
             var byteMessage = chromeCastMessages.MessageToByteArray(castMessage);
             sendMessage?.Invoke(byteMessage);
