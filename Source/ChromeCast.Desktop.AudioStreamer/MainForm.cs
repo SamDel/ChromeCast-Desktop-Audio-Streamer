@@ -519,6 +519,19 @@ namespace ChromeCast.Desktop.AudioStreamer
             previousDefaultDevice = defaultdevice;
             isSetRecordingDeviceID = true;
 
+            // Show recording device in the UI
+            var selected = (RecordingDevice)cmbRecordingDevice.SelectedItem;
+            if (selected?.ID != defaultdevice.ID)
+            {
+                Text = $"{Properties.Strings.MainForm_Text} - {selected.Name}";
+                applicationLogic.SetRecordingDevice(selected);
+            }
+            else
+            {
+                Text = $"{Properties.Strings.MainForm_Text}";
+                applicationLogic.SetRecordingDevice(null);
+            }
+
             if (!eventHandlerAdded)
             {
                 cmbRecordingDevice.SelectedIndexChanged += CmbRecordingDevice_SelectedIndexChanged;

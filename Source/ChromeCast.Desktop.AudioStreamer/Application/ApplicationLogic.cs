@@ -18,6 +18,7 @@ using ChromeCast.Desktop.AudioStreamer.Rest;
 using System.Configuration;
 using System.IO;
 using System.Diagnostics;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application
 {
@@ -636,6 +637,21 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
         public void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null)
         {
             taskList.Add(action, cancellationTokenSource);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void SetRecordingDevice(RecordingDevice recordingDevice)
+        {
+            if(recordingDevice == null)
+            {
+                notifyIcon.Text = $"{Properties.Strings.MainForm_Text}";
+            }
+            else
+            {
+                notifyIcon.Text = $"{Properties.Strings.MainForm_Text} - {recordingDevice.Name}";
+            }
         }
 
         #endregion

@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using ChromeCast.Desktop.AudioStreamer.Classes;
 using ChromeCast.Desktop.AudioStreamer.Discover;
+using ChromeCast.Desktop.AudioStreamer.Streaming;
 using NAudio.Wave;
 
 namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
@@ -30,5 +31,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void ClearMp3Buffer();
         void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null);
         void SaveSettings();
+        void SetRecordingDevice(RecordingDevice recordingDevice);
     }
 }
