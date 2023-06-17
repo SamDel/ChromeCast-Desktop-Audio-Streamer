@@ -12,6 +12,7 @@ After running setup.exe you can run the installed program from `C:\Program Files
 Not all home setup are stable on the default device buffer settings. 
 Please set it to a setting where your speakers produce the appropriate delay:
 
+- When streaming in wav 32 bit format: < 2 seconds
 - When streaming in wav format: < 5 seconds
 - When streaming in mp3 320 format: < 10 seconds
 - When streaming in mp3 128 format: > 20 seconds
