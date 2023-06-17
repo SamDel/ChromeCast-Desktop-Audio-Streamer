@@ -2,10 +2,10 @@
 #pragma warning disable 1591, 0612, 3021
 #region Designer generated code
 
-using pb = global::Google.ProtocolBuffers;
-using pbc = global::Google.ProtocolBuffers.Collections;
-using pbd = global::Google.ProtocolBuffers.Descriptors;
-using scg = global::System.Collections.Generic;
+using protB = global::Google.ProtocolBuffers;
+using protBC = global::Google.ProtocolBuffers.Collections;
+using protBD = global::Google.ProtocolBuffers.Descriptors;
+using collG = global::System.Collections.Generic;
 namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -14,7 +14,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   public static partial class ChromeCastAudioStream {
   
     #region Extension registration
-    public static void RegisterAllExtensions(pb::ExtensionRegistry registry) {
+    public static void RegisterAllExtensions(protB::ExtensionRegistry registry) {
     }
     #endregion
     #region Static variables
@@ -31,7 +31,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-  public sealed partial class CastMessage : pb::GeneratedMessageLite<CastMessage, CastMessage.Builder> {
+  public sealed partial class CastMessage : protB::GeneratedMessageLite<CastMessage, CastMessage.Builder> {
     private CastMessage() { }
     private static readonly CastMessage defaultInstance = new CastMessage().MakeReadOnly();
     private static readonly string[] _castMessageFieldNames = new string[] { "destination_id", "namespace", "payload_binary", "payload_type", "payload_utf8", "protocol_version", "source_id" };
@@ -131,11 +131,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     
     public const int PayloadBinaryFieldNumber = 7;
     private bool hasPayloadBinary;
-    private pb::ByteString payloadBinary_ = pb::ByteString.Empty;
+    private protB::ByteString payloadBinary_ = protB::ByteString.Empty;
     public bool HasPayloadBinary {
       get { return hasPayloadBinary; }
     }
-    public pb::ByteString PayloadBinary {
+    public protB::ByteString PayloadBinary {
       get { return payloadBinary_; }
     }
     
@@ -150,7 +150,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       }
     }
     
-    public override void WriteTo(pb::ICodedOutputStream output) {
+    public override void WriteTo(protB::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _castMessageFieldNames;
       if (hasProtocolVersion) {
@@ -191,25 +191,25 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       
       size = 0;
       if (hasProtocolVersion) {
-        size += pb::CodedOutputStream.ComputeEnumSize(1, (int) ProtocolVersion);
+        size += protB::CodedOutputStream.ComputeEnumSize(1, (int) ProtocolVersion);
       }
       if (hasSourceId) {
-        size += pb::CodedOutputStream.ComputeStringSize(2, SourceId);
+        size += protB::CodedOutputStream.ComputeStringSize(2, SourceId);
       }
       if (hasDestinationId) {
-        size += pb::CodedOutputStream.ComputeStringSize(3, DestinationId);
+        size += protB::CodedOutputStream.ComputeStringSize(3, DestinationId);
       }
       if (hasNamespace) {
-        size += pb::CodedOutputStream.ComputeStringSize(4, Namespace);
+        size += protB::CodedOutputStream.ComputeStringSize(4, Namespace);
       }
       if (hasPayloadType) {
-        size += pb::CodedOutputStream.ComputeEnumSize(5, (int) PayloadType);
+        size += protB::CodedOutputStream.ComputeEnumSize(5, (int) PayloadType);
       }
       if (hasPayloadUtf8) {
-        size += pb::CodedOutputStream.ComputeStringSize(6, PayloadUtf8);
+        size += protB::CodedOutputStream.ComputeStringSize(6, PayloadUtf8);
       }
       if (hasPayloadBinary) {
-        size += pb::CodedOutputStream.ComputeBytesSize(7, PayloadBinary);
+        size += protB::CodedOutputStream.ComputeBytesSize(7, PayloadBinary);
       }
       memoizedSerializedSize = size;
       return size;
@@ -251,34 +251,34 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     }
     #endregion
     
-    public static CastMessage ParseFrom(pb::ByteString data) {
+    public static CastMessage ParseFrom(protB::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static CastMessage ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static CastMessage ParseFrom(protB::ByteString data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static CastMessage ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static CastMessage ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static CastMessage ParseFrom(byte[] data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static CastMessage ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static CastMessage ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static CastMessage ParseFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     public static CastMessage ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static CastMessage ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static CastMessage ParseDelimitedFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static CastMessage ParseFrom(pb::ICodedInputStream input) {
+    public static CastMessage ParseFrom(protB::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static CastMessage ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static CastMessage ParseFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     private CastMessage MakeReadOnly() {
@@ -295,7 +295,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-    public sealed partial class Builder : pb::GeneratedBuilderLite<CastMessage, Builder> {
+    public sealed partial class Builder : protB::GeneratedBuilderLite<CastMessage, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -355,7 +355,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return result.MakeReadOnly();
       }
       
-      public override Builder MergeFrom(pb::IMessageLite other) {
+      public override Builder MergeFrom(protB::IMessageLite other) {
         if (other is CastMessage) {
           return MergeFrom((CastMessage) other);
         } else {
@@ -391,11 +391,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return this;
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      public override Builder MergeFrom(protB::ICodedInputStream input) {
+        return MergeFrom(input, protB::ExtensionRegistry.Empty);
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public override Builder MergeFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
         PrepareBuilder();
         uint tag;
         string field_name;
@@ -411,10 +411,10 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
           }
           switch (tag) {
             case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
+              throw protB::InvalidProtocolBufferException.InvalidTag();
             }
             default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
+              if (protB::WireFormat.IsEndGroupTag(tag)) {
                 return this;
               }
               ParseUnknownField(input, extensionRegistry, tag, field_name);
@@ -491,7 +491,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetSourceId(value); }
       }
       public Builder SetSourceId(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasSourceId = true;
         result.sourceId_ = value;
@@ -512,7 +512,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetDestinationId(value); }
       }
       public Builder SetDestinationId(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasDestinationId = true;
         result.destinationId_ = value;
@@ -533,7 +533,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetNamespace(value); }
       }
       public Builder SetNamespace(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasNamespace = true;
         result.namespace_ = value;
@@ -574,7 +574,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetPayloadUtf8(value); }
       }
       public Builder SetPayloadUtf8(string value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasPayloadUtf8 = true;
         result.payloadUtf8_ = value;
@@ -590,12 +590,12 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       public bool HasPayloadBinary {
         get { return result.hasPayloadBinary; }
       }
-      public pb::ByteString PayloadBinary {
+      public protB::ByteString PayloadBinary {
         get { return result.PayloadBinary; }
         set { SetPayloadBinary(value); }
       }
-      public Builder SetPayloadBinary(pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      public Builder SetPayloadBinary(protB::ByteString value) {
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasPayloadBinary = true;
         result.payloadBinary_ = value;
@@ -604,7 +604,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       public Builder ClearPayloadBinary() {
         PrepareBuilder();
         result.hasPayloadBinary = false;
-        result.payloadBinary_ = pb::ByteString.Empty;
+        result.payloadBinary_ = protB::ByteString.Empty;
         return this;
       }
     }
@@ -616,7 +616,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-  public sealed partial class AuthChallenge : pb::GeneratedMessageLite<AuthChallenge, AuthChallenge.Builder> {
+  public sealed partial class AuthChallenge : protB::GeneratedMessageLite<AuthChallenge, AuthChallenge.Builder> {
     private AuthChallenge() { }
     private static readonly AuthChallenge defaultInstance = new AuthChallenge().MakeReadOnly();
     private static readonly string[] _authChallengeFieldNames = new string[] {  };
@@ -639,7 +639,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       }
     }
     
-    public override void WriteTo(pb::ICodedOutputStream output) {
+    public override void WriteTo(protB::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _authChallengeFieldNames;
     }
@@ -677,34 +677,34 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     }
     #endregion
     
-    public static AuthChallenge ParseFrom(pb::ByteString data) {
+    public static AuthChallenge ParseFrom(protB::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthChallenge ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthChallenge ParseFrom(protB::ByteString data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthChallenge ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthChallenge ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthChallenge ParseFrom(byte[] data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthChallenge ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthChallenge ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthChallenge ParseFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     public static AuthChallenge ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static AuthChallenge ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthChallenge ParseDelimitedFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static AuthChallenge ParseFrom(pb::ICodedInputStream input) {
+    public static AuthChallenge ParseFrom(protB::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthChallenge ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthChallenge ParseFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     private AuthChallenge MakeReadOnly() {
@@ -721,7 +721,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-    public sealed partial class Builder : pb::GeneratedBuilderLite<AuthChallenge, Builder> {
+    public sealed partial class Builder : protB::GeneratedBuilderLite<AuthChallenge, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -781,7 +781,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return result.MakeReadOnly();
       }
       
-      public override Builder MergeFrom(pb::IMessageLite other) {
+      public override Builder MergeFrom(protB::IMessageLite other) {
         if (other is AuthChallenge) {
           return MergeFrom((AuthChallenge) other);
         } else {
@@ -796,11 +796,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return this;
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      public override Builder MergeFrom(protB::ICodedInputStream input) {
+        return MergeFrom(input, protB::ExtensionRegistry.Empty);
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public override Builder MergeFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
         PrepareBuilder();
         uint tag;
         string field_name;
@@ -816,10 +816,10 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
           }
           switch (tag) {
             case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
+              throw protB::InvalidProtocolBufferException.InvalidTag();
             }
             default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
+              if (protB::WireFormat.IsEndGroupTag(tag)) {
                 return this;
               }
               ParseUnknownField(input, extensionRegistry, tag, field_name);
@@ -840,7 +840,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-  public sealed partial class AuthResponse : pb::GeneratedMessageLite<AuthResponse, AuthResponse.Builder> {
+  public sealed partial class AuthResponse : protB::GeneratedMessageLite<AuthResponse, AuthResponse.Builder> {
     private AuthResponse() { }
     private static readonly AuthResponse defaultInstance = new AuthResponse().MakeReadOnly();
     private static readonly string[] _authResponseFieldNames = new string[] { "client_auth_certificate", "client_ca", "signature" };
@@ -859,33 +859,33 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     
     public const int SignatureFieldNumber = 1;
     private bool hasSignature;
-    private pb::ByteString signature_ = pb::ByteString.Empty;
+    private protB::ByteString signature_ = protB::ByteString.Empty;
     public bool HasSignature {
       get { return hasSignature; }
     }
-    public pb::ByteString Signature {
+    public protB::ByteString Signature {
       get { return signature_; }
     }
     
     public const int ClientAuthCertificateFieldNumber = 2;
     private bool hasClientAuthCertificate;
-    private pb::ByteString clientAuthCertificate_ = pb::ByteString.Empty;
+    private protB::ByteString clientAuthCertificate_ = protB::ByteString.Empty;
     public bool HasClientAuthCertificate {
       get { return hasClientAuthCertificate; }
     }
-    public pb::ByteString ClientAuthCertificate {
+    public protB::ByteString ClientAuthCertificate {
       get { return clientAuthCertificate_; }
     }
     
     public const int ClientCaFieldNumber = 3;
-    private pbc::PopsicleList<pb::ByteString> clientCa_ = new pbc::PopsicleList<pb::ByteString>();
-    public scg::IList<pb::ByteString> ClientCaList {
-      get { return pbc::Lists.AsReadOnly(clientCa_); }
+    private protBC::PopsicleList<protB::ByteString> clientCa_ = new protBC::PopsicleList<protB::ByteString>();
+    public collG::IList<protB::ByteString> ClientCaList {
+      get { return protBC::Lists.AsReadOnly(clientCa_); }
     }
     public int ClientCaCount {
       get { return clientCa_.Count; }
     }
-    public pb::ByteString GetClientCa(int index) {
+    public protB::ByteString GetClientCa(int index) {
       return clientCa_[index];
     }
     
@@ -897,7 +897,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       }
     }
     
-    public override void WriteTo(pb::ICodedOutputStream output) {
+    public override void WriteTo(protB::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _authResponseFieldNames;
       if (hasSignature) {
@@ -926,15 +926,15 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       
       size = 0;
       if (hasSignature) {
-        size += pb::CodedOutputStream.ComputeBytesSize(1, Signature);
+        size += protB::CodedOutputStream.ComputeBytesSize(1, Signature);
       }
       if (hasClientAuthCertificate) {
-        size += pb::CodedOutputStream.ComputeBytesSize(2, ClientAuthCertificate);
+        size += protB::CodedOutputStream.ComputeBytesSize(2, ClientAuthCertificate);
       }
       {
         int dataSize = 0;
-        foreach (pb::ByteString element in ClientCaList) {
-          dataSize += pb::CodedOutputStream.ComputeBytesSizeNoTag(element);
+        foreach (protB::ByteString element in ClientCaList) {
+          dataSize += protB::CodedOutputStream.ComputeBytesSizeNoTag(element);
         }
         size += dataSize;
         size += 1 * clientCa_.Count;
@@ -947,7 +947,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       int hash = GetType().GetHashCode();
       if (hasSignature) hash ^= signature_.GetHashCode();
       if (hasClientAuthCertificate) hash ^= clientAuthCertificate_.GetHashCode();
-      foreach(pb::ByteString i in clientCa_)
+      foreach(protB::ByteString i in clientCa_)
         hash ^= i.GetHashCode();
       return hash;
     }
@@ -970,34 +970,34 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     }
     #endregion
     
-    public static AuthResponse ParseFrom(pb::ByteString data) {
+    public static AuthResponse ParseFrom(protB::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthResponse ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthResponse ParseFrom(protB::ByteString data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthResponse ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthResponse ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthResponse ParseFrom(byte[] data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthResponse ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthResponse ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthResponse ParseFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     public static AuthResponse ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static AuthResponse ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthResponse ParseDelimitedFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static AuthResponse ParseFrom(pb::ICodedInputStream input) {
+    public static AuthResponse ParseFrom(protB::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthResponse ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthResponse ParseFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     private AuthResponse MakeReadOnly() {
@@ -1015,7 +1015,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-    public sealed partial class Builder : pb::GeneratedBuilderLite<AuthResponse, Builder> {
+    public sealed partial class Builder : protB::GeneratedBuilderLite<AuthResponse, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -1075,7 +1075,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return result.MakeReadOnly();
       }
       
-      public override Builder MergeFrom(pb::IMessageLite other) {
+      public override Builder MergeFrom(protB::IMessageLite other) {
         if (other is AuthResponse) {
           return MergeFrom((AuthResponse) other);
         } else {
@@ -1099,11 +1099,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return this;
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      public override Builder MergeFrom(protB::ICodedInputStream input) {
+        return MergeFrom(input, protB::ExtensionRegistry.Empty);
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public override Builder MergeFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
         PrepareBuilder();
         uint tag;
         string field_name;
@@ -1119,10 +1119,10 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
           }
           switch (tag) {
             case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
+              throw protB::InvalidProtocolBufferException.InvalidTag();
             }
             default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
+              if (protB::WireFormat.IsEndGroupTag(tag)) {
                 return this;
               }
               ParseUnknownField(input, extensionRegistry, tag, field_name);
@@ -1150,12 +1150,12 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       public bool HasSignature {
         get { return result.hasSignature; }
       }
-      public pb::ByteString Signature {
+      public protB::ByteString Signature {
         get { return result.Signature; }
         set { SetSignature(value); }
       }
-      public Builder SetSignature(pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      public Builder SetSignature(protB::ByteString value) {
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasSignature = true;
         result.signature_ = value;
@@ -1164,19 +1164,19 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       public Builder ClearSignature() {
         PrepareBuilder();
         result.hasSignature = false;
-        result.signature_ = pb::ByteString.Empty;
+        result.signature_ = protB::ByteString.Empty;
         return this;
       }
       
       public bool HasClientAuthCertificate {
         get { return result.hasClientAuthCertificate; }
       }
-      public pb::ByteString ClientAuthCertificate {
+      public protB::ByteString ClientAuthCertificate {
         get { return result.ClientAuthCertificate; }
         set { SetClientAuthCertificate(value); }
       }
-      public Builder SetClientAuthCertificate(pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      public Builder SetClientAuthCertificate(protB::ByteString value) {
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasClientAuthCertificate = true;
         result.clientAuthCertificate_ = value;
@@ -1185,32 +1185,32 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       public Builder ClearClientAuthCertificate() {
         PrepareBuilder();
         result.hasClientAuthCertificate = false;
-        result.clientAuthCertificate_ = pb::ByteString.Empty;
+        result.clientAuthCertificate_ = protB::ByteString.Empty;
         return this;
       }
       
-      public pbc::IPopsicleList<pb::ByteString> ClientCaList {
+      public protBC::IPopsicleList<protB::ByteString> ClientCaList {
         get { return PrepareBuilder().clientCa_; }
       }
       public int ClientCaCount {
         get { return result.ClientCaCount; }
       }
-      public pb::ByteString GetClientCa(int index) {
+      public protB::ByteString GetClientCa(int index) {
         return result.GetClientCa(index);
       }
-      public Builder SetClientCa(int index, pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      public Builder SetClientCa(int index, protB::ByteString value) {
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.clientCa_[index] = value;
         return this;
       }
-      public Builder AddClientCa(pb::ByteString value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+      public Builder AddClientCa(protB::ByteString value) {
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.clientCa_.Add(value);
         return this;
       }
-      public Builder AddRangeClientCa(scg::IEnumerable<pb::ByteString> values) {
+      public Builder AddRangeClientCa(collG::IEnumerable<protB::ByteString> values) {
         PrepareBuilder();
         result.clientCa_.Add(values);
         return this;
@@ -1229,7 +1229,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-  public sealed partial class AuthError : pb::GeneratedMessageLite<AuthError, AuthError.Builder> {
+  public sealed partial class AuthError : protB::GeneratedMessageLite<AuthError, AuthError.Builder> {
     private AuthError() { }
     private static readonly AuthError defaultInstance = new AuthError().MakeReadOnly();
     private static readonly string[] _authErrorFieldNames = new string[] { "error_type" };
@@ -1278,7 +1278,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       }
     }
     
-    public override void WriteTo(pb::ICodedOutputStream output) {
+    public override void WriteTo(protB::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _authErrorFieldNames;
       if (hasErrorType) {
@@ -1301,7 +1301,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       
       size = 0;
       if (hasErrorType) {
-        size += pb::CodedOutputStream.ComputeEnumSize(1, (int) ErrorType);
+        size += protB::CodedOutputStream.ComputeEnumSize(1, (int) ErrorType);
       }
       memoizedSerializedSize = size;
       return size;
@@ -1325,34 +1325,34 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     }
     #endregion
     
-    public static AuthError ParseFrom(pb::ByteString data) {
+    public static AuthError ParseFrom(protB::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthError ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthError ParseFrom(protB::ByteString data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthError ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static AuthError ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthError ParseFrom(byte[] data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static AuthError ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthError ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthError ParseFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     public static AuthError ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static AuthError ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthError ParseDelimitedFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static AuthError ParseFrom(pb::ICodedInputStream input) {
+    public static AuthError ParseFrom(protB::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static AuthError ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static AuthError ParseFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     private AuthError MakeReadOnly() {
@@ -1369,7 +1369,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-    public sealed partial class Builder : pb::GeneratedBuilderLite<AuthError, Builder> {
+    public sealed partial class Builder : protB::GeneratedBuilderLite<AuthError, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -1429,7 +1429,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return result.MakeReadOnly();
       }
       
-      public override Builder MergeFrom(pb::IMessageLite other) {
+      public override Builder MergeFrom(protB::IMessageLite other) {
         if (other is AuthError) {
           return MergeFrom((AuthError) other);
         } else {
@@ -1447,11 +1447,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return this;
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      public override Builder MergeFrom(protB::ICodedInputStream input) {
+        return MergeFrom(input, protB::ExtensionRegistry.Empty);
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public override Builder MergeFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
         PrepareBuilder();
         uint tag;
         string field_name;
@@ -1467,10 +1467,10 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
           }
           switch (tag) {
             case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
+              throw protB::InvalidProtocolBufferException.InvalidTag();
             }
             default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
+              if (protB::WireFormat.IsEndGroupTag(tag)) {
                 return this;
               }
               ParseUnknownField(input, extensionRegistry, tag, field_name);
@@ -1519,7 +1519,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
   [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
   [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
   [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-  public sealed partial class DeviceAuthMessage : pb::GeneratedMessageLite<DeviceAuthMessage, DeviceAuthMessage.Builder> {
+  public sealed partial class DeviceAuthMessage : protB::GeneratedMessageLite<DeviceAuthMessage, DeviceAuthMessage.Builder> {
     private DeviceAuthMessage() { }
     private static readonly DeviceAuthMessage defaultInstance = new DeviceAuthMessage().MakeReadOnly();
     private static readonly string[] _deviceAuthMessageFieldNames = new string[] { "challenge", "error", "response" };
@@ -1578,7 +1578,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       }
     }
     
-    public override void WriteTo(pb::ICodedOutputStream output) {
+    public override void WriteTo(protB::ICodedOutputStream output) {
       CalcSerializedSize();
       string[] field_names = _deviceAuthMessageFieldNames;
       if (hasChallenge) {
@@ -1607,13 +1607,13 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
       
       size = 0;
       if (hasChallenge) {
-        size += pb::CodedOutputStream.ComputeMessageSize(1, Challenge);
+        size += protB::CodedOutputStream.ComputeMessageSize(1, Challenge);
       }
       if (hasResponse) {
-        size += pb::CodedOutputStream.ComputeMessageSize(2, Response);
+        size += protB::CodedOutputStream.ComputeMessageSize(2, Response);
       }
       if (hasError) {
-        size += pb::CodedOutputStream.ComputeMessageSize(3, Error);
+        size += protB::CodedOutputStream.ComputeMessageSize(3, Error);
       }
       memoizedSerializedSize = size;
       return size;
@@ -1643,34 +1643,34 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     }
     #endregion
     
-    public static DeviceAuthMessage ParseFrom(pb::ByteString data) {
+    public static DeviceAuthMessage ParseFrom(protB::ByteString data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static DeviceAuthMessage ParseFrom(pb::ByteString data, pb::ExtensionRegistry extensionRegistry) {
+    public static DeviceAuthMessage ParseFrom(protB::ByteString data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static DeviceAuthMessage ParseFrom(byte[] data) {
       return ((Builder) CreateBuilder().MergeFrom(data)).BuildParsed();
     }
-    public static DeviceAuthMessage ParseFrom(byte[] data, pb::ExtensionRegistry extensionRegistry) {
+    public static DeviceAuthMessage ParseFrom(byte[] data, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(data, extensionRegistry)).BuildParsed();
     }
     public static DeviceAuthMessage ParseFrom(global::System.IO.Stream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static DeviceAuthMessage ParseFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static DeviceAuthMessage ParseFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     public static DeviceAuthMessage ParseDelimitedFrom(global::System.IO.Stream input) {
       return CreateBuilder().MergeDelimitedFrom(input).BuildParsed();
     }
-    public static DeviceAuthMessage ParseDelimitedFrom(global::System.IO.Stream input, pb::ExtensionRegistry extensionRegistry) {
+    public static DeviceAuthMessage ParseDelimitedFrom(global::System.IO.Stream input, protB::ExtensionRegistry extensionRegistry) {
       return CreateBuilder().MergeDelimitedFrom(input, extensionRegistry).BuildParsed();
     }
-    public static DeviceAuthMessage ParseFrom(pb::ICodedInputStream input) {
+    public static DeviceAuthMessage ParseFrom(protB::ICodedInputStream input) {
       return ((Builder) CreateBuilder().MergeFrom(input)).BuildParsed();
     }
-    public static DeviceAuthMessage ParseFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+    public static DeviceAuthMessage ParseFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
       return ((Builder) CreateBuilder().MergeFrom(input, extensionRegistry)).BuildParsed();
     }
     private DeviceAuthMessage MakeReadOnly() {
@@ -1687,7 +1687,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("protoc-gen-cs", "2.4.1.555")]
-    public sealed partial class Builder : pb::GeneratedBuilderLite<DeviceAuthMessage, Builder> {
+    public sealed partial class Builder : protB::GeneratedBuilderLite<DeviceAuthMessage, Builder> {
       protected override Builder ThisBuilder {
         get { return this; }
       }
@@ -1747,7 +1747,7 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return result.MakeReadOnly();
       }
       
-      public override Builder MergeFrom(pb::IMessageLite other) {
+      public override Builder MergeFrom(protB::IMessageLite other) {
         if (other is DeviceAuthMessage) {
           return MergeFrom((DeviceAuthMessage) other);
         } else {
@@ -1771,11 +1771,11 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         return this;
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input) {
-        return MergeFrom(input, pb::ExtensionRegistry.Empty);
+      public override Builder MergeFrom(protB::ICodedInputStream input) {
+        return MergeFrom(input, protB::ExtensionRegistry.Empty);
       }
       
-      public override Builder MergeFrom(pb::ICodedInputStream input, pb::ExtensionRegistry extensionRegistry) {
+      public override Builder MergeFrom(protB::ICodedInputStream input, protB::ExtensionRegistry extensionRegistry) {
         PrepareBuilder();
         uint tag;
         string field_name;
@@ -1791,10 +1791,10 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
           }
           switch (tag) {
             case 0: {
-              throw pb::InvalidProtocolBufferException.InvalidTag();
+              throw protB::InvalidProtocolBufferException.InvalidTag();
             }
             default: {
-              if (pb::WireFormat.IsEndGroupTag(tag)) {
+              if (protB::WireFormat.IsEndGroupTag(tag)) {
                 return this;
               }
               ParseUnknownField(input, extensionRegistry, tag, field_name);
@@ -1842,21 +1842,21 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetChallenge(value); }
       }
       public Builder SetChallenge(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthChallenge value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasChallenge = true;
         result.challenge_ = value;
         return this;
       }
       public Builder SetChallenge(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthChallenge.Builder builderForValue) {
-        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        protB::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
         PrepareBuilder();
         result.hasChallenge = true;
         result.challenge_ = builderForValue.Build();
         return this;
       }
       public Builder MergeChallenge(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthChallenge value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         if (result.hasChallenge &&
             result.challenge_ != global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthChallenge.DefaultInstance) {
@@ -1882,21 +1882,21 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetResponse(value); }
       }
       public Builder SetResponse(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthResponse value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasResponse = true;
         result.response_ = value;
         return this;
       }
       public Builder SetResponse(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthResponse.Builder builderForValue) {
-        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        protB::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
         PrepareBuilder();
         result.hasResponse = true;
         result.response_ = builderForValue.Build();
         return this;
       }
       public Builder MergeResponse(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthResponse value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         if (result.hasResponse &&
             result.response_ != global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthResponse.DefaultInstance) {
@@ -1922,21 +1922,21 @@ namespace ChromeCast.Desktop.AudioStreamer.ProtocolBuffer {
         set { SetError(value); }
       }
       public Builder SetError(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthError value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         result.hasError = true;
         result.error_ = value;
         return this;
       }
       public Builder SetError(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthError.Builder builderForValue) {
-        pb::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
+        protB::ThrowHelper.ThrowIfNull(builderForValue, "builderForValue");
         PrepareBuilder();
         result.hasError = true;
         result.error_ = builderForValue.Build();
         return this;
       }
       public Builder MergeError(global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthError value) {
-        pb::ThrowHelper.ThrowIfNull(value, "value");
+        protB::ThrowHelper.ThrowIfNull(value, "value");
         PrepareBuilder();
         if (result.hasError &&
             result.error_ != global::ChromeCast.Desktop.AudioStreamer.ProtocolBuffer.AuthError.DefaultInstance) {
