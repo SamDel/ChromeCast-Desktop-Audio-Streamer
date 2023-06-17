@@ -22,7 +22,23 @@ namespace ChromeCast.Desktop.AudioStreamer
             System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
             try
             {
-                new SingleInstanceController().Run(new string[0]);
+                //new SingleInstanceController().Run(new string[0]);
+                AppDomain currentDomain = AppDomain.CurrentDomain;
+                currentDomain.UnhandledException += new System.UnhandledExceptionEventHandler(UnhandledHandler);
+
+                var logger = new Logger();
+                var devices = new Devices(logger);
+                var mainForm = new MainForm(
+                        new ApplicationLogic(devices
+                            , new DiscoverDevices()
+                            , new Configuration()
+                            , new StreamingRequestsListener()
+                            , new DeviceStatusTimer()
+                            , logger)
+                        , devices
+                        , new LoopbackRecorder(logger)
+                        , logger);
+                System.Windows.Forms.Application.Run(mainForm);
             }
             catch (Exception)
             {
