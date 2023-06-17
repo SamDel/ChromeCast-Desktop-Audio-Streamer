@@ -501,7 +501,11 @@ namespace ChromeCast.Desktop.AudioStreamer
                         }
                         previousRecordingDeviceExists = true;
                     }
-                    else if (!isSetRecordingDeviceID && device.ID == previousRecordingDeviceID)
+                }
+                for (int i = 0; i < cmbRecordingDevice.Items.Count; i++)
+                {
+                    var device = (RecordingDevice)cmbRecordingDevice.Items[i];
+                    if (!isSetRecordingDeviceID && device.ID == previousRecordingDeviceID)
                     {
                         // Select the previously selected device (only once).
                         cmbRecordingDevice.SelectedIndex = i;
