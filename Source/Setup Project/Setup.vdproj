@@ -199,15 +199,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{FAD1A32D-15D2-44F5-B8EE-5A57C28D5E63}"
-        "PackageCode" = "8:{1C46E1F7-DBFC-453A-9977-BB2B51C5B3C0}"
+        "ProductCode" = "8:{F7FFB5F9-6BFE-4A26-8C6A-BFB0D13037A5}"
+        "PackageCode" = "8:{37B0BF37-1854-4284-9BF1-585D011D6FB4}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:5.1"
+        "ProductVersion" = "8:5.2"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -749,7 +749,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A18E8C84A5A540ECBF75D37C251E5810"
             {
-            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Release\\net6.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\obj\\Release\\net7.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
