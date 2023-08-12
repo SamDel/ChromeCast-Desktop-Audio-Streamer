@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_53A90DC7DD1E467A98A75FC3D65F91B4"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A18E8C84A5A540ECBF75D37C251E5810"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -121,6 +127,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_53A90DC7DD1E467A98A75FC3D65F91B4"
+            {
+            "SourcePath" = "8:..\\ChromeCast.Desktop.AudioStreamer\\ChromeCast.ico"
+            "TargetName" = "8:ChromeCast.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -199,15 +225,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Desktop Audio Streamer"
-        "ProductCode" = "8:{F7FFB5F9-6BFE-4A26-8C6A-BFB0D13037A5}"
-        "PackageCode" = "8:{37B0BF37-1854-4284-9BF1-585D011D6FB4}"
+        "ProductCode" = "8:{551F3327-9758-4E80-9E3F-12C4BF4B8E01}"
+        "PackageCode" = "8:{FD77ED87-01A4-41F5-B1C1-8877E4CCD624}"
         "UpgradeCode" = "8:{1452C3A9-CF5B-49C2-82B7-46054BF4BE2E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:5.2"
+        "ProductVersion" = "8:5.3"
         "Manufacturer" = "8:Desktop Audio Streamer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -320,6 +346,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_3CAA9B331CEF4853AD4497F235FB80CD"
+            {
+            "Name" = "8:ChromeCast Desktop Audio Streamer"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_A18E8C84A5A540ECBF75D37C251E5810"
+            "Folder" = "8:_12C793DF598A43949B1F33BAF6B40D2B"
+            "WorkingFolder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Icon" = "8:_53A90DC7DD1E467A98A75FC3D65F91B4"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_6062FD37B93041FFAF1580B1A3EBA3C9"
+            {
+            "Name" = "8:ChromeCast Desktop Audio Streamer"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_A18E8C84A5A540ECBF75D37C251E5810"
+            "Folder" = "8:_972B2CC7F81D46C6AE3D1FDD7A457246"
+            "WorkingFolder" = "8:_F4764529D3CF4DBFA7818C686A3F447D"
+            "Icon" = "8:_53A90DC7DD1E467A98A75FC3D65F91B4"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
