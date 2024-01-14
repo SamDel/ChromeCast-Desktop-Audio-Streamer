@@ -977,30 +977,37 @@ namespace ChromeCast.Desktop.AudioStreamer
             try
             {
                 applicationLogic.StartTask(async () => {
-                    var url = "https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest";
-                    using (var handler = new HttpClientHandler())
+                    try
                     {
-                        handler.UseDefaultCredentials = true;
-                        handler.UseProxy = false;
-
-                        using (var client = new HttpClient(handler))
+                        var url = "https://api.github.com/repos/SamDel/ChromeCast-Desktop-Audio-Streamer/releases/latest";
+                        using (var handler = new HttpClientHandler())
                         {
-                            client.DefaultRequestHeaders.Add("KeepAlive", "false");
-                            client.DefaultRequestHeaders.Add("User-Agent", "SamDel/ChromeCast-Desktop-Audio-Streamer");
+                            handler.UseDefaultCredentials = true;
+                            handler.UseProxy = false;
 
-                            var response = await client.GetAsync(new Uri(url));
-                            response.EnsureSuccessStatusCode();
-
-                            var responseBody = response.Content.ReadAsStringAsync();
-
-                            var doc = JsonDocument.Parse(responseBody.Result);
-                            var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
-                            if (latestRelease.CompareTo(currentVersion) > 0)
+                            using (var client = new HttpClient(handler))
                             {
-                                var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
-                                ShowLatestRelease(latestRelease, latestReleaseUrl);
+                                client.DefaultRequestHeaders.Add("KeepAlive", "false");
+                                client.DefaultRequestHeaders.Add("User-Agent", "SamDel/ChromeCast-Desktop-Audio-Streamer");
+
+                                var response = await client.GetAsync(new Uri(url));
+                                response.EnsureSuccessStatusCode();
+
+                                var responseBody = response.Content.ReadAsStringAsync();
+
+                                var doc = JsonDocument.Parse(responseBody.Result);
+                                var latestRelease = doc.RootElement.GetProperty("tag_name").GetString().Replace("v", "");
+                                if (latestRelease.CompareTo(currentVersion) > 0)
+                                {
+                                    var latestReleaseUrl = doc.RootElement.GetProperty("html_url").GetString();
+                                    ShowLatestRelease(latestRelease, latestReleaseUrl);
+                                }
                             }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Log($"CheckForNewVersion: {ex.Message}");
                     }
                 });
             }
