@@ -351,4 +351,7 @@
   <data name="Check_DarkMode_Text" xml:space="preserve">
     <value>Dark mode</value>
   </data>
+  <data name="Label_StreamTitle_Text" xml:space="preserve">
+    <value>Stream title</value>
+  </data>
 </root>

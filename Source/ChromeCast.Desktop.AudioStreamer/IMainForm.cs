@@ -63,5 +63,7 @@ namespace ChromeCast.Desktop.AudioStreamer
         string GetIP4AddressUsed();
         void SetDarkMode(bool darkmode);
         bool GetDarkMode();
+        void SetStreamTitle(string streamTitle);
+        string GetStreamTitle();
     }
 }

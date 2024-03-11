@@ -20,6 +20,7 @@ using System.Net.Sockets;
 using System.Text.Json;
 using System.Net.Http;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 
 namespace ChromeCast.Desktop.AudioStreamer
 {
@@ -130,6 +131,7 @@ namespace ChromeCast.Desktop.AudioStreamer
             volumeMeterTooltip.SetToolTip(volumeMeter, Properties.Strings.Tooltip_RecordingLevel_Text);
             lblFilterDevices.Text = Properties.Strings.Label_FilterDevices_Text;
             lblBufferInSeconds.Text = Properties.Strings.Label_BufferInSeconds_Text;
+            lblStreamTitle.Text = Properties.Strings.Label_StreamTitle_Text;
             chkDarkMode.Text = Properties.Strings.Check_DarkMode_Text;
 
             if (cmbLanguage.Items.Count == 0)
@@ -1471,6 +1473,22 @@ namespace ChromeCast.Desktop.AudioStreamer
                 return;
 
             ApplyTheme(null, chkDarkMode.Checked);
+        }
+
+        public void SetStreamTitle(string streamTitle)
+        {
+            if (txtStreamTitle == null)
+                return;
+
+            txtStreamTitle.Text = streamTitle;
+        }
+
+        public string GetStreamTitle()
+        {
+            if (txtStreamTitle == null)
+                return string.Empty;
+
+            return txtStreamTitle.Text;
         }
     }
 }

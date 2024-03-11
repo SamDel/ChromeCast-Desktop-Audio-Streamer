@@ -297,6 +297,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
                 mainForm.SetMinimizeToTray(settings.MinimizeToTray ?? false);
                 mainForm.SetConvertMultiChannelToStereo(settings.ConvertMultiChannelToStereo ?? false);
                 mainForm.SetDarkMode(settings.DarkMode ?? false);
+                mainForm.SetStreamTitle(settings.StreamTitle ?? Properties.Strings.ChromeCast_StreamTitle);
                 if (settings.ChromecastDiscoveredDevices != null)
                 {
                     settings.ChromecastDiscoveredDevices = RemoveOldEntries(settings.ChromecastDiscoveredDevices);
@@ -390,6 +391,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             settings.MinimizeToTray = mainForm.GetMinimizeToTray();
             settings.ConvertMultiChannelToStereo = mainForm.GetConvertMultiChannelToStereo();
             settings.DarkMode = mainForm.GetDarkMode();
+            settings.StreamTitle = mainForm.GetStreamTitle();
 
             settings.Save();
         }
@@ -457,6 +459,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             mainForm.SetMinimizeToTray(settings.MinimizeToTray.Value);
             mainForm.SetConvertMultiChannelToStereo(settings.ConvertMultiChannelToStereo.Value);
             mainForm.SetDarkMode(settings.DarkMode.Value);
+            mainForm.SetStreamTitle(Properties.Strings.ChromeCast_StreamTitle);
             settings.Save();
             devices?.Dispose();
             if (notifyIcon?.ContextMenuStrip != null)
@@ -555,6 +558,10 @@ namespace ChromeCast.Desktop.AudioStreamer.Application
             return false;
         }
 
+        public string GetStreamTitle()
+        {
+            return mainForm.GetStreamTitle();
+        }
 
         #region private helpers
 

@@ -130,7 +130,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 return;
 
             device.SetDeviceState(DeviceState.LoadingMedia, null);
-            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination, GetNextRequestId()));
+            SendMessage(chromeCastMessages.GetLoadMessage(applicationLogic.GetStreamingUrl(), chromeCastSource, chromeCastDestination, GetNextRequestId(), applicationLogic.GetStreamTitle()));
         }
 
         /// <summary>

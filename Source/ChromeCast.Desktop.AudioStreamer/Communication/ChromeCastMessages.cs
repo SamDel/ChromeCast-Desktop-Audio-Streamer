@@ -66,7 +66,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             return GetCastMessage(message, namespaceReceiver);
         }
 
-        public CastMessage GetLoadMessage(string streamingUrl, string sourceId, string destinationId, int requestId)
+        public CastMessage GetLoadMessage(string streamingUrl, string sourceId, string destinationId, int requestId, string streamTitle)
         {
             var message = new MessageLoad
             {
@@ -84,7 +84,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     {
                         type = 0,
                         metadataType = 0,
-                        title = Properties.Strings.ChromeCast_StreamTitle,
+                        title = streamTitle,
                         images = new List<Image>()
                     },
                 },

@@ -733,6 +733,10 @@
           <source>Dark mode</source>
           <target state="translated">Mode sombre</target>
         </trans-unit>
+        <trans-unit id="Label_StreamTitle_Text" translate="yes" xml:space="preserve">
+          <source>Stream title</source>
+          <target state="translated">Titre du flux</target>
+        </trans-unit>
       </group>
     </body>
   </file>

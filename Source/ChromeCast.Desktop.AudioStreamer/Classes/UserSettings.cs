@@ -15,11 +15,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["Upgraded"];
+                return (bool?)this[nameof(Upgraded)];
             }
             set
             {
-                this["Upgraded"] = value;
+                this[nameof(Upgraded)] = value;
             }
         }
 
@@ -28,11 +28,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["AutoStartDevices"];
+                return (bool?)this[nameof(AutoStartDevices)];
             }
             set
             {
-                this["AutoStartDevices"] = value;
+                this[nameof(AutoStartDevices)] = value;
             }
         }
 
@@ -41,11 +41,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["UseKeyboardShortCuts"];
+                return (bool?)this[nameof(UseKeyboardShortCuts)];
             }
             set
             {
-                this["UseKeyboardShortCuts"] = value;
+                this[nameof(UseKeyboardShortCuts)] = value;
             }
         }
 
@@ -54,11 +54,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["AutoRestart"];
+                return (bool?)this[nameof(AutoRestart)];
             }
             set
             {
-                this["AutoRestart"] = value;
+                this[nameof(AutoRestart)] = value;
             }
         }
 
@@ -67,11 +67,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["ShowWindowOnStart"];
+                return (bool?)this[nameof(ShowWindowOnStart)];
             }
             set
             {
-                this["ShowWindowOnStart"] = value;
+                this[nameof(ShowWindowOnStart)] = value;
             }
         }
 
@@ -80,11 +80,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (string)this["Ip4AddressUsed"];
+                return (string)this[nameof(Ip4AddressUsed)];
             }
             set
             {
-                this["Ip4AddressUsed"] = value;
+                this[nameof(Ip4AddressUsed)] = value;
             }
         }
 
@@ -93,11 +93,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (SupportedStreamFormat?)this["StreamFormat"];
+                return (SupportedStreamFormat?)this[nameof(StreamFormat)];
             }
             set
             {
-                this["StreamFormat"] = value;
+                this[nameof(StreamFormat)] = value;
             }
         }
 
@@ -106,11 +106,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["ShowLagControl"];
+                return (bool?)this[nameof(ShowLagControl)];
             }
             set
             {
-                this["ShowLagControl"] = value;
+                this[nameof(ShowLagControl)] = value;
             }
         }
 
@@ -119,11 +119,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["LagControlValue"];
+                return (int?)this[nameof(LagControlValue)];
             }
             set
             {
-                this["LagControlValue"] = value;
+                this[nameof(LagControlValue)] = value;
             }
         }
 
@@ -132,11 +132,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (string)this["Culture"];
+                return (string)this[nameof(Culture)];
             }
             set
             {
-                this["Culture"] = value;
+                this[nameof(Culture)] = value;
             }
         }
 
@@ -145,11 +145,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["LogDeviceCommunication"];
+                return (bool?)this[nameof(LogDeviceCommunication)];
             }
             set
             {
-                this["LogDeviceCommunication"] = value;
+                this[nameof(LogDeviceCommunication)] = value;
             }
         }
 
@@ -158,11 +158,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["StartApplicationWhenWindowsStarts"];
+                return (bool?)this[nameof(StartApplicationWhenWindowsStarts)];
             }
             set
             {
-                this["StartApplicationWhenWindowsStarts"] = value;
+                this[nameof(StartApplicationWhenWindowsStarts)] = value;
             }
         }
 
@@ -171,11 +171,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (FilterDevicesEnum?)this["FilterDevices"];
+                return (FilterDevicesEnum?)this[nameof(FilterDevices)];
             }
             set
             {
-                this["FilterDevices"] = value;
+                this[nameof(FilterDevices)] = value;
             }
         }
 
@@ -184,11 +184,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (List<DiscoveredDevice>)this["ChromecastDiscoveredDevices"];
+                return (List<DiscoveredDevice>)this[nameof(ChromecastDiscoveredDevices)];
             }
             set
             {
-                this["ChromecastDiscoveredDevices"] = value;
+                this[nameof(ChromecastDiscoveredDevices)] = value;
             }
         }
 
@@ -197,11 +197,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["StartLastUsedDevices"];
+                return (bool?)this[nameof(StartLastUsedDevices)];
             }
             set
             {
-                this["StartLastUsedDevices"] = value;
+                this[nameof(StartLastUsedDevices)] = value;
             }
         }
 
@@ -210,11 +210,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (Size?)this["Size"] == null ? new Size(850, 550) : (Size?)this["Size"];
+                return (Size?)this[nameof(Size)] == null ? new Size(850, 550) : (Size?)this[nameof(Size)];
             }
             set
             {
-                this["Size"] = value;
+                this[nameof(Size)] = value;
             }
         }
 
@@ -223,11 +223,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["Left"] == null ? 0 : (int?)this["Left"];
+                return (int?)this[nameof(Left)] == null ? 0 : (int?)this[nameof(Left)];
             }
             set
             {
-                this["Left"] = value;
+                this[nameof(Left)] = value;
             }
         }
 
@@ -236,11 +236,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["Top"] == null ? 0 : (int?)this["Top"];
+                return (int?)this[nameof(Top)] == null ? 0 : (int?)this[nameof(Top)];
             }
             set
             {
-                this["Top"] = value;
+                this[nameof(Top)] = value;
             }
         }
 
@@ -249,11 +249,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (int?)this["ExtraBufferInSeconds"];
+                return (int?)this[nameof(ExtraBufferInSeconds)];
             }
             set
             {
-                this["ExtraBufferInSeconds"] = value;
+                this[nameof(ExtraBufferInSeconds)] = value;
             }
         }
 
@@ -262,11 +262,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (string)this["RecordingDeviceID"];
+                return (string)this[nameof(RecordingDeviceID)];
             }
             set
             {
-                this["RecordingDeviceID"] = value;
+                this[nameof(RecordingDeviceID)] = value;
             }
         }
 
@@ -275,11 +275,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["AutoMute"];
+                return (bool?)this[nameof(AutoMute)];
             }
             set
             {
-                this["AutoMute"] = value;
+                this[nameof(AutoMute)] = value;
             }
         }
 
@@ -288,11 +288,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["MinimizeToTray"];
+                return (bool?)this[nameof(MinimizeToTray)];
             }
             set
             {
-                this["MinimizeToTray"] = value;
+                this[nameof(MinimizeToTray)] = value;
             }
         }
 
@@ -301,11 +301,11 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["ConvertMultiChannelToStereo"];
+                return (bool?)this[nameof(ConvertMultiChannelToStereo)];
             }
             set
             {
-                this["ConvertMultiChannelToStereo"] = value;
+                this[nameof(ConvertMultiChannelToStereo)] = value;
             }
         }
 
@@ -314,11 +314,24 @@ namespace ChromeCast.Desktop.AudioStreamer.Classes
         {
             get
             {
-                return (bool?)this["DarkMode"];
+                return (bool?)this[nameof(DarkMode)];
             }
             set
             {
-                this["DarkMode"] = value;
+                this[nameof(DarkMode)] = value;
+            }
+        }
+
+        [UserScopedSetting()]
+        public string StreamTitle
+        {
+            get
+            {
+                return (string)this[nameof(StreamTitle)];
+            }
+            set
+            {
+                this[nameof(StreamTitle)] = value;
             }
         }
     }

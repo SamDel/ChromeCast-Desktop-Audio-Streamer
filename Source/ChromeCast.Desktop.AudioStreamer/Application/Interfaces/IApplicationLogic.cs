@@ -32,5 +32,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Application.Interfaces
         void StartTask(Action action, CancellationTokenSource cancellationTokenSource = null);
         void SaveSettings();
         void SetRecordingDevice(RecordingDevice recordingDevice);
+        string   GetStreamTitle();
     }
 }

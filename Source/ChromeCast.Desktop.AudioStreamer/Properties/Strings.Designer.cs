@@ -761,5 +761,17 @@ namespace ChromeCast.Desktop.AudioStreamer.Properties {
                 return ResourceManager.GetString("Wav_32bit", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The mp3 formats have a long lag and buffering time..
+        /// </summary>
+        internal static string Label_StreamTitle_Text
+        {
+            get
+            {
+                return ResourceManager.GetString("Label_StreamTitle_Text", resourceCulture);
+            }
+        }
+
     }
 }
