@@ -25,7 +25,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         private SslStream sslStream;
         private byte[] receiveBuffer;
         private DeviceConnectionState state;
-        private DateTime connectingStartTime;
         private IAsyncResult currentAynchResult;
         private byte[] sendBuffer;
         private bool IsDisposed = false;
@@ -67,7 +66,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                 }
                 finally
                 {
-                    //wh.Close();
+                    wh.Close();
                 }
             }
             catch (Exception ex)
@@ -176,13 +175,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     if (state != DeviceConnectionState.Connecting)
                     {
                         state = DeviceConnectionState.Connecting;
-                        connectingStartTime = DateTime.Now;
-                        Dispose(true);
                         Connect();
-                    }
-                    else if (connectingStartTime != DateTime.MinValue && (DateTime.Now - connectingStartTime).TotalSeconds > 15)
-                    {
-                        state = DeviceConnectionState.Disconnected;
                     }
                 }
             });
@@ -203,14 +196,9 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
                     sslStream.Write(sendBuffer);
                     sslStream.Flush();
                 }
-                else
-                {
-                    logger.Log($"[{getHost?.Invoke()}] DeviceConnection.DoSendMessage: {state}");
-                }
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.DoSendMessage: {ex.Message}");
                 Console.WriteLine($"DoSendMessage: {ex.Message}");
             }
             finally
@@ -234,7 +222,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.StartReceive: {ex.Message}");
                 Console.WriteLine($"StartReceive: {ex.Message}");
                 CloseConnection();
             }
@@ -256,7 +243,6 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             }
             catch (Exception ex)
             {
-                logger.Log($"ex : [{getHost?.Invoke()}] DeviceConnection.DataReceived: {ex.Message}");
                 Console.WriteLine(ex.Message);
                 CloseConnection();
             }
@@ -321,7 +307,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
         /// Don't validate the ssl certificate.
         /// </summary>
         /// <returns></returns>
-        public static bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        public bool DontValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
@@ -337,7 +323,7 @@ namespace ChromeCast.Desktop.AudioStreamer.Communication
             onReceiveMessage = onReceiveMessageIn;
             startTask = startTaskIn;
         }
-
+ 
         public void ReConnect()
         {
             state = DeviceConnectionState.Disconnected;
