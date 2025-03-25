@@ -49,17 +49,17 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility">
-      <Version>8.0.2</Version>
+      <Version>9.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="NAudio.Lame" Version="2.1.0" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
-    <PackageReference Include="System.Text.Json" Version="8.0.5" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Memory" Version="4.6.2" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.6.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.1" />
+    <PackageReference Include="System.Text.Json" Version="9.0.3" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.2" />
     <PackageReference Include="Tmds.MDns" Version="0.8.0" />
   </ItemGroup>
   <ItemGroup>
